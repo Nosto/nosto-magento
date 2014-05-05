@@ -1,0 +1,232 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    Nosto
+ * @package     Nosto_Tagging
+ * @copyright   Copyright (c) 2013 Nosto Solutions Ltd (http://www.nosto.com)
+ * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+-->
+<layout version="1.0.0">
+    <!--                                       -->
+    <!-- Adds Nosto tagging meta-data to site  -->
+    <!--                                       -->
+
+    <!-- Store wide blocks -->
+    <default>
+        <!-- Adds Nosto embed script to head -->
+        <reference name="head">
+            <block type="nosto_tagging/embed" name="nosto.embed" template="nostotagging/embed.phtml"/>
+        </reference>
+
+        <!-- Tag shopping cart -->
+        <reference name="after_body_start">
+            <block type="nosto_tagging/cart" name="nosto.cart" template="nostotagging/cart.phtml"/>
+        </reference>
+
+        <!-- Tag customer -->
+        <reference name="after_body_start">
+            <block type="nosto_tagging/customer" name="nosto.customer" template="nostotagging/customer.phtml"/>
+        </reference>
+    </default>
+
+    <!-- Tag category -->
+    <catalog_category_default>
+        <update handle="nosto_tagging_category" />
+    </catalog_category_default>
+    <catalog_category_layered>
+        <update handle="nosto_tagging_category" />
+    </catalog_category_layered>
+    <nosto_tagging_category>
+        <reference name="after_body_start">
+            <block type="nosto_tagging/category" name="nosto.category" template="nostotagging/category.phtml"/>
+        </reference>
+    </nosto_tagging_category>
+
+    <!-- Tag product -->
+    <catalog_product_view>
+        <reference name="after_body_start">
+            <block type="nosto_tagging/product" name="nosto.product" template="nostotagging/product.phtml"/>
+        </reference>
+    </catalog_product_view>
+
+    <!-- Tag checkout -->
+    <checkout_onepage_success>
+        <reference name="after_body_start">
+            <block type="nosto_tagging/order" name="nosto.order" template="nostotagging/order.phtml"/>
+        </reference>
+    </checkout_onepage_success>
+
+    <!--                                       -->
+    <!-- Adds Nosto elements to site           -->
+    <!--                                       -->
+
+    <!-- All pages -->
+    <default>
+        <!-- Adds 1 content placeholder first in page content section -->
+        <reference name="content">
+            <block type="nosto_tagging/element" name="nosto.page.top" before="-"
+                   template="nostotagging/element.phtml">
+                <action method="setData">
+                    <name>div_id</name>
+                    <value>nosto-page-top</value>
+                </action>
+            </block>
+        </reference>
+        <!-- Adds 1 content placeholder to left sidebar -->
+        <reference name="left">
+            <block type="nosto_tagging/element" name="nosto.column.left" before="-"
+                   template="nostotagging/element.phtml">
+                <action method="setData">
+                    <name>div_id</name>
+                    <value>nosto-column-left</value>
+                </action>
+            </block>
+        </reference>
+        <!-- Adds 1 content placeholder to right sidebar -->
+        <reference name="right">
+            <block type="nosto_tagging/element" name="nosto.column.right" after="-"
+                   template="nostotagging/element.phtml">
+                <action method="setData">
+                    <name>div_id</name>
+                    <value>nosto-column-right</value>
+                </action>
+            </block>
+        </reference>
+    </default>
+
+    <!-- Custom handle for displaying 1 content placeholder last in page content section -->
+    <nosto_tagging_page_default_footer>
+        <reference name="content">
+            <block type="nosto_tagging/element" name="nosto.page.footer" after="-"
+                   template="nostotagging/element.phtml">
+                <action method="setData">
+                    <name>div_id</name>
+                    <value>nosto-page-footer</value>
+                </action>
+            </block>
+        </reference>
+    </nosto_tagging_page_default_footer>
+
+    <!-- Shopping cart checkout page -->
+    <checkout_cart_index>
+        <!-- Adds 3 content placeholders after the cart content -->
+        <reference name="content">
+            <block type="nosto_tagging/element" name="nosto.page.cart1" after="checkout.cart"
+                   template="nostotagging/element.phtml">
+                <action method="setData">
+                    <name>div_id</name>
+                    <value>nosto-page-cart1</value>
+                </action>
+            </block>
+            <block type="nosto_tagging/element" name="nosto.page.cart2" after="nosto.page.cart1"
+                   template="nostotagging/element.phtml">
+                <action method="setData">
+                    <name>div_id</name>
+                    <value>nosto-page-cart2</value>
+                </action>
+            </block>
+            <block type="nosto_tagging/element" name="nosto.page.cart3" after="nosto.page.cart2"
+                   template="nostotagging/element.phtml">
+                <action method="setData">
+                    <name>div_id</name>
+                    <value>nosto-page-cart3</value>
+                </action>
+            </block>
+        </reference>
+    </checkout_cart_index>
+
+    <!-- Product page -->
+    <catalog_product_view>
+        <!-- Adds 3 content placeholders after the product info -->
+        <reference name="content">
+            <block type="nosto_tagging/element" name="nosto.page.product1" after="product.info"
+                   template="nostotagging/element.phtml">
+                <action method="setData">
+                    <name>div_id</name>
+                    <value>nosto-page-product1</value>
+                </action>
+            </block>
+            <block type="nosto_tagging/element" name="nosto.page.product2" after="nosto.page.product1"
+                   template="nostotagging/element.phtml">
+                <action method="setData">
+                    <name>div_id</name>
+                    <value>nosto-page-product2</value>
+                </action>
+            </block>
+            <block type="nosto_tagging/element" name="nosto.page.product3" after="nosto.page.product2"
+                   template="nostotagging/element.phtml">
+                <action method="setData">
+                    <name>div_id</name>
+                    <value>nosto-page-product3</value>
+                </action>
+            </block>
+        </reference>
+    </catalog_product_view>
+
+    <!-- Category page -->
+    <catalog_category_default>
+        <update handle="nosto_tagging_catalog_category" />
+    </catalog_category_default>
+    <catalog_category_layered>
+        <update handle="nosto_tagging_catalog_category" />
+    </catalog_category_layered>
+    <nosto_tagging_catalog_category>
+        <!-- Adds 2 content placeholders; 1 before and 1 after the products -->
+        <reference name="content">
+            <block type="nosto_tagging/element" name="nosto.page.category1" before="category.products"
+                   template="nostotagging/element.phtml">
+                <action method="setData">
+                    <name>div_id</name>
+                    <value>nosto-page-category1</value>
+                </action>
+            </block>
+            <block type="nosto_tagging/element" name="nosto.page.category2" after="category.products"
+                   template="nostotagging/element.phtml">
+                <action method="setData">
+                    <name>div_id</name>
+                    <value>nosto-page-category2</value>
+                </action>
+            </block>
+        </reference>
+    </nosto_tagging_catalog_category>
+
+    <!-- Search result page -->
+    <catalogsearch_result_index>
+        <!-- Adds 2 content placeholders; 1 before and 1 after the search result -->
+        <reference name="content">
+            <block type="nosto_tagging/element" name="nosto.page.search1" before="search.result"
+                   template="nostotagging/element.phtml">
+                <action method="setData">
+                    <name>div_id</name>
+                    <value>nosto-page-search1</value>
+                </action>
+            </block>
+            <block type="nosto_tagging/element" name="nosto.page.search2" after="search.result"
+                   template="nostotagging/element.phtml">
+                <action method="setData">
+                    <name>div_id</name>
+                    <value>nosto-page-search2</value>
+                </action>
+            </block>
+        </reference>
+    </catalogsearch_result_index>
+</layout>

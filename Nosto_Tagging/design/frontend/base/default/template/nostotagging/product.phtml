@@ -1,0 +1,70 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2013 Nosto Solutions Ltd (http://www.nosto.com)
+ * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+?>
+
+<?php
+/**
+ * @var $this               Nosto_Tagging_Block_Product
+ * @var $nostoHelper        Nosto_Tagging_Helper_Data
+ * @var $nostoPriceHelper   Nosto_Tagging_Helper_Price
+ * @var $taxHelper          Mage_Tax_Helper_Data
+ */
+$product = $this->getProduct();
+$manufacturer = $product->getAttributeText('manufacturer');
+$nostoHelper = Mage::helper('nosto_tagging');
+$nostoPriceHelper = Mage::helper('nosto_tagging/price');
+$taxHelper = Mage::helper('tax');
+?>
+
+<!-- Nosto Product Tagging -->
+<div class="nosto_product" style="display:none">
+    <span class="url"><?php echo $product->getProductUrl(); ?></span>
+    <span class="product_id"><?php echo $product->getId(); ?></span>
+    <span class="name"><?php echo $nostoHelper->escapeHtml($product->getName()); ?></span>
+    
+    <?php if($product->getImage() == 'no_selection') { ?>
+	    	<span class="image_url"><?php echo $product->getImageUrl(); ?></span>
+	<?php } else { ?>
+	    	<span class="image_url"><?php echo $product->getMediaConfig()->getMediaUrl($product->getImage());?></span>
+	<?php } ?>
+	
+    <span class="price"><?php echo $nostoPriceHelper->getFormattedPrice(
+        $taxHelper->getPrice($product, $nostoPriceHelper->getProductFinalPrice($product), true)
+    ); ?></span>
+    <span class="price_currency_code"><?php echo Mage::app()->getStore()->getCurrentCurrencyCode(); ?></span>
+    <span class="availability"><?php echo $this->getProductAvailability($product); ?></span>
+    <?php foreach ($this->getProductCategories($product) as $category): ?>
+    <span class="category"><?php echo $nostoHelper->escapeHtml($category); ?></span>
+    <?php endforeach; ?>
+    <span class="description"><?php echo $nostoHelper->escapeHtml($product->getDescription()); ?></span>
+    <span class="list_price"><?php echo $nostoPriceHelper->getFormattedPrice(
+        $taxHelper->getPrice($product, $nostoPriceHelper->getProductPrice($product), true)
+    ); ?></span>
+    <?php if ($manufacturer): ?>
+    <span class="brand"><?php echo $nostoHelper->escapeHtml($manufacturer); ?></span>
+    <?php endif; ?>
+    <span class="date_published"><?php echo $nostoHelper->getFormattedDate($product->getCreatedAt()); ?></span>
+</div>
