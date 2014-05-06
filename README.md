@@ -102,6 +102,12 @@ The extension is released under Open Software License ("OSL") v3.0
 
 ## Changelog
 
+### 1.1.4
+* Nosto embed script update
+
+### 1.1.3
+*  PHP 5.3.28 compatibility
+
 ### 1.1.2
 * Repackaged the 1.1.1 extension with proper extension author name. 
 
