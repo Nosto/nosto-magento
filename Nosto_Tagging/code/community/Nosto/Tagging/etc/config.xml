@@ -56,6 +56,26 @@
             </nosto_tagging>
         </models>
     </global>
+    <adminhtml>
+        <layout>
+            <updates>
+                <nosto_tagging>
+                    <file>nostotagging.xml</file>
+                </nosto_tagging>
+            </updates>
+        </layout>
+    </adminhtml>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <nosto_tagging after="Mage_Adminhtml">Nosto_Tagging_Adminhtml</nosto_tagging>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
     <frontend>
         <events>
             <controller_action_layout_load_before>
@@ -75,6 +95,15 @@
                 </nosto_tagging>
             </updates>
         </layout>
+        <routers>
+            <nosto>
+                <use>standard</use>
+                <args>
+                    <module>Nosto_Tagging</module>
+                    <frontName>nosto</frontName>
+                </args>
+            </nosto>
+        </routers>
     </frontend>
     <default>
         <nosto_tagging>

@@ -26,6 +26,13 @@
  */
 -->
 <config>
+    <menu>
+        <nosto translate="title">
+            <title>Nosto</title>
+            <sort_order>500</sort_order>
+            <action>adminhtml/nosto/index</action>
+        </nosto>
+    </menu>
     <acl>
         <resources>
             <admin>
