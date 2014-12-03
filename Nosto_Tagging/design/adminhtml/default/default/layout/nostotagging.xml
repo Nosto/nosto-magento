@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<config>
+    <!-- Nosto main menu link page -->
+    <adminhtml_nosto_index>
+        <!-- Add JavaScript file -->
+        <reference name="head">
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>js/nostotagging/nostotagging-config.js</name>
+                <params/>
+            </action>
+        </reference>
+         <!--Set active menu item-->
+        <reference name="menu">
+            <action method="setActive">
+                <menupath>nosto/index</menupath>
+            </action>
+        </reference>
+        <!-- Page content -->
+        <reference name="content">
+            <block type="nosto_tagging/adminhtml_wizard" name="nosto.wizard" template="nostotagging/wizard.phtml">
+                <!-- Store switcher -->
+                <block type="adminhtml/store_switcher" name="store_switcher" as="store_switcher">
+                    <action method="setUseConfirm"><params>0</params></action>
+                </block>
+                <!-- Connect to Nosto form -->
+                <block type="nosto_tagging/adminhtml_form_account_connect" name="nosto.form.account.connect"/>
+                <!-- Create new account form -->
+                <block type="nosto_tagging/adminhtml_form_account_create" name="nosto.form.account.create"/>
+                <!-- Account settings -->
+                <block type="nosto_tagging/adminhtml_account_settings" name="nosto.account.settings" template="nostotagging/account/settings.phtml"/>
+                <!-- Iframe -->
+                <block type="nosto_tagging/adminhtml_iframe" name="nosto.iframe" template="nostotagging/iframe.phtml"/>
+            </block>
+        </reference>
+    </adminhtml_nosto_index>
+</config>
