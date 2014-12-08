@@ -26,7 +26,6 @@
 
 require_once(Mage::getBaseDir('lib').'/nosto/sdk/src/config.inc.php');
 
-// todo: clean up current store handling
 class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_Action
 {
 	/**
@@ -35,11 +34,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
 	public function indexAction()
 	{
 		$this->_title($this->__('Nosto'));
-		$storeId = (int)$this->getRequest()->getParam('store');
-		if ($storeId > 0) {
-			Mage::app()->setCurrentStore($storeId);
-		}
-		if ((int)Mage::app()->getStore()->getId() < 1) {
+		if (!$this->checkStoreScope()) {
 			Mage::getSingleton('core/session')->addNotice($this->__('Please choose a shop to configure Nosto for.'));
 		}
 		$this->loadLayout();
@@ -51,16 +46,11 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
 	 */
 	public function connectAccountAction()
 	{
-		if ($this->getRequest()->isPost()) {
-			$storeId = (int)$this->getRequest()->getPost('nosto_store_id');
-			if ($storeId > 0) {
-				Mage::app()->setCurrentStore($storeId);
-			}
+		if ($this->getRequest()->isPost() && $this->checkStoreScope()) {
 			$client = new NostoOAuthClient(Mage::helper('nosto_tagging/oauth')->getMetaData());
 			$this->_redirectUrl($client->getAuthorizationUrl());
 		} else {
-			$storeId = (int)$this->getRequest()->getParam('store');
-			$this->_redirect('*/*/index', array('store' => $storeId));
+			$this->_redirect('*/*/index', array('store' => (int)$this->getRequest()->getParam('store')));
 		}
 	}
 
@@ -69,11 +59,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
 	 */
 	public function createAccountAction()
 	{
-		if ($this->getRequest()->isPost()) {
-			$storeId = (int)$this->getRequest()->getPost('nosto_store_id');
-			if ($storeId > 0) {
-				Mage::app()->setCurrentStore($storeId);
-			}
+		if ($this->getRequest()->isPost() && $this->checkStoreScope()) {
 			try {
 				$email = $this->getRequest()->getPost('nosto_create_account_email');
 				/** @var Nosto_Tagging_Model_Meta_Account $meta */
@@ -89,10 +75,8 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
 				Mage::log("\n" . $e->__toString(), Zend_Log::ERR, 'nostotagging.log');
 				Mage::getSingleton('core/session')->addException($e, $this->__('Account could not be automatically created. Please visit nosto.com to create a new account.'));
 			}
-		} else {
-			$storeId = (int)$this->getRequest()->getParam('store');
 		}
-		$this->_redirect('*/*/index', array('store' => $storeId));
+		$this->_redirect('*/*/index', array('store' => (int)$this->getRequest()->getParam('store')));
 	}
 
 	/**
@@ -100,17 +84,26 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
 	 */
 	public function removeAccountAction()
 	{
-		if ($this->getRequest()->isPost()) {
-			$storeId = (int)$this->getRequest()->getPost('nosto_store_id');
-			if ($storeId > 0) {
-				Mage::app()->setCurrentStore($storeId);
-			}
+		if ($this->getRequest()->isPost() && $this->checkStoreScope()) {
 			if (Mage::helper('nosto_tagging/account')->remove()) {
 				Mage::getSingleton('core/session')->addSuccess($this->__('Account successfully removed.'));
 			}
-		} else {
-			$storeId = (int)$this->getRequest()->getParam('store');
 		}
-		$this->_redirect('*/*/index', array('store' => $storeId));
+		$this->_redirect('*/*/index', array('store' => (int)$this->getRequest()->getParam('store')));
+	}
+
+	/**
+	 * Checks that a valid store view scope id has been passed in the request params and set that as current store.
+	 *
+	 * @return bool if the current store is valid, false otherwise.
+	 */
+	protected function checkStoreScope()
+	{
+		$storeId = (int)$this->getRequest()->getParam('store');
+		if ($storeId > 0) {
+			Mage::app()->setCurrentStore($storeId);
+			return true;
+		}
+		return false;
 	}
 }

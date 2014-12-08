@@ -38,8 +38,8 @@ class Nosto_Tagging_Block_Adminhtml_Form_Account_Connect extends Mage_Adminhtml_
 			'enctype'   => 'multipart/form-data'
 		));
 		$form->setUseContainer(true);
-		$form->addField('nosto_store_id', 'hidden', array(
-			'name' => 'nosto_store_id',
+		$form->addField('store', 'hidden', array(
+			'name' => 'store',
 			'value' => $this->getRequest()->getParam('store', 0),
 		));
 		$form->addField('nosto_connect_account_submit', 'submit', array(
