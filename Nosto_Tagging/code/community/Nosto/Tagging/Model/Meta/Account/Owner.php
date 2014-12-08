@@ -49,6 +49,7 @@ class Nosto_Tagging_Model_Meta_Account_Owner extends Mage_Core_Model_Abstract im
 	{
 		parent::__construct();
 
+		/** @var Mage_Admin_Model_User $user */
 		$user = Mage::getSingleton('admin/session')->getUser();
 		$this->firstName = $user->getFirstname();
 		$this->lastName = $user->getLastname();

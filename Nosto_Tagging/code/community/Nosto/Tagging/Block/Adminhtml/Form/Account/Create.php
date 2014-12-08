@@ -42,10 +42,12 @@ class Nosto_Tagging_Block_Adminhtml_Form_Account_Create extends Mage_Adminhtml_B
 			'name' => 'store',
 			'value' => $this->getRequest()->getParam('store', 0),
 		));
+		/** @var Mage_Admin_Model_User $user */
+		$user = Mage::getSingleton('admin/session')->getUser();
 		$form->addField('nosto_create_account_email', 'text', array(
 			'label' => 'Email', // todo: translatable
 			'name' => 'nosto_create_account_email',
-			'value' => 'todo@nosto.com', // todo: take from logged in admin user profile
+			'value' => $user->getEmail(),
 			'class' => 'required-entry validate-email',
 		));
 		$form->addField('nosto_terms_and_conditions', 'note', array(
