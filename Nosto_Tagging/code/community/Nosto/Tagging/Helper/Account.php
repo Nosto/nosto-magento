@@ -27,32 +27,82 @@
 class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
 {
 	/**
-	 * @param NostoAccount $account
-	 * @return bool
+	 * Path to store config nosto account name.
 	 */
-	public function save(NostoAccount $account)
-	{
-		// todo: implement
-		return false;
-	}
+	const XML_PATH_ACCOUNT = 'nosto_tagging/settings/account';
+
+	/**
+	 * Path to store config nosto account tokens.
+	 */
+	const XML_PATH_TOKENS = 'nosto_tagging/settings/tokens';
 
 	/**
 	 * @param NostoAccount $account
+	 * @param Mage_Core_Model_Store|null $store
 	 * @return bool
 	 */
-	public function remove(NostoAccount $account)
+	public function save(NostoAccount $account, Mage_Core_Model_Store $store = null)
 	{
-		// todo: implement
-		return false;
+		if ($store === null) {
+			$store = Mage::app()->getStore();
+		}
+		if ((int)$store->getId() < 1) {
+			return false;
+		}
+		/** @var Mage_Core_Model_Config $config */
+		$config = Mage::getModel('core/config');
+		$config->saveConfig(self::XML_PATH_ACCOUNT, $account->name, 'stores', $store->getId());
+		$tokens = array();
+		foreach ($account->tokens as $token) {
+			$tokens[$token->name] = $token->value;
+		}
+		$config->saveConfig(self::XML_PATH_TOKENS, json_encode($tokens), 'stores', $store->getId());
+		return true;
 	}
 
 	/**
-	 * @param Mage_Core_Model_Store $store
+	 * @param Mage_Core_Model_Store|null $store
+	 * @return bool
+	 */
+	public function remove(Mage_Core_Model_Store $store = null)
+	{
+		if ($store === null) {
+			$store = Mage::app()->getStore();
+		}
+		if ((int)$store->getId() < 1) {
+			return false;
+		}
+		/** @var Mage_Core_Model_Config $config */
+		$config = Mage::getModel('core/config');
+		$config->saveConfig(self::XML_PATH_ACCOUNT, null, 'stores', $store->getId());
+		$config->saveConfig(self::XML_PATH_TOKENS, null, 'stores', $store->getId());
+		return true;
+	}
+
+	/**
+	 * @param Mage_Core_Model_Store|null $store
 	 * @return NostoAccount|null
 	 */
-	public function find(Mage_Core_Model_Store $store)
+	public function find(Mage_Core_Model_Store $store = null)
 	{
-		// todo: implement
+		if ($store === null) {
+			$store = Mage::app()->getStore();
+		}
+		$accountName = $store->getConfig(self::XML_PATH_ACCOUNT);
+		if (!empty($accountName)) {
+			$account = new NostoAccount();
+			$account->name = $accountName;
+			$tokens = json_decode($store->getConfig(self::XML_PATH_TOKENS));
+			if (is_array($tokens) && !empty($tokens)) {
+				foreach ($tokens as $name => $value) {
+					$token = new NostoApiToken();
+					$token->name = $name;
+					$token->value = $value;
+					$account->tokens[] = $token;
+				}
+			}
+			return $account;
+		}
 		return null;
 	}
 

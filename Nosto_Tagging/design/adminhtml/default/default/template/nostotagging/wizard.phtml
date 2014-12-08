@@ -29,17 +29,16 @@
 /**
  * @var $this Nosto_Tagging_Block_Adminhtml_Wizard
  */
-$canShowIframe = ($this->getIframeUrl() !== '');
 ?>
 <div class="content-header">
-	<h3>Foo</h3>
+	<h3>Nosto</h3>
 </div>
 
 <?php if ( !Mage::app()->isSingleStoreMode() ): ?>
 	<?php echo $this->getChildHtml('store_switcher'); ?>
 <?php endif;?>
 
-<?php if (!$this->isAccountConnected()): ?>
+<?php if ($this->getAccount() === null): ?>
 	<div>
 		<h2>Add Nosto to your English shop</h2>
 		<p>Do you have an existing Nosto account?</p>
@@ -56,9 +55,10 @@ $canShowIframe = ($this->getIframeUrl() !== '');
 	</div>
 <?php else: ?>
 	<div>
-		<div style="<?php if ($canShowIframe) echo 'display: none;'; ?>"><?php echo $this->getChildHtml('nosto.account.settings'); ?></div>
-		<?php if ($canShowIframe): ?>
-			<div><?php echo $this->getChildHtml('nosto.iframe'); ?></div>
+		<a id="nosto_account_settings" href="#">Account settings</a>
+		<div id="nosto_installed" style="<?php if ($this->getIframeUrl()) echo 'display: none;'; ?>"><?php echo $this->getChildHtml('nosto.form.account.remove'); ?></div>
+		<?php if ($this->getIframeUrl()): ?>
+			<div id="nosto_iframe"><?php echo $this->getChildHtml('nosto.iframe'); ?></div>
 		<?php endif; ?>
 	</div>
 <?php endif; ?>

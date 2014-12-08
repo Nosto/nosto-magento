@@ -1,5 +1,7 @@
 <?php
 
+require_once(Mage::getBaseDir('lib').'/nosto/sdk/src/config.inc.php');
+
 class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
 {
 	/**

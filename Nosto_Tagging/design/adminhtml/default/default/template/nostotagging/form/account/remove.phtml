@@ -27,15 +27,15 @@
 
 <?php
 /**
- * @var $this Nosto_Tagging_Block_Adminhtml_Account_Settings
+ * @var $this Nosto_tagging_Block_Adminhtml_Form_Account_Remove
  */
 ?>
 <div>
 	<h2>You have added Nosto to your English shop</h2>
-	<p>Your account ID is prestashop-28415bb9</p>
+	<p>Your account ID is <?php echo $this->getAccountName(); ?></p>
 	<div>
 		<p>If you want to change the account, you need to remove the existing one first</p>
-		<a id="nostotagging_back_to_iframe">Back</a>
-		<button type="submit" value="1" name="submit_nostotagging_reset_account">Remove Nosto</button>
+		<a id="nosto_back_to_iframe" href="#">Back</a>
+		<?php echo $this->getFormHtml(); ?>
 	</div>
 </div>

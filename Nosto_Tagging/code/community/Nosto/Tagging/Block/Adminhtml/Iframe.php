@@ -26,5 +26,15 @@
 
 class Nosto_tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
 {
-
+	/**
+	 * @return string
+	 */
+	public function getIframeUrl()
+	{
+		$parent = $this->getParentBlock();
+		if ($parent instanceof Nosto_tagging_Block_Adminhtml_Wizard) {
+			return $parent->getIframeUrl();
+		}
+		return '';
+	}
 } 

@@ -46,6 +46,7 @@ class Nosto_Tagging_Block_Adminhtml_Form_Account_Create extends Mage_Adminhtml_B
 			'label' => 'Email', // todo: translatable
 			'name' => 'nosto_create_account_email',
 			'value' => 'todo@nosto.com', // todo: take from logged in admin user profile
+			'class' => 'required-entry validate-email',
 		));
 		$form->addField('nosto_terms_and_conditions', 'note', array(
 			'text' => 'By creating a new account you agree to Nosto\'s <a href="http://www.nosto.com/terms" target="_blank">Terms and Conditions</a>' // todo: translatable

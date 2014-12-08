@@ -27,6 +27,28 @@
 class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements NostoOAuthClientMetaDataInterface
 {
 	/**
+	 * @var string the url where the oauth2 server should redirect after authorization is done.
+	 */
+	protected $redirectUrl;
+
+	/**
+	 * @var string the language ISO code for localization on oauth2 server.
+	 */
+	protected $languageIsoCode;
+
+	/**
+	 * Constructor.
+	 * Sets initial values.
+	 */
+	public function __construct()
+	{
+		parent::__construct();
+
+		$this->redirectUrl = Mage::getUrl('nosto/oauth', array('_store' => Mage::app()->getStore()->getId()));
+		$this->languageIsoCode = substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2);
+	}
+
+	/**
 	 * @inheritdoc
 	 */
 	public function getClientId()
@@ -47,10 +69,17 @@ class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements
 	 */
 	public function getRedirectUrl()
 	{
-		var_dump(Mage::getUrl('nosto/oauth'));die;
+		return $this->redirectUrl;
+	}
 
-		// todo: get the shop scope view oauth front controller url
-		return 'todo';
+	/**
+	 * Sets the redirect url.
+	 *
+	 * @param string $url the url.
+	 */
+	public function setRedirectUrl($url)
+	{
+		$this->redirectUrl = $url;
 	}
 
 	/**
@@ -58,6 +87,16 @@ class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements
 	 */
 	public function getLanguageIsoCode()
 	{
-		return substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2);
+		return $this->languageIsoCode;
 	}
-} 
+
+	/**
+	 * Sets the language ISO code.
+	 *
+	 * @param string $code the ISO code.
+	 */
+	public function setLanguageIsoCode($code)
+	{
+		$this->languageIsoCode = $code;
+	}
+}

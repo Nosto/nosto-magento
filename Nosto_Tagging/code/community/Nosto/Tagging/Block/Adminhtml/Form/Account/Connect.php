@@ -24,7 +24,7 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-class Nosto_tagging_Block_Adminhtml_Form_Account_Connect extends Mage_Adminhtml_Block_Widget_Form
+class Nosto_Tagging_Block_Adminhtml_Form_Account_Connect extends Mage_Adminhtml_Block_Widget_Form
 {
 	/**
 	 * @inheritdoc

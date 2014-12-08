@@ -26,6 +26,7 @@
 
 require_once(Mage::getBaseDir('lib').'/nosto/sdk/src/config.inc.php');
 
+// todo: clean up current store handling
 class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_Action
 {
 	/**
@@ -34,6 +35,13 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
 	public function indexAction()
 	{
 		$this->_title($this->__('Nosto'));
+		$storeId = (int)$this->getRequest()->getParam('store');
+		if ($storeId > 0) {
+			Mage::app()->setCurrentStore($storeId);
+		}
+		if ((int)Mage::app()->getStore()->getId() < 1) {
+			Mage::getSingleton('core/session')->addNotice($this->__('Please choose a shop to configure Nosto for.'));
+		}
 		$this->loadLayout();
 		$this->renderLayout();
 	}
@@ -61,7 +69,6 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
 	 */
 	public function createAccountAction()
 	{
-		Mage::app()->setCurrentStore((int)$this->getRequest()->getParam('store'));
 		if ($this->getRequest()->isPost()) {
 			$storeId = (int)$this->getRequest()->getPost('nosto_store_id');
 			if ($storeId > 0) {
@@ -71,14 +78,12 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
 				$email = $this->getRequest()->getPost('nosto_create_account_email');
 				/** @var Nosto_Tagging_Model_Meta_Account $meta */
 				$meta = Mage::helper('nosto_tagging/account')->getMetaData();
-				if (!empty($email)) {
+				if (Zend_Validate::is($email, 'EmailAddress')) {
 					$meta->getOwner()->setEmail($email);
 				}
 				$account = NostoAccount::create($meta);
 				if (Mage::helper('nosto_tagging/account')->save($account)) {
 					Mage::getSingleton('core/session')->addSuccess($this->__('Account created. Please check your email and follow the instructions to set a password for your new account within three days.'));
-				} else {
-					throw new NostoException('Failed to create account');
 				}
 			} catch (NostoException $e) {
 				Mage::log("\n" . $e->__toString(), Zend_Log::ERR, 'nostotagging.log');
@@ -100,11 +105,8 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
 			if ($storeId > 0) {
 				Mage::app()->setCurrentStore($storeId);
 			}
-			$account = Mage::helper('nosto_tagging/account')->find(Mage::app()->getStore());
-			if (Mage::helper('nosto_tagging/account')->remove($account)) {
+			if (Mage::helper('nosto_tagging/account')->remove()) {
 				Mage::getSingleton('core/session')->addSuccess($this->__('Account successfully removed.'));
-			} else {
-				Mage::getSingleton('core/session')->addError($this->__('Failed to remove account.'));
 			}
 		} else {
 			$storeId = (int)$this->getRequest()->getParam('store');

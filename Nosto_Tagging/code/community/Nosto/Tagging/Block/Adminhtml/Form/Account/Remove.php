@@ -24,46 +24,43 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-class Nosto_tagging_Block_Adminhtml_Wizard extends Mage_Adminhtml_Block_Template
+class Nosto_Tagging_Block_Adminhtml_Form_Account_Remove extends Mage_Adminhtml_Block_Widget_Form
 {
 	/**
-	 * @var NostoAccount
+	 * @inheritdoc
 	 */
-	private $_account;
+	protected function _prepareForm()
+	{
+		$form = new Varien_Data_Form(array(
+			'id'        => 'nosto_remove_account_form',
+			'action'    => $this->getUrl('*/*/removeAccount'),
+			'method'    => 'post',
+			'enctype'   => 'multipart/form-data'
+		));
+		$form->setUseContainer(true);
+		$form->addField('nosto_store_id', 'hidden', array(
+			'name' => 'nosto_store_id',
+			'value' => $this->getRequest()->getParam('store', 0),
+		));
+		$form->addField('nosto_remove_account_submit', 'submit', array(
+			'class' => 'form-button',
+			'name' => 'nosto_remove_account_submit',
+			'value' => 'Remove Nosto', // todo: translatable
+		));
+		$this->setForm($form);
 
-	/**
-	 * @var string
-	 */
-	private $_iframeUrl;
+		return parent::_prepareForm();
+	}
 
 	/**
 	 * @return string
 	 */
-	public function getIframeUrl()
+	public function getAccountName()
 	{
-		if ($this->_iframeUrl !== null) {
-			return $this->_iframeUrl;
+		$parent = $this->getParentBlock();
+		if ($parent instanceof Nosto_tagging_Block_Adminhtml_Wizard) {
+			return $parent->getAccount()->name;
 		}
-		$account = $this->getAccount();
-		if ($account) {
-			try {
-				$meta = new Nosto_Tagging_Model_Meta_Account_Iframe();
-				return $this->_iframeUrl = $account->getIframeUrl($meta);
-			} catch (NostoException $e) {
-				Mage::log("\n" . $e->__toString(), Zend_Log::ERR, 'nostotagging.log');
-			}
-		}
-		return $this->_iframeUrl = '';
-	}
-
-	/**
-	 * @return NostoAccount|null
-	 */
-	public function getAccount()
-	{
-		if ($this->_account !== null) {
-			return $this->_account;
-		}
-		return $this->_account = Mage::helper('nosto_tagging/account')->find();
+		return '';
 	}
 }
