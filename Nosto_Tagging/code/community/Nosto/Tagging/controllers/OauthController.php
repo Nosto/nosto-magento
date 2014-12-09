@@ -1,4 +1,28 @@
 <?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2013 Nosto Solutions Ltd (http://www.nosto.com)
+ * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 
 require_once(Mage::getBaseDir('lib').'/nosto/sdk/src/config.inc.php');
 
@@ -12,32 +36,38 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
 	 */
 	public function indexAction()
 	{
-		// todo: language/store??
-
 		if (($code = $this->getRequest()->getParam('code')) !== null) {
 			try {
 				$account = NostoAccount::syncFromNosto(Mage::helper('nosto_tagging/oauth')->getMetaData(), $code);
 				if (Mage::helper('nosto_tagging/account')->save($account)) {
-					// todo: success flash message
+					$params = array(
+						'success' => $this->__('Account %s successfully connected to Nosto.', $account->name),
+						'store' => (int)Mage::app()->getStore()->getId(),
+					);
 				} else {
 					throw new NostoException('Failed to connect account');
 				}
 			} catch (NostoException $e) {
 				Mage::log("\n" . $e->__toString(), Zend_Log::ERR, 'nostotagging.log');
-				// todo: exception flash message
+				$params = array(
+					'error' => $this->__('Account could not be connected to Nosto. Please contact Nosto support.'),
+					'store' => (int)Mage::app()->getStore()->getId(),
+				);
 			}
-			$this->_redirect('adminhtml/nosto/index');
+			$this->_redirect('adminhtml/nosto/redirectProxy', $params);
 		} elseif (($error = $this->getRequest()->getParam('error')) !== null) {
-			$messageParts = array($error);
-			if (($errorReason = $this->getRequest()->getParam('error_reason')) !== null) {
-				$messageParts[] = $errorReason;
+			$parts = array($error);
+			if (($reason = $this->getRequest()->getParam('error_reason')) !== null) {
+				$parts[] = $reason;
 			}
-			if (($errorDesc = $this->getRequest()->getParam('error_description')) !== null) {
-				$messageParts[] = $errorDesc;
+			if (($desc = $this->getRequest()->getParam('error_description')) !== null) {
+				$parts[] = $desc;
 			}
-			Mage::log("\n" . implode(' - ', $messageParts), Zend_Log::ERR, 'nostotagging.log');
-			// todo: error flash message
-			$this->_redirect('adminhtml/nosto/index');
+			Mage::log("\n" . implode(' - ', $parts), Zend_Log::ERR, 'nostotagging.log');
+			$this->_redirect('adminhtml/nosto/redirectProxy', array(
+				'error' => $this->__('Account could not be connected to Nosto. You rejected the connection request.'),
+				'store' => (int)Mage::app()->getStore()->getId(),
+			));
 		} else {
 			$this->norouteAction();
 		}

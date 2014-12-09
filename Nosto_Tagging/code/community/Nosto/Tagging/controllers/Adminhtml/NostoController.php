@@ -29,6 +29,28 @@ require_once(Mage::getBaseDir('lib').'/nosto/sdk/src/config.inc.php');
 class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_Action
 {
 	/**
+	 * @inheritdoc
+	 */
+	protected $_publicActions = array('redirectProxy');
+
+	/**
+	 * Redirect action that acts as a proxy when the front end oauth controller redirects the admin user back to the
+	 * backend after finishing the oauth authorization cycle.
+	 * This is a workaround as you cannot redirect directly to a protected action in the backend end from the front end.
+	 * The action also handles setting any error/success messages in the notification system.
+	 */
+	public function redirectProxyAction()
+	{
+		if (($success = $this->getRequest()->getParam('success')) !== null) {
+			Mage::getSingleton('core/session')->addSuccess($success);
+		}
+		if (($error = $this->getRequest()->getParam('error')) !== null) {
+			Mage::getSingleton('core/session')->addError($error);
+		}
+		$this->_redirect('*/*/index', array('store' => (int)$this->getRequest()->getParam('store')));
+	}
+
+	/**
 	 * Shows the main config page for the extension.
 	 */
 	public function indexAction()
