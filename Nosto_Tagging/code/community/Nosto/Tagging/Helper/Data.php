@@ -45,12 +45,14 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Path to store config nosto service account name.
+	 * @deprecated
      */
     const XML_PATH_ACCOUNT = 'nosto_tagging/settings/account';
 
     /**
      * Path to the store config collect_email_addresses option.
-     */
+	 * @deprecated
+	 */
     const XML_PATH_COLLECT_EMAIL_ADDRESSES = 'nosto_tagging/tagging_options/collect_email_addresses';
 
     /**
@@ -136,7 +138,9 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      * @param mixed $store
      *
      * @return string
-     */
+	 *
+	 * @deprecated
+	 */
     public function getAccount($store = null)
     {
         return Mage::getStoreConfig(self::XML_PATH_ACCOUNT, $store);
@@ -160,7 +164,9 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      * @param mixed $store
      *
      * @return boolean
-     */
+	 *
+	 * @deprecated
+	 */
     public function getCollectEmailAddresses($store = null)
     {
         return (boolean)Mage::getStoreConfig(self::XML_PATH_COLLECT_EMAIL_ADDRESSES, $store);

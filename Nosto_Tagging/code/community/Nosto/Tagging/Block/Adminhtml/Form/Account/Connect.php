@@ -45,7 +45,7 @@ class Nosto_Tagging_Block_Adminhtml_Form_Account_Connect extends Mage_Adminhtml_
 		$form->addField('nosto_connect_account_submit', 'submit', array(
 			'class' => 'form-button',
 			'name' => 'nosto_connect_account_submit',
-			'value' => 'Add Nosto', // todo: translatable
+			'value' => $this->__('Add Nosto'),
 		));
 		$this->setForm($form);
 

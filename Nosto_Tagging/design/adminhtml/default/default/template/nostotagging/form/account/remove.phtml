@@ -27,15 +27,17 @@
 
 <?php
 /**
- * @var $this Nosto_tagging_Block_Adminhtml_Form_Account_Remove
+ * @var $this 		 Nosto_tagging_Block_Adminhtml_Form_Account_Remove
+ * @var $nostoHelper Nosto_Tagging_Helper_Data
  */
+$nostoHelper = Mage::helper('nosto_tagging');
 ?>
 <div>
-	<h2>You have added Nosto to your English shop</h2>
-	<p>Your account ID is <?php echo $this->getAccountName(); ?></p>
+	<h2><?php echo $this->__('You have added Nosto to your %s shop', $nostoHelper->escapeHtml(Mage::app()->getStore()->getName())); ?></h2>
+	<p><?php echo $this->__('Your account ID is %s', $nostoHelper->escapeHtml($this->getAccountName())); ?></p>
 	<div>
-		<p>If you want to change the account, you need to remove the existing one first</p>
-		<a id="nosto_back_to_iframe" href="#">Back</a>
+		<p><?php echo $this->__('If you want to change the account, you need to remove the existing one first'); ?></p>
+		<a id="nosto_back_to_iframe" href="#"><?php echo $this->__('Back'); ?></a>
 		<?php echo $this->getFormHtml(); ?>
 	</div>
 </div>

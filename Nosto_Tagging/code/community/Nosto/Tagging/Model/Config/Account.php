@@ -30,6 +30,8 @@
  * @category    Nosto
  * @package     Nosto_Tagging
  * @author      Nosto Solutions Ltd
+ *
+ * @deprecated
  */
 class Nosto_Tagging_Model_Config_Account extends Mage_Core_Model_Config_Data
 {
@@ -38,6 +40,8 @@ class Nosto_Tagging_Model_Config_Account extends Mage_Core_Model_Config_Data
      * Validates that the account is set.
      *
      * @return Nosto_Tagging_Model_Config_Account
+	 *
+	 * @deprecated
      */
     public function save()
     {

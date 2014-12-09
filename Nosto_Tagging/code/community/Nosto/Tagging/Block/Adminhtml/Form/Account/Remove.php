@@ -45,7 +45,7 @@ class Nosto_Tagging_Block_Adminhtml_Form_Account_Remove extends Mage_Adminhtml_B
 		$form->addField('nosto_remove_account_submit', 'submit', array(
 			'class' => 'form-button',
 			'name' => 'nosto_remove_account_submit',
-			'value' => 'Remove Nosto', // todo: translatable
+			'value' => $this->__('Remove Nosto'),
 		));
 		$this->setForm($form);
 
@@ -53,7 +53,9 @@ class Nosto_Tagging_Block_Adminhtml_Form_Account_Remove extends Mage_Adminhtml_B
 	}
 
 	/**
-	 * @return string
+	 * Gets the Nosto account name from the parent block, which should be Nosto_tagging_Block_Adminhtml_Wizard.
+	 *
+	 * @return string the account name or empty string if not found in parent.
 	 */
 	public function getAccountName()
 	{

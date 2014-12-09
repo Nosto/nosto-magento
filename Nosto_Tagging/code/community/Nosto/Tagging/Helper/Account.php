@@ -37,9 +37,11 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
 	const XML_PATH_TOKENS = 'nosto_tagging/settings/tokens';
 
 	/**
-	 * @param NostoAccount $account
-	 * @param Mage_Core_Model_Store|null $store
-	 * @return bool
+	 * Saves the account and the associated api tokens for the store view scope.
+	 *
+	 * @param NostoAccount $account the account to save.
+	 * @param Mage_Core_Model_Store|null $store the store view to save it for (defaults to current).
+	 * @return bool true on success, false otherwise.
 	 */
 	public function save(NostoAccount $account, Mage_Core_Model_Store $store = null)
 	{
@@ -61,8 +63,10 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
 	}
 
 	/**
-	 * @param Mage_Core_Model_Store|null $store
-	 * @return bool
+	 * Removes an account with associated api tokens for the store view scope.
+	 *
+	 * @param Mage_Core_Model_Store|null $store the store view to remove it for (defaults to current).
+	 * @return bool true on success, false otherwise.
 	 */
 	public function remove(Mage_Core_Model_Store $store = null)
 	{
@@ -80,8 +84,10 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
 	}
 
 	/**
-	 * @param Mage_Core_Model_Store|null $store
-	 * @return NostoAccount|null
+	 * Returns the account with associated api tokens for the store view scope.
+	 *
+	 * @param Mage_Core_Model_Store|null $store the store view to find the account for (defaults to current).
+	 * @return NostoAccount|null the account or null if not found.
 	 */
 	public function find(Mage_Core_Model_Store $store = null)
 	{
@@ -107,7 +113,9 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
 	}
 
 	/**
-	 * @return Nosto_Tagging_Model_Meta_Account
+	 * Returns the meta data model needed for creating a new nosto account using the Nosto SDk.
+	 *
+	 * @return Nosto_Tagging_Model_Meta_Account the meta data instance.
 	 */
 	public function getMetaData()
 	{

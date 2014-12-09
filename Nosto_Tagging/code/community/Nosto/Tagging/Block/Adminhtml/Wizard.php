@@ -27,17 +27,20 @@
 class Nosto_tagging_Block_Adminhtml_Wizard extends Mage_Adminhtml_Block_Template
 {
 	/**
-	 * @var NostoAccount
+	 * @var NostoAccount the Nosto account for current store view scope.
 	 */
 	private $_account;
 
 	/**
-	 * @var string
+	 * @var string the iframe url if SSO to Nosto can be made.
 	 */
 	private $_iframeUrl;
 
 	/**
-	 * @return string
+	 * Gets the iframe url for the account settings page from Nosto.
+	 * This url is only returned if the current admin user can be logged in with SSO to Nosto.
+	 *
+	 * @return string the iframe url or empty string if it cannot be created.
 	 */
 	public function getIframeUrl()
 	{
@@ -57,7 +60,9 @@ class Nosto_tagging_Block_Adminhtml_Wizard extends Mage_Adminhtml_Block_Template
 	}
 
 	/**
-	 * @return NostoAccount|null
+	 * Gets the Nosto account for the current active store view scope.
+	 *
+	 * @return NostoAccount|null the account or null if it cannot be found.
 	 */
 	public function getAccount()
 	{
