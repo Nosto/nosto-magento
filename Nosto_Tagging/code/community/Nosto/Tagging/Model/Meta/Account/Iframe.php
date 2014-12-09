@@ -91,19 +91,20 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
 
 		/** @var Mage_Admin_Model_User $user */
 		$user = Mage::getSingleton('admin/session')->getUser();
+		/** @var Nosto_Tagging_Helper_Url $urlHelper */
+		$urlHelper = Mage::helper('nosto_tagging/url');
+
 		$this->firstName = $user->getFirstname();
 		$this->lastName = $user->getLastname();
 		$this->email = $user->getEmail();
 		$this->languageIsoCode = substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2);
-
-		// todo
-		$this->languageIsoCodeShop = '';
-		$this->uniqueId = '';
-		$this->previewUrlProduct = '';
-		$this->previewUrlCategory = '';
-		$this->previewUrlSearch = '';
-		$this->previewUrlCart = '';
-		$this->previewUrlFront = '';
+		$this->languageIsoCodeShop = substr(Mage::app()->getStore()->getConfig('general/locale/code'), 0, 2);
+		$this->uniqueId = 'todo-add-magento-installation-specific-id'; // todo: what do we use?? "global/crypt/key", or our own??
+		$this->previewUrlProduct = $urlHelper->getPreviewUrlProduct();
+		$this->previewUrlCategory = $urlHelper->getPreviewUrlCategory();
+		$this->previewUrlSearch = $urlHelper->getPreviewUrlSearch();
+		$this->previewUrlCart = $urlHelper->getPreviewUrlCart();
+		$this->previewUrlFront = $urlHelper->getPreviewUrlFront();
 	}
 
 	/**
@@ -207,7 +208,8 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
 	 */
 	public function getVersionModule()
 	{
-		return '0.0.0'; // todo
+		// Path is hard-coded to be like in "etc/config.xml".
+		return Mage::getConfig()->getNode()->modules->Nosto_Tagging->version;
 	}
 
 	/**
