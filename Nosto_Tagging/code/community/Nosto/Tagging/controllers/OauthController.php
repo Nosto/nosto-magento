@@ -26,6 +26,14 @@
 
 require_once(Mage::getBaseDir('lib').'/nosto/sdk/src/config.inc.php');
 
+/**
+ * OAuth2 controller.
+ * Handles the redirect from Nosto OAuth2 authorization server.
+ *
+ * @category    Nosto
+ * @package     Nosto_Tagging
+ * @author      Nosto Solutions Ltd
+ */
 class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
 {
 	/**

@@ -24,6 +24,13 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+/**
+ * Meta data class which holds information to be sent to the Nosto account configuration iframe.
+ *
+ * @category    Nosto
+ * @package     Nosto_Tagging
+ * @author      Nosto Solutions Ltd
+ */
 class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract implements NostoAccountMetaDataIframeInterface
 {
 	/**

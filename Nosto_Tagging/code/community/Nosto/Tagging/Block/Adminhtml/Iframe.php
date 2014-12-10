@@ -24,6 +24,14 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+/**
+ * Nosto iframe block.
+ * Adds an iframe for configuring a Nosto account.
+ *
+ * @category    Nosto
+ * @package     Nosto_Tagging
+ * @author      Nosto Solutions Ltd
+ */
 class Nosto_tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
 {
 	/**

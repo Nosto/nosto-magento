@@ -24,6 +24,14 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+/**
+ * Nosto configuration wizard block.
+ * Adds the 'wizard' markup for creating and managing Nosto accounts.
+ *
+ * @category    Nosto
+ * @package     Nosto_Tagging
+ * @author      Nosto Solutions Ltd
+ */
 class Nosto_tagging_Block_Adminhtml_Wizard extends Mage_Adminhtml_Block_Template
 {
 	/**

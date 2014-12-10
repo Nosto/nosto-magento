@@ -24,6 +24,14 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+/**
+ * Helper class for managing Nosto accounts.
+ * Includes methods for saving, removing and finding accounts for a specific store view.
+ *
+ * @category    Nosto
+ * @package     Nosto_Tagging
+ * @author      Nosto Solutions Ltd
+ */
 class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
 {
 	/**

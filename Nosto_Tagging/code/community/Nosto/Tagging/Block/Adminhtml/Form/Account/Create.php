@@ -24,6 +24,14 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+/**
+ * 'Create new account' form block.
+ * Creates the html form needed for submitting the 'Create new account' request to the admin controller.
+ *
+ * @category    Nosto
+ * @package     Nosto_Tagging
+ * @author      Nosto Solutions Ltd
+ */
 class Nosto_Tagging_Block_Adminhtml_Form_Account_Create extends Mage_Adminhtml_Block_Widget_Form
 {
 	/**

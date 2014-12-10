@@ -24,6 +24,14 @@
 * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
 */
 
+/**
+ * Helper class for building urls.
+ * Includes getters for all preview urls for the Nosto account configuration iframe.
+ *
+ * @category    Nosto
+ * @package     Nosto_Tagging
+ * @author      Nosto Solutions Ltd
+ */
 class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
 {
 	/**

@@ -26,6 +26,14 @@
 
 require_once(Mage::getBaseDir('lib').'/nosto/sdk/src/config.inc.php');
 
+/**
+ * Nosto admin controller.
+ * Handles all actions for the configuration wizard as well as redirecting logic for the OAuth2 authorization cycle.
+ *
+ * @category    Nosto
+ * @package     Nosto_Tagging
+ * @author      Nosto Solutions Ltd
+ */
 class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_Action
 {
 	/**
