@@ -4,11 +4,7 @@
     <adminhtml_nosto_index>
         <!-- Add JavaScript file -->
         <reference name="head">
-            <action method="addItem">
-                <type>skin_js</type>
-                <name>js/nostotagging/nostotagging-config.js</name>
-                <params/>
-            </action>
+            <action method="addJs"><script>nosto/nostotagging-config.js</script></action>
         </reference>
          <!--Set active menu item-->
         <reference name="menu">

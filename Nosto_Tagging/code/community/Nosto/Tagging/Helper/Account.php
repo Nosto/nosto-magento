@@ -59,6 +59,7 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
 			$tokens[$token->name] = $token->value;
 		}
 		$config->saveConfig(self::XML_PATH_TOKENS, json_encode($tokens), 'stores', $store->getId());
+		Mage::app()->getCacheInstance()->cleanType('config');
 		return true;
 	}
 
@@ -80,6 +81,7 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
 		$config = Mage::getModel('core/config');
 		$config->saveConfig(self::XML_PATH_ACCOUNT, null, 'stores', $store->getId());
 		$config->saveConfig(self::XML_PATH_TOKENS, null, 'stores', $store->getId());
+		Mage::app()->getCacheInstance()->cleanType('config');
 		return true;
 	}
 
@@ -98,7 +100,7 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
 		if (!empty($accountName)) {
 			$account = new NostoAccount();
 			$account->name = $accountName;
-			$tokens = json_decode($store->getConfig(self::XML_PATH_TOKENS));
+			$tokens = json_decode($store->getConfig(self::XML_PATH_TOKENS), true);
 			if (is_array($tokens) && !empty($tokens)) {
 				foreach ($tokens as $name => $value) {
 					$token = new NostoApiToken();
