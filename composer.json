@@ -1,0 +1,15 @@
+{
+    "name": "nosto/nosto-magento-extension",
+    "description": "Nosto Magento extension",
+    "license": "OSL v3.0",
+    "minimum-stability": "dev",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:nosto/php-sdk.git"
+        }
+    ],
+    "require": {
+        "nosto/php-sdk": "dev-develop"
+    }
+}
