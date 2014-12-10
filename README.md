@@ -98,15 +98,21 @@ The extension is released under Open Software License ("OSL") v3.0
 
 ## Dependencies
 
-* Magento Community Edition; v1.6.x.x - v1.8.x.x
+* Magento Community Edition; v1.6.x.x - v1.9.x.x
 
 ## Changelog
+
+### 1.1.6
+* Magento CE 1.9 support
+
+### 1.1.5
+* PHP 5.4 support
 
 ### 1.1.4
 * Nosto embed script update
 
 ### 1.1.3
-*  PHP 5.3.28 compatibility
+* PHP 5.3.28 compatibility
 
 ### 1.1.2
 * Repackaged the 1.1.1 extension with proper extension author name. 
