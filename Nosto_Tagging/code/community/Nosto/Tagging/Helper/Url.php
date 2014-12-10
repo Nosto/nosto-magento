@@ -40,11 +40,13 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
 			->addStoreFilter(Mage::app()->getStore()->getId())
 			->addAttributeToSelect('*')
 			->addAttributeToFilter('status', array('eq' => Mage_Catalog_Model_Product_Status::STATUS_ENABLED))
+		 	->addFieldToFilter('visibility', Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH)
 			->setPageSize(1)
 			->setCurPage(1);
 		foreach ($collection as $product) {
 			/** @var Mage_Catalog_Model_Product $product */
-			$url = $product->getUrlInStore();
+			$url = $product->getProductUrl();
+			$url = NostoHttpRequest::replaceQueryParamInUrl('___store', Mage::app()->getStore()->getCode(), $url);
 			return NostoHttpRequest::replaceQueryParamInUrl('nostodebug', 'true', $url);
 		}
 		return '';
