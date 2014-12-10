@@ -67,6 +67,15 @@ class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements
 	/**
 	 * @inheritdoc
 	 */
+	public function getScopes()
+	{
+		// We want all the available Nosto API tokens.
+		return NostoApiToken::$tokenNames;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
 	public function getRedirectUrl()
 	{
 		return $this->redirectUrl;
