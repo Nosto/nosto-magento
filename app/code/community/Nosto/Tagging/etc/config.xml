@@ -105,15 +105,4 @@
             </nosto>
         </routers>
     </frontend>
-    <default>
-        <nosto_tagging>
-            <settings>
-                <enabled>0</enabled>
-                <server>connect.nosto.com</server>
-            </settings>
-            <tagging_options>
-                <collect_email_addresses>1</collect_email_addresses>
-            </tagging_options>
-        </nosto_tagging>
-    </default>
 </config>

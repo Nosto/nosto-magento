@@ -34,28 +34,6 @@
 class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
 {
     /**
-     * Path to store config nosto module enabled state.
-     */
-    const XML_PATH_ENABLED = 'nosto_tagging/settings/enabled';
-
-    /**
-     * Path to store config nosto service server address.
-     */
-    const XML_PATH_SERVER = 'nosto_tagging/settings/server';
-
-    /**
-     * Path to store config nosto service account name.
-	 * @deprecated
-     */
-    const XML_PATH_ACCOUNT = 'nosto_tagging/settings/account';
-
-    /**
-     * Path to the store config collect_email_addresses option.
-	 * @deprecated
-	 */
-    const XML_PATH_COLLECT_EMAIL_ADDRESSES = 'nosto_tagging/tagging_options/collect_email_addresses';
-
-    /**
      * Check if module exists and enabled in global config.
      * Also checks if the module is enabled for the current store and if the needed criteria has been provided for the
      * module to work.
@@ -66,14 +44,14 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function isModuleEnabled($moduleName = null)
     {
-        if (!parent::isModuleEnabled($moduleName)
-            || !$this->getEnabled()
-            || !$this->getServer()
-            || !$this->getAccount()
-        ) {
+        if (!parent::isModuleEnabled($moduleName)) {
             return false;
         }
-
+		/** @var NostoAccount $account */
+		$account = Mage::helper('nosto_tagging/account')->find();
+		if ($account === null || !$account->isConnectedToNosto()) {
+			return false;
+		}
         return true;
     }
 
@@ -118,57 +96,5 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     public function getFormattedDate($date)
     {
         return date('Y-m-d', strtotime($date));
-    }
-
-    /**
-     * Return if the module is enabled.
-     *
-     * @param mixed $store
-     *
-     * @return boolean
-     */
-    public function getEnabled($store = null)
-    {
-        return Mage::getStoreConfig(self::XML_PATH_ENABLED, $store);
-    }
-
-    /**
-     * Return the server address to the Nosto service.
-     *
-     * @param mixed $store
-     *
-     * @return string
-	 *
-	 * @deprecated
-	 */
-    public function getAccount($store = null)
-    {
-        return Mage::getStoreConfig(self::XML_PATH_ACCOUNT, $store);
-    }
-
-    /**
-     * Return the account name that is used by this store to access the Nosto service.
-     *
-     * @param mixed $store
-     *
-     * @return string
-     */
-    public function getServer($store = null)
-    {
-        return Mage::getStoreConfig(self::XML_PATH_SERVER, $store);
-    }
-
-    /**
-     * Return if customer email addresses should be collected.
-     *
-     * @param mixed $store
-     *
-     * @return boolean
-	 *
-	 * @deprecated
-	 */
-    public function getCollectEmailAddresses($store = null)
-    {
-        return (boolean)Mage::getStoreConfig(self::XML_PATH_COLLECT_EMAIL_ADDRESSES, $store);
     }
 }

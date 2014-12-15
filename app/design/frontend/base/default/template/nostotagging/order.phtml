@@ -41,13 +41,11 @@ $nostoPriceHelper = Mage::helper('nosto_tagging/price');
 <!-- Nosto Order Tagging -->
 <div class="nosto_purchase_order" style="display:none">
     <span class="order_number"><?php echo $order->getId(); ?></span>
-    <?php if ($nostoHelper->getCollectEmailAddresses()): ?>
     <div class="buyer">
         <span class="first_name"><?php echo $nostoHelper->escapeHtml($order->getCustomerFirstname()); ?></span>
         <span class="last_name"><?php echo $nostoHelper->escapeHtml($order->getCustomerLastname()); ?></span>
         <span class="email"><?php echo $nostoHelper->escapeHtml($order->getCustomerEmail()); ?></span>
     </div>
-    <?php endif; ?>
     <div class="purchased_items">
         <?php foreach ($orderItems as $item): ?>
         <div class="line_item">
