@@ -43,7 +43,7 @@ document.observe("dom:loaded", function() {
     if ($("nosto_account_settings") !== null) {
         $("nosto_account_settings").on("click", function(event) {
             event.preventDefault();
-            var iframe = $("nosto_iframe"),
+            var iframe = $("nosto_iframe_container"),
                 installedView = $("nosto_installed");
             if (installedView && iframe) {
                 installedView.show();
@@ -55,7 +55,7 @@ document.observe("dom:loaded", function() {
     if ($("nosto_back_to_iframe") !== null) {
         $("nosto_back_to_iframe").on("click", function(event) {
             event.preventDefault();
-            var iframe = $("nosto_iframe"),
+            var iframe = $("nosto_iframe_container"),
                 installedView = $("nosto_installed");
             if (installedView && iframe) {
                 iframe.show();
@@ -63,4 +63,6 @@ document.observe("dom:loaded", function() {
             }
         });
     }
+    // Init the iframe re-sizer.
+    iFrameResize({heightCalculationMethod : 'bodyScroll'});
 });
