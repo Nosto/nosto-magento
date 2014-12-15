@@ -24,6 +24,8 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+require_once(Mage::getBaseDir('lib').'/nosto/php-sdk/src/config.inc.php');
+
 /**
  * Helper class for OAuth2 related tasks.
  *
