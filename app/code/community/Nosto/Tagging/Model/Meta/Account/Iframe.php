@@ -49,12 +49,12 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
 	protected $email;
 
 	/**
-	 * @var string the language ISO code for localization on oauth2 server.
+	 * @var string the language ISO (ISO 639-2) code for localization on oauth2 server.
 	 */
 	protected $languageIsoCode;
 
 	/**
-	 * @var string the language ISO for the store view scope.
+	 * @var string the language ISO (ISO 639-2) for the store view scope.
 	 */
 	protected $languageIsoCodeShop;
 
@@ -100,13 +100,15 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
 		$user = Mage::getSingleton('admin/session')->getUser();
 		/** @var Nosto_Tagging_Helper_Url $urlHelper */
 		$urlHelper = Mage::helper('nosto_tagging/url');
+		/** @var Nosto_Tagging_Helper_Data $dataHelper */
+		$dataHelper = Mage::helper('nosto_tagging/data');
 
 		$this->firstName = $user->getFirstname();
 		$this->lastName = $user->getLastname();
 		$this->email = $user->getEmail();
 		$this->languageIsoCode = substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2);
 		$this->languageIsoCodeShop = substr(Mage::app()->getStore()->getConfig('general/locale/code'), 0, 2);
-		$this->uniqueId = 'todo-add-magento-installation-specific-id'; // todo: what do we use?? "global/crypt/key", or our own??
+		$this->uniqueId = $dataHelper->getInstallationId();
 		$this->previewUrlProduct = $urlHelper->getPreviewUrlProduct();
 		$this->previewUrlCategory = $urlHelper->getPreviewUrlCategory();
 		$this->previewUrlSearch = $urlHelper->getPreviewUrlSearch();

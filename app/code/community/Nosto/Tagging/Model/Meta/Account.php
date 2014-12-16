@@ -50,17 +50,17 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
 	protected $frontPageUrl;
 
 	/**
-	 * @var string the store currency ISO code.
+	 * @var string the store currency ISO (ISO 4217) code.
 	 */
 	protected $currencyCode;
 
 	/**
-	 * @var string the store language ISO code.
+	 * @var string the store language ISO (ISO 639-2) code.
 	 */
 	protected $languageCode;
 
 	/**
-	 * @var string the owner language ISO code.
+	 * @var string the owner language ISO (ISO 639-2) code.
 	 */
 	protected $ownerLanguageCode;
 
@@ -155,7 +155,7 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
 	}
 
 	/**
-	 * Sets the store currency ISO code.
+	 * Sets the store currency ISO (ISO 4217) code.
 	 *
 	 * @param string $code the currency ISO code.
 	 */
@@ -173,7 +173,7 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
 	}
 
 	/**
-	 * Sets the store language ISO code.
+	 * Sets the store language ISO (ISO 639-2) code.
 	 *
 	 * @param string $languageCode the language ISO code.
 	 */
@@ -191,7 +191,7 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
 	}
 
 	/**
-	 * Sets the owner language ISO code.
+	 * Sets the owner language ISO (ISO 639-2) code.
 	 *
 	 * @param string $languageCode the language ISO code.
 	 */

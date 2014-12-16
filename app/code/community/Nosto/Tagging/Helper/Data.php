@@ -33,6 +33,8 @@
  */
 class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
 {
+	const XML_PATH_INSTALLATION_ID = 'nosto_tagging/installation/id';
+
     /**
      * Check if module exists and enabled in global config.
      * Also checks if the module is enabled for the current store and if the needed criteria has been provided for the
@@ -78,7 +80,6 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
                 }
             }
         }
-
         if (!empty($data)) {
             return DS . implode(DS, $data);
         } else {
@@ -97,4 +98,24 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     {
         return date('Y-m-d', strtotime($date));
     }
+
+	/**
+	 * Returns a unique ID that identifies this Magento installation.
+	 * This ID is sent to the Nosto account config iframe and used to link all Nosto accounts used on this installation.
+	 *
+	 * @return string the ID.
+	 */
+	public function getInstallationId()
+	{
+		$installationId = Mage::getStoreConfig(self::XML_PATH_INSTALLATION_ID);
+		if (empty($installationId)) {
+			// Running bin2hex() will make the ID string length 64 characters.
+			$installationId = bin2hex(NostoCryptRandom::getRandomString(32));
+			/** @var Mage_Core_Model_Config $config */
+			$config = Mage::getModel('core/config');
+			$config->saveConfig(self::XML_PATH_INSTALLATION_ID, $installationId, 'default', 0);
+			Mage::app()->getCacheInstance()->cleanType('config');
+		}
+		return $installationId;
+	}
 }
