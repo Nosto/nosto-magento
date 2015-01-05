@@ -75,6 +75,11 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
 	protected $billing;
 
 	/**
+	 * @var string the API token used to identify an account creation.
+	 */
+	protected $signUpApiToken = 'YBDKYwSqTCzSsU8Bwbg4im2pkHMcgTy9cCX7vevjJwON1UISJIwXOLMM0a8nZY7h';
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct()
@@ -222,5 +227,13 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
 	public function getBillingDetails()
 	{
 		return $this->billing;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getSignUpApiToken()
+	{
+		return $this->signUpApiToken;
 	}
 }
