@@ -24,6 +24,8 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+require_once(Mage::getBaseDir('lib').'/nosto/php-sdk/src/config.inc.php');
+
 /**
  * Event observer model.
  * Used to interact with Magento events.
@@ -58,4 +60,32 @@ class Nosto_Tagging_Model_Observer
 
         return $this;
     }
+
+	/**
+	 * Sends an order confirmation API request to Nosto if the order is completed.
+	 *
+	 * Event 'sales_order_save_commit_after'.
+	 *
+	 * @param Varien_Event_Observer $observer
+	 *
+	 * @return Nosto_Tagging_Model_Observer
+	 */
+	public function sendOrderConfirmation(Varien_Event_Observer $observer)
+	{
+		if (Mage::helper('nosto_tagging')->isModuleEnabled()) {
+			try {
+				$order = new Nosto_Tagging_Model_Meta_Order();
+				$order->loadData($observer->getEvent()->getOrder());
+
+				$account = Mage::helper('nosto_tagging/account')->find();
+				$customerId = Mage::helper('nosto_tagging/customer')->getNostoId();
+
+				NostoOrderConfirmation::send($order, $account, $customerId);
+			} catch (NostoException $e) {
+				Mage::log("\n" . $e->__toString(), Zend_Log::ERR, 'nostotagging.log');
+			}
+		}
+
+		return $this;
+	}
 }
