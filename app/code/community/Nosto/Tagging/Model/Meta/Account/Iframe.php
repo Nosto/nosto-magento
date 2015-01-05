@@ -49,12 +49,12 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
 	protected $email;
 
 	/**
-	 * @var string the language ISO (ISO 639-2) code for localization on oauth2 server.
+	 * @var string the language ISO (ISO 639-1) code for localization on oauth2 server.
 	 */
 	protected $languageIsoCode;
 
 	/**
-	 * @var string the language ISO (ISO 639-2) for the store view scope.
+	 * @var string the language ISO (ISO 639-1) for the store view scope.
 	 */
 	protected $languageIsoCodeShop;
 
