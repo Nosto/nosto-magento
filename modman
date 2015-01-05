@@ -1,0 +1,9 @@
+# Nosto_Tagging module
+app/code/community/Nosto/*  app/code/community/Nosto/
+app/design/frontend/base/default/layout/nostotagging.xml  app/design/frontend/base/default/layout/nostotagging.xml
+app/design/frontend/base/default/template/nostotagging/*  app/design/frontend/base/default/template/nostotagging/
+app/design/adminhtml/default/default/layout/nostotagging.xml  app/design/adminhtml/default/default/layout/nostotagging.xml
+app/design/adminhtml/default/default/template/nostotagging/*  app/design/adminhtml/default/default/template/nostotagging/
+app/etc/modules/*  app/etc/modules/
+vendor/nosto/*  lib/nosto/*
+js/*  js/nosto/*
