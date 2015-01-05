@@ -102,6 +102,9 @@ The extension is released under Open Software License ("OSL") v3.0
 
 ## Changelog
 
+### 1.1.7
+* Magento CE 1.9 dependency version fix
+
 ### 1.1.6
 * Magento CE 1.9 support
 
