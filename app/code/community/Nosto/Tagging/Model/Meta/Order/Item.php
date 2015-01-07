@@ -51,7 +51,7 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
 	protected $name;
 
 	/**
-	 * @var float The unit price of the item included in the order, formatted according to "99.99".
+	 * @var float The unit price of the item included in the order.
 	 */
 	protected $unitPrice;
 
@@ -59,6 +59,14 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
 	 * @var string the 3-letter ISO code (ISO 4217) for the currency the item was purchased in.
 	 */
 	protected $currencyCode;
+
+	/**
+	 * @inheritdoc
+	 */
+	protected function _construct()
+	{
+		$this->_init('nosto_tagging/meta_order_item');
+	}
 
 	/**
 	 * @inheritdoc
@@ -141,6 +149,16 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
 	}
 
 	/**
+	 * Sets the items currency code (ISO 4217).
+	 *
+	 * @param string $code the currency ISO code.
+	 */
+	public function setCurrencyCode($code)
+	{
+		$this->currencyCode = $code;
+	}
+
+	/**
 	 * Loads the item info from the Magento order item model.
 	 *
 	 * @param Mage_Sales_Model_Order_Item $item the item model.
@@ -164,5 +182,6 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
         $this->quantity = (int)$item->getQtyOrdered();
 		$this->name = $item->getName();
         $this->unitPrice = $item->getPriceInclTax();
+		$this->currencyCode = $item->getOrder()->getOrderCurrencyCode();
 	}
 }

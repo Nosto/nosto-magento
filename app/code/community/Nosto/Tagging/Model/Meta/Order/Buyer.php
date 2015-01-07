@@ -52,6 +52,14 @@ class Nosto_Tagging_Model_Meta_Order_Buyer extends Mage_Core_Model_Abstract impl
 	/**
 	 * @inheritdoc
 	 */
+	protected function _construct()
+	{
+		$this->_init('nosto_tagging/meta_order_buyer');
+	}
+
+	/**
+	 * @inheritdoc
+	 */
 	public function getFirstName()
 	{
 		return $this->firstName;

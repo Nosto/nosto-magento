@@ -58,6 +58,14 @@ class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements
 	/**
 	 * @inheritdoc
 	 */
+	protected function _construct()
+	{
+		$this->_init('nosto_tagging/meta_oauth');
+	}
+
+	/**
+	 * @inheritdoc
+	 */
 	public function getClientId()
 	{
 		return 'magento';

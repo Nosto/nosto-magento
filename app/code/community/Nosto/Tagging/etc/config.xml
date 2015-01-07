@@ -53,16 +53,25 @@
         <models>
             <nosto_tagging>
                 <class>Nosto_Tagging_Model</class>
+                <resourceModel>nosto_tagging_resource</resourceModel>
             </nosto_tagging>
+            <nosto_tagging_resource>
+                <class>Nosto_Tagging_Model_Resource</class>
+                <entities>
+                    <customer>
+                        <table>nosto_tagging_customer</table>
+                    </customer>
+                </entities>
+            </nosto_tagging_resource>
         </models>
         <events>
             <sales_order_save_commit_after>
                 <observers>
-                    <nosto_taggiog_sales_order_save_commit_after>
+                    <nosto_tagging_sales_order_save_commit_after>
                         <type>singleton</type>
                         <class>Nosto_Tagging_Model_Observer</class>
                         <method>sendOrderConfirmation</method>
-                    </nosto_taggiog_sales_order_save_commit_after>
+                    </nosto_tagging_sales_order_save_commit_after>
                 </observers>
             </sales_order_save_commit_after>
         </events>

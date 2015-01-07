@@ -98,6 +98,14 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
 	}
 
 	/**
+	 * @inheritdoc
+	 */
+	protected function _construct()
+	{
+		$this->_init('nosto_tagging/meta_account');
+	}
+
+	/**
 	 * Sets the store title.
 	 *
 	 * @param string $title the store title.

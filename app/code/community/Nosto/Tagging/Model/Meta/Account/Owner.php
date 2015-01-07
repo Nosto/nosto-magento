@@ -65,6 +65,14 @@ class Nosto_Tagging_Model_Meta_Account_Owner extends Mage_Core_Model_Abstract im
 	}
 
 	/**
+	 * @inheritdoc
+	 */
+	protected function _construct()
+	{
+		$this->_init('nosto_tagging/meta_account_owner');
+	}
+
+	/**
 	 * Sets the first name of the account owner.
 	 *
 	 * @param string $firstName the first name.

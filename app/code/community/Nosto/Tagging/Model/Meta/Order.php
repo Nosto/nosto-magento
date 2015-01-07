@@ -40,7 +40,7 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
 	protected $orderNumber;
 
 	/**
-	 * @var string the date when the order was placed, formatted according to "Y-m-d".
+	 * @var string the date when the order was placed.
 	 */
 	protected $createdDate;
 
@@ -58,6 +58,14 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
 	 * @var Nosto_Tagging_Model_Meta_Order_Item[] the purchased items which were included in the order.
 	 */
 	protected $items = array();
+
+	/**
+	 * @inheritdoc
+	 */
+	protected function _construct()
+	{
+		$this->_init('nosto_tagging/meta_order');
+	}
 
 	/**
 	 * @inheritdoc
@@ -107,7 +115,7 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
 	public function loadData(Mage_Sales_Model_Order $order)
 	{
 		$this->orderNumber = $order->getId();
-		$this->createdDate = Mage::helper('nosto_tagging/date')->getFormattedDate($order->getCreatedAt());
+		$this->createdDate = $order->getCreatedAt();
 
 		// todo: paymentProvider
 
@@ -140,6 +148,7 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
 			$orderItem->setQuantity(1);
 			$orderItem->setName('Discount');
 			$orderItem->setUnitPrice($discount);
+			$orderItem->setCurrencyCode($order->getOrderCurrencyCode());
 			$this->items[] = $orderItem;
 		}
 
@@ -149,6 +158,7 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
 			$orderItem->setQuantity(1);
 			$orderItem->setName('Shipping and handling');
 			$orderItem->setUnitPrice($shippingInclTax);
+			$orderItem->setCurrencyCode($order->getOrderCurrencyCode());
 			$this->items[] = $orderItem;
 		}
 	}

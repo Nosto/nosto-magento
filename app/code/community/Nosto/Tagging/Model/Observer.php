@@ -74,12 +74,12 @@ class Nosto_Tagging_Model_Observer
 	{
 		if (Mage::helper('nosto_tagging')->isModuleEnabled()) {
 			try {
+				$mageOrder = $observer->getEvent()->getOrder();
+				// todo: check order status??
 				$order = new Nosto_Tagging_Model_Meta_Order();
-				$order->loadData($observer->getEvent()->getOrder());
-
+				$order->loadData($mageOrder);
 				$account = Mage::helper('nosto_tagging/account')->find();
-				$customerId = Mage::helper('nosto_tagging/customer')->getNostoId();
-
+				$customerId = Mage::helper('nosto_tagging/customer')->getNostoId($mageOrder);
 				NostoOrderConfirmation::send($order, $account, $customerId);
 			} catch (NostoException $e) {
 				Mage::log("\n" . $e->__toString(), Zend_Log::ERR, 'nostotagging.log');
