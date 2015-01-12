@@ -34,6 +34,11 @@
 class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract implements NostoAccountMetaDataIframeInterface
 {
 	/**
+	 * @var string the name of the platform the iframe is used on.
+	 */
+	protected $platform = 'magento';
+
+	/**
 	 * @var string the admin user first name.
 	 */
 	protected $firstName;
@@ -114,6 +119,14 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
 		$this->previewUrlSearch = $urlHelper->getPreviewUrlSearch();
 		$this->previewUrlCart = $urlHelper->getPreviewUrlCart();
 		$this->previewUrlFront = $urlHelper->getPreviewUrlFront();
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getPlatform()
+	{
+		return $this->platform;
 	}
 
 	/**
