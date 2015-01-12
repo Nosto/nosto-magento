@@ -63,7 +63,7 @@ class Nosto_Tagging_Helper_Customer extends Mage_Core_Helper_Abstract
 		$cart = Mage::getModel('checkout/cart');
 		/** @var Mage_Core_Model_Cookie $cookie */
 		$cookie = Mage::getModel('core/cookie');
-		$quoteId = $cart->getQuote()->getId();
+		$quoteId = ($cart->getQuote() !== null) ? $cart->getQuote()->getId() : false;
 		$nostoId = $cookie->get(self::COOKIE_NAME);
 		if (!empty($quoteId) && !empty($nostoId)) {
 			/** @var Nosto_Tagging_Model_Customer $customer */
