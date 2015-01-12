@@ -74,12 +74,14 @@ class Nosto_Tagging_Model_Observer
 	{
 		if (Mage::helper('nosto_tagging')->isModuleEnabled()) {
 			try {
+				/** @var Mage_Sales_Model_Order $mageOrder */
 				$mageOrder = $observer->getEvent()->getOrder();
 				$order = new Nosto_Tagging_Model_Meta_Order();
 				$order->loadData($mageOrder);
-				$account = Mage::helper('nosto_tagging/account')->find();
+				/** @var NostoAccount $account */
+				$account = Mage::helper('nosto_tagging/account')->find($mageOrder->getStore());
 				$customerId = Mage::helper('nosto_tagging/customer')->getNostoId($mageOrder);
-				if (!empty($account) && !empty($customerId)) {
+				if ($account !== null && $account->isConnectedToNosto() && !empty($customerId)) {
 					NostoOrderConfirmation::send($order, $account, $customerId);
 				}
 			} catch (NostoException $e) {
