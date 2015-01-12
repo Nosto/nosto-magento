@@ -125,6 +125,18 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
 	}
 
 	/**
+	 * Checks that an account exists for the given store and that it is connected to nosto.
+	 *
+	 * @param Mage_Core_Model_Store $store the store to check the account for (defaults to current active store).
+	 * @return bool true if the account exists and is connected, false otherwise.
+	 */
+	public function existsAndIsConnected(Mage_Core_Model_Store $store = null)
+	{
+		$account = $this->find($store);
+		return ($account !== null && $account->isConnectedToNosto());
+	}
+
+	/**
 	 * Returns the meta data model needed for creating a new nosto account using the Nosto SDk.
 	 *
 	 * @return Nosto_Tagging_Model_Meta_Account the meta data instance.

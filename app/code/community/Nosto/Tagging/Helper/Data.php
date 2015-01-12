@@ -36,28 +36,6 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
 	const XML_PATH_INSTALLATION_ID = 'nosto_tagging/installation/id';
 
     /**
-     * Check if module exists and enabled in global config.
-     * Also checks if the module is enabled for the current store and if the needed criteria has been provided for the
-     * module to work.
-     *
-     * @param string $moduleName the full module name, example Mage_Core
-     *
-     * @return boolean
-     */
-    public function isModuleEnabled($moduleName = null)
-    {
-        if (!parent::isModuleEnabled($moduleName)) {
-            return false;
-        }
-		/** @var NostoAccount $account */
-		$account = Mage::helper('nosto_tagging/account')->find();
-		if ($account === null || !$account->isConnectedToNosto()) {
-			return false;
-		}
-        return true;
-    }
-
-    /**
      * Builds a tagging string of the given category including all its parent categories.
      * The categories are sorted by their position in the category tree path.
      *

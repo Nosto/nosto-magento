@@ -24,6 +24,8 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+require_once(Mage::getBaseDir('lib').'/nosto/php-sdk/src/config.inc.php');
+
 /**
  * Event observer model.
  * Used to interact with Magento events.
@@ -58,4 +60,44 @@ class Nosto_Tagging_Model_Observer
 
         return $this;
     }
+
+	/**
+	 * Event handler for the "catalog_product_save_after" event.
+	 * Sends a product re-crawl API call to Nosto.
+	 *
+	 * @param Varien_Event_Observer $observer the event observer.
+	 *
+	 * @return Nosto_Tagging_Model_Observer
+	 */
+	public function recrawlProduct(Varien_Event_Observer $observer)
+	{
+		if (Mage::helper('nosto_tagging')->isModuleEnabled()) {
+			try {
+				/** @var Mage_Catalog_Model_Product $mageProduct */
+				$mageProduct = $observer->getEvent()->getProduct();
+				$product = new Nosto_Tagging_Model_Meta_Product();
+				$product->loadData($mageProduct);
+				// If the product does not have the store id set.
+				if ((int)$mageProduct->getStoreId() === 0) {
+					// Then assume that the product has been modified for all stores.
+					$stores = Mage::app()->getStores();
+				} else {
+					// Otherwise only re-crawl the product for the specific store.
+					$stores = array(Mage::app()->getStore($mageProduct->getStoreId()));
+				}
+				foreach ($stores as $store) {
+					/** @var NostoAccount $account */
+					$account = Mage::helper('nosto_tagging/account')->find($store);
+					if ($account === null || !$account->isConnectedToNosto()) {
+						continue;
+					}
+					NostoProductReCrawl::send($product, $account);
+				}
+			} catch (NostoException $e) {
+				Mage::log("\n" . $e->__toString(), Zend_Log::ERR, 'nostotagging.log');
+			}
+		}
+
+		return $this;
+	}
 }
