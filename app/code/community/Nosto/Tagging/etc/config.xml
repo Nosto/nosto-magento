@@ -64,6 +64,15 @@
                 </nosto_tagging>
             </updates>
         </layout>
+        <translate>
+            <modules>
+                <Nosto_Tagging>
+                    <files>
+                        <default>Nosto_Tagging.csv</default>
+                    </files>
+                </Nosto_Tagging>
+            </modules>
+        </translate>
     </adminhtml>
     <admin>
         <routers>
