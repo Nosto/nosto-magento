@@ -44,10 +44,14 @@ document.observe("dom:loaded", function() {
         $("nosto_account_settings").on("click", function(event) {
             event.preventDefault();
             var iframe = $("nosto_iframe_container"),
-                installedView = $("nosto_installed");
+                installedView = $("nosto_installed"),
+                backButton = $("nosto_back_to_iframe"),
+                settingsButton = $("nosto_account_settings");
             if (installedView && iframe) {
                 installedView.show();
+                backButton.show();
                 iframe.hide();
+                settingsButton.hide();
             }
         });
     }
@@ -56,10 +60,14 @@ document.observe("dom:loaded", function() {
         $("nosto_back_to_iframe").on("click", function(event) {
             event.preventDefault();
             var iframe = $("nosto_iframe_container"),
-                installedView = $("nosto_installed");
+                installedView = $("nosto_installed"),
+                backButton = $("nosto_back_to_iframe"),
+                settingsButton = $("nosto_account_settings");
             if (installedView && iframe) {
                 iframe.show();
+                settingsButton.show();
                 installedView.hide();
+                backButton.hide();
             }
         });
     }

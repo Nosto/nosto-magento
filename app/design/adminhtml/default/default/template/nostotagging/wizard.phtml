@@ -33,7 +33,29 @@
 $nostoHelper = Mage::helper('nosto_tagging');
 ?>
 <div class="content-header">
-	<h3><?php echo $this->__('Nosto'); ?></h3>
+	<table cellspacing="0">
+		<tbody>
+			<tr>
+				<td style="width: 50%;">
+					<h3><?php echo $this->__('Nosto'); ?></h3>
+				</td>
+				<td class="a-right">
+					<?php if ($this->getAccount() !== null): ?>
+						<a id="nosto_back_to_iframe" style="display: none;">
+							<button type="button" class="scalable back">
+								<span><span><span><?php echo $this->__('Back'); ?></span></span></span>
+							</button>
+						</a>
+						<a id="nosto_account_settings" href="#">
+							<button type="button" class="scalable">
+								<span><span><span><?php echo $this->__('Account settings'); ?></span></span></span>
+							</button>
+						</a>
+					<?php endif; ?>
+				</td>
+			</tr>
+		</tbody>
+	</table>
 </div>
 <?php if ( !Mage::app()->isSingleStoreMode() ): ?>
 	<?php echo $this->getChildHtml('store_switcher'); ?>
@@ -53,11 +75,6 @@ $nostoHelper = Mage::helper('nosto_tagging');
 			<div id="nosto_new_account" style="display: none;"><?php echo $this->getChildHtml('nosto.form.account.create'); ?></div>
 		</div>
 	<?php else: ?>
-		<div class="a-right">
-			<a id="nosto_account_settings" href="#">
-				<button type="button" class="scalable "><?php echo $this->__('Account settings');?></button>
-			</a>
-		</div>
 		<div class="a-center">
 			<div id="nosto_installed" style="<?php if ($this->getIframeUrl()) echo 'display: none;'; ?>"><?php echo $this->getChildHtml('nosto.form.account.remove'); ?></div>
 			<?php if ($this->getIframeUrl()): ?>
