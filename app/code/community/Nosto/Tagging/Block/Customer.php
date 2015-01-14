@@ -44,6 +44,7 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
     {
         if (!$this->helper('customer')->isLoggedIn()
             || !$this->helper('nosto_tagging')->isModuleEnabled()
+			|| !Mage::helper('nosto_tagging/account')->existsAndIsConnected()
         ) {
             return '';
         }
