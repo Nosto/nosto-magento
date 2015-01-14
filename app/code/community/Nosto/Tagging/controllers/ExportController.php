@@ -44,12 +44,17 @@ class Nosto_tagging_ExportController extends Mage_Core_Controller_Front_Action
 	public function orderAction()
 	{
 		if (Mage::helper('nosto_tagging')->isModuleEnabled()) {
+			$pageSize = (int)$this->getRequest()->getParam('limit', 100);
+			$currentPage = (int)$this->getRequest()->getParam('offset', 0) + 1;
 			$orders = Mage::getModel('sales/order')
 				->getCollection()
 				->addFieldToFilter('store_id', Mage::app()->getStore()->getId())
 				->addAttributeToFilter('status', Mage_Sales_Model_Order::STATE_COMPLETE)
-				->setPageSize((int)$this->getRequest()->getParam('limit', 100))
-				->setCurPage((int)$this->getRequest()->getParam('offset', 1));
+				->setPageSize($pageSize)
+				->setCurPage($currentPage);
+			if ($currentPage > $orders->getLastPageNumber()) {
+				$orders = array();
+			}
 			$collection = new NostoExportOrderCollection();
 			foreach ($orders as $order) {
 				$meta = new Nosto_Tagging_Model_Meta_Order();
@@ -67,14 +72,19 @@ class Nosto_tagging_ExportController extends Mage_Core_Controller_Front_Action
 	public function productAction()
 	{
 		if (Mage::helper('nosto_tagging')->isModuleEnabled()) {
+			$pageSize = (int)$this->getRequest()->getParam('limit', 100);
+			$currentPage = (int)$this->getRequest()->getParam('offset', 0) + 1;
 			$products = Mage::getModel('catalog/product')
 				->getCollection()
 				->addStoreFilter(Mage::app()->getStore()->getId())
 				->addAttributeToSelect('*')
 				->addAttributeToFilter('status', array('eq' => Mage_Catalog_Model_Product_Status::STATUS_ENABLED))
 				->addFieldToFilter('visibility', Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH)
-				->setPageSize((int)$this->getRequest()->getParam('limit', 100))
-				->setCurPage((int)$this->getRequest()->getParam('offset', 1));
+				->setPageSize($pageSize)
+				->setCurPage($currentPage);
+			if ($currentPage > $products->getLastPageNumber()) {
+				$products = array();
+			}
 			$collection = new NostoExportProductCollection();
 			foreach ($products as $product) {
 				if ($product->getTypeId() === Mage_Catalog_Model_Product_Type::TYPE_BUNDLE
