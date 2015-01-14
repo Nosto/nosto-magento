@@ -51,7 +51,7 @@ class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements
 	{
 		parent::__construct();
 
-		$this->redirectUrl = Mage::getUrl('nosto/oauth', array('_store' => Mage::app()->getStore()->getId()));
+		$this->redirectUrl = Mage::getUrl('nosto/oauth', array('_store' => Mage::app()->getStore()->getId(), '_store_to_url' => true));
 		$this->languageIsoCode = substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2);
 	}
 
