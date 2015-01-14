@@ -39,7 +39,7 @@ $nostoHelper = Mage::helper('nosto_tagging');
 	<?php echo $this->getChildHtml('store_switcher'); ?>
 <?php endif;?>
 <div>
-	<?php if ($this->getAccount() !== null): ?>
+	<?php if ($this->getAccount() === null): ?>
 		<div class="a-center">
 			<h2><?php echo $this->__('Add Nosto to your %s shop', $nostoHelper->escapeHtml(Mage::app()->getStore()->getName()));?></h2>
 			<p><?php echo $this->__('Do you have an existing Nosto account?');?></p>
