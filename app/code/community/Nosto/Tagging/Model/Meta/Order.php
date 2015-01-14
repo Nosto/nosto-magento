@@ -116,10 +116,13 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
 	{
 		$this->orderNumber = $order->getId();
 		$this->createdDate = $order->getCreatedAt();
+
 		$method = $order->getPayment()->getMethodInstance();
 		$this->paymentProvider = $method->getCode();
+
 		$this->buyer = new Nosto_Tagging_Model_Meta_Order_Buyer();
 		$this->buyer->loadData($order);
+
 		/** @var $item Mage_Sales_Model_Order_Item */
 		foreach ($order->getAllVisibleItems() as $item) {
 			/** @var Mage_Catalog_Model_Product $product */
@@ -139,6 +142,7 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
 				$this->items[] = $orderItem;
 			}
 		}
+
 		if ($discount = $order->getDiscountAmount()) {
 			$orderItem = new Nosto_Tagging_Model_Meta_Order_Item();
 			$orderItem->setProductId(-1);
@@ -148,6 +152,7 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
 			$orderItem->setCurrencyCode($order->getOrderCurrencyCode());
 			$this->items[] = $orderItem;
 		}
+
 		if ($shippingInclTax = $order->getShippingInclTax()) {
 			$orderItem = new Nosto_Tagging_Model_Meta_Order_Item();
 			$orderItem->setProductId(-1);

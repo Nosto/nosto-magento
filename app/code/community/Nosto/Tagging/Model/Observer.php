@@ -100,4 +100,35 @@ class Nosto_Tagging_Model_Observer
 
 		return $this;
 	}
+    
+    /**
+	 * Sends an order confirmation API request to Nosto if the order is completed.
+	 *
+	 * Event 'sales_order_save_commit_after'.
+	 *
+	 * @param Varien_Event_Observer $observer
+	 *
+	 * @return Nosto_Tagging_Model_Observer
+	 */
+	public function sendOrderConfirmation(Varien_Event_Observer $observer)
+	{
+		if (Mage::helper('nosto_tagging')->isModuleEnabled()) {
+			try {
+				/** @var Mage_Sales_Model_Order $mageOrder */
+				$mageOrder = $observer->getEvent()->getOrder();
+				$order = new Nosto_Tagging_Model_Meta_Order();
+				$order->loadData($mageOrder);
+				/** @var NostoAccount $account */
+				$account = Mage::helper('nosto_tagging/account')->find($mageOrder->getStore());
+				$customerId = Mage::helper('nosto_tagging/customer')->getNostoId($mageOrder);
+				if ($account !== null && $account->isConnectedToNosto() && !empty($customerId)) {
+					NostoOrderConfirmation::send($order, $account, $customerId);
+				}
+			} catch (NostoException $e) {
+				Mage::log("\n" . $e->__toString(), Zend_Log::ERR, 'nostotagging.log');
+			}
+		}
+
+		return $this;
+	}
 }

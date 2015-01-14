@@ -20,59 +20,34 @@
  *
  * @category    Nosto
  * @package     Nosto_Tagging
- * @copyright   Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
+ * @copyright   Copyright (c) 2015 Nosto Solutions Ltd (http://www.nosto.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
 /**
- * Meta data class which holds information about Nosto account billing.
- * This is used during the Nosto account creation.
+ * Customer model.
+ * Used for keeping a link between a Mage quote and a Nosto customer.
+ *
+ * @method void setQuoteId($quoteId)
+ * @method int getQuoteId()
+ * @method void setNostoId($nostoId)
+ * @method string getNostoId()
+ * @method void setUpdatedAt($updatedAt)
+ * @method string getUpdatedAt()
+ * @method void setCreatedAt($createdAt)
+ * @method string getCreatedAt()
  *
  * @category    Nosto
  * @package     Nosto_Tagging
  * @author      Nosto Solutions Ltd
  */
-class Nosto_Tagging_Model_Meta_Account_Billing extends Mage_Core_Model_Abstract implements NostoAccountMetaDataBillingDetailsInterface
+class Nosto_Tagging_Model_Customer extends Mage_Core_Model_Abstract
 {
-	/**
-	 * @var string country ISO (ISO 3166-1 alpha-2) code for the account billing details.
-	 */
-	protected $country;
-
-	/**
-	 * Constructor.
-	 * Sets initial values for the account billing details.
-	 */
-	public function __construct()
-	{
-		parent::__construct();
-
-		$this->country = Mage::app()->getStore()->getConfig('general/country/default');
-	}
-
 	/**
 	 * @inheritdoc
 	 */
 	protected function _construct()
 	{
-		$this->_init('nosto_tagging/meta_account_billing');
-	}
-
-	/**
-	 * Sets the account billing details country ISO (ISO 3166-1 alpha-2) code.
-	 *
-	 * @param string $country the country ISO code.
-	 */
-	public function setCountry($country)
-	{
-		$this->country = $country;
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function getCountry()
-	{
-		return $this->country;
+		$this->_init('nosto_tagging/customer');
 	}
 }

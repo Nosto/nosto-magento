@@ -124,10 +124,18 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
 	/**
 	 * @inheritdoc
 	 */
+	protected function _construct()
+	{
+		$this->_init('nosto_tagging/meta_account_iframe');
+	}
+
+	/**
+	 * @inheritdoc
+	 */
 	public function getPlatform()
 	{
 		return $this->platform;
-	}
+    }
 
 	/**
 	 * Sets the first name of the admin user.
