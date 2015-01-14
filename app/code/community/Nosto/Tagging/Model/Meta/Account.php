@@ -87,7 +87,7 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
 		parent::__construct();
 
 		$store = Mage::app()->getStore();
-		$this->title = $store->getWebsite()->getName() . ' - ' . $store->getName();
+		$this->title = $store->getWebsite()->getName() . ' - ' . $store->getGroup()->getName() . ' - ' . $store->getName();
 		$this->name = substr(sha1(rand()), 0, 8);
 		$this->frontPageUrl = NostoHttpRequest::replaceQueryParamInUrl('___store', $store->getCode(), $store->getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB));
 		$this->currencyCode = $store->getBaseCurrencyCode();
