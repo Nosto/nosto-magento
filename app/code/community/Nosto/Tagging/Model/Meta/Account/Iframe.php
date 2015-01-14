@@ -239,7 +239,7 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
 	public function getVersionModule()
 	{
 		// Path is hard-coded to be like in "etc/config.xml".
-		return Mage::getConfig()->getNode()->modules->Nosto_Tagging->version;
+		return (string)Mage::getConfig()->getNode('modules/Nosto_Tagging/version');
 	}
 
 	/**
