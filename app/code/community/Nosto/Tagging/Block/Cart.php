@@ -50,7 +50,6 @@ class Nosto_Tagging_Block_Cart extends Mage_Checkout_Block_Cart_Abstract
     {
         if (!Mage::helper('nosto_tagging')->isModuleEnabled()
 			|| !Mage::helper('nosto_tagging/account')->existsAndIsConnected()
-			|| count($this->getItems()) === 0
 		) {
             return '';
         }
@@ -62,7 +61,9 @@ class Nosto_Tagging_Block_Cart extends Mage_Checkout_Block_Cart_Abstract
 		// The ideal place to run it would be once when the customer goes to the `checkout/cart` page, but there are
 		// no events that are fired on that page only, and the cart page recommendation elements we output come
 		// through a generic block that cannot be used for this specific action.
-		Mage::helper('nosto_tagging/customer')->updateNostoId();
+		if (count($this->getItems()) > 0) {
+			Mage::helper('nosto_tagging/customer')->updateNostoId();
+		}
 
         return parent::_toHtml();
     }
