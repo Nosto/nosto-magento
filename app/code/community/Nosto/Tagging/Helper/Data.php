@@ -20,7 +20,7 @@
  *
  * @category    Nosto
  * @package     Nosto_Tagging
- * @copyright   Copyright (c) 2013 Nosto Solutions Ltd (http://www.nosto.com)
+ * @copyright   Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -34,28 +34,6 @@
 class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
 {
 	const XML_PATH_INSTALLATION_ID = 'nosto_tagging/installation/id';
-
-    /**
-     * Check if module exists and enabled in global config.
-     * Also checks if the module is enabled for the current store and if the needed criteria has been provided for the
-     * module to work.
-     *
-     * @param string $moduleName the full module name, example Mage_Core
-     *
-     * @return boolean
-     */
-    public function isModuleEnabled($moduleName = null)
-    {
-        if (!parent::isModuleEnabled($moduleName)) {
-            return false;
-        }
-		/** @var NostoAccount $account */
-		$account = Mage::helper('nosto_tagging/account')->find();
-		if ($account === null || !$account->isConnectedToNosto()) {
-			return false;
-		}
-        return true;
-    }
 
     /**
      * Builds a tagging string of the given category including all its parent categories.

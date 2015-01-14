@@ -18,9 +18,9 @@
  * versions in the future. If you wish to customize Magento for your
  * needs please refer to http://www.magentocommerce.com for more information.
  *
- * @category    design
- * @package     base_default
- * @copyright   Copyright (c) 2013 Nosto Solutions Ltd (http://www.nosto.com)
+ * @category    Nosto
+ * @package     Nosto_Tagging
+ * @copyright   Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -122,6 +122,18 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
 			return $account;
 		}
 		return null;
+	}
+
+	/**
+	 * Checks that an account exists for the given store and that it is connected to nosto.
+	 *
+	 * @param Mage_Core_Model_Store $store the store to check the account for (defaults to current active store).
+	 * @return bool true if the account exists and is connected, false otherwise.
+	 */
+	public function existsAndIsConnected(Mage_Core_Model_Store $store = null)
+	{
+		$account = $this->find($store);
+		return ($account !== null && $account->isConnectedToNosto());
 	}
 
 	/**

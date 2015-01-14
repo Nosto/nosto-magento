@@ -20,10 +20,25 @@
  *
  * @category    Nosto
  * @package     Nosto_Tagging
- * @copyright   Copyright (c) 2013 Nosto Solutions Ltd (http://www.nosto.com)
+ * @copyright   Copyright (c) 2015 Nosto Solutions Ltd (http://www.nosto.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-$this->startSetup();
-
-$this->endSetup();
+/**
+ * Customer resource.
+ * Used for keeping a link between a Mage quote and a Nosto customer.
+ *
+ * @category    Nosto
+ * @package     Nosto_Tagging
+ * @author      Nosto Solutions Ltd
+ */
+class Nosto_Tagging_Model_Resource_Customer extends Mage_Core_Model_Resource_Db_Abstract
+{
+	/**
+	 * @inheritdoc
+	 */
+	protected function _construct()
+	{
+		$this->_init('nosto_tagging/customer', 'customer_id');
+	}
+}

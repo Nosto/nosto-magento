@@ -20,7 +20,7 @@
  *
  * @category    Nosto
  * @package     Nosto_Tagging
- * @copyright   Copyright (c) 2013 Nosto Solutions Ltd (http://www.nosto.com)
+ * @copyright   Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -48,7 +48,10 @@ class Nosto_Tagging_Block_Category extends Mage_Core_Block_Template
      */
     protected function _toHtml()
     {
-        if (!Mage::helper('nosto_tagging')->isModuleEnabled() || !$this->getCategory()) {
+        if (!Mage::helper('nosto_tagging')->isModuleEnabled()
+			|| !Mage::helper('nosto_tagging/account')->existsAndIsConnected()
+			|| !$this->getCategory()
+		) {
             return '';
         }
 

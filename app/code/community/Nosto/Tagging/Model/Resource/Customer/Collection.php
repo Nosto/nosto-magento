@@ -18,19 +18,27 @@
  * versions in the future. If you wish to customize Magento for your
  * needs please refer to http://www.magentocommerce.com for more information.
  *
- * @category    design
- * @package     frontend_base_default
- * @copyright   Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
+ * @category    Nosto
+ * @package     Nosto_Tagging
+ * @copyright   Copyright (c) 2015 Nosto Solutions Ltd (http://www.nosto.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-?>
 
-<?php
 /**
- * @var $this           Nosto_Tagging_Block_Element
- * @var $nostoHelper    Nosto_Tagging_Helper_Data
+ * Customer resource collection.
+ * Used for keeping a link between a Mage quote and a Nosto customer.
+ *
+ * @category    Nosto
+ * @package     Nosto_Tagging
+ * @author      Nosto Solutions Ltd
  */
-$nostoHelper = Mage::helper('nosto_tagging');
-?>
-
-<div class="nosto_element" id="<?php echo $nostoHelper->escapeHtml($this->getElementId()); ?>"></div>
+class Nosto_Tagging_Model_Resource_Customer_Collection extends Mage_Core_Model_Resource_Db_Collection_Abstract
+{
+	/**
+	 * @inheritdoc
+	 */
+	protected function _construct()
+	{
+		$this->_init('nosto_tagging/customer');
+	}
+}

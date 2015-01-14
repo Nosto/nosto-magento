@@ -18,9 +18,9 @@
  * versions in the future. If you wish to customize Magento for your
  * needs please refer to http://www.magentocommerce.com for more information.
  *
- * @category    design
- * @package     base_default
- * @copyright   Copyright (c) 2013 Nosto Solutions Ltd (http://www.nosto.com)
+ * @category    Nosto
+ * @package     Nosto_Tagging
+ * @copyright   Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -87,14 +87,22 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
 		parent::__construct();
 
 		$store = Mage::app()->getStore();
-		$this->title = $store->getWebsite()->getName() . ' - ' . $store->getName();
+		$this->title = $store->getWebsite()->getName() . ' - ' . $store->getGroup()->getName() . ' - ' . $store->getName();
 		$this->name = substr(sha1(rand()), 0, 8);
-		$this->frontPageUrl = $store->getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB);
+		$this->frontPageUrl = NostoHttpRequest::replaceQueryParamInUrl('___store', $store->getCode(), $store->getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB));
 		$this->currencyCode = $store->getBaseCurrencyCode();
 		$this->languageCode = substr($store->getConfig('general/locale/code'), 0, 2);
 		$this->ownerLanguageCode = substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2);
 		$this->owner = new Nosto_Tagging_Model_Meta_Account_Owner();
 		$this->billing = new Nosto_Tagging_Model_Meta_Account_Billing();
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	protected function _construct()
+	{
+		$this->_init('nosto_tagging/meta_account');
 	}
 
 	/**

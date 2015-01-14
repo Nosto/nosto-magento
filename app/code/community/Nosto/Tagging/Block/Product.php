@@ -20,7 +20,7 @@
  *
  * @category    Nosto
  * @package     Nosto_Tagging
- * @copyright   Copyright (c) 2013 Nosto Solutions Ltd (http://www.nosto.com)
+ * @copyright   Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -55,6 +55,7 @@ class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
     {
         $product = $this->getProduct();
         if (!Mage::helper('nosto_tagging')->isModuleEnabled()
+			|| !Mage::helper('nosto_tagging/account')->existsAndIsConnected()
             || ($product->getTypeId() === Mage_Catalog_Model_Product_Type::TYPE_BUNDLE
                 && (int)$product->getPriceType() === Mage_Bundle_Model_Product_Price::PRICE_TYPE_FIXED)
         ) {
