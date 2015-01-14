@@ -252,7 +252,7 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
 
 		$this->categories = $this->getProductCategories($product);
 		$this->description = $product->getDescription();
-		$this->brand = $product->getAttributeText('manufacturer');
+		$this->brand = (string)$product->getAttributeText('manufacturer');
 		$this->datePublished = $product->getCreatedAt();
 
 	}
