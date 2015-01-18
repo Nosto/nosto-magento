@@ -27,6 +27,7 @@
 /**
  * This upgrade script will run only when upgrading from version 1.1.7 to 1.2.0 or above.
  *
+ * Deletes all existing module configurations.
  * Creates the db table needed for matching Magento shopping cart quotes to nosto customer ids.
  *
  * @var Nosto_Tagging_Model_Resource_Setup $installer
@@ -34,6 +35,8 @@
 
 $installer = $this;
 $installer->startSetup();
+
+$installer->getConnection()->delete($installer->getTable('core/config_data'), '`path` LIKE "nosto_tagging/%"');
 
 $table = $installer
 	->getConnection()
