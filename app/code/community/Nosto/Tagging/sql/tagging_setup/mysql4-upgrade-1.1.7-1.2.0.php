@@ -25,8 +25,7 @@
  */
 
 /**
- * This install script will run only when installing the module with version 1.2.0 or above,
- * i.e. when no "tagging_setup" entry is present in the `core_resource` table.
+ * This upgrade script will run only when upgrading from version 1.1.7 to 1.2.0 or above.
  *
  * Creates the db table needed for matching Magento shopping cart quotes to nosto customer ids.
  *
