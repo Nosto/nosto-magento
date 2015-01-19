@@ -18,18 +18,18 @@
  * versions in the future. If you wish to customize Magento for your
  * needs please refer to http://www.magentocommerce.com for more information.
  *
- * @category    Nosto
- * @package     Nosto_Tagging
- * @copyright   Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
- * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @category  Nosto
+ * @package   Nosto_Tagging
+ * @copyright Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
 /**
  * Meta data class which holds information needed to complete OAuth2 requests.
  *
- * @category    Nosto
- * @package     Nosto_Tagging
- * @author      Nosto Solutions Ltd
+ * @category Nosto
+ * @package  Nosto_Tagging
+ * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
 class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements NostoOAuthClientMetaDataInterface
 {
@@ -56,7 +56,9 @@ class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements
     }
 
     /**
-     * @inheritdoc
+     * Internal Magento constructor.
+     *
+     * @return void
      */
     protected function _construct()
     {
@@ -64,7 +66,10 @@ class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements
     }
 
     /**
-     * @inheritdoc
+     * The OAuth2 client ID.
+     * This will be a platform specific ID that Nosto will issue.
+     *
+     * @return string the client id.
      */
     public function getClientId()
     {
@@ -72,7 +77,10 @@ class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements
     }
 
     /**
-     * @inheritdoc
+     * The OAuth2 client secret.
+     * This will be a platform specific secret that Nosto will issue.
+     *
+     * @return string the client secret.
      */
     public function getClientSecret()
     {
@@ -80,7 +88,10 @@ class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements
     }
 
     /**
-     * @inheritdoc
+     * The scopes for the OAuth2 request.
+     * These are used to request specific API tokens from Nosto and should almost always be the ones defined in NostoApiToken::$tokenNames.
+     *
+     * @return array the scopes.
      */
     public function getScopes()
     {
@@ -89,7 +100,10 @@ class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements
     }
 
     /**
-     * @inheritdoc
+     * The OAuth2 redirect url to where the OAuth2 server should redirect the user after authorizing the application to act on the users behalf.
+     * This url must by publicly accessible and the domain must match the one defined for the Nosto account.
+     *
+     * @return string the url.
      */
     public function getRedirectUrl()
     {
@@ -107,7 +121,9 @@ class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements
     }
 
     /**
-     * @inheritdoc
+     * The 2-letter ISO code (ISO 639-1) for the language the OAuth2 server uses for UI localization.
+     *
+     * @return string the ISO code.
      */
     public function getLanguageIsoCode()
     {

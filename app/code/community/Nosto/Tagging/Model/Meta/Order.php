@@ -18,19 +18,19 @@
  * versions in the future. If you wish to customize Magento for your
  * needs please refer to http://www.magentocommerce.com for more information.
  *
- * @category    Nosto
- * @package     Nosto_Tagging
- * @copyright   Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
- * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @category  Nosto
+ * @package   Nosto_Tagging
+ * @copyright Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
 /**
  * Meta data class which holds information about an order.
  * This is used during the order confirmation API request and the order history export.
  *
- * @category    Nosto
- * @package     Nosto_Tagging
- * @author      Nosto Solutions Ltd
+ * @category Nosto
+ * @package  Nosto_Tagging
+ * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
 class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements NostoOrderInterface
 {
@@ -45,22 +45,26 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
     protected $createdDate;
 
     /**
-     * @var string the payment provider used for placing the order, formatted according to "[provider name] [provider version]".
+     * @var string the payment provider used for order.
+     *
+     * Formatted according to "[provider name] [provider version]".
      */
     protected $paymentProvider;
 
     /**
-     * @var Nosto_Tagging_Model_Meta_Order_Buyer The buyer info of the user who placed the order.
+     * @var Nosto_Tagging_Model_Meta_Order_Buyer The info of the user who ordered.
      */
     protected $buyer;
 
     /**
-     * @var Nosto_Tagging_Model_Meta_Order_Item[] the purchased items which were included in the order.
+     * @var Nosto_Tagging_Model_Meta_Order_Item[] the items included in the order.
      */
     protected $items = array();
 
     /**
-     * @inheritdoc
+     * Internal Magento constructor.
+     *
+     * @return void
      */
     protected function _construct()
     {
@@ -68,7 +72,9 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
     }
 
     /**
-     * @inheritdoc
+     * The unique order number identifying the order.
+     *
+     * @return string|int the order number.
      */
     public function getOrderNumber()
     {
@@ -76,7 +82,9 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
     }
 
     /**
-     * @inheritdoc
+     * The date when the order was placed.
+     *
+     * @return string the creation date.
      */
     public function getCreatedDate()
     {
@@ -84,7 +92,10 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
     }
 
     /**
-     * @inheritdoc
+     * The payment provider used for placing the order, formatted according to
+     * "[provider name] [provider version]".
+     *
+     * @return string the payment provider.
      */
     public function getPaymentProvider()
     {
@@ -92,7 +103,9 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
     }
 
     /**
-     * @inheritdoc
+     * The buyer info of the user who placed the order.
+     *
+     * @return NostoOrderBuyerInterface the meta data model.
      */
     public function getBuyerInfo()
     {
@@ -100,7 +113,9 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
     }
 
     /**
-     * @inheritdoc
+     * The purchased items which were included in the order.
+     *
+     * @return NostoOrderPurchasedItemInterface[] the meta data models.
      */
     public function getPurchasedItems()
     {
@@ -126,7 +141,8 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
         /** @var $item Mage_Sales_Model_Order_Item */
         foreach ($order->getAllVisibleItems() as $item) {
             /** @var Mage_Catalog_Model_Product $product */
-            $product = Mage::getModel('catalog/product')->load($item->getProductId());
+            $product = Mage::getModel('catalog/product')
+                ->load($item->getProductId());
             if ($product->getTypeId() === Mage_Catalog_Model_Product_Type::TYPE_BUNDLE) {
                 if ((int)$product->getPriceType() === Mage_Bundle_Model_Product_Price::PRICE_TYPE_FIXED) {
                     continue;

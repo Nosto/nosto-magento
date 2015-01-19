@@ -18,21 +18,21 @@
  * versions in the future. If you wish to customize Magento for your
  * needs please refer to http://www.magentocommerce.com for more information.
  *
- * @category    Nosto
- * @package     Nosto_Tagging
- * @copyright   Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
- * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @category  Nosto
+ * @package   Nosto_Tagging
+ * @copyright Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-require_once(Mage::getBaseDir('lib') . '/nosto/php-sdk/src/config.inc.php');
+require_once Mage::getBaseDir('lib') . '/nosto/php-sdk/src/config.inc.php';
 
 /**
  * Event observer model.
  * Used to interact with Magento events.
  *
- * @category    Nosto
- * @package     Nosto_Tagging
- * @author      Nosto Solutions Ltd
+ * @category Nosto
+ * @package  Nosto_Tagging
+ * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
 class Nosto_Tagging_Model_Observer
 {
@@ -46,7 +46,7 @@ class Nosto_Tagging_Model_Observer
      *
      * Event 'controller_action_layout_load_before'.
      *
-     * @param Varien_Event_Observer $observer
+     * @param Varien_Event_Observer $observer the event observer.
      *
      * @return Nosto_Tagging_Model_Observer
      */
@@ -83,7 +83,9 @@ class Nosto_Tagging_Model_Observer
                     $stores = Mage::app()->getStores();
                 } else {
                     // Otherwise only re-crawl the product for the specific store.
-                    $stores = array(Mage::app()->getStore($mageProduct->getStoreId()));
+                    $stores = array(
+                        Mage::app()->getStore($mageProduct->getStoreId())
+                    );
                 }
                 foreach ($stores as $store) {
                     /** @var NostoAccount $account */
@@ -106,7 +108,7 @@ class Nosto_Tagging_Model_Observer
      *
      * Event 'sales_order_save_commit_after'.
      *
-     * @param Varien_Event_Observer $observer
+     * @param Varien_Event_Observer $observer the event observer.
      *
      * @return Nosto_Tagging_Model_Observer
      */
@@ -119,9 +121,14 @@ class Nosto_Tagging_Model_Observer
                 $order = new Nosto_Tagging_Model_Meta_Order();
                 $order->loadData($mageOrder);
                 /** @var NostoAccount $account */
-                $account = Mage::helper('nosto_tagging/account')->find($mageOrder->getStore());
-                $customerId = Mage::helper('nosto_tagging/customer')->getNostoId($mageOrder);
-                if ($account !== null && $account->isConnectedToNosto() && !empty($customerId)) {
+                $account = Mage::helper('nosto_tagging/account')
+                    ->find($mageOrder->getStore());
+                $customerId = Mage::helper('nosto_tagging/customer')
+                    ->getNostoId($mageOrder);
+                if ($account !== null
+                    && $account->isConnectedToNosto()
+                    && !empty($customerId)
+                ) {
                     NostoOrderConfirmation::send($order, $account, $customerId);
                 }
             } catch (NostoException $e) {

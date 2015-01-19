@@ -18,18 +18,18 @@
  * versions in the future. If you wish to customize Magento for your
  * needs please refer to http://www.magentocommerce.com for more information.
  *
- * @category    Nosto
- * @package     Nosto_Tagging
- * @copyright   Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
- * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @category  Nosto
+ * @package   Nosto_Tagging
+ * @copyright Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
 /**
  * Nosto Tagging Resource Setup Model.
  *
- * @category    Nosto
- * @package     Nosto_Tagging
- * @author      Nosto Solutions Ltd
+ * @category Nosto
+ * @package  Nosto_Tagging
+ * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
 class Nosto_Tagging_Model_Resource_Setup extends Mage_Eav_Model_Entity_Setup
 {

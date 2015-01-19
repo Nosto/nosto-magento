@@ -18,19 +18,19 @@
  * versions in the future. If you wish to customize Magento for your
  * needs please refer to http://www.magentocommerce.com for more information.
  *
- * @category    Nosto
- * @package     Nosto_Tagging
- * @copyright   Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
- * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @category  Nosto
+ * @package   Nosto_Tagging
+ * @copyright Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
 /**
  * Meta data class which holds information about a product.
  * This is used during the order confirmation API request and the product history export.
  *
- * @category    Nosto
- * @package     Nosto_Tagging
- * @author      Nosto Solutions Ltd
+ * @category Nosto
+ * @package  Nosto_Tagging
+ * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
 class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implements NostoProductInterface
 {
@@ -60,7 +60,7 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
     protected $name;
 
     /**
-     * @var string the absolute url the one of the product images in the shop frontend.
+     * @var string the absolute url the one of the product images in shop frontend.
      */
     protected $imageUrl;
 
@@ -70,7 +70,7 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
     protected $price;
 
     /**
-     * @var string the list price of the product without discounts but including possible taxes.
+     * @var string the list price of the product without discounts but incl taxes.
      */
     protected $listPrice;
 
@@ -110,7 +110,9 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
     protected $datePublished;
 
     /**
-     * @inheritdoc
+     * Internal Magento constructor.
+     *
+     * @return void
      */
     protected function _construct()
     {
@@ -118,7 +120,9 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
     }
 
     /**
-     * @inheritdoc
+     * Returns the absolute url to the product page in the shop frontend.
+     *
+     * @return string the url.
      */
     public function getUrl()
     {
@@ -126,7 +130,9 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
     }
 
     /**
-     * @inheritdoc
+     * Returns the product's unique identifier.
+     *
+     * @return int|string the ID.
      */
     public function getProductId()
     {
@@ -134,7 +140,9 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
     }
 
     /**
-     * @inheritdoc
+     * Returns the name of the product.
+     *
+     * @return string the name.
      */
     public function getName()
     {
@@ -142,7 +150,9 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
     }
 
     /**
-     * @inheritdoc
+     * Returns the absolute url the one of the product images in the shop frontend.
+     *
+     * @return string the url.
      */
     public function getImageUrl()
     {
@@ -150,7 +160,9 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
     }
 
     /**
-     * @inheritdoc
+     * Returns the price of the product including possible discounts and taxes.
+     *
+     * @return float the price.
      */
     public function getPrice()
     {
@@ -158,7 +170,9 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
     }
 
     /**
-     * @inheritdoc
+     * Returns the list price of the product without discounts but incl taxes.
+     *
+     * @return float the price.
      */
     public function getListPrice()
     {
@@ -166,7 +180,9 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
     }
 
     /**
-     * @inheritdoc
+     * Returns the currency code (ISO 4217) the product is sold in.
+     *
+     * @return string the currency ISO code.
      */
     public function getCurrencyCode()
     {
@@ -174,7 +190,9 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
     }
 
     /**
-     * @inheritdoc
+     * Returns the availability of the product, i.e. if it is in stock or not.
+     *
+     * @return string the availability, either "InStock" or "OutOfStock".
      */
     public function getAvailability()
     {
@@ -182,7 +200,9 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
     }
 
     /**
-     * @inheritdoc
+     * Returns the tags for the product.
+     *
+     * @return array the tags array, e.g. array("winter", "shoe").
      */
     public function getTags()
     {
@@ -190,7 +210,9 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
     }
 
     /**
-     * @inheritdoc
+     * Returns the categories the product is located in.
+     *
+     * @return array list of category strings, e.g. array("/shoes/winter").
      */
     public function getCategories()
     {
@@ -198,7 +220,9 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
     }
 
     /**
-     * @inheritdoc
+     * Returns the product description.
+     *
+     * @return string the description.
      */
     public function getDescription()
     {
@@ -206,7 +230,9 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
     }
 
     /**
-     * @inheritdoc
+     * Returns the product brand name.
+     *
+     * @return string the brand name.
      */
     public function getBrand()
     {
@@ -214,7 +240,9 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
     }
 
     /**
-     * @inheritdoc
+     * Returns the product publication date in the shop.
+     *
+     * @return string the date.
      */
     public function getDatePublished()
     {
@@ -225,6 +253,8 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
      * Loads the product info from a Magento product model.
      *
      * @param Mage_Catalog_Model_Product $product the product model.
+     *
+     * @return void
      */
     public function loadData(Mage_Catalog_Model_Product $product)
     {
@@ -235,14 +265,25 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
         if ($product->getImage() == 'no_selection') {
             $this->imageUrl = $product->getImageUrl();
         } else {
-            $this->imageUrl = $product->getMediaConfig()->getMediaUrl($product->getImage());
+            $this->imageUrl = $product->getMediaConfig()
+                ->getMediaUrl($product->getImage());
         }
 
-        $this->price = Mage::helper('tax')->getPrice($product, Mage::helper('nosto_tagging/price')->getProductFinalPrice($product), true);
-        $this->listPrice = Mage::helper('tax')->getPrice($product, Mage::helper('nosto_tagging/price')->getProductPrice($product), true);
+        $this->price = Mage::helper('tax')->getPrice(
+            $product,
+            Mage::helper('nosto_tagging/price')->getProductFinalPrice($product),
+            true
+        );
+        $this->listPrice = Mage::helper('tax')->getPrice(
+            $product,
+            Mage::helper('nosto_tagging/price')->getProductPrice($product),
+            true
+        );
         $this->currencyCode = Mage::app()->getStore()->getCurrentCurrencyCode();
 
-        if ($product instanceof Mage_Catalog_Model_Product && $product->isAvailable()) {
+        if ($product instanceof Mage_Catalog_Model_Product
+            && $product->isAvailable()
+        ) {
             $this->availability = self::PRODUCT_IN_STOCK;
         } else {
             $this->availability = self::PRODUCT_OUT_OF_STOCK;
@@ -254,19 +295,19 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
         $this->description = $product->getDescription();
         $this->brand = (string)$product->getAttributeText('manufacturer');
         $this->datePublished = $product->getCreatedAt();
-
     }
 
     /**
      * Return array of categories for the product.
-     * The items in the array are strings combined of the complete category path to the products own category.
+     * The items in the array are strings combined of the complete category path to
+     * the products own category.
      *
      * Structure:
      * array (
      *     /Electronics/Computers
      * )
      *
-     * @param Mage_Catalog_Model_Product $product
+     * @param Mage_Catalog_Model_Product $product the product model.
      *
      * @return array
      */
@@ -277,7 +318,8 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
         if ($product instanceof Mage_Catalog_Model_Product) {
             $categoryCollection = $product->getCategoryCollection();
             foreach ($categoryCollection as $category) {
-                $categoryString = Mage::helper('nosto_tagging')->buildCategoryString($category);
+                $categoryString = Mage::helper('nosto_tagging')
+                    ->buildCategoryString($category);
                 if (!empty($categoryString)) {
                     $data[] = $categoryString;
                 }

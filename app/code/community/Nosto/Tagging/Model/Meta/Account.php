@@ -18,19 +18,19 @@
  * versions in the future. If you wish to customize Magento for your
  * needs please refer to http://www.magentocommerce.com for more information.
  *
- * @category    Nosto
- * @package     Nosto_Tagging
- * @copyright   Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
- * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @category  Nosto
+ * @package   Nosto_Tagging
+ * @copyright Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
 /**
  * Meta data class which holds information about a new Nosto account.
  * This is used during the Nosto account creation.
  *
- * @category    Nosto
- * @package     Nosto_Tagging
- * @author      Nosto Solutions Ltd
+ * @category Nosto
+ * @package  Nosto_Tagging
+ * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
 class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implements NostoAccountMetaDataInterface
 {
@@ -98,7 +98,9 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     }
 
     /**
-     * @inheritdoc
+     * Internal Magento constructor.
+     *
+     * @return void
      */
     protected function _construct()
     {
@@ -116,7 +118,9 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     }
 
     /**
-     * @inheritdoc
+     * The shops name for which the account is to be created for.
+     *
+     * @return string the name.
      */
     public function getTitle()
     {
@@ -134,7 +138,10 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     }
 
     /**
-     * @inheritdoc
+     * The name of the account to create.
+     * This has to follow the pattern of "[platform name]-[8 character lowercase alpha numeric string]".
+     *
+     * @return string the account name.
      */
     public function getName()
     {
@@ -142,7 +149,10 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     }
 
     /**
-     * @inheritdoc
+     * The name of the platform the account is used on.
+     * A list of valid platform names is issued by Nosto.
+     *
+     * @return string the platform names.
      */
     public function getPlatform()
     {
@@ -160,7 +170,9 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     }
 
     /**
-     * @inheritdoc
+     * Absolute url to the front page of the shop for which the account is created for.
+     *
+     * @return string the url.
      */
     public function getFrontPageUrl()
     {
@@ -178,7 +190,9 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     }
 
     /**
-     * @inheritdoc
+     * The 3-letter ISO code (ISO 4217) for the currency used by the shop for which the account is created for.
+     *
+     * @return string the currency ISO code.
      */
     public function getCurrencyCode()
     {
@@ -196,7 +210,9 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     }
 
     /**
-     * @inheritdoc
+     * The 2-letter ISO code (ISO 639-1) for the language used by the shop for which the account is created for.
+     *
+     * @return string the language ISO code.
      */
     public function getLanguageCode()
     {
@@ -214,7 +230,9 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     }
 
     /**
-     * @inheritdoc
+     * The 2-letter ISO code (ISO 639-1) for the language of the account owner who is creating the account.
+     *
+     * @return string the language ISO code.
      */
     public function getOwnerLanguageCode()
     {
@@ -222,7 +240,9 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     }
 
     /**
-     * @inheritdoc
+     * Meta data model for the account owner who is creating the account.
+     *
+     * @return NostoAccountMetaDataOwnerInterface the meta data model.
      */
     public function getOwner()
     {
@@ -230,7 +250,9 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     }
 
     /**
-     * @inheritdoc
+     * Meta data model for the account billing details.
+     *
+     * @return NostoAccountMetaDataBillingDetailsInterface the meta data model.
      */
     public function getBillingDetails()
     {
@@ -238,7 +260,10 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     }
 
     /**
-     * @inheritdoc
+     * The API token used to identify an account creation.
+     * This token is platform specific and issued by Nosto.
+     *
+     * @return string the API token.
      */
     public function getSignUpApiToken()
     {

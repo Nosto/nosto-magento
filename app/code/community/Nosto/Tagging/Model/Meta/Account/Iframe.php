@@ -18,18 +18,18 @@
  * versions in the future. If you wish to customize Magento for your
  * needs please refer to http://www.magentocommerce.com for more information.
  *
- * @category    Nosto
- * @package     Nosto_Tagging
- * @copyright   Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
- * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @category  Nosto
+ * @package   Nosto_Tagging
+ * @copyright Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
 /**
  * Meta data class which holds information to be sent to the Nosto account configuration iframe.
  *
- * @category    Nosto
- * @package     Nosto_Tagging
- * @author      Nosto Solutions Ltd
+ * @category Nosto
+ * @package  Nosto_Tagging
+ * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
 class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract implements NostoAccountMetaDataIframeInterface
 {
@@ -122,7 +122,9 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
     }
 
     /**
-     * @inheritdoc
+     * Internal Magento constructor.
+     *
+     * @return void
      */
     protected function _construct()
     {
@@ -130,7 +132,10 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
     }
 
     /**
-     * @inheritdoc
+     * The name of the platform the iframe is used on.
+     * A list of valid platform names is issued by Nosto.
+     *
+     * @return string the platform name.
      */
     public function getPlatform()
     {
@@ -148,7 +153,9 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
     }
 
     /**
-     * @inheritdoc
+     * The first name of the user who is loading the config iframe.
+     *
+     * @return string the first name.
      */
     public function getFirstName()
     {
@@ -166,7 +173,9 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
     }
 
     /**
-     * @inheritdoc
+     * The last name of the user who is loading the config iframe.
+     *
+     * @return string the last name.
      */
     public function getLastName()
     {
@@ -184,7 +193,9 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
     }
 
     /**
-     * @inheritdoc
+     * The email address of the user who is loading the config iframe.
+     *
+     * @return string the email address.
      */
     public function getEmail()
     {
@@ -202,7 +213,9 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
     }
 
     /**
-     * @inheritdoc
+     * The 2-letter ISO code (ISO 639-1) for the language of the user who is loading the config iframe.
+     *
+     * @return string the language ISO code.
      */
     public function getLanguageIsoCode()
     {
@@ -210,7 +223,9 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
     }
 
     /**
-     * @inheritdoc
+     * The 2-letter ISO code (ISO 639-1) for the language of the shop the account belongs to.
+     *
+     * @return string the language ISO code.
      */
     public function getLanguageIsoCodeShop()
     {
@@ -218,7 +233,10 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
     }
 
     /**
-     * @inheritdoc
+     * Unique identifier for the e-commerce installation.
+     * This identifier is used to link accounts together that are created on the same installation.
+     *
+     * @return string the identifier.
      */
     public function getUniqueId()
     {
@@ -226,7 +244,9 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
     }
 
     /**
-     * @inheritdoc
+     * The version number of the platform the e-commerce installation is running on.
+     *
+     * @return string the platform version.
      */
     public function getVersionPlatform()
     {
@@ -234,7 +254,9 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
     }
 
     /**
-     * @inheritdoc
+     * The version number of the Nosto module/extension running on the e-commerce installation.
+     *
+     * @return string the module version.
      */
     public function getVersionModule()
     {
@@ -243,7 +265,11 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
     }
 
     /**
-     * @inheritdoc
+     * An absolute URL for any product page in the shop the account is linked to, with the nostodebug GET parameter enabled.
+     * e.g. http://myshop.com/products/product123?nostodebug=true
+     * This is used in the config iframe to allow the user to quickly preview the recommendations on the given page.
+     *
+     * @return string the url.
      */
     public function getPreviewUrlProduct()
     {
@@ -251,7 +277,11 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
     }
 
     /**
-     * @inheritdoc
+     * An absolute URL for any category page in the shop the account is linked to, with the nostodebug GET parameter enabled.
+     * e.g. http://myshop.com/products/category123?nostodebug=true
+     * This is used in the config iframe to allow the user to quickly preview the recommendations on the given page.
+     *
+     * @return string the url.
      */
     public function getPreviewUrlCategory()
     {
@@ -259,7 +289,11 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
     }
 
     /**
-     * @inheritdoc
+     * An absolute URL for the search page in the shop the account is linked to, with the nostodebug GET parameter enabled.
+     * e.g. http://myshop.com/search?query=red?nostodebug=true
+     * This is used in the config iframe to allow the user to quickly preview the recommendations on the given page.
+     *
+     * @return string the url.
      */
     public function getPreviewUrlSearch()
     {
@@ -267,7 +301,11 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
     }
 
     /**
-     * @inheritdoc
+     * An absolute URL for the shopping cart page in the shop the account is linked to, with the nostodebug GET parameter enabled.
+     * e.g. http://myshop.com/cart?nostodebug=true
+     * This is used in the config iframe to allow the user to quickly preview the recommendations on the given page.
+     *
+     * @return string the url.
      */
     public function getPreviewUrlCart()
     {
@@ -275,7 +313,11 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
     }
 
     /**
-     * @inheritdoc
+     * An absolute URL for the front page in the shop the account is linked to, with the nostodebug GET parameter enabled.
+     * e.g. http://myshop.com?nostodebug=true
+     * This is used in the config iframe to allow the user to quickly preview the recommendations on the given page.
+     *
+     * @return string the url.
      */
     public function getPreviewUrlFront()
     {

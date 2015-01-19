@@ -18,19 +18,19 @@
  * versions in the future. If you wish to customize Magento for your
  * needs please refer to http://www.magentocommerce.com for more information.
  *
- * @category    Nosto
- * @package     Nosto_Tagging
- * @copyright   Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
- * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @category  Nosto
+ * @package   Nosto_Tagging
+ * @copyright Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
 /**
  * Meta data class which holds information about an item included in an order.
  * This is used during the order confirmation API request and the order history export.
  *
- * @category    Nosto
- * @package     Nosto_Tagging
- * @author      Nosto Solutions Ltd
+ * @category Nosto
+ * @package  Nosto_Tagging
+ * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
 class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract implements NostoOrderPurchasedItemInterface
 {
@@ -56,12 +56,14 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
     protected $unitPrice;
 
     /**
-     * @var string the 3-letter ISO code (ISO 4217) for the currency the item was purchased in.
+     * @var string the 3-letter ISO code (ISO 4217) for the currency of the item.
      */
     protected $currencyCode;
 
     /**
-     * @inheritdoc
+     * Internal Magento constructor.
+     *
+     * @return void
      */
     protected function _construct()
     {
@@ -69,7 +71,10 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
     }
 
     /**
-     * @inheritdoc
+     * The unique identifier of the purchased item.
+     * If this item is for discounts or shipping cost, the id can be 0.
+     *
+     * @return string|int
      */
     public function getProductId()
     {
@@ -87,7 +92,9 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
     }
 
     /**
-     * @inheritdoc
+     * The quantity of the item included in the order.
+     *
+     * @return int the quantity.
      */
     public function getQuantity()
     {
@@ -105,7 +112,9 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
     }
 
     /**
-     * @inheritdoc
+     * The name of the item included in the order.
+     *
+     * @return string the name.
      */
     public function getName()
     {
@@ -123,7 +132,9 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
     }
 
     /**
-     * @inheritdoc
+     * The unit price of the item included in the order.
+     *
+     * @return float the unit price.
      */
     public function getUnitPrice()
     {
@@ -141,7 +152,9 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
     }
 
     /**
-     * @inheritdoc
+     * The 3-letter ISO code (ISO 4217) for the currency the item was purchased in.
+     *
+     * @return string the currency ISO code.
      */
     public function getCurrencyCode()
     {

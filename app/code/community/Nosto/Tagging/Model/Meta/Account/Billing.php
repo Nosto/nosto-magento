@@ -18,19 +18,19 @@
  * versions in the future. If you wish to customize Magento for your
  * needs please refer to http://www.magentocommerce.com for more information.
  *
- * @category    Nosto
- * @package     Nosto_Tagging
- * @copyright   Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
- * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @category  Nosto
+ * @package   Nosto_Tagging
+ * @copyright Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
 /**
  * Meta data class which holds information about Nosto account billing.
  * This is used during the Nosto account creation.
  *
- * @category    Nosto
- * @package     Nosto_Tagging
- * @author      Nosto Solutions Ltd
+ * @category Nosto
+ * @package  Nosto_Tagging
+ * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
 class Nosto_Tagging_Model_Meta_Account_Billing extends Mage_Core_Model_Abstract implements NostoAccountMetaDataBillingDetailsInterface
 {
@@ -51,7 +51,9 @@ class Nosto_Tagging_Model_Meta_Account_Billing extends Mage_Core_Model_Abstract 
     }
 
     /**
-     * @inheritdoc
+     * Internal Magento constructor.
+     *
+     * @return void
      */
     protected function _construct()
     {
@@ -69,7 +71,9 @@ class Nosto_Tagging_Model_Meta_Account_Billing extends Mage_Core_Model_Abstract 
     }
 
     /**
-     * @inheritdoc
+     * The 2-letter ISO code (ISO 3166-1 alpha-2) for the country used in account's billing details.
+     *
+     * @return string the country ISO code.
      */
     public function getCountry()
     {
