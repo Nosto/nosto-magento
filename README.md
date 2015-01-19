@@ -6,19 +6,13 @@ If the store uses a layout similar to the Magento default layout, the required t
 to the correct places. If the layout is heavily customized, the tagging blocks must be added manually to the correct
 places in the layout.
 
-The extension has 4 store specific settings in Magento Backend:
-
-* Nosto account name
-* Enable/Disable Nosto tagging
-* Nosto server name (default: connect.nosto.com)
-* Collect email-addresses (default: Yes)
-
 After Nosto tagging has been implemented to the store, Nosto can produce product recommendations and other elements
 back to the store. These elements are called Nosto elements and they can be added to the store by dropping simple
 placeholder div-elements to correct places in the store.
 
 By default the extension creates the following nosto elements:
 
+* 4 elements on the front page ( "frontpage-nosto-1", "frontpage-nosto-2", "frontpage-nosto-3", "frontpage-nosto-4" )
 * 3 elements to the product page ( "nosto-page-product1", "nosto-page-product2", "nosto-page-product3" )
 * 3 elements to the shopping cart page ( "nosto-page-cart1", "nosto-page-car2, "nosto-page-cart3" )
 * 2 elements to the product category page, top and bottom ( "nosto-page-category1"  and "nosto-page-category2" )
@@ -47,26 +41,27 @@ layout:
 
 Please refer to the Magento documentation in order to get the module to appear in your site backend.
 
-After installing the module, go to your site backend and navigate to the "System/Configuration/" section. Locate
-the "Nosto Tagging" settings under the "Services" section of the configuration. The settings page for Nosto Tagging
-contains four settings:
+After installing the module, go to your site backend and click the "Nosto" menu item in the top menu. If you cannot see
+this menu item, please clear the cache and try again. On the settings page you can create a Nosto account or attach a
+existing Nosto account to each store you have configured in Magento. You will need one Nosto account per store where
+you want to use Nosto.
 
-* Enable/Disable switch
-    - This will enable/disable the extension output in the same way as the built-in "Disable Modules Output" setting
-* Server address
-    - The Nosto server address
-    - Pre-filled, so no need to change this
-* Account name
-    - Name of your Nosto account. If you do not have such an account yet, please refer to the Nosto documentation at
-    http://support.nosto.com.
-* Collect email-addresses
-    - Enable triggered e-mail campaigns separately from the Nosto admin panel
-    - The default is "Yes"
+In order to create a new account for a store, you first choose the store in the drop down menu at the top left of the
+page. After this you choose "No" where it says "Do you have an existing Nosto account?". This shows you a input field,
+where you should put the email address of the Nosto account owner, and a create button. Clocking this button will create
+a new account through Nosto's API, and show you the configuration page for this account. You need to repeat this
+procedure for each store you want to configure Nosto for.
 
-After entering your account information you can safely save the configuration. Now the extension is ready for use.
-Please note that the extension will not make any visual changes to your shops front office at this time. This is normal
-procedure as configurations in the Nosto backend are required for the extension to be able to show any product
-recommendations.
+If you already have a Nosto account, you can attach it to any of your stores by simply choosing "Yes" where it says
+"Do you have an existing Nosto account?" and clicking the add button. This will take you to Nosto where you need to
+authenticate by logging in with your Nosto account credentials. After this you are presented with a choice of Nosto
+accounts that are linked with your Nosto user. You need to choose the account you want to attach to your store and
+click the accept button. This will take you back to your shops backend and you should see the configuration page for
+you account. Please note that you can abort the "attaching process" at any time.
+
+Now the extension is ready for use. Please note that the extension will not make any visual changes to your shops front
+office at this time. This is normal procedure as configurations in the Nosto backend are required for the extension to
+be able to show any product recommendations.
 
 Please refer to the Nosto documentation, or contact Nosto support, for information and instructions on how to proceed:
 [Nosto support] (http://support.nosto.com)
@@ -101,6 +96,16 @@ The extension is released under Open Software License ("OSL") v3.0
 * Magento Community Edition; v1.6.x.x - v1.9.x.x
 
 ## Changelog
+
+### 1.2.0
+* New configuration page for the extension in the store backend
+* Support for creating new Nosto accounts from the store backend
+* Support for linking existing Nosto accounts from the store backend
+* Support for German, Spanish and French localizations in the store backend
+* Support for additional recommendation blocks on the shops home page
+* Support for server-to-server order confirmations
+* Support for order/product history data export upon Nosto account creation
+* Support for product data re-crawling when product data changes in the store
 
 ### 1.1.7
 * Magento CE 1.9 dependency version fix
