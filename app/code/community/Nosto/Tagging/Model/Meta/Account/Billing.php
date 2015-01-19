@@ -35,7 +35,7 @@
 class Nosto_Tagging_Model_Meta_Account_Billing extends Mage_Core_Model_Abstract implements NostoAccountMetaDataBillingDetailsInterface
 {
     /**
-     * @var string country ISO (ISO 3166-1 alpha-2) code for the account billing details.
+     * @var string country ISO (ISO 3166-1 alpha-2) code for account billing details.
      */
     protected $country;
 
@@ -71,7 +71,7 @@ class Nosto_Tagging_Model_Meta_Account_Billing extends Mage_Core_Model_Abstract 
     }
 
     /**
-     * The 2-letter ISO code (ISO 3166-1 alpha-2) for the country used in account's billing details.
+     * The 2-letter ISO code (ISO 3166-1 alpha-2) for country in billing details.
      *
      * @return string the country ISO code.
      */

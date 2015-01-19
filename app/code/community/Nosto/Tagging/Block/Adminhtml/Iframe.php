@@ -35,7 +35,8 @@
 class Nosto_tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
 {
     /**
-     * Gets the iframe url from parent block, which should be Nosto_tagging_Block_Adminhtml_Wizard.
+     * Gets the iframe url from parent block, which should be
+     * Nosto_tagging_Block_Adminhtml_Wizard.
      *
      * @return string the iframe url or empty string if cannot be found in parent.
      */

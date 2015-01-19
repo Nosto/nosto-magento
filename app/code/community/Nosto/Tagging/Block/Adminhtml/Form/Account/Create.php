@@ -26,7 +26,8 @@
 
 /**
  * 'Create new account' form block.
- * Creates the html form needed for submitting the 'Create new account' request to the admin controller.
+ * Creates the html form needed for submitting the 'Create new account' request to
+ * the admin controller.
  *
  * @category Nosto
  * @package  Nosto_Tagging
@@ -61,7 +62,10 @@ class Nosto_Tagging_Block_Adminhtml_Form_Account_Create extends Mage_Adminhtml_B
             'class' => 'required-entry validate-email',
         ));
         $form->addField('nosto_terms_and_conditions', 'note', array(
-            'text' => $this->__('By creating a new account you agree to Nosto\'s') . ' <a href="http://www.nosto.com/terms" target="_blank">' . $this->__('Terms and Conditions') . '</a>',
+            'text' => $this->__('By creating a new account you agree to Nosto\'s')
+                . ' <a href="http://www.nosto.com/terms" target="_blank">'
+                . $this->__('Terms and Conditions')
+                . '</a>',
         ));
         $form->addField('nosto_create_account_submit', 'submit', array(
             'class' => 'form-button',

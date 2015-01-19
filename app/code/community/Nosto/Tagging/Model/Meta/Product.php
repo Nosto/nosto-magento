@@ -253,8 +253,6 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
      * Loads the product info from a Magento product model.
      *
      * @param Mage_Catalog_Model_Product $product the product model.
-     *
-     * @return void
      */
     public function loadData(Mage_Catalog_Model_Product $product)
     {

@@ -28,7 +28,8 @@ require_once Mage::getBaseDir('lib') . '/nosto/php-sdk/src/config.inc.php';
 
 /**
  * History data export controller.
- * Handles the export of history data for orders and products that nosto can call when a new account has been set up.
+ * Handles the export of history data for orders and products that nosto can call
+ * when a new account has been set up.
  * The exported data is encrypted with AES as the endpoint is publicly available.
  *
  * @category Nosto

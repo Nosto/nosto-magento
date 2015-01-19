@@ -87,9 +87,17 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
         parent::__construct();
 
         $store = Mage::app()->getStore();
-        $this->title = $store->getWebsite()->getName() . ' - ' . $store->getGroup()->getName() . ' - ' . $store->getName();
+        $this->title = $store->getWebsite()->getName()
+            . ' - '
+            . $store->getGroup()->getName()
+            . ' - '
+            . $store->getName();
         $this->name = substr(sha1(rand()), 0, 8);
-        $this->frontPageUrl = NostoHttpRequest::replaceQueryParamInUrl('___store', $store->getCode(), $store->getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB));
+        $this->frontPageUrl = NostoHttpRequest::replaceQueryParamInUrl(
+            '___store',
+            $store->getCode(),
+            $store->getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB)
+        );
         $this->currencyCode = $store->getBaseCurrencyCode();
         $this->languageCode = substr($store->getConfig('general/locale/code'), 0, 2);
         $this->ownerLanguageCode = substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2);
@@ -139,7 +147,8 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
 
     /**
      * The name of the account to create.
-     * This has to follow the pattern of "[platform name]-[8 character lowercase alpha numeric string]".
+     * This has to follow the pattern of
+     * "[platform name]-[8 character lowercase alpha numeric string]".
      *
      * @return string the account name.
      */
@@ -170,7 +179,8 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     }
 
     /**
-     * Absolute url to the front page of the shop for which the account is created for.
+     * Absolute url to the front page of the shop for which the account is created
+     * for.
      *
      * @return string the url.
      */
@@ -190,7 +200,8 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     }
 
     /**
-     * The 3-letter ISO code (ISO 4217) for the currency used by the shop for which the account is created for.
+     * The 3-letter ISO code (ISO 4217) for the currency used by the shop for which
+     * the account is created for.
      *
      * @return string the currency ISO code.
      */
@@ -210,7 +221,8 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     }
 
     /**
-     * The 2-letter ISO code (ISO 639-1) for the language used by the shop for which the account is created for.
+     * The 2-letter ISO code (ISO 639-1) for the language used by the shop for which
+     * the account is created for.
      *
      * @return string the language ISO code.
      */
@@ -230,7 +242,8 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     }
 
     /**
-     * The 2-letter ISO code (ISO 639-1) for the language of the account owner who is creating the account.
+     * The 2-letter ISO code (ISO 639-1) for the language of the account owner who
+     * is creating the account.
      *
      * @return string the language ISO code.
      */

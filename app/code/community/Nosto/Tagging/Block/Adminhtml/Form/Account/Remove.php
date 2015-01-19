@@ -26,7 +26,8 @@
 
 /**
  * 'Remove Nosto' form block.
- * Creates the html form needed for submitting 'Remove Nosto' requests to the admin controller.
+ * Creates the html form needed for submitting 'Remove Nosto' requests to the admin
+ * controller.
  *
  * @category Nosto
  * @package  Nosto_Tagging
@@ -63,7 +64,8 @@ class Nosto_Tagging_Block_Adminhtml_Form_Account_Remove extends Mage_Adminhtml_B
     }
 
     /**
-     * Gets the Nosto account name from the parent block, which should be Nosto_tagging_Block_Adminhtml_Wizard.
+     * Gets the Nosto account name from the parent block, which should be
+     * Nosto_tagging_Block_Adminhtml_Wizard.
      *
      * @return string the account name or empty string if not found in parent.
      */

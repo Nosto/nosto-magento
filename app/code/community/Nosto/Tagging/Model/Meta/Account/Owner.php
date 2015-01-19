@@ -85,7 +85,9 @@ class Nosto_Tagging_Model_Meta_Account_Owner extends Mage_Core_Model_Abstract im
     }
 
     /**
-     * @inheritdoc
+     * The first name of the account owner.
+     *
+     * @return string the first name.
      */
     public function getFirstName()
     {
@@ -103,7 +105,9 @@ class Nosto_Tagging_Model_Meta_Account_Owner extends Mage_Core_Model_Abstract im
     }
 
     /**
-     * @inheritdoc
+     * The last name of the account owner.
+     *
+     * @return string the last name.
      */
     public function getLastName()
     {
@@ -121,7 +125,9 @@ class Nosto_Tagging_Model_Meta_Account_Owner extends Mage_Core_Model_Abstract im
     }
 
     /**
-     * @inheritdoc
+     * The email address of the account owner.
+     *
+     * @return string the email address.
      */
     public function getEmail()
     {

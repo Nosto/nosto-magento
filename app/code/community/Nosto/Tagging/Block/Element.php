@@ -42,7 +42,8 @@ class Nosto_Tagging_Block_Element extends Mage_Core_Block_Template
     const DEFAULT_ID = 'missingDivIdParameter';
 
     /**
-     * Render HTML placeholder element for the product recommendations if the module is enabled for the current store.
+     * Render HTML placeholder element for the product recommendations if the module
+     * is enabled for the current store.
      *
      * @return string
      */
@@ -57,7 +58,8 @@ class Nosto_Tagging_Block_Element extends Mage_Core_Block_Template
     }
 
     /**
-     * Return the id of the element. If none is defined in the layout xml, then set a default one.
+     * Return the id of the element. If none is defined in the layout xml, then set
+     * a default one.
      *
      * @return string
      */

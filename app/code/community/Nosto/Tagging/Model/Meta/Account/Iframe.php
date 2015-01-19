@@ -25,7 +25,8 @@
  */
 
 /**
- * Meta data class which holds information to be sent to the Nosto account configuration iframe.
+ * Meta data class which holds information to be sent to the Nosto account
+ * configuration iframe.
  *
  * @category Nosto
  * @package  Nosto_Tagging
@@ -64,7 +65,7 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
     protected $languageIsoCodeShop;
 
     /**
-     * @var string unique ID that identifies the Magento installation and all the accounts within.
+     * @var string unique ID that identifies the Magento installation.
      */
     protected $uniqueId;
 
@@ -213,7 +214,8 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
     }
 
     /**
-     * The 2-letter ISO code (ISO 639-1) for the language of the user who is loading the config iframe.
+     * The 2-letter ISO code (ISO 639-1) for the language of the user who is loading
+     * the config iframe.
      *
      * @return string the language ISO code.
      */
@@ -223,7 +225,8 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
     }
 
     /**
-     * The 2-letter ISO code (ISO 639-1) for the language of the shop the account belongs to.
+     * The 2-letter ISO code (ISO 639-1) for the language of the shop the account
+     * belongs to.
      *
      * @return string the language ISO code.
      */
@@ -234,7 +237,8 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
 
     /**
      * Unique identifier for the e-commerce installation.
-     * This identifier is used to link accounts together that are created on the same installation.
+     * This identifier is used to link accounts together that are created on the
+     * same installation.
      *
      * @return string the identifier.
      */
@@ -254,7 +258,8 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
     }
 
     /**
-     * The version number of the Nosto module/extension running on the e-commerce installation.
+     * The version number of the Nosto module/extension running on the e-commerce
+     * installation.
      *
      * @return string the module version.
      */
@@ -265,9 +270,11 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
     }
 
     /**
-     * An absolute URL for any product page in the shop the account is linked to, with the nostodebug GET parameter enabled.
+     * An absolute URL for any product page in the shop the account is linked to,
+     * with the nostodebug GET parameter enabled.
      * e.g. http://myshop.com/products/product123?nostodebug=true
-     * This is used in the config iframe to allow the user to quickly preview the recommendations on the given page.
+     * This is used in the config iframe to allow the user to quickly preview the
+     * recommendations on the given page.
      *
      * @return string the url.
      */
@@ -277,9 +284,11 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
     }
 
     /**
-     * An absolute URL for any category page in the shop the account is linked to, with the nostodebug GET parameter enabled.
+     * An absolute URL for any category page in the shop the account is linked to,
+     * with the nostodebug GET parameter enabled.
      * e.g. http://myshop.com/products/category123?nostodebug=true
-     * This is used in the config iframe to allow the user to quickly preview the recommendations on the given page.
+     * This is used in the config iframe to allow the user to quickly preview the
+     * recommendations on the given page.
      *
      * @return string the url.
      */
@@ -289,9 +298,11 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
     }
 
     /**
-     * An absolute URL for the search page in the shop the account is linked to, with the nostodebug GET parameter enabled.
+     * An absolute URL for the search page in the shop the account is linked to,
+     * with the nostodebug GET parameter enabled.
      * e.g. http://myshop.com/search?query=red?nostodebug=true
-     * This is used in the config iframe to allow the user to quickly preview the recommendations on the given page.
+     * This is used in the config iframe to allow the user to quickly preview the
+     * recommendations on the given page.
      *
      * @return string the url.
      */
@@ -301,9 +312,11 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
     }
 
     /**
-     * An absolute URL for the shopping cart page in the shop the account is linked to, with the nostodebug GET parameter enabled.
+     * An absolute URL for the shopping cart page in the shop the account is linked
+     * to, with the nostodebug GET parameter enabled.
      * e.g. http://myshop.com/cart?nostodebug=true
-     * This is used in the config iframe to allow the user to quickly preview the recommendations on the given page.
+     * This is used in the config iframe to allow the user to quickly preview the
+     * recommendations on the given page.
      *
      * @return string the url.
      */
@@ -313,9 +326,11 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
     }
 
     /**
-     * An absolute URL for the front page in the shop the account is linked to, with the nostodebug GET parameter enabled.
+     * An absolute URL for the front page in the shop the account is linked to, with
+     * the nostodebug GET parameter enabled.
      * e.g. http://myshop.com?nostodebug=true
-     * This is used in the config iframe to allow the user to quickly preview the recommendations on the given page.
+     * This is used in the config iframe to allow the user to quickly preview the
+     * recommendations on the given page.
      *
      * @return string the url.
      */

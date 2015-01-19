@@ -26,7 +26,8 @@
 
 /**
  * Current category tagging block.
- * Adds meta-data to the HTML document for the current catalog category (including parent categories).
+ * Adds meta-data to the HTML document for the current catalog category (including
+ * parent categories).
  *
  * @category Nosto
  * @package  Nosto_Tagging
@@ -42,7 +43,8 @@ class Nosto_Tagging_Block_Category extends Mage_Core_Block_Template
     protected $_category;
 
     /**
-     * Render category string as hidden meta data if the module is enabled for the current store.
+     * Render category string as hidden meta data if the module is enabled for the
+     * current store.
      *
      * @return string
      */
@@ -67,7 +69,8 @@ class Nosto_Tagging_Block_Category extends Mage_Core_Block_Template
     {
         if (!$this->_category) {
             $category = Mage::registry('current_category');
-            $this->_category = Mage::helper('nosto_tagging')->buildCategoryString($category);
+            $this->_category = Mage::helper('nosto_tagging')
+                ->buildCategoryString($category);
         }
 
         return $this->_category;

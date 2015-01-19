@@ -36,10 +36,11 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_INSTALLATION_ID = 'nosto_tagging/installation/id';
 
     /**
-     * Builds a tagging string of the given category including all its parent categories.
+     * Builds a tagging string of the given category including all its parent
+     * categories.
      * The categories are sorted by their position in the category tree path.
      *
-     * @param Mage_Catalog_Model_Category $category
+     * @param Mage_Catalog_Model_Category $category the category model.
      *
      * @return string
      */
@@ -68,7 +69,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Formats date into Nosto format, i.e. Y-m-d.
      *
-     * @param string $date
+     * @param string $date the date to format.
      *
      * @return string
      */
@@ -79,7 +80,8 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Returns a unique ID that identifies this Magento installation.
-     * This ID is sent to the Nosto account config iframe and used to link all Nosto accounts used on this installation.
+     * This ID is sent to the Nosto account config iframe and used to link all Nosto
+     * accounts used on this installation.
      *
      * @return string the ID.
      */

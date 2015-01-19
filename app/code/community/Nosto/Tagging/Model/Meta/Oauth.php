@@ -34,7 +34,8 @@
 class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements NostoOAuthClientMetaDataInterface
 {
     /**
-     * @var string the url where the oauth2 server should redirect after authorization is done.
+     * @var string the url where the oauth2 server should redirect after
+     * authorization is done.
      */
     protected $redirectUrl;
 
@@ -51,7 +52,12 @@ class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements
     {
         parent::__construct();
 
-        $this->redirectUrl = Mage::getUrl('nosto/oauth', array('_store' => Mage::app()->getStore()->getId(), '_store_to_url' => true));
+        $this->redirectUrl = Mage::getUrl(
+            'nosto/oauth',
+            array(
+                '_store' => Mage::app()->getStore()->getId(), '_store_to_url' => true
+            )
+        );
         $this->languageIsoCode = substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2);
     }
 
@@ -89,7 +95,8 @@ class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements
 
     /**
      * The scopes for the OAuth2 request.
-     * These are used to request specific API tokens from Nosto and should almost always be the ones defined in NostoApiToken::$tokenNames.
+     * These are used to request specific API tokens from Nosto and should almost
+     * always be the ones defined in NostoApiToken::$tokenNames.
      *
      * @return array the scopes.
      */
@@ -100,8 +107,10 @@ class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements
     }
 
     /**
-     * The OAuth2 redirect url to where the OAuth2 server should redirect the user after authorizing the application to act on the users behalf.
-     * This url must by publicly accessible and the domain must match the one defined for the Nosto account.
+     * The OAuth2 redirect url to where the OAuth2 server should redirect the user
+     * after authorizing the application to act on the users behalf.
+     * This url must by publicly accessible and the domain must match the one
+     * defined for the Nosto account.
      *
      * @return string the url.
      */
@@ -121,7 +130,8 @@ class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements
     }
 
     /**
-     * The 2-letter ISO code (ISO 639-1) for the language the OAuth2 server uses for UI localization.
+     * The 2-letter ISO code (ISO 639-1) for the language the OAuth2 server uses for
+     * UI localization.
      *
      * @return string the ISO code.
      */

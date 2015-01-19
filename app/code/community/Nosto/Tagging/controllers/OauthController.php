@@ -37,16 +37,21 @@ require_once Mage::getBaseDir('lib') . '/nosto/php-sdk/src/config.inc.php';
 class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
 {
     /**
-     * Handles the redirect from Nosto oauth2 authorization server when an existing account is connected to a store.
-     * This is handled in the front end as the oauth2 server validates the "return_url" sent in the first step of the
-     * authorization cycle, and requires it to be from the same domain that the account is configured for and only
+     * Handles the redirect from Nosto oauth2 authorization server when an existing
+     * account is connected to a store.
+     * This is handled in the front end as the oauth2 server validates the
+     * "return_url" sent in the first step of the authorization cycle, and requires
+     * it to be from the same domain that the account is configured for and only
      * redirects to that domain.
      */
     public function indexAction()
     {
         if (($code = $this->getRequest()->getParam('code')) !== null) {
             try {
-                $account = NostoAccount::syncFromNosto(Mage::helper('nosto_tagging/oauth')->getMetaData(), $code);
+                $account = NostoAccount::syncFromNosto(
+                    Mage::helper('nosto_tagging/oauth')->getMetaData(),
+                    $code
+                );
                 if (Mage::helper('nosto_tagging/account')->save($account)) {
                     $params = array(
                         'success' => $this->__('Account %s successfully connected to Nosto.', $account->name),

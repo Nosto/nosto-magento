@@ -35,14 +35,13 @@
 class Nosto_Tagging_Block_Cart extends Mage_Checkout_Block_Cart_Abstract
 {
     /**
-     * Cached items in cart.
-     *
-     * @var Mage_Sales_Model_Quote_Item[]
+     * @var Mage_Sales_Model_Quote_Item[] Cached items in cart.
      */
     protected $_items;
 
     /**
-     * Render shopping cart content as hidden meta data if the module is enabled for the current store.
+     * Render shopping cart content as hidden meta data if the module is enabled for
+     * the current store.
      *
      * @return string
      */
@@ -55,12 +54,15 @@ class Nosto_Tagging_Block_Cart extends Mage_Checkout_Block_Cart_Abstract
         }
 
         // If we have items in the cart, then update the Nosto customer quote link.
-        // This is done to enable server-to-server order confirmation requests once the quote is turned into an order.
-        // We do it here as this will be run on every request when we have a quote. This is important as the Nosto
-        // customer ID will change after a period of time while the Mage quote ID can be the same.
-        // The ideal place to run it would be once when the customer goes to the `checkout/cart` page, but there are
-        // no events that are fired on that page only, and the cart page recommendation elements we output come
-        // through a generic block that cannot be used for this specific action.
+        // This is done to enable server-to-server order confirmation requests once
+        // the quote is turned into an order.
+        // We do it here as this will be run on every request when we have a quote.
+        // This is important as the Nosto customer ID will change after a period of
+        // time while the Mage quote ID can be the same.
+        // The ideal place to run it would be once when the customer goes to the
+        // `checkout/cart` page, but there are no events that are fired on that page
+        // only, and the cart page recommendation elements we output come through a
+        // generic block that cannot be used for this specific action.
         if (count($this->getItems()) > 0) {
             Mage::helper('nosto_tagging/customer')->updateNostoId();
         }
@@ -69,7 +71,8 @@ class Nosto_Tagging_Block_Cart extends Mage_Checkout_Block_Cart_Abstract
     }
 
     /**
-     * Returns all visible cart items. If it is a bundle product with dynamic price settings, we get it's products
+     * Returns all visible cart items. If it is a bundle product with dynamic price
+     * settings, we get it's products
      * and return them. Fixed price bundle is not supported.
      *
      * @return Mage_Sales_Model_Quote_Item[]
@@ -100,9 +103,10 @@ class Nosto_Tagging_Block_Cart extends Mage_Checkout_Block_Cart_Abstract
 
     /**
      * Returns the product id for a quote item.
-     * If the product type is "grouped", then return the grouped product's id and not the id of the actual product.
+     * If the product type is "grouped", then return the grouped product's id and not
+     * the id of the actual product.
      *
-     * @param Mage_Sales_Model_Quote_Item $item
+     * @param Mage_Sales_Model_Quote_Item $item the quote item model.
      *
      * @return int
      */

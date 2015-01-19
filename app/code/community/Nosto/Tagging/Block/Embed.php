@@ -38,8 +38,8 @@ class Nosto_Tagging_Block_Embed extends Mage_Core_Block_Template
     const DEFAULT_SERVER_ADDRESS = 'connect.nosto.com';
 
     /**
-     * Render JavaScript that handles the data gathering and displaying of recommended products
-     * if the module is enabled for the current store.
+     * Render JavaScript that handles the data gathering and displaying of
+     * recommended products if the module is enabled for the current store.
      *
      * @return string
      */
@@ -70,12 +70,15 @@ class Nosto_Tagging_Block_Embed extends Mage_Core_Block_Template
 
     /**
      * Gets the Nosto server address.
-     * This is either taken from the local environment if exists or else it defaults to "connect.nosto.com".
+     * This is either taken from the local environment if exists or else it defaults
+     * to "connect.nosto.com".
      *
      * @return string the url.
      */
     public function getServerAddress()
     {
-        return isset($_ENV['NOSTO_SERVER_URL']) ? $_ENV['NOSTO_SERVER_URL'] : self::DEFAULT_SERVER_ADDRESS;
+        return isset($_ENV['NOSTO_SERVER_URL'])
+            ? $_ENV['NOSTO_SERVER_URL']
+            : self::DEFAULT_SERVER_ADDRESS;
     }
 }

@@ -36,7 +36,8 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
 {
     /**
      * Render customer info as hidden meta data if the customer is logged in,
-     * the module is enabled for the current store and the "collect_email_addresses" option is enabled.
+     * the module is enabled for the current store and the "collect_email_addresses"
+     * option is enabled.
      *
      * @return string
      */

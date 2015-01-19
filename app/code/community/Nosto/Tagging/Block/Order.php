@@ -35,7 +35,8 @@
 class Nosto_Tagging_Block_Order extends Mage_Checkout_Block_Success
 {
     /**
-     * Render order info as hidden meta data if the module is enabled for the current store.
+     * Render order info as hidden meta data if the module is enabled for the
+     * current store.
      *
      * @return string
      */
@@ -84,7 +85,8 @@ class Nosto_Tagging_Block_Order extends Mage_Checkout_Block_Success
         /** @var $visibleItems Mage_Sales_Model_Order_Item[] */
         $visibleItems = $order->getAllVisibleItems();
         foreach ($visibleItems as $visibleItem) {
-            $product = Mage::getModel('catalog/product')->load($visibleItem->getProductId());
+            $product = Mage::getModel('catalog/product')
+                ->load($visibleItem->getProductId());
             if ($product->getTypeId() === Mage_Catalog_Model_Product_Type::TYPE_BUNDLE) {
                 if ((int)$product->getPriceType() === Mage_Bundle_Model_Product_Price::PRICE_TYPE_FIXED) {
                     continue;
@@ -125,11 +127,12 @@ class Nosto_Tagging_Block_Order extends Mage_Checkout_Block_Success
     }
 
     /**
-     * Returns an array of generic data objects for discount and shipping from the order.
+     * Returns an array of generic data objects for discount and shipping from the
+     * order.
      *
      * @see Nosto_Tagging_Block_Order::getOrderItems()
      *
-     * @param Mage_Sales_Model_Order $order
+     * @param Mage_Sales_Model_Order $order the order model.
      *
      * @return object[]
      */
@@ -160,9 +163,10 @@ class Nosto_Tagging_Block_Order extends Mage_Checkout_Block_Success
 
     /**
      * Returns the product id for a order item.
-     * If the product type is "grouped", then return the grouped product's id and not the id of the actual product.
+     * If the product type is "grouped", then return the grouped product's id and
+     * not the id of the actual product.
      *
-     * @param Mage_Sales_Model_Order_Item $item
+     * @param Mage_Sales_Model_Order_Item $item the order item model.
      *
      * @return int
      */

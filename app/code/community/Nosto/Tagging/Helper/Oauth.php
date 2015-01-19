@@ -36,7 +36,8 @@ require_once Mage::getBaseDir('lib') . '/nosto/php-sdk/src/config.inc.php';
 class Nosto_Tagging_Helper_Oauth extends Mage_Core_Helper_Abstract
 {
     /**
-     * Returns the meta data model needed for using the OAuth2 client included in the Nosto SDk.
+     * Returns the meta data model needed for using the OAuth2 client included in
+     * the Nosto SDk.
      *
      * @return Nosto_Tagging_Model_Meta_Oauth the meta data instance.
      */

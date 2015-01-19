@@ -26,7 +26,8 @@
 
 /**
  * "Connect to Nosto" form block.
- * Creates the html form needed for submitting the "Connect to Nosto" request to the admin controller.
+ * Creates the html form needed for submitting the "Connect to Nosto" request to the
+ * admin controller.
  *
  * @category Nosto
  * @package  Nosto_Tagging

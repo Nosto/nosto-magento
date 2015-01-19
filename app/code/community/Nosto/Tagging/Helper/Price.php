@@ -36,7 +36,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
     /**
      * Formats price into Nosto format, e.g. 1000.99.
      *
-     * @param string|int|float $price
+     * @param string|int|float $price the price to format.
      *
      * @return string
      */
@@ -48,7 +48,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
     /**
      * Gets the unit price for a product model.
      *
-     * @param Mage_Catalog_Model_Product $product
+     * @param Mage_Catalog_Model_Product $product the product model.
      *
      * @return float
      */
@@ -60,7 +60,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
     /**
      * Get the final price for a product model.
      *
-     * @param Mage_Catalog_Model_Product $product
+     * @param Mage_Catalog_Model_Product $product the product model.
      *
      * @return float
      */
@@ -72,8 +72,8 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
     /**
      * Get unit/final price for a product model.
      *
-     * @param Mage_Catalog_Model_Product $product
-     * @param bool $finalPrice
+     * @param Mage_Catalog_Model_Product $product the product model.
+     * @param bool                       $finalPrice if the final price should be returned.
      *
      * @return float
      */

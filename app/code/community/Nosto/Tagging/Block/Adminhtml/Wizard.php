@@ -46,7 +46,8 @@ class Nosto_tagging_Block_Adminhtml_Wizard extends Mage_Adminhtml_Block_Template
 
     /**
      * Gets the iframe url for the account settings page from Nosto.
-     * This url is only returned if the current admin user can be logged in with SSO to Nosto.
+     * This url is only returned if the current admin user can be logged in with SSO
+     * to Nosto.
      *
      * @return string the iframe url or empty string if it cannot be created.
      */
