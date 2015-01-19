@@ -20,6 +20,7 @@
  *
  * @category  Nosto
  * @package   Nosto_Tagging
+ * @author    Nosto Solutions Ltd <magento@nosto.com>
  * @copyright Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -28,9 +29,9 @@ require_once Mage::getBaseDir('lib') . '/nosto/php-sdk/src/config.inc.php';
 
 /**
  * History data export controller.
- * Handles the export of history data for orders and products that nosto can call
- * when a new account has been set up.
- * The exported data is encrypted with AES as the endpoint is publicly available.
+ * Handles the export of history data for orders and products that nosto can
+ * call when a new account has been set up.
+ * The exported data is encrypted with AES as the endpoint is public.
  *
  * @category Nosto
  * @package  Nosto_Tagging
@@ -50,7 +51,9 @@ class Nosto_tagging_ExportController extends Mage_Core_Controller_Front_Action
             $orders = Mage::getModel('sales/order')
                 ->getCollection()
                 ->addFieldToFilter('store_id', Mage::app()->getStore()->getId())
-                ->addAttributeToFilter('status', Mage_Sales_Model_Order::STATE_COMPLETE)
+                ->addAttributeToFilter(
+                    'status', Mage_Sales_Model_Order::STATE_COMPLETE
+                )
                 ->setPageSize($pageSize)
                 ->setCurPage($currentPage);
             if ($currentPage > $orders->getLastPageNumber()) {
@@ -79,8 +82,15 @@ class Nosto_tagging_ExportController extends Mage_Core_Controller_Front_Action
                 ->getCollection()
                 ->addStoreFilter(Mage::app()->getStore()->getId())
                 ->addAttributeToSelect('*')
-                ->addAttributeToFilter('status', array('eq' => Mage_Catalog_Model_Product_Status::STATUS_ENABLED))
-                ->addFieldToFilter('visibility', Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH)
+                ->addAttributeToFilter(
+                    'status', array(
+                        'eq' => Mage_Catalog_Model_Product_Status::STATUS_ENABLED
+                    )
+                )
+                ->addFieldToFilter(
+                    'visibility',
+                    Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH
+                )
                 ->setPageSize($pageSize)
                 ->setCurPage($currentPage);
             if ($currentPage > $products->getLastPageNumber()) {
@@ -110,8 +120,8 @@ class Nosto_tagging_ExportController extends Mage_Core_Controller_Front_Action
     {
         $account = Mage::helper('nosto_tagging/account')->find();
         if ($account !== null) {
-            $cipher_text = NostoExporter::export($account, $collection);
-            echo $cipher_text;
+            $cipherText = NostoExporter::export($account, $collection);
+            echo $cipherText;
         }
         die();
     }

@@ -20,6 +20,7 @@
  *
  * @category  Nosto
  * @package   Nosto_Tagging
+ * @author    Nosto Solutions Ltd <magento@nosto.com>
  * @copyright Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -37,12 +38,12 @@ class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements
      * @var string the url where the oauth2 server should redirect after
      * authorization is done.
      */
-    protected $redirectUrl;
+    protected $_redirectUrl;
 
     /**
      * @var string the language ISO code for localization on oauth2 server.
      */
-    protected $languageIsoCode;
+    protected $_languageIsoCode;
 
     /**
      * Constructor.
@@ -52,19 +53,20 @@ class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements
     {
         parent::__construct();
 
-        $this->redirectUrl = Mage::getUrl(
+        $this->_redirectUrl = Mage::getUrl(
             'nosto/oauth',
             array(
-                '_store' => Mage::app()->getStore()->getId(), '_store_to_url' => true
+                '_store' => Mage::app()->getStore()->getId(),
+                '_store_to_url' => true
             )
         );
-        $this->languageIsoCode = substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2);
+        $this->_languageIsoCode = substr(
+            Mage::app()->getLocale()->getLocaleCode(), 0, 2
+        );
     }
 
     /**
-     * Internal Magento constructor.
-     *
-     * @return void
+     * @inheritdoc
      */
     protected function _construct()
     {
@@ -95,8 +97,8 @@ class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements
 
     /**
      * The scopes for the OAuth2 request.
-     * These are used to request specific API tokens from Nosto and should almost
-     * always be the ones defined in NostoApiToken::$tokenNames.
+     * These are used to request specific API tokens from Nosto and should
+     * almost always be the ones defined in NostoApiToken::$tokenNames.
      *
      * @return array the scopes.
      */
@@ -107,8 +109,8 @@ class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements
     }
 
     /**
-     * The OAuth2 redirect url to where the OAuth2 server should redirect the user
-     * after authorizing the application to act on the users behalf.
+     * The OAuth2 redirect url to where the OAuth2 server should redirect the
+     * user after authorizing the application to act on the users behalf.
      * This url must by publicly accessible and the domain must match the one
      * defined for the Nosto account.
      *
@@ -116,7 +118,7 @@ class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements
      */
     public function getRedirectUrl()
     {
-        return $this->redirectUrl;
+        return $this->_redirectUrl;
     }
 
     /**
@@ -126,18 +128,18 @@ class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements
      */
     public function setRedirectUrl($url)
     {
-        $this->redirectUrl = $url;
+        $this->_redirectUrl = $url;
     }
 
     /**
-     * The 2-letter ISO code (ISO 639-1) for the language the OAuth2 server uses for
-     * UI localization.
+     * The 2-letter ISO code (ISO 639-1) for the language the OAuth2 server
+     * uses for UI localization.
      *
      * @return string the ISO code.
      */
     public function getLanguageIsoCode()
     {
-        return $this->languageIsoCode;
+        return $this->_languageIsoCode;
     }
 
     /**
@@ -147,6 +149,6 @@ class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements
      */
     public function setLanguageIsoCode($code)
     {
-        $this->languageIsoCode = $code;
+        $this->_languageIsoCode = $code;
     }
 }

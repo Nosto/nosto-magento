@@ -20,13 +20,15 @@
  *
  * @category  Nosto
  * @package   Nosto_Tagging
+ * @author    Nosto Solutions Ltd <magento@nosto.com>
  * @copyright Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
 /**
  * Meta data class which holds information about the buyer of an order.
- * This is used during the order confirmation API request and the order history export.
+ * This is used during the order confirmation API request and the order history
+ * export.
  *
  * @category Nosto
  * @package  Nosto_Tagging
@@ -37,22 +39,20 @@ class Nosto_Tagging_Model_Meta_Order_Buyer extends Mage_Core_Model_Abstract impl
     /**
      * @var string the first name of the user who placed the order.
      */
-    protected $firstName;
+    protected $_firstName;
 
     /**
      * @var string the last name of the user who placed the order.
      */
-    protected $lastName;
+    protected $_lastName;
 
     /**
      * @var string the email address of the user who placed the order.
      */
-    protected $email;
+    protected $_email;
 
     /**
-     * Internal Magento constructor.
-     *
-     * @return void
+     * @inheritdoc
      */
     protected function _construct()
     {
@@ -66,7 +66,7 @@ class Nosto_Tagging_Model_Meta_Order_Buyer extends Mage_Core_Model_Abstract impl
      */
     public function getFirstName()
     {
-        return $this->firstName;
+        return $this->_firstName;
     }
 
     /**
@@ -76,7 +76,7 @@ class Nosto_Tagging_Model_Meta_Order_Buyer extends Mage_Core_Model_Abstract impl
      */
     public function getLastName()
     {
-        return $this->lastName;
+        return $this->_lastName;
     }
 
     /**
@@ -86,18 +86,18 @@ class Nosto_Tagging_Model_Meta_Order_Buyer extends Mage_Core_Model_Abstract impl
      */
     public function getEmail()
     {
-        return $this->email;
+        return $this->_email;
     }
 
     /**
      * Loads the buyer info from a Magento order model.
      *
-     * @param Mage_Sales_Model_Order $order the order model to get the data from.
+     * @param Mage_Sales_Model_Order $order the order model.
      */
     public function loadData(Mage_Sales_Model_Order $order)
     {
-        $this->firstName = $order->getCustomerFirstname();
-        $this->lastName = $order->getCustomerLastname();
-        $this->email = $order->getCustomerEmail();
+        $this->_firstName = $order->getCustomerFirstname();
+        $this->_lastName = $order->getCustomerLastname();
+        $this->_email = $order->getCustomerEmail();
     }
 }

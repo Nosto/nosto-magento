@@ -20,6 +20,7 @@
  *
  * @category  Nosto
  * @package   Nosto_Tagging
+ * @author    Nosto Solutions Ltd <magento@nosto.com>
  * @copyright Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -80,8 +81,8 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Returns a unique ID that identifies this Magento installation.
-     * This ID is sent to the Nosto account config iframe and used to link all Nosto
-     * accounts used on this installation.
+     * This ID is sent to the Nosto account config iframe and used to link all
+     * Nosto accounts used on this installation.
      *
      * @return string the ID.
      */
@@ -93,7 +94,9 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
             $installationId = bin2hex(NostoCryptRandom::getRandomString(32));
             /** @var Mage_Core_Model_Config $config */
             $config = Mage::getModel('core/config');
-            $config->saveConfig(self::XML_PATH_INSTALLATION_ID, $installationId, 'default', 0);
+            $config->saveConfig(
+                self::XML_PATH_INSTALLATION_ID, $installationId, 'default', 0
+            );
             Mage::app()->getCacheInstance()->cleanType('config');
         }
         return $installationId;

@@ -20,6 +20,7 @@
  *
  * @category  Nosto
  * @package   Nosto_Tagging
+ * @author    Nosto Solutions Ltd <magento@nosto.com>
  * @copyright Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -32,7 +33,7 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_tagging_Block_Adminhtml_Wizard extends Mage_Adminhtml_Block_Template
+class Nosto_Tagging_Block_Adminhtml_Wizard extends Mage_Adminhtml_Block_Template
 {
     /**
      * @var NostoAccount the Nosto account for current store view scope.
@@ -46,8 +47,8 @@ class Nosto_tagging_Block_Adminhtml_Wizard extends Mage_Adminhtml_Block_Template
 
     /**
      * Gets the iframe url for the account settings page from Nosto.
-     * This url is only returned if the current admin user can be logged in with SSO
-     * to Nosto.
+     * This url is only returned if the current admin user can be logged in
+     * with SSO to Nosto.
      *
      * @return string the iframe url or empty string if it cannot be created.
      */
@@ -62,7 +63,9 @@ class Nosto_tagging_Block_Adminhtml_Wizard extends Mage_Adminhtml_Block_Template
                 $meta = new Nosto_Tagging_Model_Meta_Account_Iframe();
                 return $this->_iframeUrl = $account->getIframeUrl($meta);
             } catch (NostoException $e) {
-                Mage::log("\n" . $e->__toString(), Zend_Log::ERR, 'nostotagging.log');
+                Mage::log(
+                    "\n" . $e->__toString(), Zend_Log::ERR, 'nostotagging.log'
+                );
             }
         }
         return $this->_iframeUrl = '';

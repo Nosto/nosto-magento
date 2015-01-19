@@ -20,6 +20,7 @@
  *
  * @category  Nosto
  * @package   Nosto_Tagging
+ * @author    Nosto Solutions Ltd <magento@nosto.com>
  * @copyright Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -37,47 +38,47 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     /**
      * @var string the store name.
      */
-    protected $title;
+    protected $_title;
 
     /**
      * @var string the account name.
      */
-    protected $name;
+    protected $_name;
 
     /**
      * @var string the store front end url.
      */
-    protected $frontPageUrl;
+    protected $_frontPageUrl;
 
     /**
      * @var string the store currency ISO (ISO 4217) code.
      */
-    protected $currencyCode;
+    protected $_currencyCode;
 
     /**
      * @var string the store language ISO (ISO 639-1) code.
      */
-    protected $languageCode;
+    protected $_languageCode;
 
     /**
      * @var string the owner language ISO (ISO 639-1) code.
      */
-    protected $ownerLanguageCode;
+    protected $_ownerLanguageCode;
 
     /**
-     * @var Nosto_Tagging_Model_Meta_Account_Owner the account owner meta data model.
+     * @var Nosto_Tagging_Model_Meta_Account_Owner the account owner meta model.
      */
-    protected $owner;
+    protected $_owner;
 
     /**
-     * @var Nosto_Tagging_Model_Meta_Account_Billing the account billing details meta data model.
+     * @var Nosto_Tagging_Model_Meta_Account_Billing the billing meta model.
      */
-    protected $billing;
+    protected $_billing;
 
     /**
      * @var string the API token used to identify an account creation.
      */
-    protected $signUpApiToken = 'YBDKYwSqTCzSsU8Bwbg4im2pkHMcgTy9cCX7vevjJwON1UISJIwXOLMM0a8nZY7h';
+    protected $_signUpApiToken = 'YBDKYwSqTCzSsU8Bwbg4im2pkHMcgTy9cCX7vevjJwON1UISJIwXOLMM0a8nZY7h';
 
     /**
      * Constructor.
@@ -87,28 +88,30 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
         parent::__construct();
 
         $store = Mage::app()->getStore();
-        $this->title = $store->getWebsite()->getName()
+        $this->_title = $store->getWebsite()->getName()
             . ' - '
             . $store->getGroup()->getName()
             . ' - '
             . $store->getName();
-        $this->name = substr(sha1(rand()), 0, 8);
-        $this->frontPageUrl = NostoHttpRequest::replaceQueryParamInUrl(
+        $this->_name = substr(sha1(rand()), 0, 8);
+        $this->_frontPageUrl = NostoHttpRequest::replaceQueryParamInUrl(
             '___store',
             $store->getCode(),
             $store->getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB)
         );
-        $this->currencyCode = $store->getBaseCurrencyCode();
-        $this->languageCode = substr($store->getConfig('general/locale/code'), 0, 2);
-        $this->ownerLanguageCode = substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2);
-        $this->owner = new Nosto_Tagging_Model_Meta_Account_Owner();
-        $this->billing = new Nosto_Tagging_Model_Meta_Account_Billing();
+        $this->_currencyCode = $store->getBaseCurrencyCode();
+        $this->_languageCode = substr(
+            $store->getConfig('general/locale/code'), 0, 2
+        );
+        $this->_ownerLanguageCode = substr(
+            Mage::app()->getLocale()->getLocaleCode(), 0, 2
+        );
+        $this->_owner = new Nosto_Tagging_Model_Meta_Account_Owner();
+        $this->_billing = new Nosto_Tagging_Model_Meta_Account_Billing();
     }
 
     /**
-     * Internal Magento constructor.
-     *
-     * @return void
+     * @inheritdoc
      */
     protected function _construct()
     {
@@ -122,7 +125,7 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
      */
     public function setTitle($title)
     {
-        $this->title = $title;
+        $this->_title = $title;
     }
 
     /**
@@ -132,7 +135,7 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
      */
     public function getTitle()
     {
-        return $this->title;
+        return $this->_title;
     }
 
     /**
@@ -142,7 +145,7 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
      */
     public function setName($name)
     {
-        $this->name = $name;
+        $this->_name = $name;
     }
 
     /**
@@ -154,7 +157,7 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
      */
     public function getName()
     {
-        return $this->name;
+        return $this->_name;
     }
 
     /**
@@ -175,18 +178,18 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
      */
     public function setFrontPageUrl($url)
     {
-        $this->frontPageUrl = $url;
+        $this->_frontPageUrl = $url;
     }
 
     /**
-     * Absolute url to the front page of the shop for which the account is created
-     * for.
+     * Absolute url to the front page of the shop for which the account is
+     * created for.
      *
      * @return string the url.
      */
     public function getFrontPageUrl()
     {
-        return $this->frontPageUrl;
+        return $this->_frontPageUrl;
     }
 
     /**
@@ -196,18 +199,18 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
      */
     public function setCurrencyCode($code)
     {
-        $this->currencyCode = $code;
+        $this->_currencyCode = $code;
     }
 
     /**
-     * The 3-letter ISO code (ISO 4217) for the currency used by the shop for which
-     * the account is created for.
+     * The 3-letter ISO code (ISO 4217) for the currency used by the shop for
+     * which the account is created for.
      *
      * @return string the currency ISO code.
      */
     public function getCurrencyCode()
     {
-        return $this->currencyCode;
+        return $this->_currencyCode;
     }
 
     /**
@@ -217,18 +220,18 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
      */
     public function setLanguageCode($languageCode)
     {
-        $this->languageCode = $languageCode;
+        $this->_languageCode = $languageCode;
     }
 
     /**
-     * The 2-letter ISO code (ISO 639-1) for the language used by the shop for which
-     * the account is created for.
+     * The 2-letter ISO code (ISO 639-1) for the language used by the shop for
+     * which the account is created for.
      *
      * @return string the language ISO code.
      */
     public function getLanguageCode()
     {
-        return $this->languageCode;
+        return $this->_languageCode;
     }
 
     /**
@@ -238,18 +241,18 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
      */
     public function setOwnerLanguageCode($languageCode)
     {
-        $this->ownerLanguageCode = $languageCode;
+        $this->_ownerLanguageCode = $languageCode;
     }
 
     /**
-     * The 2-letter ISO code (ISO 639-1) for the language of the account owner who
-     * is creating the account.
+     * The 2-letter ISO code (ISO 639-1) for the language of the account owner
+     * who is creating the account.
      *
      * @return string the language ISO code.
      */
     public function getOwnerLanguageCode()
     {
-        return $this->ownerLanguageCode;
+        return $this->_ownerLanguageCode;
     }
 
     /**
@@ -259,7 +262,7 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
      */
     public function getOwner()
     {
-        return $this->owner;
+        return $this->_owner;
     }
 
     /**
@@ -269,7 +272,7 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
      */
     public function getBillingDetails()
     {
-        return $this->billing;
+        return $this->_billing;
     }
 
     /**
@@ -280,6 +283,6 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
      */
     public function getSignUpApiToken()
     {
-        return $this->signUpApiToken;
+        return $this->_signUpApiToken;
     }
 }

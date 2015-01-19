@@ -20,6 +20,7 @@
  *
  * @category  Nosto
  * @package   Nosto_Tagging
+ * @author    Nosto Solutions Ltd <magento@nosto.com>
  * @copyright Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -70,8 +71,8 @@ class Nosto_Tagging_Block_Embed extends Mage_Core_Block_Template
 
     /**
      * Gets the Nosto server address.
-     * This is either taken from the local environment if exists or else it defaults
-     * to "connect.nosto.com".
+     * This is either taken from the local environment if exists or else it
+     * defaults to "connect.nosto.com".
      *
      * @return string the url.
      */

@@ -20,6 +20,7 @@
  *
  * @category  Nosto
  * @package   Nosto_Tagging
+ * @author    Nosto Solutions Ltd <magento@nosto.com>
  * @copyright Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -36,8 +37,8 @@ require_once Mage::getBaseDir('lib') . '/nosto/php-sdk/src/config.inc.php';
 class Nosto_Tagging_Helper_Oauth extends Mage_Core_Helper_Abstract
 {
     /**
-     * Returns the meta data model needed for using the OAuth2 client included in
-     * the Nosto SDk.
+     * Returns the meta data model needed for using the OAuth2 client included
+     * in the Nosto SDk.
      *
      * @return Nosto_Tagging_Model_Meta_Oauth the meta data instance.
      */

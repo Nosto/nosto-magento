@@ -20,6 +20,7 @@
  *
  * @category  Nosto
  * @package   Nosto_Tagging
+ * @author    Nosto Solutions Ltd <magento@nosto.com>
  * @copyright Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -37,17 +38,17 @@ class Nosto_Tagging_Model_Meta_Account_Owner extends Mage_Core_Model_Abstract im
     /**
      * @var string the account owner first name.
      */
-    protected $firstName;
+    protected $_firstName;
 
     /**
      * @var string the account owner last name.
      */
-    protected $lastName;
+    protected $_lastName;
 
     /**
      * @var    string the account owner email address.
      */
-    protected $email;
+    protected $_email;
 
     /**
      * Constructor.
@@ -59,15 +60,13 @@ class Nosto_Tagging_Model_Meta_Account_Owner extends Mage_Core_Model_Abstract im
 
         /** @var Mage_Admin_Model_User $user */
         $user = Mage::getSingleton('admin/session')->getUser();
-        $this->firstName = $user->getFirstname();
-        $this->lastName = $user->getLastname();
-        $this->email = $user->getEmail();
+        $this->_firstName = $user->getFirstname();
+        $this->_lastName = $user->getLastname();
+        $this->_email = $user->getEmail();
     }
 
     /**
-     * Internal Magento constructor.
-     *
-     * @return void
+     * @inheritdoc
      */
     protected function _construct()
     {
@@ -81,7 +80,7 @@ class Nosto_Tagging_Model_Meta_Account_Owner extends Mage_Core_Model_Abstract im
      */
     public function setFirstName($firstName)
     {
-        $this->firstName = $firstName;
+        $this->_firstName = $firstName;
     }
 
     /**
@@ -91,7 +90,7 @@ class Nosto_Tagging_Model_Meta_Account_Owner extends Mage_Core_Model_Abstract im
      */
     public function getFirstName()
     {
-        return $this->firstName;
+        return $this->_firstName;
     }
 
     /**
@@ -101,7 +100,7 @@ class Nosto_Tagging_Model_Meta_Account_Owner extends Mage_Core_Model_Abstract im
      */
     public function setLastName($lastName)
     {
-        $this->lastName = $lastName;
+        $this->_lastName = $lastName;
     }
 
     /**
@@ -111,7 +110,7 @@ class Nosto_Tagging_Model_Meta_Account_Owner extends Mage_Core_Model_Abstract im
      */
     public function getLastName()
     {
-        return $this->lastName;
+        return $this->_lastName;
     }
 
     /**
@@ -121,7 +120,7 @@ class Nosto_Tagging_Model_Meta_Account_Owner extends Mage_Core_Model_Abstract im
      */
     public function setEmail($email)
     {
-        $this->email = $email;
+        $this->_email = $email;
     }
 
     /**
@@ -131,6 +130,6 @@ class Nosto_Tagging_Model_Meta_Account_Owner extends Mage_Core_Model_Abstract im
      */
     public function getEmail()
     {
-        return $this->email;
+        return $this->_email;
     }
 }

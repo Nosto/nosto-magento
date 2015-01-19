@@ -20,6 +20,7 @@
  *
  * @category  Nosto
  * @package   Nosto_Tagging
+ * @author    Nosto Solutions Ltd <magento@nosto.com>
  * @copyright Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -28,7 +29,7 @@
  * Nosto element block.
  * Used to render placeholder elements that display the product recommendations.
  *
- * @method string getDivId() Return the id of the element (defined in layout xml).
+ * @method string getDivId() Return the id of the element (defined in layout).
  *
  * @category Nosto
  * @package  Nosto_Tagging
@@ -42,8 +43,8 @@ class Nosto_Tagging_Block_Element extends Mage_Core_Block_Template
     const DEFAULT_ID = 'missingDivIdParameter';
 
     /**
-     * Render HTML placeholder element for the product recommendations if the module
-     * is enabled for the current store.
+     * Render HTML placeholder element for the product recommendations if the
+     * module is enabled for the current store.
      *
      * @return string
      */
@@ -58,8 +59,8 @@ class Nosto_Tagging_Block_Element extends Mage_Core_Block_Template
     }
 
     /**
-     * Return the id of the element. If none is defined in the layout xml, then set
-     * a default one.
+     * Return the id of the element. If none is defined in the layout xml,
+     * then set a default one.
      *
      * @return string
      */

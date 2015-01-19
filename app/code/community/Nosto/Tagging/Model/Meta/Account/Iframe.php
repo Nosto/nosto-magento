@@ -20,6 +20,7 @@
  *
  * @category  Nosto
  * @package   Nosto_Tagging
+ * @author    Nosto Solutions Ltd <magento@nosto.com>
  * @copyright Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -37,62 +38,62 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
     /**
      * @var string the name of the platform the iframe is used on.
      */
-    protected $platform = 'magento';
+    protected $_platform = 'magento';
 
     /**
      * @var string the admin user first name.
      */
-    protected $firstName;
+    protected $_firstName;
 
     /**
      * @var string the admin user last name.
      */
-    protected $lastName;
+    protected $_lastName;
 
     /**
      * @var    string the admin user email address.
      */
-    protected $email;
+    protected $_email;
 
     /**
-     * @var string the language ISO (ISO 639-1) code for localization on oauth2 server.
+     * @var string the language ISO (ISO 639-1) code for oauth server locale.
      */
-    protected $languageIsoCode;
+    protected $_languageIsoCode;
 
     /**
      * @var string the language ISO (ISO 639-1) for the store view scope.
      */
-    protected $languageIsoCodeShop;
+    protected $_languageIsoCodeShop;
 
     /**
      * @var string unique ID that identifies the Magento installation.
      */
-    protected $uniqueId;
+    protected $_uniqueId;
 
     /**
-     * @var string preview url for the product page in the active store view scope.
+     * @var string preview url for the product page in the active store scope.
      */
-    protected $previewUrlProduct;
+    protected $_previewUrlProduct;
 
     /**
-     * @var string preview url for the category page in the active store view scope.
+     * @var string preview url for the category page in the active store scope.
      */
-    protected $previewUrlCategory;
+    protected $_previewUrlCategory;
 
     /**
-     * @var string preview url for the search page in the active store view scope.
+     * @var string preview url for the search page in the active store scope.
      */
-    protected $previewUrlSearch;
+    protected $_previewUrlSearch;
 
     /**
-     * @var string preview url for the cart page in the active store view scope.
+     * @var string preview url for the cart page in the active store scope.
      */
-    protected $previewUrlCart;
+    protected $_previewUrlCart;
 
     /**
-     * @var string preview url for the front page in the active store view scope.
+     * @var string preview url for the front page in the active store scope.
      */
-    protected $previewUrlFront;
+    protected $_previewUrlFront;
 
     /**
      * Constructor.
@@ -109,23 +110,25 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
         /** @var Nosto_Tagging_Helper_Data $dataHelper */
         $dataHelper = Mage::helper('nosto_tagging/data');
 
-        $this->firstName = $user->getFirstname();
-        $this->lastName = $user->getLastname();
-        $this->email = $user->getEmail();
-        $this->languageIsoCode = substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2);
-        $this->languageIsoCodeShop = substr(Mage::app()->getStore()->getConfig('general/locale/code'), 0, 2);
-        $this->uniqueId = $dataHelper->getInstallationId();
-        $this->previewUrlProduct = $urlHelper->getPreviewUrlProduct();
-        $this->previewUrlCategory = $urlHelper->getPreviewUrlCategory();
-        $this->previewUrlSearch = $urlHelper->getPreviewUrlSearch();
-        $this->previewUrlCart = $urlHelper->getPreviewUrlCart();
-        $this->previewUrlFront = $urlHelper->getPreviewUrlFront();
+        $this->_firstName = $user->getFirstname();
+        $this->_lastName = $user->getLastname();
+        $this->_email = $user->getEmail();
+        $this->_languageIsoCode = substr(
+            Mage::app()->getLocale()->getLocaleCode(), 0, 2
+        );
+        $this->_languageIsoCodeShop = substr(
+            Mage::app()->getStore()->getConfig('general/locale/code'), 0, 2
+        );
+        $this->_uniqueId = $dataHelper->getInstallationId();
+        $this->_previewUrlProduct = $urlHelper->getPreviewUrlProduct();
+        $this->_previewUrlCategory = $urlHelper->getPreviewUrlCategory();
+        $this->_previewUrlSearch = $urlHelper->getPreviewUrlSearch();
+        $this->_previewUrlCart = $urlHelper->getPreviewUrlCart();
+        $this->_previewUrlFront = $urlHelper->getPreviewUrlFront();
     }
 
     /**
-     * Internal Magento constructor.
-     *
-     * @return void
+     * @inheritdoc
      */
     protected function _construct()
     {
@@ -140,7 +143,7 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
      */
     public function getPlatform()
     {
-        return $this->platform;
+        return $this->_platform;
     }
 
     /**
@@ -150,7 +153,7 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
      */
     public function setFirstName($firstName)
     {
-        $this->firstName = $firstName;
+        $this->_firstName = $firstName;
     }
 
     /**
@@ -160,7 +163,7 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
      */
     public function getFirstName()
     {
-        return $this->firstName;
+        return $this->_firstName;
     }
 
     /**
@@ -170,7 +173,7 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
      */
     public function setLastName($lastName)
     {
-        $this->lastName = $lastName;
+        $this->_lastName = $lastName;
     }
 
     /**
@@ -180,7 +183,7 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
      */
     public function getLastName()
     {
-        return $this->lastName;
+        return $this->_lastName;
     }
 
     /**
@@ -190,7 +193,7 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
      */
     public function setEmail($email)
     {
-        $this->email = $email;
+        $this->_email = $email;
     }
 
     /**
@@ -200,7 +203,7 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
      */
     public function getEmail()
     {
-        return $this->email;
+        return $this->_email;
     }
 
     /**
@@ -210,45 +213,46 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
      */
     public function setLanguageIsoCode($code)
     {
-        $this->languageIsoCode = $code;
+        $this->_languageIsoCode = $code;
     }
 
     /**
-     * The 2-letter ISO code (ISO 639-1) for the language of the user who is loading
-     * the config iframe.
+     * The 2-letter ISO code (ISO 639-1) for the language of the user who is
+     * loading the config iframe.
      *
      * @return string the language ISO code.
      */
     public function getLanguageIsoCode()
     {
-        return $this->languageIsoCode;
+        return $this->_languageIsoCode;
     }
 
     /**
-     * The 2-letter ISO code (ISO 639-1) for the language of the shop the account
-     * belongs to.
+     * The 2-letter ISO code (ISO 639-1) for the language of the shop the
+     * account belongs to.
      *
      * @return string the language ISO code.
      */
     public function getLanguageIsoCodeShop()
     {
-        return $this->languageIsoCodeShop;
+        return $this->_languageIsoCodeShop;
     }
 
     /**
      * Unique identifier for the e-commerce installation.
-     * This identifier is used to link accounts together that are created on the
-     * same installation.
+     * This identifier is used to link accounts together that are created on
+     * the same installation.
      *
      * @return string the identifier.
      */
     public function getUniqueId()
     {
-        return $this->uniqueId;
+        return $this->_uniqueId;
     }
 
     /**
-     * The version number of the platform the e-commerce installation is running on.
+     * The version number of the platform the e-commerce installation is
+     * running on.
      *
      * @return string the platform version.
      */
@@ -258,84 +262,85 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
     }
 
     /**
-     * The version number of the Nosto module/extension running on the e-commerce
-     * installation.
+     * The version number of the Nosto module/extension running on the
+     * e-commerce installation.
      *
      * @return string the module version.
      */
     public function getVersionModule()
     {
         // Path is hard-coded to be like in "etc/config.xml".
-        return (string)Mage::getConfig()->getNode('modules/Nosto_Tagging/version');
+        return (string)Mage::getConfig()
+            ->getNode('modules/Nosto_Tagging/version');
     }
 
     /**
-     * An absolute URL for any product page in the shop the account is linked to,
-     * with the nostodebug GET parameter enabled.
+     * An absolute URL for any product page in the shop the account is linked
+     * to, with the nostodebug GET parameter enabled.
      * e.g. http://myshop.com/products/product123?nostodebug=true
-     * This is used in the config iframe to allow the user to quickly preview the
-     * recommendations on the given page.
+     * This is used in the config iframe to allow the user to quickly preview
+     * the recommendations on the given page.
      *
      * @return string the url.
      */
     public function getPreviewUrlProduct()
     {
-        return $this->previewUrlProduct;
+        return $this->_previewUrlProduct;
     }
 
     /**
-     * An absolute URL for any category page in the shop the account is linked to,
-     * with the nostodebug GET parameter enabled.
+     * An absolute URL for any category page in the shop the account is linked
+     * to, with the nostodebug GET parameter enabled.
      * e.g. http://myshop.com/products/category123?nostodebug=true
-     * This is used in the config iframe to allow the user to quickly preview the
-     * recommendations on the given page.
+     * This is used in the config iframe to allow the user to quickly preview
+     * the recommendations on the given page.
      *
      * @return string the url.
      */
     public function getPreviewUrlCategory()
     {
-        return $this->previewUrlCategory;
+        return $this->_previewUrlCategory;
     }
 
     /**
-     * An absolute URL for the search page in the shop the account is linked to,
-     * with the nostodebug GET parameter enabled.
+     * An absolute URL for the search page in the shop the account is linked
+     * to, with the nostodebug GET parameter enabled.
      * e.g. http://myshop.com/search?query=red?nostodebug=true
-     * This is used in the config iframe to allow the user to quickly preview the
-     * recommendations on the given page.
+     * This is used in the config iframe to allow the user to quickly preview
+     * the recommendations on the given page.
      *
      * @return string the url.
      */
     public function getPreviewUrlSearch()
     {
-        return $this->previewUrlSearch;
+        return $this->_previewUrlSearch;
     }
 
     /**
-     * An absolute URL for the shopping cart page in the shop the account is linked
-     * to, with the nostodebug GET parameter enabled.
+     * An absolute URL for the shopping cart page in the shop the account is
+     * linked to, with the nostodebug GET parameter enabled.
      * e.g. http://myshop.com/cart?nostodebug=true
-     * This is used in the config iframe to allow the user to quickly preview the
-     * recommendations on the given page.
+     * This is used in the config iframe to allow the user to quickly preview
+     * the recommendations on the given page.
      *
      * @return string the url.
      */
     public function getPreviewUrlCart()
     {
-        return $this->previewUrlCart;
+        return $this->_previewUrlCart;
     }
 
     /**
-     * An absolute URL for the front page in the shop the account is linked to, with
-     * the nostodebug GET parameter enabled.
+     * An absolute URL for the front page in the shop the account is linked to,
+     * with the nostodebug GET parameter enabled.
      * e.g. http://myshop.com?nostodebug=true
-     * This is used in the config iframe to allow the user to quickly preview the
-     * recommendations on the given page.
+     * This is used in the config iframe to allow the user to quickly preview
+     * the recommendations on the given page.
      *
      * @return string the url.
      */
     public function getPreviewUrlFront()
     {
-        return $this->previewUrlFront;
+        return $this->_previewUrlFront;
     }
 }

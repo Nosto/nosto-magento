@@ -20,13 +20,15 @@
  *
  * @category  Nosto
  * @package   Nosto_Tagging
+ * @author    Nosto Solutions Ltd <magento@nosto.com>
  * @copyright Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
 /**
  * Meta data class which holds information about an order.
- * This is used during the order confirmation API request and the order history export.
+ * This is used during the order confirmation API request and the order
+ * history export.
  *
  * @category Nosto
  * @package  Nosto_Tagging
@@ -37,34 +39,32 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
     /**
      * @var string|int the unique order number identifying the order.
      */
-    protected $orderNumber;
+    protected $_orderNumber;
 
     /**
      * @var string the date when the order was placed.
      */
-    protected $createdDate;
+    protected $_createdDate;
 
     /**
      * @var string the payment provider used for order.
      *
      * Formatted according to "[provider name] [provider version]".
      */
-    protected $paymentProvider;
+    protected $_paymentProvider;
 
     /**
-     * @var Nosto_Tagging_Model_Meta_Order_Buyer The info of the user who ordered.
+     * @var Nosto_Tagging_Model_Meta_Order_Buyer The user info of the buyer.
      */
-    protected $buyer;
+    protected $_buyer;
 
     /**
-     * @var Nosto_Tagging_Model_Meta_Order_Item[] the items included in the order.
+     * @var Nosto_Tagging_Model_Meta_Order_Item[] the items in the order.
      */
-    protected $items = array();
+    protected $_items = array();
 
     /**
-     * Internal Magento constructor.
-     *
-     * @return void
+     * @inheritdoc
      */
     protected function _construct()
     {
@@ -78,7 +78,7 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
      */
     public function getOrderNumber()
     {
-        return $this->orderNumber;
+        return $this->_orderNumber;
     }
 
     /**
@@ -88,7 +88,7 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
      */
     public function getCreatedDate()
     {
-        return $this->createdDate;
+        return $this->_createdDate;
     }
 
     /**
@@ -99,7 +99,7 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
      */
     public function getPaymentProvider()
     {
-        return $this->paymentProvider;
+        return $this->_paymentProvider;
     }
 
     /**
@@ -109,7 +109,7 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
      */
     public function getBuyerInfo()
     {
-        return $this->buyer;
+        return $this->_buyer;
     }
 
     /**
@@ -119,7 +119,7 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
      */
     public function getPurchasedItems()
     {
-        return $this->items;
+        return $this->_items;
     }
 
     /**
@@ -129,14 +129,14 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
      */
     public function loadData(Mage_Sales_Model_Order $order)
     {
-        $this->orderNumber = $order->getId();
-        $this->createdDate = $order->getCreatedAt();
+        $this->_orderNumber = $order->getId();
+        $this->_createdDate = $order->getCreatedAt();
 
         $method = $order->getPayment()->getMethodInstance();
-        $this->paymentProvider = $method->getCode();
+        $this->_paymentProvider = $method->getCode();
 
-        $this->buyer = new Nosto_Tagging_Model_Meta_Order_Buyer();
-        $this->buyer->loadData($order);
+        $this->_buyer = new Nosto_Tagging_Model_Meta_Order_Buyer();
+        $this->_buyer->loadData($order);
 
         /** @var $item Mage_Sales_Model_Order_Item */
         foreach ($order->getAllVisibleItems() as $item) {
@@ -150,12 +150,12 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
                 foreach ($item->getChildrenItems() as $child) {
                     $orderItem = new Nosto_Tagging_Model_Meta_Order_Item();
                     $orderItem->loadData($child);
-                    $this->items[] = $orderItem;
+                    $this->_items[] = $orderItem;
                 }
             } else {
                 $orderItem = new Nosto_Tagging_Model_Meta_Order_Item();
                 $orderItem->loadData($item);
-                $this->items[] = $orderItem;
+                $this->_items[] = $orderItem;
             }
         }
 
@@ -166,7 +166,7 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
             $orderItem->setName('Discount');
             $orderItem->setUnitPrice($discount);
             $orderItem->setCurrencyCode($order->getOrderCurrencyCode());
-            $this->items[] = $orderItem;
+            $this->_items[] = $orderItem;
         }
 
         if ($shippingInclTax = $order->getShippingInclTax()) {
@@ -176,7 +176,7 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
             $orderItem->setName('Shipping and handling');
             $orderItem->setUnitPrice($shippingInclTax);
             $orderItem->setCurrencyCode($order->getOrderCurrencyCode());
-            $this->items[] = $orderItem;
+            $this->_items[] = $orderItem;
         }
     }
 }

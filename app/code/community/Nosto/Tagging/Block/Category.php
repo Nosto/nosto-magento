@@ -20,14 +20,15 @@
  *
  * @category  Nosto
  * @package   Nosto_Tagging
+ * @author    Nosto Solutions Ltd <magento@nosto.com>
  * @copyright Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
 /**
  * Current category tagging block.
- * Adds meta-data to the HTML document for the current catalog category (including
- * parent categories).
+ * Adds meta-data to the HTML document for the current catalog category
+ * (including parent categories).
  *
  * @category Nosto
  * @package  Nosto_Tagging
@@ -36,15 +37,13 @@
 class Nosto_Tagging_Block_Category extends Mage_Core_Block_Template
 {
     /**
-     * Cached category string.
-     *
-     * @var string
+     * @var string Cached category string.
      */
     protected $_category;
 
     /**
-     * Render category string as hidden meta data if the module is enabled for the
-     * current store.
+     * Render category string as hidden meta data if the module is enabled for
+     * the current store.
      *
      * @return string
      */

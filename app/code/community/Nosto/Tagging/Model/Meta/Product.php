@@ -20,13 +20,15 @@
  *
  * @category  Nosto
  * @package   Nosto_Tagging
+ * @author    Nosto Solutions Ltd <magento@nosto.com>
  * @copyright Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
 /**
  * Meta data class which holds information about a product.
- * This is used during the order confirmation API request and the product history export.
+ * This is used during the order confirmation API request and the product
+ * history export.
  *
  * @category Nosto
  * @package  Nosto_Tagging
@@ -47,72 +49,70 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
     /**
      * @var string the absolute url to the product page in the shop frontend.
      */
-    protected $url;
+    protected $_url;
 
     /**
      * @var string the product's unique identifier.
      */
-    protected $productId;
+    protected $_productId;
 
     /**
      * @var string the name of the product.
      */
-    protected $name;
+    protected $_name;
 
     /**
-     * @var string the absolute url the one of the product images in shop frontend.
+     * @var string the absolute url the one of the product images in frontend.
      */
-    protected $imageUrl;
+    protected $_imageUrl;
 
     /**
-     * @var string the price of the product including possible discounts and taxes.
+     * @var string the product price including possible discounts and taxes.
      */
-    protected $price;
+    protected $_price;
 
     /**
-     * @var string the list price of the product without discounts but incl taxes.
+     * @var string the product list price without discounts but incl taxes.
      */
-    protected $listPrice;
+    protected $_listPrice;
 
     /**
      * @var string the currency code (ISO 4217) the product is sold in.
      */
-    protected $currencyCode;
+    protected $_currencyCode;
 
     /**
-     * @var string the availability of the product, i.e. if it is in stock or not.
+     * @var string the availability of the product, i.e. is in stock or not.
      */
-    protected $availability;
+    protected $_availability;
 
     /**
      * @var array the tags for the product.
      */
-    protected $tags = array();
+    protected $_tags = array();
 
     /**
      * @var array the categories the product is located in.
      */
-    protected $categories = array();
+    protected $_categories = array();
 
     /**
      * @var string the product description.
      */
-    protected $description;
+    protected $_description;
 
     /**
      * @var string the product brand name.
      */
-    protected $brand;
+    protected $_brand;
 
     /**
      * @var string the product publication date in the shop.
      */
-    protected $datePublished;
+    protected $_datePublished;
 
     /**
-     * Internal Magento constructor.
-     *
-     * @return void
+     * @inheritdoc
      */
     protected function _construct()
     {
@@ -126,7 +126,7 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
      */
     public function getUrl()
     {
-        return $this->url;
+        return $this->_url;
     }
 
     /**
@@ -136,7 +136,7 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
      */
     public function getProductId()
     {
-        return $this->productId;
+        return $this->_productId;
     }
 
     /**
@@ -146,17 +146,17 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
      */
     public function getName()
     {
-        return $this->name;
+        return $this->_name;
     }
 
     /**
-     * Returns the absolute url the one of the product images in the shop frontend.
+     * Returns the absolute url the one of the product images in the frontend.
      *
      * @return string the url.
      */
     public function getImageUrl()
     {
-        return $this->imageUrl;
+        return $this->_imageUrl;
     }
 
     /**
@@ -166,7 +166,7 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
      */
     public function getPrice()
     {
-        return $this->price;
+        return $this->_price;
     }
 
     /**
@@ -176,7 +176,7 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
      */
     public function getListPrice()
     {
-        return $this->listPrice;
+        return $this->_listPrice;
     }
 
     /**
@@ -186,7 +186,7 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
      */
     public function getCurrencyCode()
     {
-        return $this->currencyCode;
+        return $this->_currencyCode;
     }
 
     /**
@@ -196,7 +196,7 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
      */
     public function getAvailability()
     {
-        return $this->availability;
+        return $this->_availability;
     }
 
     /**
@@ -206,7 +206,7 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
      */
     public function getTags()
     {
-        return $this->tags;
+        return $this->_tags;
     }
 
     /**
@@ -216,7 +216,7 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
      */
     public function getCategories()
     {
-        return $this->categories;
+        return $this->_categories;
     }
 
     /**
@@ -226,7 +226,7 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
      */
     public function getDescription()
     {
-        return $this->description;
+        return $this->_description;
     }
 
     /**
@@ -236,7 +236,7 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
      */
     public function getBrand()
     {
-        return $this->brand;
+        return $this->_brand;
     }
 
     /**
@@ -246,7 +246,7 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
      */
     public function getDatePublished()
     {
-        return $this->datePublished;
+        return $this->_datePublished;
     }
 
     /**
@@ -256,49 +256,50 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
      */
     public function loadData(Mage_Catalog_Model_Product $product)
     {
-        $this->url = $product->getProductUrl();
-        $this->productId = $product->getId();
-        $this->name = $product->getName();
+        $this->_url = $product->getProductUrl();
+        $this->_productId = $product->getId();
+        $this->_name = $product->getName();
 
         if ($product->getImage() == 'no_selection') {
-            $this->imageUrl = $product->getImageUrl();
+            $this->_imageUrl = $product->getImageUrl();
         } else {
-            $this->imageUrl = $product->getMediaConfig()
+            $this->_imageUrl = $product->getMediaConfig()
                 ->getMediaUrl($product->getImage());
         }
 
-        $this->price = Mage::helper('tax')->getPrice(
+        $this->_price = Mage::helper('tax')->getPrice(
             $product,
             Mage::helper('nosto_tagging/price')->getProductFinalPrice($product),
             true
         );
-        $this->listPrice = Mage::helper('tax')->getPrice(
+        $this->_listPrice = Mage::helper('tax')->getPrice(
             $product,
             Mage::helper('nosto_tagging/price')->getProductPrice($product),
             true
         );
-        $this->currencyCode = Mage::app()->getStore()->getCurrentCurrencyCode();
+        $this->_currencyCode = Mage::app()->getStore()
+            ->getCurrentCurrencyCode();
 
         if ($product instanceof Mage_Catalog_Model_Product
             && $product->isAvailable()
         ) {
-            $this->availability = self::PRODUCT_IN_STOCK;
+            $this->_availability = self::PRODUCT_IN_STOCK;
         } else {
-            $this->availability = self::PRODUCT_OUT_OF_STOCK;
+            $this->_availability = self::PRODUCT_OUT_OF_STOCK;
         }
 
         // todo: $this->tags = array();
 
-        $this->categories = $this->getProductCategories($product);
-        $this->description = $product->getDescription();
-        $this->brand = (string)$product->getAttributeText('manufacturer');
-        $this->datePublished = $product->getCreatedAt();
+        $this->_categories = $this->getProductCategories($product);
+        $this->_description = $product->getDescription();
+        $this->_brand = (string)$product->getAttributeText('manufacturer');
+        $this->_datePublished = $product->getCreatedAt();
     }
 
     /**
      * Return array of categories for the product.
-     * The items in the array are strings combined of the complete category path to
-     * the products own category.
+     * The items in the array are strings combined of the complete category
+     * path to the products own category.
      *
      * Structure:
      * array (

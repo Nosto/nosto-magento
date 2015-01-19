@@ -20,6 +20,7 @@
  *
  * @category  Nosto
  * @package   Nosto_Tagging
+ * @author    Nosto Solutions Ltd <magento@nosto.com>
  * @copyright Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -36,8 +37,7 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
 {
     /**
      * Render customer info as hidden meta data if the customer is logged in,
-     * the module is enabled for the current store and the "collect_email_addresses"
-     * option is enabled.
+     * the module is enabled for the current store.
      *
      * @return string
      */

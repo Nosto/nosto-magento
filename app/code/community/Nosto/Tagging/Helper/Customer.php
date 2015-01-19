@@ -20,6 +20,7 @@
  *
  * @category  Nosto
  * @package   Nosto_Tagging
+ * @author    Nosto Solutions Ltd <magento@nosto.com>
  * @copyright Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -40,7 +41,8 @@ class Nosto_Tagging_Helper_Customer extends Mage_Core_Helper_Abstract
 
     /**
      * Gets the Nosto ID for an order model.
-     * The Nosto ID represents the customer who placed to the order on Nosto's side.
+     * The Nosto ID represents the customer who placed to the order on Nosto's
+     * side.
      *
      * @param Mage_Sales_Model_Order $order the order to get the Nosto ID for.
      *
@@ -56,7 +58,8 @@ class Nosto_Tagging_Helper_Customer extends Mage_Core_Helper_Abstract
 
     /**
      * Update the Nosto ID form the current quote if it exists.
-     * The Nosto ID is present in a cookie set by the JavaScript loaded from Nosto.
+     * The Nosto ID is present in a cookie set by the JavaScript loaded from
+     * Nosto.
      */
     public function updateNostoId()
     {
@@ -64,7 +67,9 @@ class Nosto_Tagging_Helper_Customer extends Mage_Core_Helper_Abstract
         $cart = Mage::getModel('checkout/cart');
         /** @var Mage_Core_Model_Cookie $cookie */
         $cookie = Mage::getModel('core/cookie');
-        $quoteId = ($cart->getQuote() !== null) ? $cart->getQuote()->getId() : false;
+        $quoteId = ($cart->getQuote() !== null)
+            ? $cart->getQuote()->getId()
+            : false;
         $nostoId = $cookie->get(self::COOKIE_NAME);
         if (!empty($quoteId) && !empty($nostoId)) {
             /** @var Nosto_Tagging_Model_Customer $customer */

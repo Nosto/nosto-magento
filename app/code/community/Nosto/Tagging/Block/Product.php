@@ -20,6 +20,7 @@
  *
  * @category  Nosto
  * @package   Nosto_Tagging
+ * @author    Nosto Solutions Ltd <magento@nosto.com>
  * @copyright Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -47,8 +48,9 @@ class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
     /**
      * Render product info as hidden meta data if the module is enabled for the
      * current store.
-     * If it is a "bundle" product with fixed price type, then do not render. These
-     * are not supported due to their child products not having prices available.
+     * If it is a "bundle" product with fixed price type, then do not render.
+     * These are not supported due to their child products not having prices
+     * available.
      *
      * @return string
      */
@@ -58,7 +60,7 @@ class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
         if (!Mage::helper('nosto_tagging')->isModuleEnabled()
             || !Mage::helper('nosto_tagging/account')->existsAndIsConnected()
             || ($product->getTypeId() === Mage_Catalog_Model_Product_Type::TYPE_BUNDLE
-                && (int)$product->getPriceType() === Mage_Bundle_Model_Product_Price::PRICE_TYPE_FIXED)
+            && (int)$product->getPriceType() === Mage_Bundle_Model_Product_Price::PRICE_TYPE_FIXED)
         ) {
             return '';
         }
@@ -75,7 +77,9 @@ class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
      */
     public function getProductAvailability($product)
     {
-        if ($product instanceof Mage_Catalog_Model_Product && $product->isAvailable()) {
+        if ($product instanceof Mage_Catalog_Model_Product
+            && $product->isAvailable()
+        ) {
             return self::PRODUCT_IN_STOCK;
         } else {
             return self::PRODUCT_OUT_OF_STOCK;
@@ -84,8 +88,8 @@ class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
 
     /**
      * Return array of categories for the product.
-     * The items in the array are strings combined of the complete category path to
-     * the products own category.
+     * The items in the array are strings combined of the complete category
+     * path to the products own category.
      *
      * Structure:
      * array (

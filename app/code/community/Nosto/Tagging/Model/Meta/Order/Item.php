@@ -20,13 +20,15 @@
  *
  * @category  Nosto
  * @package   Nosto_Tagging
+ * @author    Nosto Solutions Ltd <magento@nosto.com>
  * @copyright Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
 /**
  * Meta data class which holds information about an item included in an order.
- * This is used during the order confirmation API request and the order history export.
+ * This is used during the order confirmation API request and the order history
+ * export.
  *
  * @category Nosto
  * @package  Nosto_Tagging
@@ -38,32 +40,30 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
      * @var string|int the unique identifier of the purchased item.
      * If this item is for discounts or shipping cost, the id can be 0.
      */
-    protected $productId;
+    protected $_productId;
 
     /**
      * @var int the quantity of the item included in the order.
      */
-    protected $quantity;
+    protected $_quantity;
 
     /**
      * @var string the name of the item included in the order.
      */
-    protected $name;
+    protected $_name;
 
     /**
      * @var float The unit price of the item included in the order.
      */
-    protected $unitPrice;
+    protected $_unitPrice;
 
     /**
-     * @var string the 3-letter ISO code (ISO 4217) for the currency of the item.
+     * @var string the 3-letter ISO code (ISO 4217) for the item currency.
      */
-    protected $currencyCode;
+    protected $_currencyCode;
 
     /**
-     * Internal Magento constructor.
-     *
-     * @return void
+     * @inheritdoc
      */
     protected function _construct()
     {
@@ -78,7 +78,7 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
      */
     public function getProductId()
     {
-        return $this->productId;
+        return $this->_productId;
     }
 
     /**
@@ -88,7 +88,7 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
      */
     public function setProductId($id)
     {
-        $this->productId = $id;
+        $this->_productId = $id;
     }
 
     /**
@@ -98,7 +98,7 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
      */
     public function getQuantity()
     {
-        return $this->quantity;
+        return $this->_quantity;
     }
 
     /**
@@ -108,7 +108,7 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
      */
     public function setQuantity($qty)
     {
-        $this->quantity = $qty;
+        $this->_quantity = $qty;
     }
 
     /**
@@ -118,7 +118,7 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
      */
     public function getName()
     {
-        return $this->name;
+        return $this->_name;
     }
 
     /**
@@ -128,7 +128,7 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
      */
     public function setName($name)
     {
-        $this->name = $name;
+        $this->_name = $name;
     }
 
     /**
@@ -138,7 +138,7 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
      */
     public function getUnitPrice()
     {
-        return $this->unitPrice;
+        return $this->_unitPrice;
     }
 
     /**
@@ -148,17 +148,17 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
      */
     public function setUnitPrice($price)
     {
-        $this->unitPrice = $price;
+        $this->_unitPrice = $price;
     }
 
     /**
-     * The 3-letter ISO code (ISO 4217) for the currency the item was purchased in.
+     * The 3-letter ISO code (ISO 4217) for the item currency.
      *
      * @return string the currency ISO code.
      */
     public function getCurrencyCode()
     {
-        return $this->currencyCode;
+        return $this->_currencyCode;
     }
 
     /**
@@ -168,7 +168,7 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
      */
     public function setCurrencyCode($code)
     {
-        $this->currencyCode = $code;
+        $this->_currencyCode = $code;
     }
 
     /**
@@ -182,20 +182,20 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
             case Mage_Catalog_Model_Product_Type::TYPE_GROUPED:
                 $info = $item->getProductOptionByCode('info_buyRequest');
                 if ($info !== null && isset($info['super_product_config']['product_id'])) {
-                    $this->productId = (int)$info['super_product_config']['product_id'];
+                    $this->_productId = (int)$info['super_product_config']['product_id'];
                 } else {
-                    $this->productId = (int)$item->getProductId();
+                    $this->_productId = (int)$item->getProductId();
                 }
                 break;
 
             default:
-                $this->productId = (int)$item->getProductId();
+                $this->_productId = (int)$item->getProductId();
                 break;
         }
 
-        $this->quantity = (int)$item->getQtyOrdered();
-        $this->name = $item->getName();
-        $this->unitPrice = $item->getPriceInclTax();
-        $this->currencyCode = $item->getOrder()->getOrderCurrencyCode();
+        $this->_quantity = (int)$item->getQtyOrdered();
+        $this->_name = $item->getName();
+        $this->_unitPrice = $item->getPriceInclTax();
+        $this->_currencyCode = $item->getOrder()->getOrderCurrencyCode();
     }
 }

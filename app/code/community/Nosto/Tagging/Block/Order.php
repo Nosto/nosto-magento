@@ -20,6 +20,7 @@
  *
  * @category  Nosto
  * @package   Nosto_Tagging
+ * @author    Nosto Solutions Ltd <magento@nosto.com>
  * @copyright Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -54,7 +55,7 @@ class Nosto_Tagging_Block_Order extends Mage_Checkout_Block_Success
     /**
      * Return the last placed order for the customer.
      *
-     * @return Mage_Sales_Model_Order
+     * @return Mage_Sales_Model_Order the order model.
      */
     public function getLastOrder()
     {
@@ -74,7 +75,7 @@ class Nosto_Tagging_Block_Order extends Mage_Checkout_Block_Success
      *     price: 2.00
      * }, {...});
      *
-     * @param Mage_Sales_Model_Order $order
+     * @param Mage_Sales_Model_Order $order the order model.
      *
      * @return object[]
      */
@@ -110,9 +111,9 @@ class Nosto_Tagging_Block_Order extends Mage_Checkout_Block_Success
     /**
      * Converts a order item model into a generic data object.
      *
-     * @see Nosto_Tagging_Block_Order::getOrderItems()
+     * @param Mage_Sales_Model_Order_Item $model the order item model.
      *
-     * @param Mage_Sales_Model_Order_Item $model
+     * @see Nosto_Tagging_Block_Order::getOrderItems()
      *
      * @return object
      */
@@ -127,12 +128,12 @@ class Nosto_Tagging_Block_Order extends Mage_Checkout_Block_Success
     }
 
     /**
-     * Returns an array of generic data objects for discount and shipping from the
-     * order.
-     *
-     * @see Nosto_Tagging_Block_Order::getOrderItems()
+     * Returns an array of generic data objects for discount and shipping from
+     * the order.
      *
      * @param Mage_Sales_Model_Order $order the order model.
+     *
+     * @see Nosto_Tagging_Block_Order::getOrderItems()
      *
      * @return object[]
      */
@@ -163,8 +164,8 @@ class Nosto_Tagging_Block_Order extends Mage_Checkout_Block_Success
 
     /**
      * Returns the product id for a order item.
-     * If the product type is "grouped", then return the grouped product's id and
-     * not the id of the actual product.
+     * If the product type is "grouped", then return the grouped product's id
+     * and not the id of the actual product.
      *
      * @param Mage_Sales_Model_Order_Item $item the order item model.
      *

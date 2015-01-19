@@ -20,12 +20,13 @@
  *
  * @category  Nosto
  * @package   Nosto_Tagging
+ * @author    Nosto Solutions Ltd <magento@nosto.com>
  * @copyright Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
 /**
- * This upgrade script will run only when upgrading from 1.1.7 to 1.2.0 or above.
+ * This upgrade script will run when upgrading from 1.1.7 to 1.2.0 or above.
  *
  * Deletes all existing module configurations.
  * Creates the db table for matching Magento cart quotes to nosto customer ids.

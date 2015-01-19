@@ -20,6 +20,7 @@
  *
  * @category  Nosto
  * @package   Nosto_Tagging
+ * @author    Nosto Solutions Ltd <magento@nosto.com>
  * @copyright Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -35,9 +36,9 @@
 class Nosto_Tagging_Model_Meta_Account_Billing extends Mage_Core_Model_Abstract implements NostoAccountMetaDataBillingDetailsInterface
 {
     /**
-     * @var string country ISO (ISO 3166-1 alpha-2) code for account billing details.
+     * @var string country ISO (ISO 3166-1 alpha-2) code for billing details.
      */
-    protected $country;
+    protected $_country;
 
     /**
      * Constructor.
@@ -47,13 +48,12 @@ class Nosto_Tagging_Model_Meta_Account_Billing extends Mage_Core_Model_Abstract 
     {
         parent::__construct();
 
-        $this->country = Mage::app()->getStore()->getConfig('general/country/default');
+        $this->_country = Mage::app()->getStore()
+            ->getConfig('general/country/default');
     }
 
     /**
-     * Internal Magento constructor.
-     *
-     * @return void
+     * @inheritdoc
      */
     protected function _construct()
     {
@@ -67,16 +67,16 @@ class Nosto_Tagging_Model_Meta_Account_Billing extends Mage_Core_Model_Abstract 
      */
     public function setCountry($country)
     {
-        $this->country = $country;
+        $this->_country = $country;
     }
 
     /**
-     * The 2-letter ISO code (ISO 3166-1 alpha-2) for country in billing details.
+     * The 2-letter ISO code (ISO 3166-1 alpha-2) for billing details country.
      *
      * @return string the country ISO code.
      */
     public function getCountry()
     {
-        return $this->country;
+        return $this->_country;
     }
 }

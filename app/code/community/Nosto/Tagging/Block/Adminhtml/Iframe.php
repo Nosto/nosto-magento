@@ -20,6 +20,7 @@
  *
  * @category  Nosto
  * @package   Nosto_Tagging
+ * @author    Nosto Solutions Ltd <magento@nosto.com>
  * @copyright Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -32,13 +33,13 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
+class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
 {
     /**
      * Gets the iframe url from parent block, which should be
      * Nosto_tagging_Block_Adminhtml_Wizard.
      *
-     * @return string the iframe url or empty string if cannot be found in parent.
+     * @return string the url or empty string if cannot be found in parent.
      */
     public function getIframeUrl()
     {

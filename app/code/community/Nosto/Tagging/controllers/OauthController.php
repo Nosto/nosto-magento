@@ -20,6 +20,7 @@
  *
  * @category  Nosto
  * @package   Nosto_Tagging
+ * @author    Nosto Solutions Ltd <magento@nosto.com>
  * @copyright Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -37,12 +38,12 @@ require_once Mage::getBaseDir('lib') . '/nosto/php-sdk/src/config.inc.php';
 class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
 {
     /**
-     * Handles the redirect from Nosto oauth2 authorization server when an existing
-     * account is connected to a store.
+     * Handles the redirect from Nosto oauth2 authorization server when an
+     * existing account is connected to a store.
      * This is handled in the front end as the oauth2 server validates the
-     * "return_url" sent in the first step of the authorization cycle, and requires
-     * it to be from the same domain that the account is configured for and only
-     * redirects to that domain.
+     * "return_url" sent in the first step of the authorization cycle, and
+     * requires it to be from the same domain that the account is configured
+     * for and only redirects to that domain.
      */
     public function indexAction()
     {
@@ -54,33 +55,48 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
                 );
                 if (Mage::helper('nosto_tagging/account')->save($account)) {
                     $params = array(
-                        'success' => $this->__('Account %s successfully connected to Nosto.', $account->name),
+                        'success' => $this->__(
+                            'Account %s successfully connected to Nosto.',
+                            $account->name
+                        ),
                         'store' => (int)Mage::app()->getStore()->getId(),
                     );
                 } else {
                     throw new NostoException('Failed to connect account');
                 }
             } catch (NostoException $e) {
-                Mage::log("\n" . $e->__toString(), Zend_Log::ERR, 'nostotagging.log');
+                Mage::log(
+                    "\n" . $e->__toString(), Zend_Log::ERR, 'nostotagging.log'
+                );
                 $params = array(
-                    'error' => $this->__('Account could not be connected to Nosto. Please contact Nosto support.'),
+                    'error' => $this->__(
+                        'Account could not be connected to Nosto. Please contact Nosto support.'
+                    ),
                     'store' => (int)Mage::app()->getStore()->getId(),
                 );
             }
             $this->_redirect('adminhtml/nosto/redirectProxy', $params);
         } elseif (($error = $this->getRequest()->getParam('error')) !== null) {
             $parts = array($error);
-            if (($reason = $this->getRequest()->getParam('error_reason')) !== null) {
+            $reason = $this->getRequest()->getParam('error_reason');
+            if ($reason !== null) {
                 $parts[] = $reason;
             }
-            if (($desc = $this->getRequest()->getParam('error_description')) !== null) {
+            $desc = $this->getRequest()->getParam('error_description');
+            if ($desc !== null) {
                 $parts[] = $desc;
             }
-            Mage::log("\n" . implode(' - ', $parts), Zend_Log::ERR, 'nostotagging.log');
-            $this->_redirect('adminhtml/nosto/redirectProxy', array(
-                'error' => $this->__('Account could not be connected to Nosto. You rejected the connection request.'),
-                'store' => (int)Mage::app()->getStore()->getId(),
-            ));
+            Mage::log(
+                "\n" . implode(' - ', $parts), Zend_Log::ERR, 'nostotagging.log'
+            );
+            $this->_redirect(
+                'adminhtml/nosto/redirectProxy', array(
+                    'error' => $this->__(
+                        'Account could not be connected to Nosto. You rejected the connection request.'
+                    ),
+                    'store' => (int)Mage::app()->getStore()->getId(),
+                )
+            );
         } else {
             $this->norouteAction();
         }

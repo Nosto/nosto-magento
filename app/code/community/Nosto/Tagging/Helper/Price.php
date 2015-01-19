@@ -20,6 +20,7 @@
  *
  * @category  Nosto
  * @package   Nosto_Tagging
+ * @author    Nosto Solutions Ltd <magento@nosto.com>
  * @copyright Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -72,8 +73,8 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
     /**
      * Get unit/final price for a product model.
      *
-     * @param Mage_Catalog_Model_Product $product the product model.
-     * @param bool                       $finalPrice if the final price should be returned.
+     * @param Mage_Catalog_Model_Product $product    the product model.
+     * @param bool                       $finalPrice if final price.
      *
      * @return float
      */
@@ -84,7 +85,8 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         switch ($product->getTypeId()) {
             case Mage_Catalog_Model_Product_Type::TYPE_BUNDLE:
                 // Get the bundle product "from" price.
-                $price = $product->getPriceModel()->getTotalPrices($product, 'min', true);
+                $price = $product->getPriceModel()
+                    ->getTotalPrices($product, 'min', true);
                 break;
 
             case Mage_Catalog_Model_Product_Type::TYPE_GROUPED:
@@ -92,7 +94,10 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
                 /** @var $tmpProduct Mage_Catalog_Model_Product */
                 $tmpProduct = Mage::getModel('catalog/product')
                     ->getCollection()
-                    ->addAttributeToSelect(Mage::getSingleton('catalog/config')->getProductAttributes())
+                    ->addAttributeToSelect(
+                        Mage::getSingleton('catalog/config')
+                            ->getProductAttributes()
+                    )
                     ->addAttributeToFilter('entity_id', $product->getId())
                     ->setPage(1, 1)
                     ->addMinimalPrice()
