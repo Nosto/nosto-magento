@@ -55,7 +55,7 @@ class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
     {
         $product = $this->getProduct();
         if (!Mage::helper('nosto_tagging')->isModuleEnabled()
-			|| !Mage::helper('nosto_tagging/account')->existsAndIsConnected()
+            || !Mage::helper('nosto_tagging/account')->existsAndIsConnected()
             || ($product->getTypeId() === Mage_Catalog_Model_Product_Type::TYPE_BUNDLE
                 && (int)$product->getPriceType() === Mage_Bundle_Model_Product_Price::PRICE_TYPE_FIXED)
         ) {

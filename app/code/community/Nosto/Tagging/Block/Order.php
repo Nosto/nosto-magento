@@ -42,8 +42,8 @@ class Nosto_Tagging_Block_Order extends Mage_Checkout_Block_Success
     protected function _toHtml()
     {
         if (!Mage::helper('nosto_tagging')->isModuleEnabled()
-			|| !Mage::helper('nosto_tagging/account')->existsAndIsConnected()
-		) {
+            || !Mage::helper('nosto_tagging/account')->existsAndIsConnected()
+        ) {
             return '';
         }
 
@@ -118,8 +118,8 @@ class Nosto_Tagging_Block_Order extends Mage_Checkout_Block_Success
     {
         return (object)array(
             'productId' => $this->getProductId($model),
-            'quantity'  => (int)$model->getQtyOrdered(),
-            'name'      => $model->getName(),
+            'quantity' => (int)$model->getQtyOrdered(),
+            'name' => $model->getName(),
             'unitPrice' => $model->getPriceInclTax(),
         );
     }
@@ -140,8 +140,8 @@ class Nosto_Tagging_Block_Order extends Mage_Checkout_Block_Success
         if ($discount = $order->getDiscountAmount()) {
             $items[] = (object)array(
                 'productId' => -1,
-                'quantity'  => 1,
-                'name'      => 'Discount',
+                'quantity' => 1,
+                'name' => 'Discount',
                 'unitPrice' => $discount,
             );
         }
@@ -149,8 +149,8 @@ class Nosto_Tagging_Block_Order extends Mage_Checkout_Block_Success
         if ($shippingInclTax = $order->getShippingInclTax()) {
             $items[] = (object)array(
                 'productId' => -1,
-                'quantity'  => 1,
-                'name'      => 'Shipping and handling',
+                'quantity' => 1,
+                'name' => 'Shipping and handling',
                 'unitPrice' => $shippingInclTax,
             );
         }

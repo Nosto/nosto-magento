@@ -49,9 +49,9 @@ class Nosto_Tagging_Block_Category extends Mage_Core_Block_Template
     protected function _toHtml()
     {
         if (!Mage::helper('nosto_tagging')->isModuleEnabled()
-			|| !Mage::helper('nosto_tagging/account')->existsAndIsConnected()
-			|| !$this->getCategory()
-		) {
+            || !Mage::helper('nosto_tagging/account')->existsAndIsConnected()
+            || !$this->getCategory()
+        ) {
             return '';
         }
 

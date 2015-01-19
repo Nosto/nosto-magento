@@ -43,11 +43,11 @@
  */
 class Nosto_Tagging_Model_Customer extends Mage_Core_Model_Abstract
 {
-	/**
-	 * @inheritdoc
-	 */
-	protected function _construct()
-	{
-		$this->_init('nosto_tagging/customer');
-	}
+    /**
+     * @inheritdoc
+     */
+    protected function _construct()
+    {
+        $this->_init('nosto_tagging/customer');
+    }
 }

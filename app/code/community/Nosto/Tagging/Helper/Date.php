@@ -33,15 +33,15 @@
  */
 class Nosto_Tagging_Helper_Date extends Mage_Core_Helper_Abstract
 {
-	/**
-	 * Formats date into Nosto format, i.e. Y-m-d.
-	 *
-	 * @param string $date the dat to format.
-	 *
-	 * @return string the formatted date.
-	 */
-	public function getFormattedDate($date)
-	{
-		return date('Y-m-d', strtotime($date));
-	}
+    /**
+     * Formats date into Nosto format, i.e. Y-m-d.
+     *
+     * @param string $date the dat to format.
+     *
+     * @return string the formatted date.
+     */
+    public function getFormattedDate($date)
+    {
+        return date('Y-m-d', strtotime($date));
+    }
 }

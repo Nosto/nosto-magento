@@ -34,11 +34,11 @@
  */
 class Nosto_Tagging_Model_Resource_Customer extends Mage_Core_Model_Resource_Db_Abstract
 {
-	/**
-	 * @inheritdoc
-	 */
-	protected function _construct()
-	{
-		$this->_init('nosto_tagging/customer', 'customer_id');
-	}
+    /**
+     * @inheritdoc
+     */
+    protected function _construct()
+    {
+        $this->_init('nosto_tagging/customer', 'customer_id');
+    }
 }

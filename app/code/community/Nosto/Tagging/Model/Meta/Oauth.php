@@ -33,94 +33,94 @@
  */
 class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements NostoOAuthClientMetaDataInterface
 {
-	/**
-	 * @var string the url where the oauth2 server should redirect after authorization is done.
-	 */
-	protected $redirectUrl;
+    /**
+     * @var string the url where the oauth2 server should redirect after authorization is done.
+     */
+    protected $redirectUrl;
 
-	/**
-	 * @var string the language ISO code for localization on oauth2 server.
-	 */
-	protected $languageIsoCode;
+    /**
+     * @var string the language ISO code for localization on oauth2 server.
+     */
+    protected $languageIsoCode;
 
-	/**
-	 * Constructor.
-	 * Sets initial values.
-	 */
-	public function __construct()
-	{
-		parent::__construct();
+    /**
+     * Constructor.
+     * Sets initial values.
+     */
+    public function __construct()
+    {
+        parent::__construct();
 
-		$this->redirectUrl = Mage::getUrl('nosto/oauth', array('_store' => Mage::app()->getStore()->getId(), '_store_to_url' => true));
-		$this->languageIsoCode = substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2);
-	}
+        $this->redirectUrl = Mage::getUrl('nosto/oauth', array('_store' => Mage::app()->getStore()->getId(), '_store_to_url' => true));
+        $this->languageIsoCode = substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2);
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	protected function _construct()
-	{
-		$this->_init('nosto_tagging/meta_oauth');
-	}
+    /**
+     * @inheritdoc
+     */
+    protected function _construct()
+    {
+        $this->_init('nosto_tagging/meta_oauth');
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getClientId()
-	{
-		return 'magento';
-	}
+    /**
+     * @inheritdoc
+     */
+    public function getClientId()
+    {
+        return 'magento';
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getClientSecret()
-	{
-		return 'magento';
-	}
+    /**
+     * @inheritdoc
+     */
+    public function getClientSecret()
+    {
+        return 'magento';
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getScopes()
-	{
-		// We want all the available Nosto API tokens.
-		return NostoApiToken::$tokenNames;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function getScopes()
+    {
+        // We want all the available Nosto API tokens.
+        return NostoApiToken::$tokenNames;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getRedirectUrl()
-	{
-		return $this->redirectUrl;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function getRedirectUrl()
+    {
+        return $this->redirectUrl;
+    }
 
-	/**
-	 * Sets the redirect url.
-	 *
-	 * @param string $url the url.
-	 */
-	public function setRedirectUrl($url)
-	{
-		$this->redirectUrl = $url;
-	}
+    /**
+     * Sets the redirect url.
+     *
+     * @param string $url the url.
+     */
+    public function setRedirectUrl($url)
+    {
+        $this->redirectUrl = $url;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getLanguageIsoCode()
-	{
-		return $this->languageIsoCode;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function getLanguageIsoCode()
+    {
+        return $this->languageIsoCode;
+    }
 
-	/**
-	 * Sets the language ISO code.
-	 *
-	 * @param string $code the ISO code.
-	 */
-	public function setLanguageIsoCode($code)
-	{
-		$this->languageIsoCode = $code;
-	}
+    /**
+     * Sets the language ISO code.
+     *
+     * @param string $code the ISO code.
+     */
+    public function setLanguageIsoCode($code)
+    {
+        $this->languageIsoCode = $code;
+    }
 }

@@ -33,54 +33,54 @@
  */
 class Nosto_Tagging_Helper_Customer extends Mage_Core_Helper_Abstract
 {
-	/**
-	 * @var string the name of the cookie where the Nosto ID can be found.
-	 */
-	const COOKIE_NAME = '2c_cId';
+    /**
+     * @var string the name of the cookie where the Nosto ID can be found.
+     */
+    const COOKIE_NAME = '2c_cId';
 
-	/**
-	 * Gets the Nosto ID for an order model.
-	 * The Nosto ID represents the customer who placed to the order on Nosto's side.
-	 *
-	 * @param Mage_Sales_Model_Order $order the order to get the Nosto ID for.
-	 * @return bool|string the Nosto ID or false if not found for order.
-	 */
-	public function getNostoId(Mage_Sales_Model_Order $order)
-	{
-		/** @var Nosto_Tagging_Model_Customer $customer */
-		$customer = Mage::getModel('nosto_tagging/customer');
-		$customer->load($order->getQuoteId(), 'quote_id');
-		return $customer->hasData('nosto_id') ? $customer->getNostoId() : false;
-	}
+    /**
+     * Gets the Nosto ID for an order model.
+     * The Nosto ID represents the customer who placed to the order on Nosto's side.
+     *
+     * @param Mage_Sales_Model_Order $order the order to get the Nosto ID for.
+     * @return bool|string the Nosto ID or false if not found for order.
+     */
+    public function getNostoId(Mage_Sales_Model_Order $order)
+    {
+        /** @var Nosto_Tagging_Model_Customer $customer */
+        $customer = Mage::getModel('nosto_tagging/customer');
+        $customer->load($order->getQuoteId(), 'quote_id');
+        return $customer->hasData('nosto_id') ? $customer->getNostoId() : false;
+    }
 
-	/**
-	 * Update the Nosto ID form the current quote if it exists.
-	 * The Nosto ID is present in a cookie set by the JavaScript loaded from Nosto.
-	 */
-	public function updateNostoId()
-	{
-		/** @var Mage_Checkout_Model_Cart $cart */
-		$cart = Mage::getModel('checkout/cart');
-		/** @var Mage_Core_Model_Cookie $cookie */
-		$cookie = Mage::getModel('core/cookie');
-		$quoteId = ($cart->getQuote() !== null) ? $cart->getQuote()->getId() : false;
-		$nostoId = $cookie->get(self::COOKIE_NAME);
-		if (!empty($quoteId) && !empty($nostoId)) {
-			/** @var Nosto_Tagging_Model_Customer $customer */
-			$customer = Mage::getModel('nosto_tagging/customer')
-				->getCollection()
-				->addFieldToFilter('quote_id', $quoteId)
-				->addFieldToFilter('nosto_id', $nostoId)
-				->getFirstItem();
-			if ($customer->hasData()) {
-				$customer->setUpdatedAt(date('Y-m-d H:i:s'));
-				$customer->save();
-			} else {
-				$customer->setQuoteId($quoteId);
-				$customer->setNostoId($nostoId);
-				$customer->setCreatedAt(date('Y-m-d H:i:s'));
-				$customer->save();
-			}
-		}
-	}
+    /**
+     * Update the Nosto ID form the current quote if it exists.
+     * The Nosto ID is present in a cookie set by the JavaScript loaded from Nosto.
+     */
+    public function updateNostoId()
+    {
+        /** @var Mage_Checkout_Model_Cart $cart */
+        $cart = Mage::getModel('checkout/cart');
+        /** @var Mage_Core_Model_Cookie $cookie */
+        $cookie = Mage::getModel('core/cookie');
+        $quoteId = ($cart->getQuote() !== null) ? $cart->getQuote()->getId() : false;
+        $nostoId = $cookie->get(self::COOKIE_NAME);
+        if (!empty($quoteId) && !empty($nostoId)) {
+            /** @var Nosto_Tagging_Model_Customer $customer */
+            $customer = Mage::getModel('nosto_tagging/customer')
+                ->getCollection()
+                ->addFieldToFilter('quote_id', $quoteId)
+                ->addFieldToFilter('nosto_id', $nostoId)
+                ->getFirstItem();
+            if ($customer->hasData()) {
+                $customer->setUpdatedAt(date('Y-m-d H:i:s'));
+                $customer->save();
+            } else {
+                $customer->setQuoteId($quoteId);
+                $customer->setNostoId($nostoId);
+                $customer->setCreatedAt(date('Y-m-d H:i:s'));
+                $customer->save();
+            }
+        }
+    }
 }

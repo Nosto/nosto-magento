@@ -34,95 +34,95 @@
  */
 class Nosto_Tagging_Model_Meta_Account_Owner extends Mage_Core_Model_Abstract implements NostoAccountMetaDataOwnerInterface
 {
-	/**
-	 * @var string the account owner first name.
-	 */
-	protected $firstName;
+    /**
+     * @var string the account owner first name.
+     */
+    protected $firstName;
 
-	/**
-	 * @var string the account owner last name.
-	 */
-	protected $lastName;
+    /**
+     * @var string the account owner last name.
+     */
+    protected $lastName;
 
-	/**
-	 * @var	string the account owner email address.
-	 */
-	protected $email;
+    /**
+     * @var    string the account owner email address.
+     */
+    protected $email;
 
-	/**
-	 * Constructor.
-	 * Sets initial values of the account owner.
-	 */
-	public function __construct()
-	{
-		parent::__construct();
+    /**
+     * Constructor.
+     * Sets initial values of the account owner.
+     */
+    public function __construct()
+    {
+        parent::__construct();
 
-		/** @var Mage_Admin_Model_User $user */
-		$user = Mage::getSingleton('admin/session')->getUser();
-		$this->firstName = $user->getFirstname();
-		$this->lastName = $user->getLastname();
-		$this->email = $user->getEmail();
-	}
+        /** @var Mage_Admin_Model_User $user */
+        $user = Mage::getSingleton('admin/session')->getUser();
+        $this->firstName = $user->getFirstname();
+        $this->lastName = $user->getLastname();
+        $this->email = $user->getEmail();
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	protected function _construct()
-	{
-		$this->_init('nosto_tagging/meta_account_owner');
-	}
+    /**
+     * @inheritdoc
+     */
+    protected function _construct()
+    {
+        $this->_init('nosto_tagging/meta_account_owner');
+    }
 
-	/**
-	 * Sets the first name of the account owner.
-	 *
-	 * @param string $firstName the first name.
-	 */
-	public function setFirstName($firstName)
-	{
-		$this->firstName = $firstName;
-	}
+    /**
+     * Sets the first name of the account owner.
+     *
+     * @param string $firstName the first name.
+     */
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getFirstName()
-	{
-		return $this->firstName;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function getFirstName()
+    {
+        return $this->firstName;
+    }
 
-	/**
-	 * Sets the last name of the account owner.
-	 *
-	 * @param string $lastName the last name.
-	 */
-	public function setLastName($lastName)
-	{
-		$this->lastName = $lastName;
-	}
+    /**
+     * Sets the last name of the account owner.
+     *
+     * @param string $lastName the last name.
+     */
+    public function setLastName($lastName)
+    {
+        $this->lastName = $lastName;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getLastName()
-	{
-		return $this->lastName;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function getLastName()
+    {
+        return $this->lastName;
+    }
 
-	/**
-	 * Sets the email address of the account owner.
-	 *
-	 * @param string $email the email address.
-	 */
-	public function setEmail($email)
-	{
-		$this->email = $email;
-	}
+    /**
+     * Sets the email address of the account owner.
+     *
+     * @param string $email the email address.
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getEmail()
-	{
-		return $this->email;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
 }

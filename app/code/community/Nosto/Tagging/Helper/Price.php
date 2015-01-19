@@ -73,7 +73,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
      * Get unit/final price for a product model.
      *
      * @param Mage_Catalog_Model_Product $product
-     * @param bool                       $finalPrice
+     * @param bool $finalPrice
      *
      * @return float
      */

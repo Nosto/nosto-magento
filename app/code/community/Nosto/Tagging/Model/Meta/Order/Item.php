@@ -34,155 +34,155 @@
  */
 class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract implements NostoOrderPurchasedItemInterface
 {
-	/**
-	 * @var string|int the unique identifier of the purchased item.
-	 * If this item is for discounts or shipping cost, the id can be 0.
-	 */
-	protected $productId;
+    /**
+     * @var string|int the unique identifier of the purchased item.
+     * If this item is for discounts or shipping cost, the id can be 0.
+     */
+    protected $productId;
 
-	/**
-	 * @var int the quantity of the item included in the order.
-	 */
-	protected $quantity;
+    /**
+     * @var int the quantity of the item included in the order.
+     */
+    protected $quantity;
 
-	/**
-	 * @var string the name of the item included in the order.
-	 */
-	protected $name;
+    /**
+     * @var string the name of the item included in the order.
+     */
+    protected $name;
 
-	/**
-	 * @var float The unit price of the item included in the order.
-	 */
-	protected $unitPrice;
+    /**
+     * @var float The unit price of the item included in the order.
+     */
+    protected $unitPrice;
 
-	/**
-	 * @var string the 3-letter ISO code (ISO 4217) for the currency the item was purchased in.
-	 */
-	protected $currencyCode;
+    /**
+     * @var string the 3-letter ISO code (ISO 4217) for the currency the item was purchased in.
+     */
+    protected $currencyCode;
 
-	/**
-	 * @inheritdoc
-	 */
-	protected function _construct()
-	{
-		$this->_init('nosto_tagging/meta_order_item');
-	}
+    /**
+     * @inheritdoc
+     */
+    protected function _construct()
+    {
+        $this->_init('nosto_tagging/meta_order_item');
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getProductId()
-	{
-		return $this->productId;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function getProductId()
+    {
+        return $this->productId;
+    }
 
-	/**
-	 * Sets the unique identifier for the item.
-	 *
-	 * @param string|int $id the product id.
-	 */
-	public function setProductId($id)
-	{
-		$this->productId = $id;
-	}
+    /**
+     * Sets the unique identifier for the item.
+     *
+     * @param string|int $id the product id.
+     */
+    public function setProductId($id)
+    {
+        $this->productId = $id;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getQuantity()
-	{
-		return $this->quantity;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function getQuantity()
+    {
+        return $this->quantity;
+    }
 
-	/**
-	 * Sets the item quantity.
-	 *
-	 * @param int $qty the quantity.
-	 */
-	public function setQuantity($qty)
-	{
-		$this->quantity = $qty;
-	}
+    /**
+     * Sets the item quantity.
+     *
+     * @param int $qty the quantity.
+     */
+    public function setQuantity($qty)
+    {
+        $this->quantity = $qty;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getName()
-	{
-		return $this->name;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 
-	/**
-	 * Sets the item name.
-	 *
-	 * @param string $name the item name.
-	 */
-	public function setName($name)
-	{
-		$this->name = $name;
-	}
+    /**
+     * Sets the item name.
+     *
+     * @param string $name the item name.
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getUnitPrice()
-	{
-		return $this->unitPrice;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function getUnitPrice()
+    {
+        return $this->unitPrice;
+    }
 
-	/**
-	 * Sets the item unit price.
-	 *
-	 * @param float $price the item unit price.
-	 */
-	public function setUnitPrice($price)
-	{
-		$this->unitPrice = $price;
-	}
+    /**
+     * Sets the item unit price.
+     *
+     * @param float $price the item unit price.
+     */
+    public function setUnitPrice($price)
+    {
+        $this->unitPrice = $price;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getCurrencyCode()
-	{
-		return $this->currencyCode;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function getCurrencyCode()
+    {
+        return $this->currencyCode;
+    }
 
-	/**
-	 * Sets the items currency code (ISO 4217).
-	 *
-	 * @param string $code the currency ISO code.
-	 */
-	public function setCurrencyCode($code)
-	{
-		$this->currencyCode = $code;
-	}
+    /**
+     * Sets the items currency code (ISO 4217).
+     *
+     * @param string $code the currency ISO code.
+     */
+    public function setCurrencyCode($code)
+    {
+        $this->currencyCode = $code;
+    }
 
-	/**
-	 * Loads the item info from the Magento order item model.
-	 *
-	 * @param Mage_Sales_Model_Order_Item $item the item model.
-	 */
-	public function loadData(Mage_Sales_Model_Order_Item $item)
-	{
-		switch ($item->getProductType()) {
-			case Mage_Catalog_Model_Product_Type::TYPE_GROUPED:
-				$info = $item->getProductOptionByCode('info_buyRequest');
-				if ($info !== null && isset($info['super_product_config']['product_id'])) {
-					$this->productId = (int)$info['super_product_config']['product_id'];
-				} else {
-					$this->productId = (int)$item->getProductId();
-				}
-				break;
+    /**
+     * Loads the item info from the Magento order item model.
+     *
+     * @param Mage_Sales_Model_Order_Item $item the item model.
+     */
+    public function loadData(Mage_Sales_Model_Order_Item $item)
+    {
+        switch ($item->getProductType()) {
+            case Mage_Catalog_Model_Product_Type::TYPE_GROUPED:
+                $info = $item->getProductOptionByCode('info_buyRequest');
+                if ($info !== null && isset($info['super_product_config']['product_id'])) {
+                    $this->productId = (int)$info['super_product_config']['product_id'];
+                } else {
+                    $this->productId = (int)$item->getProductId();
+                }
+                break;
 
-			default:
-				$this->productId = (int)$item->getProductId();
-				break;
-		}
+            default:
+                $this->productId = (int)$item->getProductId();
+                break;
+        }
 
-		$this->quantity = (int)$item->getQtyOrdered();
-		$this->name = $item->getName();
-		$this->unitPrice = $item->getPriceInclTax();
-		$this->currencyCode = $item->getOrder()->getOrderCurrencyCode();
-	}
+        $this->quantity = (int)$item->getQtyOrdered();
+        $this->name = $item->getName();
+        $this->unitPrice = $item->getPriceInclTax();
+        $this->currencyCode = $item->getOrder()->getOrderCurrencyCode();
+    }
 }

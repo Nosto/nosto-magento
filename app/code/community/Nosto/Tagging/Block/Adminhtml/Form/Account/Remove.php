@@ -34,43 +34,43 @@
  */
 class Nosto_Tagging_Block_Adminhtml_Form_Account_Remove extends Mage_Adminhtml_Block_Widget_Form
 {
-	/**
-	 * @inheritdoc
-	 */
-	protected function _prepareForm()
-	{
-		$form = new Varien_Data_Form(array(
-			'id'        => 'nosto_remove_account_form',
-			'action'    => $this->getUrl('*/*/removeAccount'),
-			'method'    => 'post',
-			'enctype'   => 'multipart/form-data'
-		));
-		$form->setUseContainer(true);
-		$form->addField('store', 'hidden', array(
-			'name' => 'store',
-			'value' => $this->getRequest()->getParam('store', 0),
-		));
-		$form->addField('nosto_remove_account_submit', 'submit', array(
-			'class' => 'form-button',
-			'name' => 'nosto_remove_account_submit',
-			'value' => $this->__('Remove Nosto'),
-		));
-		$this->setForm($form);
+    /**
+     * @inheritdoc
+     */
+    protected function _prepareForm()
+    {
+        $form = new Varien_Data_Form(array(
+            'id' => 'nosto_remove_account_form',
+            'action' => $this->getUrl('*/*/removeAccount'),
+            'method' => 'post',
+            'enctype' => 'multipart/form-data'
+        ));
+        $form->setUseContainer(true);
+        $form->addField('store', 'hidden', array(
+            'name' => 'store',
+            'value' => $this->getRequest()->getParam('store', 0),
+        ));
+        $form->addField('nosto_remove_account_submit', 'submit', array(
+            'class' => 'form-button',
+            'name' => 'nosto_remove_account_submit',
+            'value' => $this->__('Remove Nosto'),
+        ));
+        $this->setForm($form);
 
-		return parent::_prepareForm();
-	}
+        return parent::_prepareForm();
+    }
 
-	/**
-	 * Gets the Nosto account name from the parent block, which should be Nosto_tagging_Block_Adminhtml_Wizard.
-	 *
-	 * @return string the account name or empty string if not found in parent.
-	 */
-	public function getAccountName()
-	{
-		$parent = $this->getParentBlock();
-		if ($parent instanceof Nosto_tagging_Block_Adminhtml_Wizard) {
-			return $parent->getAccount()->name;
-		}
-		return '';
-	}
+    /**
+     * Gets the Nosto account name from the parent block, which should be Nosto_tagging_Block_Adminhtml_Wizard.
+     *
+     * @return string the account name or empty string if not found in parent.
+     */
+    public function getAccountName()
+    {
+        $parent = $this->getParentBlock();
+        if ($parent instanceof Nosto_tagging_Block_Adminhtml_Wizard) {
+            return $parent->getAccount()->name;
+        }
+        return '';
+    }
 }

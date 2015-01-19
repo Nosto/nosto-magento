@@ -34,29 +34,29 @@
  */
 class Nosto_Tagging_Block_Adminhtml_Form_Account_Connect extends Mage_Adminhtml_Block_Widget_Form
 {
-	/**
-	 * @inheritdoc
-	 */
-	protected function _prepareForm()
-	{
-		$form = new Varien_Data_Form(array(
-			'id'        => 'nosto_connect_account_form',
-			'action'    => $this->getUrl('*/*/connectAccount'),
-			'method'    => 'post',
-			'enctype'   => 'multipart/form-data'
-		));
-		$form->setUseContainer(true);
-		$form->addField('store', 'hidden', array(
-			'name' => 'store',
-			'value' => $this->getRequest()->getParam('store', 0),
-		));
-		$form->addField('nosto_connect_account_submit', 'submit', array(
-			'class' => 'form-button',
-			'name' => 'nosto_connect_account_submit',
-			'value' => $this->__('Add Nosto'),
-		));
-		$this->setForm($form);
+    /**
+     * @inheritdoc
+     */
+    protected function _prepareForm()
+    {
+        $form = new Varien_Data_Form(array(
+            'id' => 'nosto_connect_account_form',
+            'action' => $this->getUrl('*/*/connectAccount'),
+            'method' => 'post',
+            'enctype' => 'multipart/form-data'
+        ));
+        $form->setUseContainer(true);
+        $form->addField('store', 'hidden', array(
+            'name' => 'store',
+            'value' => $this->getRequest()->getParam('store', 0),
+        ));
+        $form->addField('nosto_connect_account_submit', 'submit', array(
+            'class' => 'form-button',
+            'name' => 'nosto_connect_account_submit',
+            'value' => $this->__('Add Nosto'),
+        ));
+        $this->setForm($form);
 
-		return parent::_prepareForm();
-	}
+        return parent::_prepareForm();
+    }
 }

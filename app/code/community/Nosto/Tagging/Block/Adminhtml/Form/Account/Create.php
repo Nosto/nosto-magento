@@ -34,40 +34,40 @@
  */
 class Nosto_Tagging_Block_Adminhtml_Form_Account_Create extends Mage_Adminhtml_Block_Widget_Form
 {
-	/**
-	 * @inheritdoc
-	 */
-	protected function _prepareForm()
-	{
-		$form = new Varien_Data_Form(array(
-			'id'        => 'nosto_create_account_form',
-			'action'    => $this->getUrl('*/*/createAccount'),
-			'method'    => 'post',
-			'enctype'   => 'multipart/form-data'
-		));
-		$form->setUseContainer(true);
-		$form->addField('store', 'hidden', array(
-			'name' => 'store',
-			'value' => $this->getRequest()->getParam('store', 0),
-		));
-		/** @var Mage_Admin_Model_User $user */
-		$user = Mage::getSingleton('admin/session')->getUser();
-		$form->addField('nosto_create_account_email', 'text', array(
-			'label' => $this->__('Email'),
-			'name' => 'nosto_create_account_email',
-			'value' => $user->getEmail(),
-			'class' => 'required-entry validate-email',
-		));
-		$form->addField('nosto_terms_and_conditions', 'note', array(
-			'text' => $this->__('By creating a new account you agree to Nosto\'s') . ' <a href="http://www.nosto.com/terms" target="_blank">' . $this->__('Terms and Conditions') . '</a>',
-		));
-		$form->addField('nosto_create_account_submit', 'submit', array(
-			'class' => 'form-button',
-			'name' => 'nosto_create_account_submit',
-			'value' => $this->__('Create Nosto'),
-		));
-		$this->setForm($form);
+    /**
+     * @inheritdoc
+     */
+    protected function _prepareForm()
+    {
+        $form = new Varien_Data_Form(array(
+            'id' => 'nosto_create_account_form',
+            'action' => $this->getUrl('*/*/createAccount'),
+            'method' => 'post',
+            'enctype' => 'multipart/form-data'
+        ));
+        $form->setUseContainer(true);
+        $form->addField('store', 'hidden', array(
+            'name' => 'store',
+            'value' => $this->getRequest()->getParam('store', 0),
+        ));
+        /** @var Mage_Admin_Model_User $user */
+        $user = Mage::getSingleton('admin/session')->getUser();
+        $form->addField('nosto_create_account_email', 'text', array(
+            'label' => $this->__('Email'),
+            'name' => 'nosto_create_account_email',
+            'value' => $user->getEmail(),
+            'class' => 'required-entry validate-email',
+        ));
+        $form->addField('nosto_terms_and_conditions', 'note', array(
+            'text' => $this->__('By creating a new account you agree to Nosto\'s') . ' <a href="http://www.nosto.com/terms" target="_blank">' . $this->__('Terms and Conditions') . '</a>',
+        ));
+        $form->addField('nosto_create_account_submit', 'submit', array(
+            'class' => 'form-button',
+            'name' => 'nosto_create_account_submit',
+            'value' => $this->__('Create Nosto'),
+        ));
+        $this->setForm($form);
 
-		return parent::_prepareForm();
-	}
+        return parent::_prepareForm();
+    }
 } 

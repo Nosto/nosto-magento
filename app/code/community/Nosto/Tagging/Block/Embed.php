@@ -35,7 +35,7 @@
  */
 class Nosto_Tagging_Block_Embed extends Mage_Core_Block_Template
 {
-	const DEFAULT_SERVER_ADDRESS = 'connect.nosto.com';
+    const DEFAULT_SERVER_ADDRESS = 'connect.nosto.com';
 
     /**
      * Render JavaScript that handles the data gathering and displaying of recommended products
@@ -46,36 +46,36 @@ class Nosto_Tagging_Block_Embed extends Mage_Core_Block_Template
     protected function _toHtml()
     {
         if (!Mage::helper('nosto_tagging')->isModuleEnabled()
-			|| !Mage::helper('nosto_tagging/account')->existsAndIsConnected()
-		) {
+            || !Mage::helper('nosto_tagging/account')->existsAndIsConnected()
+        ) {
             return '';
         }
 
         return parent::_toHtml();
     }
 
-	/**
-	 * Gets the account name for the current store scope.
-	 *
-	 * @return string the account name or empty string if account is not found.
-	 */
-	public function getAccountName()
-	{
-		$account = Mage::helper('nosto_tagging/account')->find();
-		if ($account !== null) {
-			return $account->name;
-		}
-		return '';
-	}
+    /**
+     * Gets the account name for the current store scope.
+     *
+     * @return string the account name or empty string if account is not found.
+     */
+    public function getAccountName()
+    {
+        $account = Mage::helper('nosto_tagging/account')->find();
+        if ($account !== null) {
+            return $account->name;
+        }
+        return '';
+    }
 
-	/**
-	 * Gets the Nosto server address.
-	 * This is either taken from the local environment if exists or else it defaults to "connect.nosto.com".
-	 *
-	 * @return string the url.
-	 */
-	public function getServerAddress()
-	{
-		return isset($_ENV['NOSTO_SERVER_URL']) ? $_ENV['NOSTO_SERVER_URL'] : self::DEFAULT_SERVER_ADDRESS;
-	}
+    /**
+     * Gets the Nosto server address.
+     * This is either taken from the local environment if exists or else it defaults to "connect.nosto.com".
+     *
+     * @return string the url.
+     */
+    public function getServerAddress()
+    {
+        return isset($_ENV['NOSTO_SERVER_URL']) ? $_ENV['NOSTO_SERVER_URL'] : self::DEFAULT_SERVER_ADDRESS;
+    }
 }
