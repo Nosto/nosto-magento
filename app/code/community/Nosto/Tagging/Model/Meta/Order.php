@@ -37,6 +37,12 @@
 class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements NostoOrderInterface
 {
     /**
+     * @var bool if the special items, e.g. shipping cost, discounts, should be
+     * included in the `$_items` list.
+     */
+    public $includeSpecialItems = true;
+
+    /**
      * @var string|int the unique order number identifying the order.
      */
     protected $_orderNumber;
@@ -159,24 +165,26 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
             }
         }
 
-        if ($discount = $order->getDiscountAmount()) {
-            $orderItem = new Nosto_Tagging_Model_Meta_Order_Item();
-            $orderItem->setProductId(-1);
-            $orderItem->setQuantity(1);
-            $orderItem->setName('Discount');
-            $orderItem->setUnitPrice($discount);
-            $orderItem->setCurrencyCode($order->getOrderCurrencyCode());
-            $this->_items[] = $orderItem;
-        }
+        if ($this->includeSpecialItems) {
+            if ($discount = $order->getDiscountAmount()) {
+                $orderItem = new Nosto_Tagging_Model_Meta_Order_Item();
+                $orderItem->setProductId(-1);
+                $orderItem->setQuantity(1);
+                $orderItem->setName('Discount');
+                $orderItem->setUnitPrice($discount);
+                $orderItem->setCurrencyCode($order->getOrderCurrencyCode());
+                $this->_items[] = $orderItem;
+            }
 
-        if ($shippingInclTax = $order->getShippingInclTax()) {
-            $orderItem = new Nosto_Tagging_Model_Meta_Order_Item();
-            $orderItem->setProductId(-1);
-            $orderItem->setQuantity(1);
-            $orderItem->setName('Shipping and handling');
-            $orderItem->setUnitPrice($shippingInclTax);
-            $orderItem->setCurrencyCode($order->getOrderCurrencyCode());
-            $this->_items[] = $orderItem;
+            if ($shippingInclTax = $order->getShippingInclTax()) {
+                $orderItem = new Nosto_Tagging_Model_Meta_Order_Item();
+                $orderItem->setProductId(-1);
+                $orderItem->setQuantity(1);
+                $orderItem->setName('Shipping and handling');
+                $orderItem->setUnitPrice($shippingInclTax);
+                $orderItem->setCurrencyCode($order->getOrderCurrencyCode());
+                $this->_items[] = $orderItem;
+            }
         }
     }
 }
