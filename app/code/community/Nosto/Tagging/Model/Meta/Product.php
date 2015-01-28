@@ -47,6 +47,11 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
     const PRODUCT_OUT_OF_STOCK = 'OutOfStock';
 
     /**
+     * Product "can be directly added to cart" tag string.
+     */
+    const PRODUCT_ADD_TO_CART = 'add-to-cart';
+
+    /**
      * @var string the absolute url to the product page in the shop frontend.
      */
     protected $_url;
@@ -288,7 +293,23 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
             $this->_availability = self::PRODUCT_OUT_OF_STOCK;
         }
 
-        // todo: $this->tags = array();
+        $tag = Mage::getModel('tag/tag');
+        $tagCollection = $tag
+            ->getResourceCollection()
+            ->addPopularity()
+            ->addStatusFilter($tag->getApprovedStatus())
+            ->addProductFilter($product->getId())
+            ->setFlag('relation', true)
+            ->addStoreFilter(Mage::app()->getStore()->getId())
+            ->setActiveFilter()
+            ->load();
+        foreach ($tagCollection as $tag) {
+            $this->_tags[] = $tag->getName();
+        }
+
+        if (!$product->canConfigure()) {
+            $this->_tags[] = self::PRODUCT_ADD_TO_CART;
+        }
 
         $this->_categories = $this->getProductCategories($product);
         $this->_description = $product->getDescription();
