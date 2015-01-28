@@ -33,6 +33,11 @@
 
     <!-- Store wide blocks -->
     <default>
+        <!-- Adds Nosto meta tags to head -->
+        <reference name="head">
+            <block type="nosto_tagging/meta" name="nosto.meta" template="nostotagging/meta.phtml" before="-"/>
+        </reference>
+
         <!-- Adds Nosto embed script to head -->
         <reference name="head">
             <block type="nosto_tagging/embed" name="nosto.embed" template="nostotagging/embed.phtml"/>
