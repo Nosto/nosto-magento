@@ -102,6 +102,11 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
     protected $_categories = array();
 
     /**
+     * @var string the product short description.
+     */
+    protected $_shortDescription;
+
+    /**
      * @var string the product description.
      */
     protected $_description;
@@ -225,6 +230,16 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
     }
 
     /**
+     * Returns the product short description.
+     *
+     * @return string the short description.
+     */
+    public function getShortDescription()
+    {
+        return $this->_shortDescription;
+    }
+
+    /**
      * Returns the product description.
      *
      * @return string the description.
@@ -312,7 +327,8 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
         }
 
         $this->_categories = $this->getProductCategories($product);
-        $this->_description = $product->getDescription();
+        $this->_shortDescription = (string)$product->getShortDescription();
+        $this->_description = (string)$product->getDescription();
         $this->_brand = (string)$product->getAttributeText('manufacturer');
         $this->_datePublished = $product->getCreatedAt();
     }
