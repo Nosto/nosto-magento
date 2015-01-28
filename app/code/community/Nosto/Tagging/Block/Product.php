@@ -36,14 +36,9 @@
 class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
 {
     /**
-     * Product "in stock" tagging string.
+     * @var Nosto_Tagging_Model_Meta_Product runtime cache for the product meta.
      */
-    const PRODUCT_IN_STOCK = 'InStock';
-
-    /**
-     * Product "out of stock" tagging string.
-     */
-    const PRODUCT_OUT_OF_STOCK = 'OutOfStock';
+    protected $_product;
 
     /**
      * Render product info as hidden meta data if the module is enabled for the
@@ -69,52 +64,16 @@ class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
     }
 
     /**
-     * Return tagging data for the product availability.
+     * Returns the product meta data to tag.
      *
-     * @param Mage_Catalog_Model_Product $product the product model.
-     *
-     * @return string
+     * @return Nosto_Tagging_Model_Meta_Product the meta data.
      */
-    public function getProductAvailability($product)
+    public function getMetaProduct()
     {
-        if ($product instanceof Mage_Catalog_Model_Product
-            && $product->isAvailable()
-        ) {
-            return self::PRODUCT_IN_STOCK;
-        } else {
-            return self::PRODUCT_OUT_OF_STOCK;
+        if ($this->_product === null) {
+            $this->_product = new Nosto_Tagging_Model_Meta_Product();
+            $this->_product->loadData($this->getProduct());
         }
-    }
-
-    /**
-     * Return array of categories for the product.
-     * The items in the array are strings combined of the complete category
-     * path to the products own category.
-     *
-     * Structure:
-     * array (
-     *     /Electronics/Computers
-     * )
-     *
-     * @param Mage_Catalog_Model_Product $product the product model.
-     *
-     * @return array
-     */
-    public function getProductCategories($product)
-    {
-        $data = array();
-
-        if ($product instanceof Mage_Catalog_Model_Product) {
-            $categoryCollection = $product->getCategoryCollection();
-            foreach ($categoryCollection as $category) {
-                $categoryString = Mage::helper('nosto_tagging')
-                    ->buildCategoryString($category);
-                if (!empty($categoryString)) {
-                    $data[] = $categoryString;
-                }
-            }
-        }
-
-        return $data;
+        return $this->_product;
     }
 }
