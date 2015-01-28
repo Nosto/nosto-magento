@@ -51,9 +51,6 @@ class Nosto_tagging_ExportController extends Mage_Core_Controller_Front_Action
             $orders = Mage::getModel('sales/order')
                 ->getCollection()
                 ->addFieldToFilter('store_id', Mage::app()->getStore()->getId())
-                ->addAttributeToFilter(
-                    'status', Mage_Sales_Model_Order::STATE_COMPLETE
-                )
                 ->setPageSize($pageSize)
                 ->setCurPage($currentPage);
             if ($currentPage > $orders->getLastPageNumber()) {
