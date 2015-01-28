@@ -28,13 +28,15 @@
 
 <?php
 /**
- * @var $this               Nosto_Tagging_Block_Product
- * @var $helper        Nosto_Tagging_Helper_Data
- * @var $priceHelper   Nosto_Tagging_Helper_Price
+ * @var $this        Nosto_Tagging_Block_Product
+ * @var $helper      Nosto_Tagging_Helper_Data
+ * @var $priceHelper Nosto_Tagging_Helper_Price
+ * @var $dateHelper  Nosto_Tagging_Helper_Date
  */
 $product = $this->getMetaProduct();
 $helper = Mage::helper('nosto_tagging');
 $priceHelper = Mage::helper('nosto_tagging/price');
+$dateHelper = Mage::helper('nosto_tagging/date');
 ?>
 
 <!-- Nosto Product Tagging -->
@@ -54,7 +56,7 @@ $priceHelper = Mage::helper('nosto_tagging/price');
     <?php if ($product->getBrand() !== ""): ?>
         <span class="brand"><?php echo $helper->escapeHtml($product->getBrand()); ?></span>
     <?php endif; ?>
-    <span class="date_published"><?php echo $helper->getFormattedDate($product->getDatePublished()); ?></span>
+    <span class="date_published"><?php echo $dateHelper->getFormattedDate($product->getDatePublished()); ?></span>
     <?php foreach ($product->getTags() as $tag): ?>
         <span class="tag1"><?php echo $helper->escapeHtml($tag); ?></span>
     <?php endforeach; ?>

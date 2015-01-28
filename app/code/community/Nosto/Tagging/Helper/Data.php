@@ -68,18 +68,6 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Formats date into Nosto format, i.e. Y-m-d.
-     *
-     * @param string $date the date to format.
-     *
-     * @return string
-     */
-    public function getFormattedDate($date)
-    {
-        return date('Y-m-d', strtotime($date));
-    }
-
-    /**
      * Returns a unique ID that identifies this Magento installation.
      * This ID is sent to the Nosto account config iframe and used to link all
      * Nosto accounts used on this installation.
