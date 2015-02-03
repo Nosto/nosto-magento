@@ -108,9 +108,10 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
         Mage::app()->getCacheInstance()->cleanType('config');
 
         try {
-            // Tell Nosto that the account was removed.
+            // Notify Nosto that the account was deleted.
             $account->delete();
         } catch (NostoException $e) {
+            // Failures are logged but not shown to the user.
             Mage::log(
                 "\n" . $e->__toString(), Zend_Log::ERR, 'nostotagging.log'
             );
