@@ -146,12 +146,17 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
     }
 
     /**
-     * Removes a Nosto account from the current scope.
+     * Removes a Nosto account from the current scope and notifies Nosto.
      */
     public function removeAccountAction()
     {
         if ($this->getRequest()->isPost() && $this->checkStoreScope()) {
-            if (Mage::helper('nosto_tagging/account')->remove()) {
+            $account = Mage::helper('nosto_tagging/account')->find();
+            if ($account === null) {
+                Mage::getSingleton('core/session')->addError(
+                    $this->__('No account was found for the current store.')
+                );
+            } elseif (Mage::helper('nosto_tagging/account')->remove($account)) {
                 Mage::getSingleton('core/session')->addSuccess(
                     $this->__('Account successfully removed.')
                 );
