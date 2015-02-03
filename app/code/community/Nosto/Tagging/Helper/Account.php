@@ -84,11 +84,12 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
     /**
      * Removes an account with associated api tokens for the store view scope.
      *
-     * @param Mage_Core_Model_Store|null $store the store view to remove it for.
+     * @param NostoAccount               $account the account to remove.
+     * @param Mage_Core_Model_Store|null $store   the store view to remove it for.
      *
      * @return bool true on success, false otherwise.
      */
-    public function remove(Mage_Core_Model_Store $store = null)
+    public function remove(NostoAccount $account, Mage_Core_Model_Store $store = null)
     {
         if ($store === null) {
             $store = Mage::app()->getStore();
@@ -105,6 +106,17 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
             self::XML_PATH_TOKENS, null, 'stores', $store->getId()
         );
         Mage::app()->getCacheInstance()->cleanType('config');
+
+        try {
+            // Notify Nosto that the account was deleted.
+            $account->delete();
+        } catch (NostoException $e) {
+            // Failures are logged but not shown to the user.
+            Mage::log(
+                "\n" . $e->__toString(), Zend_Log::ERR, 'nostotagging.log'
+            );
+        }
+
         return true;
     }
 
