@@ -280,7 +280,7 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
         $this->_productId = $product->getId();
         $this->_name = $product->getName();
 
-        if ($product->getImage() == 'no_selection') {
+        if (!$product->getImage() || $product->getImage() == 'no_selection') {
             $this->_imageUrl = $product->getImageUrl();
         } else {
             $this->_imageUrl = $product->getMediaConfig()
@@ -329,7 +329,10 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
         $this->_categories = $this->getProductCategories($product);
         $this->_shortDescription = (string)$product->getShortDescription();
         $this->_description = (string)$product->getDescription();
-        $this->_brand = (string)$product->getAttributeText('manufacturer');
+        $this->_brand = $product->getManufacturer()
+            ? (string)$product->getAttributeText('manufacturer')
+            : '';
+
         $this->_datePublished = $product->getCreatedAt();
     }
 
