@@ -300,13 +300,9 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
         $this->_currencyCode = Mage::app()->getStore()
             ->getCurrentCurrencyCode();
 
-        if ($product instanceof Mage_Catalog_Model_Product
-            && $product->isAvailable()
-        ) {
-            $this->_availability = self::PRODUCT_IN_STOCK;
-        } else {
-            $this->_availability = self::PRODUCT_OUT_OF_STOCK;
-        }
+        $this->_availability = $product->isAvailable()
+            ? self::PRODUCT_IN_STOCK
+            : self::PRODUCT_OUT_OF_STOCK;
 
         $tag = Mage::getModel('tag/tag');
         $tagCollection = $tag
