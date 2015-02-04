@@ -59,12 +59,11 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         if (($error = $this->getRequest()->getParam('error')) !== null) {
             Mage::getSingleton('core/session')->addError($error);
         }
-        $this->_redirect(
-            '*/*/index',
-            array(
-                'store' => (int)$this->getRequest()->getParam('store')
-            )
-        );
+        $params = array();
+        if (($storeId = (int)$this->getRequest()->getParam('store')) !== 0) {
+            $params['store'] = $storeId;
+        }
+        $this->_redirect('*/*/index', $params);
     }
 
     /**
@@ -94,12 +93,11 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
             );
             $this->_redirectUrl($client->getAuthorizationUrl());
         } else {
-            $this->_redirect(
-                '*/*/index',
-                array(
-                    'store' => (int)$this->getRequest()->getParam('store')
-                )
-            );
+            $params = array();
+            if (($storeId = (int)$this->getRequest()->getParam('store')) !== 0) {
+                $params['store'] = $storeId;
+            }
+            $this->_redirect('*/*/index', $params);
         }
     }
 
@@ -137,12 +135,11 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                 );
             }
         }
-        $this->_redirect(
-            '*/*/index',
-            array(
-                'store' => (int)$this->getRequest()->getParam('store')
-            )
-        );
+        $params = array();
+        if (($storeId = (int)$this->getRequest()->getParam('store')) !== 0) {
+            $params['store'] = $storeId;
+        }
+        $this->_redirect('*/*/index', $params);
     }
 
     /**
@@ -162,24 +159,30 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                 );
             }
         }
-        $this->_redirect(
-            '*/*/index',
-            array(
-                'store' => (int)$this->getRequest()->getParam('store')
-            )
-        );
+        $params = array();
+        if (($storeId = (int)$this->getRequest()->getParam('store')) !== 0) {
+            $params['store'] = $storeId;
+        }
+        $this->_redirect('*/*/index', $params);
     }
 
     /**
-     * Checks that a valid store view scope id has been passed in the request
-     * params and set that as current store.
+     * Checks that a valid store view scope is available.
+     * If it is single store setup, then just use the default store as current.
+     * If it is a multi store setup, the expect a store id to passed in the
+     * request params and set that store as the current one.
      *
      * @return bool if the current store is valid, false otherwise.
      */
     protected function checkStoreScope()
     {
-        $storeId = (int)$this->getRequest()->getParam('store');
-        if ($storeId > 0) {
+        if (Mage::app()->isSingleStoreMode()) {
+            $storeId = (int)Mage::app()->getStore(true)->getId();
+            if ($storeId > 0) {
+                Mage::app()->setCurrentStore($storeId);
+                return true;
+            }
+        } elseif (($storeId = (int)$this->getRequest()->getParam('store')) !== 0) {
             Mage::app()->setCurrentStore($storeId);
             return true;
         }
