@@ -47,7 +47,8 @@ class Nosto_tagging_ExportController extends Mage_Core_Controller_Front_Action
     {
         if (Mage::helper('nosto_tagging')->isModuleEnabled()) {
             $pageSize = (int)$this->getRequest()->getParam('limit', 100);
-            $currentPage = (int)$this->getRequest()->getParam('offset', 0) + 1;
+            $currentOffset = (int)$this->getRequest()->getParam('offset', 0);
+            $currentPage = ($currentOffset / $pageSize) + 1;
             $orders = Mage::getModel('sales/order')
                 ->getCollection()
                 ->addFieldToFilter('store_id', Mage::app()->getStore()->getId())
@@ -76,7 +77,8 @@ class Nosto_tagging_ExportController extends Mage_Core_Controller_Front_Action
     {
         if (Mage::helper('nosto_tagging')->isModuleEnabled()) {
             $pageSize = (int)$this->getRequest()->getParam('limit', 100);
-            $currentPage = (int)$this->getRequest()->getParam('offset', 0) + 1;
+            $currentOffset = (int)$this->getRequest()->getParam('offset', 0);
+            $currentPage = ($currentOffset / $pageSize) + 1;
             $products = Mage::getModel('catalog/product')
                 ->getCollection()
                 ->addStoreFilter(Mage::app()->getStore()->getId())

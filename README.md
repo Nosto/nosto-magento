@@ -97,6 +97,12 @@ The extension is released under Open Software License ("OSL") v3.0
 
 ## Changelog
 
+### 1.3.0
+* Support for product data re-crawling when a product is deleted
+* Update Nosto php-sdk
+* Fix offset for order/product history data exports
+* Fix unmatched server-to-server order confirmations
+
 ### 1.2.0
 * New configuration page for the extension in the store backend
 * Support for creating new Nosto accounts from the store backend

@@ -127,10 +127,7 @@ class Nosto_Tagging_Model_Observer
                     ->find($mageOrder->getStore());
                 $customerId = Mage::helper('nosto_tagging/customer')
                     ->getNostoId($mageOrder);
-                if ($account !== null
-                    && $account->isConnectedToNosto()
-                    && !empty($customerId)
-                ) {
+                if ($account !== null && $account->isConnectedToNosto()) {
                     NostoOrderConfirmation::send($order, $account, $customerId);
                 }
             } catch (NostoException $e) {
