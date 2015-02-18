@@ -44,12 +44,12 @@ class Nosto_Tagging_Model_Container_Customer extends Enterprise_PageCache_Model_
     protected function _getIdentifier()
     {
         return $this->_getCookieValue(
-                Enterprise_PageCache_Model_Cookie::COOKIE_CUSTOMER, ''
-            )
-            . '_'
-            . $this->_getCookieValue(
-                Enterprise_PageCache_Model_Cookie::COOKIE_CUSTOMER_LOGGED_IN, ''
-            );
+            Enterprise_PageCache_Model_Cookie::COOKIE_CUSTOMER, ''
+        )
+        . '_'
+        . $this->_getCookieValue(
+            Enterprise_PageCache_Model_Cookie::COOKIE_CUSTOMER_LOGGED_IN, ''
+        );
     }
 
     /**
@@ -58,10 +58,10 @@ class Nosto_Tagging_Model_Container_Customer extends Enterprise_PageCache_Model_
     protected function _getCacheId()
     {
         return 'CONTAINER_NOSTO_TAGGING_CUSTOMER_'
-            . md5(
-                $this->_placeholder->getAttribute('cache_id')
-                . $this->_getIdentifier()
-            );
+        . md5(
+            $this->_placeholder->getAttribute('cache_id')
+            . $this->_getIdentifier()
+        );
     }
 
     /**

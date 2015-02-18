@@ -44,12 +44,12 @@ class Nosto_Tagging_Model_Container_Cart extends Enterprise_PageCache_Model_Cont
     protected function _getIdentifier()
     {
         return $this->_getCookieValue(
-                Enterprise_PageCache_Model_Cookie::COOKIE_CART, ''
-            )
-            . '_'
-            . $this->_getCookieValue(
-                Enterprise_PageCache_Model_Cookie::COOKIE_CUSTOMER, ''
-            );
+            Enterprise_PageCache_Model_Cookie::COOKIE_CART, ''
+        )
+        . '_'
+        . $this->_getCookieValue(
+            Enterprise_PageCache_Model_Cookie::COOKIE_CUSTOMER, ''
+        );
     }
 
     /**

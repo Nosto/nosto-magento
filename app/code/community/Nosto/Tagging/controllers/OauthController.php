@@ -73,9 +73,9 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
                 if (Mage::helper('nosto_tagging/account')->save($account)) {
                     $params = array(
                         'success' => $this->__(
-                                'Account %s successfully connected to Nosto.',
-                                $account->name
-                            ),
+                            'Account %s successfully connected to Nosto.',
+                            $account->name
+                        ),
                         'store' => (int)Mage::app()->getStore()->getId(),
                     );
                 } else {
@@ -87,8 +87,8 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
                 );
                 $params = array(
                     'error' => $this->__(
-                            'Account could not be connected to Nosto. Please contact Nosto support.'
-                        ),
+                        'Account could not be connected to Nosto. Please contact Nosto support.'
+                    ),
                     'store' => (int)Mage::app()->getStore()->getId(),
                 );
             }
