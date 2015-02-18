@@ -47,7 +47,24 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
      */
     public function indexAction()
     {
-        if (($code = $this->getRequest()->getParam('code')) !== null) {
+        // If the "Add Store Code to Urls" setting is set to "No" under
+        // System -> Configuration -> Web -> Url Options, then Magento won't
+        // set the store context based on the "___store" GET parameter if the
+        // store does NOT belong to the default website. When this setting is
+        // "Yes", then the store code will be a part of the url path and then
+        // the correct context is set by Magento, regardless of the website the
+        // store belongs to.
+        // If the "___store" parameter is present in the url in the current
+        // store context is not that store, then switch the store context.
+        if (($storeCode = $this->getRequest()->getParam('___store')) !== null) {
+            $store = Mage::app()->getStore($storeCode);
+            if ($store && $store->getId() !== Mage::app()->getStore()->getId()) {
+                Mage::app()->setCurrentStore($store->getCode());
+            }
+        }
+
+        $request = $this->getRequest();
+        if (($code = $request->getParam('code')) !== null) {
             try {
                 $account = NostoAccount::syncFromNosto(
                     Mage::helper('nosto_tagging/oauth')->getMetaData(),
@@ -56,9 +73,9 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
                 if (Mage::helper('nosto_tagging/account')->save($account)) {
                     $params = array(
                         'success' => $this->__(
-                            'Account %s successfully connected to Nosto.',
-                            $account->name
-                        ),
+                                'Account %s successfully connected to Nosto.',
+                                $account->name
+                            ),
                         'store' => (int)Mage::app()->getStore()->getId(),
                     );
                 } else {
@@ -70,30 +87,33 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
                 );
                 $params = array(
                     'error' => $this->__(
-                        'Account could not be connected to Nosto. Please contact Nosto support.'
-                    ),
+                            'Account could not be connected to Nosto. Please contact Nosto support.'
+                        ),
                     'store' => (int)Mage::app()->getStore()->getId(),
                 );
             }
             $this->_redirect('adminhtml/nosto/redirectProxy', $params);
-        } elseif (($error = $this->getRequest()->getParam('error')) !== null) {
-            $parts = array($error);
-            $reason = $this->getRequest()->getParam('error_reason');
-            if ($reason !== null) {
-                $parts[] = $reason;
+        } elseif (($error = $request->getParam('error')) !== null) {
+            $logMsg = $error;
+            if (($reason = $request->getParam('error_reason')) !== null) {
+                $logMsg .= ' - ' . $reason;
             }
-            $desc = $this->getRequest()->getParam('error_description');
-            if ($desc !== null) {
-                $parts[] = $desc;
+            if (($desc = $request->getParam('error_description')) !== null) {
+                $logMsg .= ' - ' . $desc;
             }
-            Mage::log(
-                "\n" . implode(' - ', $parts), Zend_Log::ERR, 'nostotagging.log'
-            );
+            Mage::log("\n" . $logMsg, Zend_Log::ERR, 'nostotagging.log');
+            if (!empty($reason) && $reason === 'user_denied') {
+                $errorMsg = $this->__(
+                    'Account could not be connected to Nosto. You rejected the connection request.'
+                );
+            } else {
+                $errorMsg = $this->__(
+                    'Account could not be connected to Nosto. Please contact Nosto support.'
+                );
+            }
             $this->_redirect(
                 'adminhtml/nosto/redirectProxy', array(
-                    'error' => $this->__(
-                        'Account could not be connected to Nosto. You rejected the connection request.'
-                    ),
+                    'error' => $errorMsg,
                     'store' => (int)Mage::app()->getStore()->getId(),
                 )
             );
