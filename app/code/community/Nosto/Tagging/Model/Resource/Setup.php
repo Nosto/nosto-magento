@@ -34,27 +34,4 @@
  */
 class Nosto_Tagging_Model_Resource_Setup extends Mage_Eav_Model_Entity_Setup
 {
-    /**
-     * Get all root categories used by all stores.
-     * Note that root categories defined but not used, are not included.
-     *
-     * @return Mage_Catalog_Model_Category[]
-     */
-    public function getAllRootCategories()
-    {
-        $categories = array();
-
-        /** @var $stores Mage_Core_Model_Store[] */
-        $stores = Mage::app()->getStores();
-
-        foreach ($stores as $store) {
-            $id = $store->getRootCategoryId();
-            if (!isset($categories[$id])) {
-                $categories[$id] = Mage::getModel('catalog/category')
-                    ->load($id);
-            }
-        }
-
-        return $categories;
-    }
 }

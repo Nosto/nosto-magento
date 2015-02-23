@@ -97,6 +97,10 @@ The extension is released under Open Software License ("OSL") v3.0
 
 ## Changelog
 
+### 2.0.0
+* Support current category tagging on product pages
+* Update Nosto php-sdk
+
 ### 1.3.0
 * Support for product data re-crawling when a product is deleted
 * Update Nosto php-sdk

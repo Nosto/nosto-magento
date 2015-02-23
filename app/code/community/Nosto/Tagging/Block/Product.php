@@ -41,6 +41,11 @@ class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
     protected $_product;
 
     /**
+     * @var string runtime cache for the current category path string.
+     */
+    protected $_currentCategory;
+
+    /**
      * Render product info as hidden meta data if the module is enabled for the
      * current store.
      * If it is a "bundle" product with fixed price type, then do not render.
@@ -75,5 +80,21 @@ class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
             $this->_product->loadData($this->getProduct());
         }
         return $this->_product;
+    }
+
+    /**
+     * Returns the current category under which the product is viewed.
+     *
+     * @return string the category path or empty if not found.
+     */
+    public function getCurrentCategory()
+    {
+        if (!$this->_currentCategory) {
+            $category = Mage::registry('current_category');
+            $this->_currentCategory = Mage::helper('nosto_tagging')
+                ->buildCategoryString($category);
+        }
+
+        return $this->_currentCategory;
     }
 }
