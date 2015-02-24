@@ -106,10 +106,11 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
      */
     public function createAccountAction()
     {
-        if ($this->getRequest()->isPost() && $this->checkStoreScope()) {
+        $response = array('success' => false);
+
+        if (false && $this->getRequest()->isPost() && $this->checkStoreScope()) {
             try {
-                $email = $this->getRequest()
-                    ->getPost('nosto_create_account_email');
+                $email = $this->getRequest()->getPost('email');
                 /** @var Nosto_Tagging_Model_Meta_Account $meta */
                 $meta = Mage::helper('nosto_tagging/account')->getMetaData();
                 if (Zend_Validate::is($email, 'EmailAddress')) {
@@ -117,29 +118,33 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                 }
                 $account = NostoAccount::create($meta);
                 if (Mage::helper('nosto_tagging/account')->save($account)) {
-                    Mage::getSingleton('core/session')->addSuccess(
-                        $this->__(
-                            'Account created. Please check your email and follow the instructions to set a password for your new account within three days.'
-                        )
-                    );
+//                    Mage::getSingleton('core/session')->addSuccess(
+//                        $this->__(
+//                            'Account created. Please check your email and follow the instructions to set a password for your new account within three days.'
+//                        )
+//                    );
+                    $response['success'] = true;
                 }
             } catch (NostoException $e) {
                 Mage::log(
                     "\n" . $e->__toString(), Zend_Log::ERR, 'nostotagging.log'
                 );
-                Mage::getSingleton('core/session')->addException(
-                    $e,
-                    $this->__(
-                        'Account could not be automatically created. Please visit nosto.com to create a new account.'
-                    )
-                );
+                $response['message'] = $e->__toString();
+//                Mage::getSingleton('core/session')->addException(
+//                    $e,
+//                    $this->__(
+//                        'Account could not be automatically created. Please visit nosto.com to create a new account.'
+//                    )
+//                );
             }
         }
-        $params = array();
-        if (($storeId = (int)$this->getRequest()->getParam('store')) !== 0) {
-            $params['store'] = $storeId;
-        }
-        $this->_redirect('*/*/index', $params);
+//        $params = array();
+//        if (($storeId = (int)$this->getRequest()->getParam('store')) !== 0) {
+//            $params['store'] = $storeId;
+//        }
+//        $this->_redirect('*/*/index', $params);
+        echo json_encode($response);
+        die;
     }
 
     /**

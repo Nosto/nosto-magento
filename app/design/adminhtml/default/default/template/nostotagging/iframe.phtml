@@ -32,3 +32,13 @@
  */
 ?>
 <iframe id="nosto_iframe" src='<?php echo $this->getIframeUrl(); ?>' width='100%' frameborder='0' scrolling='no' style="min-height: 600px;"></iframe>
+<script type="text/javascript">
+    var nosto = {
+        url: {
+            index: "<?php echo $this->getUrl('*/*/index'); ?>",
+            createAccount: "<?php echo $this->getUrl('*/*/createAccount'); ?>",
+            connectAccount: "<?php echo $this->getUrl('*/*/connectAccount'); ?>",
+            removeAccount: "<?php echo $this->getUrl('*/*/removeAccount'); ?>"
+        }
+    };
+</script>
