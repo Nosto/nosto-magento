@@ -27,15 +27,15 @@
  */
 -->
 <config>
-	<modules>
-		<Nosto_Tagging>
-			<active>true</active>
-			<codePool>community</codePool>
+    <modules>
+        <Nosto_Tagging>
+            <active>true</active>
+            <codePool>community</codePool>
             <depends>
                 <Mage_Core/>
                 <Mage_Catalog/>
                 <Mage_Sales/>
             </depends>
-		</Nosto_Tagging>
-	</modules>
+        </Nosto_Tagging>
+    </modules>
 </config>
