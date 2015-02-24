@@ -97,6 +97,10 @@ The extension is released under Open Software License ("OSL") v3.0
 
 ## Changelog
 
+### 2.0.1
+* Fix product tagging to check for tags only if Mage_Tag is enabled
+* Add Mage_Core, Mage_Catalog and Mage_Sales as extension dependencies
+
 ### 2.0.0
 * Support current category tagging on product pages
 * Update Nosto php-sdk

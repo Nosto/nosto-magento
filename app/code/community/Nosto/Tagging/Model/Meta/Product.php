@@ -304,16 +304,18 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
             ? self::PRODUCT_IN_STOCK
             : self::PRODUCT_OUT_OF_STOCK;
 
-        $tagCollection = Mage::getModel('tag/tag')
-            ->getCollection()
-            ->addPopularity()
-            ->addStatusFilter(Mage_Tag_Model_Tag::STATUS_APPROVED)
-            ->addProductFilter($product->getId())
-            ->setFlag('relation', true)
-            ->addStoreFilter(Mage::app()->getStore()->getId())
-            ->setActiveFilter();
-        foreach ($tagCollection as $tag) {
-            $this->_tags[] = $tag->getName();
+        if (Mage::helper('core')->isModuleEnabled('Mage_Tag')) {
+            $tagCollection = Mage::getModel('tag/tag')
+                ->getCollection()
+                ->addPopularity()
+                ->addStatusFilter(Mage_Tag_Model_Tag::STATUS_APPROVED)
+                ->addProductFilter($product->getId())
+                ->setFlag('relation', true)
+                ->addStoreFilter(Mage::app()->getStore()->getId())
+                ->setActiveFilter();
+            foreach ($tagCollection as $tag) {
+                $this->_tags[] = $tag->getName();
+            }
         }
 
         if (!$product->canConfigure()) {
