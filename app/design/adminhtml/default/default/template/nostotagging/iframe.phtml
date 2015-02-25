@@ -30,15 +30,19 @@
 /**
  * @var $this Nosto_Tagging_Block_Adminhtml_Iframe
  */
+$params = array('store' => Mage::app()->getStore()->getId(), 'isAjax' => true);
 ?>
 <iframe id="nosto_iframe" src='<?php echo $this->getIframeUrl(); ?>' width='100%' frameborder='0' scrolling='no' style="min-height: 600px;"></iframe>
 <script type="text/javascript">
-    var nosto = {
-        url: {
-            index: "<?php echo $this->getUrl('*/*/index'); ?>",
-            createAccount: "<?php echo $this->getUrl('*/*/createAccount'); ?>",
-            connectAccount: "<?php echo $this->getUrl('*/*/connectAccount'); ?>",
-            removeAccount: "<?php echo $this->getUrl('*/*/removeAccount'); ?>"
+    // Define the "Nosto" namespace if not already defined.
+    if (typeof Nosto === "undefined") {
+        var Nosto = {};
+    }
+    Nosto.settings = {
+        urls: {
+            createAccount: "<?php echo $this->getUrl('*/*/createAccount', $params); ?>",
+            connectAccount: "<?php echo $this->getUrl('*/*/connectAccount', $params); ?>",
+            deleteAccount: "<?php echo $this->getUrl('*/*/removeAccount', $params); ?>"
         }
     };
 </script>

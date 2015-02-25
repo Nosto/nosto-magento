@@ -73,6 +73,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
     {
         $this->_title($this->__('Nosto'));
         if (!$this->checkStoreScope()) {
+            // todo: redirect to default store instead of showing message
             Mage::getSingleton('core/session')->addNotice(
                 $this->__('Please choose a shop to configure Nosto for.')
             );
@@ -87,18 +88,17 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
      */
     public function connectAccountAction()
     {
+        $response = array('success' => false);
+
         if ($this->getRequest()->isPost() && $this->checkStoreScope()) {
             $client = new NostoOAuthClient(
                 Mage::helper('nosto_tagging/oauth')->getMetaData()
             );
-            $this->_redirectUrl($client->getAuthorizationUrl());
-        } else {
-            $params = array();
-            if (($storeId = (int)$this->getRequest()->getParam('store')) !== 0) {
-                $params['store'] = $storeId;
-            }
-            $this->_redirect('*/*/index', $params);
+            $response['success'] = true;
+            $response['redirect_url'] = $client->getAuthorizationUrl();
         }
+        $this->getResponse()->setHeader('Content-type', 'application/json');
+        $this->getResponse()->setBody(json_encode($response));
     }
 
     /**
@@ -108,43 +108,30 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
     {
         $response = array('success' => false);
 
-        if (false && $this->getRequest()->isPost() && $this->checkStoreScope()) {
+        if ($this->getRequest()->isPost() && $this->checkStoreScope()) {
+            /** @var Nosto_Tagging_Helper_Account $accountHelper */
+            $accountHelper = Mage::helper('nosto_tagging/account');
             try {
                 $email = $this->getRequest()->getPost('email');
-                /** @var Nosto_Tagging_Model_Meta_Account $meta */
-                $meta = Mage::helper('nosto_tagging/account')->getMetaData();
+                $meta = $accountHelper->getMetaData();
                 if (Zend_Validate::is($email, 'EmailAddress')) {
                     $meta->getOwner()->setEmail($email);
                 }
                 $account = NostoAccount::create($meta);
-                if (Mage::helper('nosto_tagging/account')->save($account)) {
-//                    Mage::getSingleton('core/session')->addSuccess(
-//                        $this->__(
-//                            'Account created. Please check your email and follow the instructions to set a password for your new account within three days.'
-//                        )
-//                    );
+                if ($accountHelper->save($account)) {
                     $response['success'] = true;
+                    $response['redirect_url'] = $accountHelper->getIframeUrl($account);
                 }
             } catch (NostoException $e) {
                 Mage::log(
                     "\n" . $e->__toString(), Zend_Log::ERR, 'nostotagging.log'
                 );
                 $response['message'] = $e->__toString();
-//                Mage::getSingleton('core/session')->addException(
-//                    $e,
-//                    $this->__(
-//                        'Account could not be automatically created. Please visit nosto.com to create a new account.'
-//                    )
-//                );
             }
         }
-//        $params = array();
-//        if (($storeId = (int)$this->getRequest()->getParam('store')) !== 0) {
-//            $params['store'] = $storeId;
-//        }
-//        $this->_redirect('*/*/index', $params);
-        echo json_encode($response);
-        die;
+
+        $this->getResponse()->setHeader('Content-type', 'application/json');
+        $this->getResponse()->setBody(json_encode($response));
     }
 
     /**
@@ -152,23 +139,21 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
      */
     public function removeAccountAction()
     {
+        $response = array('success' => false);
+
         if ($this->getRequest()->isPost() && $this->checkStoreScope()) {
-            $account = Mage::helper('nosto_tagging/account')->find();
-            if ($account === null) {
-                Mage::getSingleton('core/session')->addError(
-                    $this->__('No account was found for the current store.')
-                );
-            } elseif (Mage::helper('nosto_tagging/account')->remove($account)) {
-                Mage::getSingleton('core/session')->addSuccess(
-                    $this->__('Account successfully removed.')
-                );
+            /** @var Nosto_Tagging_Helper_Account $accountHelper */
+            $accountHelper = Mage::helper('nosto_tagging/account');
+            $account = $accountHelper->find();
+            if ($account !== null && $accountHelper->remove($account)
+            ) {
+                $response['success'] = true;
+                $response['redirect_url'] = $accountHelper->getIframeUrl();
             }
         }
-        $params = array();
-        if (($storeId = (int)$this->getRequest()->getParam('store')) !== 0) {
-            $params['store'] = $storeId;
-        }
-        $this->_redirect('*/*/index', $params);
+
+        $this->getResponse()->setHeader('Content-type', 'application/json');
+        $this->getResponse()->setBody(json_encode($response));
     }
 
     /**

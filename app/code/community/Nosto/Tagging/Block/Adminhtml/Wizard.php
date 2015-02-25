@@ -57,19 +57,8 @@ class Nosto_Tagging_Block_Adminhtml_Wizard extends Mage_Adminhtml_Block_Template
         if ($this->_iframeUrl !== null) {
             return $this->_iframeUrl;
         }
-        $account = $this->getAccount();
-        if ($account) {
-            try {
-                return 'http://10.0.1.150/magento/iframe.html';
-//                $meta = new Nosto_Tagging_Model_Meta_Account_Iframe();
-//                return $this->_iframeUrl = $account->getIframeUrl($meta);
-            } catch (NostoException $e) {
-                Mage::log(
-                    "\n" . $e->__toString(), Zend_Log::ERR, 'nostotagging.log'
-                );
-            }
-        }
-        return $this->_iframeUrl = '';
+        return $this->_iframeUrl = Mage::helper('nosto_tagging/account')
+            ->getIframeUrl($this->getAccount());
     }
 
     /**

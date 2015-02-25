@@ -32,6 +32,7 @@
         <!-- Add JavaScript file -->
         <reference name="head">
             <action method="addJs"><script>nosto/iframeresizer.min.js</script></action>
+            <action method="addJs"><script>nosto/nostotagging-iframe-api.js</script></action>
             <action method="addJs"><script>nosto/nostotagging-config.js</script></action>
         </reference>
          <!--Set active menu item-->

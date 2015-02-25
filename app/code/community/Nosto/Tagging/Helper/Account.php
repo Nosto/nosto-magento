@@ -176,4 +176,27 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
     {
         return new Nosto_Tagging_Model_Meta_Account();
     }
+
+    /**
+     * todo: comment
+     *
+     * @param NostoAccount $account the Nosto account to get the iframe url for.
+     * @return string the iframe url.
+     */
+    public function getIframeUrl(NostoAccount $account = null)
+    {
+        // todo: implement
+        $meta = new Nosto_Tagging_Model_Meta_Account_Iframe();
+        if ($account !== null && $account->isConnectedToNosto()) {
+            try {
+                return 'http://10.0.1.150/iframe.php?account_name='.$account->name;
+//                return $account->getIframeUrl($meta);
+            } catch (NostoException $e) {
+                Mage::log(
+                    "\n" . $e->__toString(), Zend_Log::ERR, 'nostotagging.log'
+                );
+            }
+        }
+        return 'http://10.0.1.150/iframe.php?email='.$meta->getEmail();
+    }
 }
