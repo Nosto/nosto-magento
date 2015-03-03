@@ -73,10 +73,15 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
     {
         $this->_title($this->__('Nosto'));
         if (!$this->checkStoreScope()) {
-            // todo: redirect to default store instead of showing message
-            Mage::getSingleton('core/session')->addNotice(
-                $this->__('Please choose a shop to configure Nosto for.')
-            );
+            // If we are not under a store view, then redirect to the first
+            // found one. Nosto is configured per store.
+            foreach (Mage::app()->getWebsites() as $website) {
+                $storeId = $website->getDefaultGroup()->getDefaultStoreId();
+                if (!empty($storeId)) {
+                    $this->_redirect('*/*/index', array('store' => $storeId));
+                    break;
+                }
+            }
         }
         $this->loadLayout();
         $this->renderLayout();
