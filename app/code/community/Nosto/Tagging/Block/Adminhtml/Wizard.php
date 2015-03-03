@@ -57,8 +57,18 @@ class Nosto_Tagging_Block_Adminhtml_Wizard extends Mage_Adminhtml_Block_Template
         if ($this->_iframeUrl !== null) {
             return $this->_iframeUrl;
         }
+        // Pass any error/success messages we might have to the iframe.
+        // These can be available when getting redirect back from the OAuth
+        // front controller after connecting a Nosto account to a store.
+        $params = array();
+        if (($type = $this->getRequest()->getParam('message_type')) !== null) {
+            $params['message_type'] = $type;
+        }
+        if (($code = $this->getRequest()->getParam('message_code')) !== null) {
+            $params['message_code'] = $code;
+        }
         return $this->_iframeUrl = Mage::helper('nosto_tagging/account')
-            ->getIframeUrl($this->getAccount());
+            ->getIframeUrl($this->getAccount(), $params);
     }
 
     /**

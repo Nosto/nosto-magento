@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Nosto/php-sdk.git",
-                "reference": "0fdbf5d1c03c0d59cf1d20e106f767fce1a59f6b"
+                "reference": "086097da6c9602fe955ece21eb6ab9c631c1d188"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Nosto/php-sdk/zipball/0fdbf5d1c03c0d59cf1d20e106f767fce1a59f6b",
-                "reference": "0fdbf5d1c03c0d59cf1d20e106f767fce1a59f6b",
+                "url": "https://api.github.com/repos/Nosto/php-sdk/zipball/086097da6c9602fe955ece21eb6ab9c631c1d188",
+                "reference": "086097da6c9602fe955ece21eb6ab9c631c1d188",
                 "shasum": ""
             },
             "require-dev": {
@@ -33,7 +33,7 @@
                 "source": "https://github.com/Nosto/php-sdk/tree/feature/account-admin-iframe",
                 "issues": "https://github.com/Nosto/php-sdk/issues"
             },
-            "time": "2015-03-03 12:17:06"
+            "time": "2015-03-03 12:48:31"
         }
     ],
     "packages-dev": [],
