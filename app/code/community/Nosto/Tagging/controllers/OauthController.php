@@ -72,8 +72,8 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
                 );
                 if (Mage::helper('nosto_tagging/account')->save($account)) {
                     $params = array(
-                        'message_type' => NostoXhrResponse::TYPE_SUCCESS,
-                        'message_code' => NostoXhrResponse::CODE_ACCOUNT_CONNECT,
+                        'message_type' => NostoMessage::TYPE_SUCCESS,
+                        'message_code' => NostoMessage::CODE_ACCOUNT_CONNECT,
                         'store' => (int)Mage::app()->getStore()->getId(),
                     );
                 } else {
@@ -84,8 +84,8 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
                     "\n" . $e->__toString(), Zend_Log::ERR, 'nostotagging.log'
                 );
                 $params = array(
-                    'message_type' => NostoXhrResponse::TYPE_ERROR,
-                    'message_code' => NostoXhrResponse::CODE_ACCOUNT_CONNECT,
+                    'message_type' => NostoMessage::TYPE_ERROR,
+                    'message_code' => NostoMessage::CODE_ACCOUNT_CONNECT,
                     'store' => (int)Mage::app()->getStore()->getId(),
                 );
             }
@@ -100,13 +100,13 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
             }
             Mage::log("\n" . $logMsg, Zend_Log::ERR, 'nostotagging.log');
             if (!empty($reason) && $reason === 'user_denied') {
-                $messageCode = NostoXhrResponse::CODE_ACCOUNT_CONNECT_REJECT;
+                $messageCode = NostoMessage::CODE_ACCOUNT_CONNECT_REJECT;
             } else {
-                $messageCode = NostoXhrResponse::CODE_ACCOUNT_CONNECT;
+                $messageCode = NostoMessage::CODE_ACCOUNT_CONNECT;
             }
             $this->_redirect(
                 'adminhtml/nosto/redirectProxy', array(
-                    'message_type' => NostoXhrResponse::TYPE_ERROR,
+                    'message_type' => NostoMessage::TYPE_ERROR,
                     'message_code' => $messageCode,
                     'store' => (int)Mage::app()->getStore()->getId(),
                 )

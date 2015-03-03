@@ -109,8 +109,8 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                     null,
                     null,
                     array(
-                        'message_type' => NostoXhrResponse::TYPE_ERROR,
-                        'message_code' => NostoXhrResponse::CODE_ACCOUNT_CONNECT,
+                        'message_type' => NostoMessage::TYPE_ERROR,
+                        'message_code' => NostoMessage::CODE_ACCOUNT_CONNECT,
                     )
                 )
             );
@@ -140,8 +140,8 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                         $accountHelper->getIframeUrl(
                             $account,
                             array(
-                                'message_type' => NostoXhrResponse::TYPE_SUCCESS,
-                                'message_code' => NostoXhrResponse::CODE_ACCOUNT_CREATE,
+                                'message_type' => NostoMessage::TYPE_SUCCESS,
+                                'message_code' => NostoMessage::CODE_ACCOUNT_CREATE,
                             )
                         )
                     );
@@ -160,8 +160,8 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                     null,
                     null,
                     array(
-                        'message_type' => NostoXhrResponse::TYPE_ERROR,
-                        'message_code' => NostoXhrResponse::CODE_ACCOUNT_CREATE,
+                        'message_type' => NostoMessage::TYPE_ERROR,
+                        'message_code' => NostoMessage::CODE_ACCOUNT_CREATE,
                     )
                 )
             );
@@ -187,8 +187,8 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                         null,
                         null,
                         array(
-                            'message_type' => NostoXhrResponse::TYPE_SUCCESS,
-                            'message_code' => NostoXhrResponse::CODE_ACCOUNT_DELETE,
+                            'message_type' => NostoMessage::TYPE_SUCCESS,
+                            'message_code' => NostoMessage::CODE_ACCOUNT_DELETE,
                         )
                     )
                 );
@@ -201,8 +201,8 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                 $accountHelper->getIframeUrl(
                     $accountHelper->find(),
                     array(
-                        'message_type' => NostoXhrResponse::TYPE_ERROR,
-                        'message_code' => NostoXhrResponse::CODE_ACCOUNT_DELETE,
+                        'message_type' => NostoMessage::TYPE_ERROR,
+                        'message_code' => NostoMessage::CODE_ACCOUNT_DELETE,
                     )
                 )
             );
