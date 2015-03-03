@@ -172,9 +172,9 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
     {
         /** @var Nosto_Tagging_Helper_Account $accountHelper */
         $accountHelper = Mage::helper('nosto_tagging/account');
-        $account = $accountHelper->find();
 
         if ($this->getRequest()->isPost() && $this->checkStoreScope()) {
+            $account = $accountHelper->find();
             if ($account !== null && $accountHelper->remove($account)) {
                 $response = new NostoXhrResponse();
                 $response->setSuccess(true)->setRedirectUrl(
@@ -194,7 +194,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
             $response = new NostoXhrResponse();
             $response->setRedirectUrl(
                 $accountHelper->getIframeUrl(
-                    $account,
+                    $accountHelper->find(),
                     array(
                         'message_type' => NostoXhrResponse::TYPE_ERROR,
                         'message_code' => NostoXhrResponse::CODE_ACCOUNT_DELETE,
