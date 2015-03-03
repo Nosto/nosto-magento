@@ -8,7 +8,8 @@
             "url": "git@github.com:nosto/php-sdk.git"
         }
     ],
+    "minimum-stability": "dev",
     "require": {
-        "nosto/php-sdk": "1.5.*"
+        "nosto/php-sdk": "dev-feature/account-admin-iframe"
     }
 }

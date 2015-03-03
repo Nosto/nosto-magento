@@ -28,9 +28,5 @@ document.observe("dom:loaded", function() {
     iFrameResize({heightCalculationMethod : "bodyScroll"});
 
     // Init the Nosto iframe API.
-    Nosto.iframe({
-        iframe: document.getElementById('nosto_iframe'),
-        urls: Nosto.settings.urls,
-        xhrParams: {form_key: window.FORM_KEY}
-    });
+    Nosto.iframe(Nosto.settings);
 });

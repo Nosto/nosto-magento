@@ -178,25 +178,17 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * todo: comment
+     * Returns the account administration iframe url.
+     * If there is no account the "front page" url will be returned where an
+     * account can be created from.
      *
      * @param NostoAccount $account the Nosto account to get the iframe url for.
+     * @param array $params optional extra params for the url.
      * @return string the iframe url.
      */
-    public function getIframeUrl(NostoAccount $account = null)
+    public function getIframeUrl(NostoAccount $account = null, array $params = array())
     {
-        // todo: implement
         $meta = new Nosto_Tagging_Model_Meta_Account_Iframe();
-        if ($account !== null && $account->isConnectedToNosto()) {
-            try {
-                return 'http://10.0.1.150/iframe.php?account_name='.$account->name;
-//                return $account->getIframeUrl($meta);
-            } catch (NostoException $e) {
-                Mage::log(
-                    "\n" . $e->__toString(), Zend_Log::ERR, 'nostotagging.log'
-                );
-            }
-        }
-        return 'http://10.0.1.150/iframe.php?email='.$meta->getEmail();
+        return Nosto::helper('iframe')->getUrl($account, $meta, $params);
     }
 }

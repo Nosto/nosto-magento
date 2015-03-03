@@ -35,6 +35,8 @@
  */
 class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
 {
+    const DEFAULT_ADMIN_IFRAME_ORIGIN = 'https://my.nosto.com';
+
     /**
      * Gets the iframe url from parent block, which should be
      * Nosto_tagging_Block_Adminhtml_Wizard.
@@ -48,5 +50,18 @@ class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
             return $parent->getIframeUrl();
         }
         return '';
+    }
+
+    /**
+     * Returns the valid origin url from where the iframe should accept
+     * postMessage calls.
+     * This is configurable to support different origins based on $_ENV.
+     *
+     * @return string the origin url.
+     */
+    public function getIframeOrigin()
+    {
+        return (string)Mage::app()->getRequest()
+            ->getEnv('NOSTO_IFRAME_ORIGIN', self::DEFAULT_ADMIN_IFRAME_ORIGIN);
     }
 }

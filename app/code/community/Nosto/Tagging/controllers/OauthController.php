@@ -72,10 +72,8 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
                 );
                 if (Mage::helper('nosto_tagging/account')->save($account)) {
                     $params = array(
-                        'success' => $this->__(
-                            'Account %s successfully connected to Nosto.',
-                            $account->name
-                        ),
+                        'message_type' => NostoXhrResponse::TYPE_SUCCESS,
+                        'message_code' => NostoXhrResponse::CODE_ACCOUNT_CONNECT,
                         'store' => (int)Mage::app()->getStore()->getId(),
                     );
                 } else {
@@ -86,9 +84,8 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
                     "\n" . $e->__toString(), Zend_Log::ERR, 'nostotagging.log'
                 );
                 $params = array(
-                    'error' => $this->__(
-                        'Account could not be connected to Nosto. Please contact Nosto support.'
-                    ),
+                    'message_type' => NostoXhrResponse::TYPE_ERROR,
+                    'message_code' => NostoXhrResponse::CODE_ACCOUNT_CONNECT,
                     'store' => (int)Mage::app()->getStore()->getId(),
                 );
             }
@@ -103,17 +100,14 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
             }
             Mage::log("\n" . $logMsg, Zend_Log::ERR, 'nostotagging.log');
             if (!empty($reason) && $reason === 'user_denied') {
-                $errorMsg = $this->__(
-                    'Account could not be connected to Nosto. You rejected the connection request.'
-                );
+                $messageCode = NostoXhrResponse::CODE_ACCOUNT_CONNECT_REJECT;
             } else {
-                $errorMsg = $this->__(
-                    'Account could not be connected to Nosto. Please contact Nosto support.'
-                );
+                $messageCode = NostoXhrResponse::CODE_ACCOUNT_CONNECT;
             }
             $this->_redirect(
                 'adminhtml/nosto/redirectProxy', array(
-                    'error' => $errorMsg,
+                    'message_type' => NostoXhrResponse::TYPE_ERROR,
+                    'message_code' => $messageCode,
                     'store' => (int)Mage::app()->getStore()->getId(),
                 )
             );
