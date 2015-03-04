@@ -103,11 +103,13 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         }
 
         if (!isset($response)) {
+            /** @var Nosto_Tagging_Helper_Account $accountHelper */
+            $accountHelper = Mage::helper('nosto_tagging/account');
+
             $response = new NostoXhrResponse();
             $response->setRedirectUrl(
-                Nosto::helper('iframe')->getUrl(
-                    null,
-                    null,
+                $accountHelper->getIframeUrl(
+                    null, // connect attempt failed, so we have no account.
                     array(
                         'message_type' => NostoMessage::TYPE_ERROR,
                         'message_code' => NostoMessage::CODE_ACCOUNT_CONNECT,
@@ -124,9 +126,10 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
      */
     public function createAccountAction()
     {
+        /** @var Nosto_Tagging_Helper_Account $accountHelper */
+        $accountHelper = Mage::helper('nosto_tagging/account');
+
         if ($this->getRequest()->isPost() && $this->checkStoreScope()) {
-            /** @var Nosto_Tagging_Helper_Account $accountHelper */
-            $accountHelper = Mage::helper('nosto_tagging/account');
             try {
                 $email = $this->getRequest()->getPost('email');
                 $meta = $accountHelper->getMetaData();
@@ -156,9 +159,8 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         if (!isset($response)) {
             $response = new NostoXhrResponse();
             $response->setRedirectUrl(
-                Nosto::helper('iframe')->getUrl(
-                    null,
-                    null,
+                $accountHelper->getIframeUrl(
+                    null, // account creation failed, so we have none.
                     array(
                         'message_type' => NostoMessage::TYPE_ERROR,
                         'message_code' => NostoMessage::CODE_ACCOUNT_CREATE,
@@ -183,9 +185,8 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
             if ($account !== null && $accountHelper->remove($account)) {
                 $response = new NostoXhrResponse();
                 $response->setSuccess(true)->setRedirectUrl(
-                    Nosto::helper('iframe')->getUrl(
-                        null,
-                        null,
+                    $accountHelper->getIframeUrl(
+                        null, // we don't have an account anymore
                         array(
                             'message_type' => NostoMessage::TYPE_SUCCESS,
                             'message_code' => NostoMessage::CODE_ACCOUNT_DELETE,

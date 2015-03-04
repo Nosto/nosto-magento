@@ -189,6 +189,6 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
     public function getIframeUrl(NostoAccount $account = null, array $params = array())
     {
         $meta = new Nosto_Tagging_Model_Meta_Account_Iframe();
-        return Nosto::helper('iframe')->getUrl($account, $meta, $params);
+        return Nosto::helper('iframe')->getUrl($meta, $account, $params);
     }
 }
