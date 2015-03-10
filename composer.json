@@ -5,7 +5,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "git@github.com:nosto/php-sdk.git"
+            "url": "https://github.com/Nosto/php-sdk.git"
         }
     ],
     "require": {
