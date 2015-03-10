@@ -150,6 +150,16 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
     }
 
     /**
+     * Sets the product's unique identifier.
+     *
+     * @param int|string $productId the ID.
+     */
+    public function setProductId($productId)
+    {
+        $this->_productId = $productId;
+    }
+
+    /**
      * Returns the name of the product.
      *
      * @return string the name.

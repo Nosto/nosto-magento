@@ -4,20 +4,20 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7e110d705628c82eee020dc90c708615",
+    "hash": "7da3df51ebd45437ac7923d4a4499ff7",
     "packages": [
         {
             "name": "nosto/php-sdk",
-            "version": "dev-feature/account-admin-iframe",
+            "version": "dev-develop",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Nosto/php-sdk.git",
-                "reference": "6bce0be8cd8e3684bc1cbf2513588d1f03c4b290"
+                "reference": "dac014f1e056aca75cbc3b7c0db4f47c7e33fceb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Nosto/php-sdk/zipball/6bce0be8cd8e3684bc1cbf2513588d1f03c4b290",
-                "reference": "6bce0be8cd8e3684bc1cbf2513588d1f03c4b290",
+                "url": "https://api.github.com/repos/Nosto/php-sdk/zipball/dac014f1e056aca75cbc3b7c0db4f47c7e33fceb",
+                "reference": "dac014f1e056aca75cbc3b7c0db4f47c7e33fceb",
                 "shasum": ""
             },
             "require-dev": {
@@ -30,10 +30,10 @@
             ],
             "description": "PHP SDK for developing Nosto modules for e-commerce platforms",
             "support": {
-                "source": "https://github.com/Nosto/php-sdk/tree/feature/account-admin-iframe",
+                "source": "https://github.com/Nosto/php-sdk/tree/develop",
                 "issues": "https://github.com/Nosto/php-sdk/issues"
             },
-            "time": "2015-03-04 17:28:39"
+            "time": "2015-03-09 13:13:25"
         }
     ],
     "packages-dev": [],

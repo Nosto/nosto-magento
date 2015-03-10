@@ -77,18 +77,9 @@ class Nosto_Tagging_Model_Observer
                 /** @var Mage_Catalog_Model_Product $mageProduct */
                 $mageProduct = $observer->getEvent()->getProduct();
                 $product = new Nosto_Tagging_Model_Meta_Product();
-                $product->loadData($mageProduct);
-                // If the product does not have the store id set.
-                if ((int)$mageProduct->getStoreId() === 0) {
-                    // Assume that the product has been modified for all stores.
-                    $stores = Mage::app()->getStores();
-                } else {
-                    // Otherwise only re-crawl for the specific store.
-                    $stores = array(
-                        Mage::app()->getStore($mageProduct->getStoreId())
-                    );
-                }
-                foreach ($stores as $store) {
+                // We only need the product ID for the re-crawl.
+                $product->setProductId($mageProduct->getId());
+                foreach (Mage::app()->getStores() as $store) {
                     /** @var NostoAccount $account */
                     $account = Mage::helper('nosto_tagging/account')
                         ->find($store);

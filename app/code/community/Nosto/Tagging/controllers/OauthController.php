@@ -99,15 +99,10 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
                 $logMsg .= ' - ' . $desc;
             }
             Mage::log("\n" . $logMsg, Zend_Log::ERR, 'nostotagging.log');
-            if (!empty($reason) && $reason === 'user_denied') {
-                $messageCode = NostoMessage::CODE_ACCOUNT_CONNECT_REJECT;
-            } else {
-                $messageCode = NostoMessage::CODE_ACCOUNT_CONNECT;
-            }
             $this->_redirect(
                 'adminhtml/nosto/redirectProxy', array(
                     'message_type' => NostoMessage::TYPE_ERROR,
-                    'message_code' => $messageCode,
+                    'message_code' => !empty($reason) ? $reason : NostoMessage::CODE_ACCOUNT_CONNECT,
                     'store' => (int)Mage::app()->getStore()->getId(),
                 )
             );
