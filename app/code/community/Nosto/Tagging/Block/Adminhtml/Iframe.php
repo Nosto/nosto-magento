@@ -35,18 +35,52 @@
  */
 class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
 {
+    const DEFAULT_ADMIN_IFRAME_ORIGIN = 'https://my.nosto.com';
+
     /**
-     * Gets the iframe url from parent block, which should be
-     * Nosto_tagging_Block_Adminhtml_Wizard.
+     * @var string the iframe url if SSO to Nosto can be made.
+     */
+    private $_iframeUrl;
+
+    /**
+     * Gets the iframe url for the account settings page from Nosto.
+     * This url is only returned if the current admin user can be logged in
+     * with SSO to Nosto.
      *
-     * @return string the url or empty string if cannot be found in parent.
+     * @return string the iframe url or empty string if it cannot be created.
      */
     public function getIframeUrl()
     {
-        $parent = $this->getParentBlock();
-        if ($parent instanceof Nosto_tagging_Block_Adminhtml_Wizard) {
-            return $parent->getIframeUrl();
+        if ($this->_iframeUrl !== null) {
+            return $this->_iframeUrl;
         }
-        return '';
+        // Pass any error/success messages we might have to the iframe.
+        // These can be available when getting redirect back from the OAuth
+        // front controller after connecting a Nosto account to a store.
+        $params = array();
+        if (($type = $this->getRequest()->getParam('message_type')) !== null) {
+            $params['message_type'] = $type;
+        }
+        if (($code = $this->getRequest()->getParam('message_code')) !== null) {
+            $params['message_code'] = $code;
+        }
+        return $this->_iframeUrl = Mage::helper('nosto_tagging/account')
+            ->getIframeUrl(
+                Mage::helper('nosto_tagging/account')->find(),
+                $params
+            );
+    }
+
+    /**
+     * Returns the valid origin url from where the iframe should accept
+     * postMessage calls.
+     * This is configurable to support different origins based on $_ENV.
+     *
+     * @return string the origin url.
+     */
+    public function getIframeOrigin()
+    {
+        return (string)Mage::app()->getRequest()
+            ->getEnv('NOSTO_IFRAME_ORIGIN', self::DEFAULT_ADMIN_IFRAME_ORIGIN);
     }
 }

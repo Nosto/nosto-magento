@@ -96,6 +96,11 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
     protected $_previewUrlFront;
 
     /**
+     * @var string the name of the store Nosto is installed in or about to be installed.
+     */
+    protected $_shopName;
+
+    /**
      * Constructor.
      * Sets initial values.
      */
@@ -125,6 +130,7 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
         $this->_previewUrlSearch = $urlHelper->getPreviewUrlSearch();
         $this->_previewUrlCart = $urlHelper->getPreviewUrlCart();
         $this->_previewUrlFront = $urlHelper->getPreviewUrlFront();
+        $this->_shopName = Mage::app()->getStore()->getName();
     }
 
     /**
@@ -342,5 +348,15 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
     public function getPreviewUrlFront()
     {
         return $this->_previewUrlFront;
+    }
+
+    /**
+     * Returns the name of the shop context where Nosto is installed or about to be installed in.
+     *
+     * @return string the name.
+     */
+    public function getShopName()
+    {
+        return $this->_shopName;
     }
 }

@@ -24,53 +24,9 @@
  */
 
 document.observe("dom:loaded", function() {
-    // Change event handler for "Do you have an existing Nosto account?".
-    if ($("nosto_has_account") !== null) {
-        $("nosto_has_account").on("change", "input[name='nosto_has_account_radio']", function(event) {
-            var val = parseInt($(event.target).getValue()),
-                oldAccount = $("nosto_old_account"),
-                newAccount = $("nosto_new_account");
-            if (val === 1) {
-                oldAccount.show();
-                newAccount.hide();
-            } else {
-                oldAccount.hide();
-                newAccount.show();
-            }
-        });
-    }
-    // Click event handler for the "Account settings".
-    if ($("nosto_account_settings") !== null) {
-        $("nosto_account_settings").on("click", function(event) {
-            event.preventDefault();
-            var iframe = $("nosto_iframe_container"),
-                installedView = $("nosto_installed"),
-                backButton = $("nosto_back_to_iframe"),
-                settingsButton = $("nosto_account_settings");
-            if (installedView && iframe) {
-                installedView.show();
-                backButton.show();
-                iframe.hide();
-                settingsButton.hide();
-            }
-        });
-    }
-    // Click event handler for the "Back" button on the "You have installed Nosto...." page.
-    if ($("nosto_back_to_iframe") !== null) {
-        $("nosto_back_to_iframe").on("click", function(event) {
-            event.preventDefault();
-            var iframe = $("nosto_iframe_container"),
-                installedView = $("nosto_installed"),
-                backButton = $("nosto_back_to_iframe"),
-                settingsButton = $("nosto_account_settings");
-            if (installedView && iframe) {
-                iframe.show();
-                settingsButton.show();
-                installedView.hide();
-                backButton.hide();
-            }
-        });
-    }
     // Init the iframe re-sizer.
-    iFrameResize({heightCalculationMethod : 'bodyScroll'});
+    iFrameResize({heightCalculationMethod : "bodyScroll"});
+
+    // Init the Nosto iframe API.
+    Nosto.iframe(Nosto.settings);
 });
