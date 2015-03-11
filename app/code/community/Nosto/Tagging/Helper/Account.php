@@ -176,4 +176,19 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
     {
         return new Nosto_Tagging_Model_Meta_Account();
     }
+
+    /**
+     * Returns the account administration iframe url.
+     * If there is no account the "front page" url will be returned where an
+     * account can be created from.
+     *
+     * @param NostoAccount $account the Nosto account to get the iframe url for.
+     * @param array $params optional extra params for the url.
+     * @return string the iframe url.
+     */
+    public function getIframeUrl(NostoAccount $account = null, array $params = array())
+    {
+        $meta = new Nosto_Tagging_Model_Meta_Account_Iframe();
+        return Nosto::helper('iframe')->getUrl($meta, $account, $params);
+    }
 }

@@ -32,6 +32,7 @@
         <!-- Add JavaScript file -->
         <reference name="head">
             <action method="addJs"><script>nosto/iframeresizer.min.js</script></action>
+            <action method="addJs"><script>nosto/NostoIframe.min.js</script></action>
             <action method="addJs"><script>nosto/nostotagging-config.js</script></action>
         </reference>
          <!--Set active menu item-->
@@ -47,12 +48,6 @@
                 <block type="adminhtml/store_switcher" name="store_switcher" as="store_switcher">
                     <action method="setUseConfirm"><params>0</params></action>
                 </block>
-                <!-- Connect to Nosto form -->
-                <block type="nosto_tagging/adminhtml_form_account_connect" name="nosto.form.account.connect" template="nostotagging/form/account/connect.phtml"/>
-                <!-- Create new account form -->
-                <block type="nosto_tagging/adminhtml_form_account_create" name="nosto.form.account.create" template="nostotagging/form/account/create.phtml"/>
-                <!-- Account remove form -->
-                <block type="nosto_tagging/adminhtml_form_account_remove" name="nosto.form.account.remove" template="nostotagging/form/account/remove.phtml"/>
                 <!-- Iframe -->
                 <block type="nosto_tagging/adminhtml_iframe" name="nosto.iframe" template="nostotagging/iframe.phtml"/>
             </block>
