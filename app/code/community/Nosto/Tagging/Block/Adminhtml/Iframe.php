@@ -69,11 +69,39 @@ class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
                 $session->setData('nosto_message', null);
             }
         }
+        $store = $this->getSelectedStore();
         return $this->_iframeUrl = Mage::helper('nosto_tagging/account')
             ->getIframeUrl(
-                Mage::helper('nosto_tagging/account')->find(),
+                Mage::helper('nosto_tagging/account')->find($store),
                 $params
             );
+    }
+
+    /**
+     * Returns the currently selected store view.
+     *
+     * @return Mage_Core_Model_Store|null the store view or null if not found.
+     */
+    public function getSelectedStore()
+    {
+        if (Mage::app()->isSingleStoreMode()) {
+            return Mage::app()->getStore(true);
+        } elseif (($id = (int)$this->getRequest()->getParam('store')) !== 0) {
+            return Mage::app()->getStore($id);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Returns the ID of the currently selected store view.
+     *
+     * @return int the store ID or zero if not found.
+     */
+    public function getSelectedStoreId()
+    {
+        $store = $this->getSelectedStore();
+        return ($store !== null) ? $store->getId() : 0;
     }
 
     /**

@@ -30,7 +30,7 @@
 /**
  * @var $this Nosto_Tagging_Block_Adminhtml_Iframe
  */
-$params = array('store' => Mage::app()->getStore()->getId(), 'isAjax' => true);
+$params = array('store' => $this->getSelectedStoreId(), 'isAjax' => true);
 ?>
 <iframe id="nosto_iframe" src='<?php echo $this->getIframeUrl(); ?>' width='100%' frameborder='0' scrolling='no' style="min-height: 600px;"></iframe>
 <script type="text/javascript">
