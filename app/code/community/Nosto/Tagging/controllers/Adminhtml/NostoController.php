@@ -53,13 +53,18 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
      */
     public function redirectProxyAction()
     {
+        $session = Mage::getSingleton('adminhtml/session');
+        if ($session !== null) {
+            $type = $this->getRequest()->getParam('message_type');
+            $code = $this->getRequest()->getParam('message_code');
+            if ($type !== null && $code !== null) {
+                $session->setData('nosto_message', array(
+                    'type' => $type,
+                    'code' => $code,
+                ));
+            }
+        }
         $params = array();
-        if (($type = $this->getRequest()->getParam('message_type')) !== null) {
-            $params['message_type'] = $type;
-        }
-        if (($code = $this->getRequest()->getParam('message_code')) !== null) {
-            $params['message_code'] = $code;
-        }
         if (($storeId = (int)$this->getRequest()->getParam('store')) !== 0) {
             $params['store'] = $storeId;
         }
