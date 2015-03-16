@@ -54,10 +54,10 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
     public function redirectProxyAction()
     {
         $session = Mage::getSingleton('adminhtml/session');
-        if (!is_null($session)) {
+        if ($session !== null) {
             $type = $this->getRequest()->getParam('message_type');
             $code = $this->getRequest()->getParam('message_code');
-            if (!is_null($type) && !is_null($code)) {
+            if ($type !== null && $code !== null) {
                 $session->setData('nosto_message', array(
                     'type' => $type,
                     'code' => $code,
@@ -77,8 +77,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
     public function indexAction()
     {
         $this->_title($this->__('Nosto'));
-        $store = $this->getSelectedStore();
-        if (is_null($store)) {
+        if (!$this->getSelectedStore()) {
             // If we are not under a store view, then redirect to the first
             // found one. Nosto is configured per store.
             foreach (Mage::app()->getWebsites() as $website) {
@@ -100,7 +99,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
     public function connectAccountAction()
     {
         $store = $this->getSelectedStore();
-        if ($this->getRequest()->isPost() && !is_null($store)) {
+        if ($this->getRequest()->isPost() && $store !== null) {
             $client = new NostoOAuthClient(
                 Mage::helper('nosto_tagging/oauth')->getMetaData($store)
             );
@@ -137,7 +136,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         $accountHelper = Mage::helper('nosto_tagging/account');
 
         $store = $this->getSelectedStore();
-        if ($this->getRequest()->isPost() && !is_null($store)) {
+        if ($this->getRequest()->isPost() && $store !== null) {
             try {
                 $email = $this->getRequest()->getPost('email');
                 $meta = $accountHelper->getMetaData($store);
@@ -191,7 +190,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         $accountHelper = Mage::helper('nosto_tagging/account');
 
         $store = $this->getSelectedStore();
-        if ($this->getRequest()->isPost() && !is_null($store)) {
+        if ($this->getRequest()->isPost() && $store !== null) {
             $account = $accountHelper->find($store);
             if ($account !== null && $accountHelper->remove($account, $store)) {
                 $response = new NostoXhrResponse();
