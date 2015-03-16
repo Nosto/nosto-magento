@@ -40,10 +40,14 @@ class Nosto_Tagging_Helper_Oauth extends Mage_Core_Helper_Abstract
      * Returns the meta data model needed for using the OAuth2 client included
      * in the Nosto SDk.
      *
+     * @param Mage_Core_Model_Store $store the store to get the oauth meta data for..
+     *
      * @return Nosto_Tagging_Model_Meta_Oauth the meta data instance.
      */
-    public function getMetaData()
+    public function getMetaData(Mage_Core_Model_Store $store)
     {
-        return new Nosto_Tagging_Model_Meta_Oauth();
+        $meta = new Nosto_Tagging_Model_Meta_Oauth();
+        $meta->loadData($store);
+        return $meta;
     }
 }

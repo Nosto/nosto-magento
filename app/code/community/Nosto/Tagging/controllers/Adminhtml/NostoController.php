@@ -54,10 +54,10 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
     public function redirectProxyAction()
     {
         $session = Mage::getSingleton('adminhtml/session');
-        if ($session !== null) {
+        if (!is_null($session)) {
             $type = $this->getRequest()->getParam('message_type');
             $code = $this->getRequest()->getParam('message_code');
-            if ($type !== null && $code !== null) {
+            if (!is_null($type) && !is_null($code)) {
                 $session->setData('nosto_message', array(
                     'type' => $type,
                     'code' => $code,
@@ -77,14 +77,15 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
     public function indexAction()
     {
         $this->_title($this->__('Nosto'));
-        if (!$this->getSelectedStore()) {
+        $store = $this->getSelectedStore();
+        if (is_null($store)) {
             // If we are not under a store view, then redirect to the first
             // found one. Nosto is configured per store.
             foreach (Mage::app()->getWebsites() as $website) {
                 $storeId = $website->getDefaultGroup()->getDefaultStoreId();
                 if (!empty($storeId)) {
                     $this->_redirect('*/*/index', array('store' => $storeId));
-                    break;
+                    return; // stop execution after redirect is set.
                 }
             }
         }
@@ -99,12 +100,9 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
     public function connectAccountAction()
     {
         $store = $this->getSelectedStore();
-        if ($this->getRequest()->isPost() && $store !== null) {
-
-            // todo: use $store
-
+        if ($this->getRequest()->isPost() && !is_null($store)) {
             $client = new NostoOAuthClient(
-                Mage::helper('nosto_tagging/oauth')->getMetaData()
+                Mage::helper('nosto_tagging/oauth')->getMetaData($store)
             );
             $response = new NostoXhrResponse();
             $response->setSuccess(true)
@@ -114,10 +112,10 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         if (!isset($response)) {
             /** @var Nosto_Tagging_Helper_Account $accountHelper */
             $accountHelper = Mage::helper('nosto_tagging/account');
-
             $response = new NostoXhrResponse();
             $response->setRedirectUrl(
                 $accountHelper->getIframeUrl(
+                    $store,
                     null, // connect attempt failed, so we have no account.
                     array(
                         'message_type' => NostoMessage::TYPE_ERROR,
@@ -139,13 +137,10 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         $accountHelper = Mage::helper('nosto_tagging/account');
 
         $store = $this->getSelectedStore();
-        if ($this->getRequest()->isPost() && $store !== null) {
-
-            // todo: use $store
-
+        if ($this->getRequest()->isPost() && !is_null($store)) {
             try {
                 $email = $this->getRequest()->getPost('email');
-                $meta = $accountHelper->getMetaData();
+                $meta = $accountHelper->getMetaData($store);
                 if (Zend_Validate::is($email, 'EmailAddress')) {
                     $meta->getOwner()->setEmail($email);
                 }
@@ -154,6 +149,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                     $response = new NostoXhrResponse();
                     $response->setSuccess(true)->setRedirectUrl(
                         $accountHelper->getIframeUrl(
+                            $store,
                             $account,
                             array(
                                 'message_type' => NostoMessage::TYPE_SUCCESS,
@@ -173,6 +169,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
             $response = new NostoXhrResponse();
             $response->setRedirectUrl(
                 $accountHelper->getIframeUrl(
+                    $store,
                     null, // account creation failed, so we have none.
                     array(
                         'message_type' => NostoMessage::TYPE_ERROR,
@@ -194,15 +191,13 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         $accountHelper = Mage::helper('nosto_tagging/account');
 
         $store = $this->getSelectedStore();
-        if ($this->getRequest()->isPost() && $store !== null) {
-
-            // todo: use $store
-
+        if ($this->getRequest()->isPost() && !is_null($store)) {
             $account = $accountHelper->find($store);
             if ($account !== null && $accountHelper->remove($account, $store)) {
                 $response = new NostoXhrResponse();
                 $response->setSuccess(true)->setRedirectUrl(
                     $accountHelper->getIframeUrl(
+                        $store,
                         null, // we don't have an account anymore
                         array(
                             'message_type' => NostoMessage::TYPE_SUCCESS,
@@ -217,6 +212,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
             $response = new NostoXhrResponse();
             $response->setRedirectUrl(
                 $accountHelper->getIframeUrl(
+                    $store,
                     $accountHelper->find($store),
                     array(
                         'message_type' => NostoMessage::TYPE_ERROR,

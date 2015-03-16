@@ -108,6 +108,11 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
         $this->_init('nosto_tagging/meta_account_iframe');
     }
 
+    /**
+     * Loads the meta data for the given store.
+     *
+     * @param Mage_Core_Model_Store $store the store view to load the data for.
+     */
     public function loadData(Mage_Core_Model_Store $store)
     {
         /** @var Mage_Admin_Model_User $user */

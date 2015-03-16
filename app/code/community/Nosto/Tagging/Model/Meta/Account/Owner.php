@@ -51,26 +51,25 @@ class Nosto_Tagging_Model_Meta_Account_Owner extends Mage_Core_Model_Abstract im
     protected $_email;
 
     /**
-     * Constructor.
-     * Sets initial values of the account owner.
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-        /** @var Mage_Admin_Model_User $user */
-        $user = Mage::getSingleton('admin/session')->getUser();
-        $this->_firstName = $user->getFirstname();
-        $this->_lastName = $user->getLastname();
-        $this->_email = $user->getEmail();
-    }
-
-    /**
      * @inheritdoc
      */
     protected function _construct()
     {
         $this->_init('nosto_tagging/meta_account_owner');
+    }
+
+    /**
+     * Loads the meta data for the given store.
+     *
+     * @param Mage_Core_Model_Store $store the store view to load the data for.
+     */
+    public function loadData(Mage_Core_Model_Store $store)
+    {
+        /** @var Mage_Admin_Model_User $user */
+        $user = Mage::getSingleton('admin/session')->getUser();
+        $this->_firstName = $user->getFirstname();
+        $this->_lastName = $user->getLastname();
+        $this->_email = $user->getEmail();
     }
 
     /**

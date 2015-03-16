@@ -46,31 +46,30 @@ class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements
     protected $_languageIsoCode;
 
     /**
-     * Constructor.
-     * Sets initial values.
+     * @inheritdoc
      */
-    public function __construct()
+    protected function _construct()
     {
-        parent::__construct();
+        $this->_init('nosto_tagging/meta_oauth');
+    }
 
+    /**
+     * Loads the meta data for the given store.
+     *
+     * @param Mage_Core_Model_Store $store the store view to load the data for.
+     */
+    public function loadData(Mage_Core_Model_Store $store)
+    {
         $this->_redirectUrl = Mage::getUrl(
             'nosto/oauth',
             array(
-                '_store' => Mage::app()->getStore()->getId(),
+                '_store' => $store->getId(),
                 '_store_to_url' => true
             )
         );
         $this->_languageIsoCode = substr(
             Mage::app()->getLocale()->getLocaleCode(), 0, 2
         );
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function _construct()
-    {
-        $this->_init('nosto_tagging/meta_oauth');
     }
 
     /**

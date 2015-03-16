@@ -170,11 +170,15 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
      * Returns the meta data model needed for creating a new nosto account
      * using the Nosto SDk.
      *
+     * @param Mage_Core_Model_Store $store the store view to get the data for.
+     *
      * @return Nosto_Tagging_Model_Meta_Account the meta data instance.
      */
-    public function getMetaData()
+    public function getMetaData(Mage_Core_Model_Store $store)
     {
-        return new Nosto_Tagging_Model_Meta_Account();
+        $meta = new Nosto_Tagging_Model_Meta_Account();
+        $meta->loadData($store);
+        return $meta;
     }
 
     /**
@@ -185,6 +189,7 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
      * @param Mage_Core_Model_Store $store the store view to get the url for.
      * @param NostoAccount $account the Nosto account to get the iframe url for.
      * @param array $params optional extra params for the url.
+     *
      * @return string the iframe url.
      */
     public function getIframeUrl(Mage_Core_Model_Store $store, NostoAccount $account = null, array $params = array())
