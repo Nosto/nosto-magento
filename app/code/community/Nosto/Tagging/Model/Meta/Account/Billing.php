@@ -41,23 +41,21 @@ class Nosto_Tagging_Model_Meta_Account_Billing extends Mage_Core_Model_Abstract 
     protected $_country;
 
     /**
-     * Constructor.
-     * Sets initial values for the account billing details.
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->_country = Mage::app()->getStore()
-            ->getConfig('general/country/default');
-    }
-
-    /**
      * @inheritdoc
      */
     protected function _construct()
     {
         $this->_init('nosto_tagging/meta_account_billing');
+    }
+
+    /**
+     * Loads the meta data for the given store.
+     *
+     * @param Mage_Core_Model_Store $store the store view to load the data for.
+     */
+    public function loadData(Mage_Core_Model_Store $store)
+    {
+        $this->_country = $store->getConfig('general/country/default');
     }
 
     /**
