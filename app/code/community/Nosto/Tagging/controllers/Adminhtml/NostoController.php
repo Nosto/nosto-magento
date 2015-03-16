@@ -77,14 +77,14 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
     public function indexAction()
     {
         $this->_title($this->__('Nosto'));
-        if (!$this->checkStoreScope()) {
+        if (!$this->getSelectedStore()) {
             // If we are not under a store view, then redirect to the first
             // found one. Nosto is configured per store.
             foreach (Mage::app()->getWebsites() as $website) {
                 $storeId = $website->getDefaultGroup()->getDefaultStoreId();
                 if (!empty($storeId)) {
                     $this->_redirect('*/*/index', array('store' => $storeId));
-                    break;
+                    return; // stop execution after redirect is set.
                 }
             }
         }
@@ -98,9 +98,10 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
      */
     public function connectAccountAction()
     {
-        if ($this->getRequest()->isPost() && $this->checkStoreScope()) {
+        $store = $this->getSelectedStore();
+        if ($this->getRequest()->isPost() && $store !== null) {
             $client = new NostoOAuthClient(
-                Mage::helper('nosto_tagging/oauth')->getMetaData()
+                Mage::helper('nosto_tagging/oauth')->getMetaData($store)
             );
             $response = new NostoXhrResponse();
             $response->setSuccess(true)
@@ -110,10 +111,10 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         if (!isset($response)) {
             /** @var Nosto_Tagging_Helper_Account $accountHelper */
             $accountHelper = Mage::helper('nosto_tagging/account');
-
             $response = new NostoXhrResponse();
             $response->setRedirectUrl(
                 $accountHelper->getIframeUrl(
+                    $store,
                     null, // connect attempt failed, so we have no account.
                     array(
                         'message_type' => NostoMessage::TYPE_ERROR,
@@ -134,18 +135,20 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         /** @var Nosto_Tagging_Helper_Account $accountHelper */
         $accountHelper = Mage::helper('nosto_tagging/account');
 
-        if ($this->getRequest()->isPost() && $this->checkStoreScope()) {
+        $store = $this->getSelectedStore();
+        if ($this->getRequest()->isPost() && $store !== null) {
             try {
                 $email = $this->getRequest()->getPost('email');
-                $meta = $accountHelper->getMetaData();
+                $meta = $accountHelper->getMetaData($store);
                 if (Zend_Validate::is($email, 'EmailAddress')) {
                     $meta->getOwner()->setEmail($email);
                 }
                 $account = NostoAccount::create($meta);
-                if ($accountHelper->save($account)) {
+                if ($accountHelper->save($account, $store)) {
                     $response = new NostoXhrResponse();
                     $response->setSuccess(true)->setRedirectUrl(
                         $accountHelper->getIframeUrl(
+                            $store,
                             $account,
                             array(
                                 'message_type' => NostoMessage::TYPE_SUCCESS,
@@ -165,6 +168,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
             $response = new NostoXhrResponse();
             $response->setRedirectUrl(
                 $accountHelper->getIframeUrl(
+                    $store,
                     null, // account creation failed, so we have none.
                     array(
                         'message_type' => NostoMessage::TYPE_ERROR,
@@ -185,12 +189,14 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         /** @var Nosto_Tagging_Helper_Account $accountHelper */
         $accountHelper = Mage::helper('nosto_tagging/account');
 
-        if ($this->getRequest()->isPost() && $this->checkStoreScope()) {
-            $account = $accountHelper->find();
-            if ($account !== null && $accountHelper->remove($account)) {
+        $store = $this->getSelectedStore();
+        if ($this->getRequest()->isPost() && $store !== null) {
+            $account = $accountHelper->find($store);
+            if ($account !== null && $accountHelper->remove($account, $store)) {
                 $response = new NostoXhrResponse();
                 $response->setSuccess(true)->setRedirectUrl(
                     $accountHelper->getIframeUrl(
+                        $store,
                         null, // we don't have an account anymore
                         array(
                             'message_type' => NostoMessage::TYPE_SUCCESS,
@@ -205,7 +211,8 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
             $response = new NostoXhrResponse();
             $response->setRedirectUrl(
                 $accountHelper->getIframeUrl(
-                    $accountHelper->find(),
+                    $store,
+                    $accountHelper->find($store),
                     array(
                         'message_type' => NostoMessage::TYPE_ERROR,
                         'message_code' => NostoMessage::CODE_ACCOUNT_DELETE,
@@ -218,26 +225,22 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
     }
 
     /**
-     * Checks that a valid store view scope is available.
-     * If it is single store setup, then just use the default store as current.
+     * Returns the currently selected store view.
+     * If it is single store setup, then just return the default store.
      * If it is a multi store setup, the expect a store id to passed in the
-     * request params and set that store as the current one.
+     * request params and return that store as the current one.
      *
-     * @return bool if the current store is valid, false otherwise.
+     * @return Mage_Core_Model_Store|null the store view or null if not found.
      */
-    protected function checkStoreScope()
+    protected function getSelectedStore()
     {
         if (Mage::app()->isSingleStoreMode()) {
-            $storeId = (int)Mage::app()->getStore(true)->getId();
-            if ($storeId > 0) {
-                Mage::app()->setCurrentStore($storeId);
-                return true;
-            }
+            return Mage::app()->getStore(true);
         } elseif (($storeId = (int)$this->getRequest()->getParam('store')) !== 0) {
-            Mage::app()->setCurrentStore($storeId);
-            return true;
+            return Mage::app()->getStore($storeId);
+        } else {
+            return null;
         }
-        return false;
     }
 
     /**

@@ -81,13 +81,20 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     protected $_signUpApiToken = 'YBDKYwSqTCzSsU8Bwbg4im2pkHMcgTy9cCX7vevjJwON1UISJIwXOLMM0a8nZY7h';
 
     /**
-     * Constructor.
+     * @inheritdoc
      */
-    public function __construct()
+    protected function _construct()
     {
-        parent::__construct();
+        $this->_init('nosto_tagging/meta_account');
+    }
 
-        $store = Mage::app()->getStore();
+    /**
+     * Loads the meta data for the given store.
+     *
+     * @param Mage_Core_Model_Store $store the store view to load the data for.
+     */
+    public function loadData(Mage_Core_Model_Store $store)
+    {
         $this->_title = $store->getWebsite()->getName()
             . ' - '
             . $store->getGroup()->getName()
@@ -107,15 +114,9 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
             Mage::app()->getLocale()->getLocaleCode(), 0, 2
         );
         $this->_owner = new Nosto_Tagging_Model_Meta_Account_Owner();
+        $this->_owner->loadData($store);
         $this->_billing = new Nosto_Tagging_Model_Meta_Account_Billing();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function _construct()
-    {
-        $this->_init('nosto_tagging/meta_account');
+        $this->_billing->loadData($store);
     }
 
     /**

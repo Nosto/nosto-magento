@@ -97,6 +97,9 @@ The extension is released under Open Software License ("OSL") v3.0
 
 ## Changelog
 
+### 2.1.1
+* Fix internal store view handling in backend to not apply the current store scope when configuring nosto
+
 ### 2.1.0
 * New extension administration UI
 * Fix product re-crawl API call to only load needed product meta data

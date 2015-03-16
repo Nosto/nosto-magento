@@ -43,6 +43,11 @@ class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
     private $_iframeUrl;
 
     /**
+     * @var Mage_Core_Model_Store the currently selected store view.
+     */
+    private $_store;
+
+    /**
      * Gets the iframe url for the account settings page from Nosto.
      * This url is only returned if the current admin user can be logged in
      * with SSO to Nosto.
@@ -69,11 +74,34 @@ class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
                 $session->setData('nosto_message', null);
             }
         }
+        $store = $this->getSelectedStore();
+        $account = Mage::helper('nosto_tagging/account')->find($store);
         return $this->_iframeUrl = Mage::helper('nosto_tagging/account')
-            ->getIframeUrl(
-                Mage::helper('nosto_tagging/account')->find(),
-                $params
-            );
+            ->getIframeUrl($store, $account, $params);
+    }
+
+    /**
+     * Returns the currently selected store view.
+     *
+     * @return Mage_Core_Model_Store the store view model.
+     *
+     * @throws Exception if store view cannot be found.
+     */
+    public function getSelectedStore()
+    {
+        if ($this->_store !== null) {
+            return $this->_store;
+        }
+
+        if (Mage::app()->isSingleStoreMode()) {
+            $store = Mage::app()->getStore(true);
+        } elseif (($id = (int)$this->getRequest()->getParam('store')) !== 0) {
+            $store = Mage::app()->getStore($id);
+        } else {
+            throw new Exception('Failed to find currently selected store view.');
+        }
+
+        return $this->_store = $store;
     }
 
     /**

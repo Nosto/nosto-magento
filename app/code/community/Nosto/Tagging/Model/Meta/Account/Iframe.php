@@ -101,13 +101,20 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
     protected $_shopName;
 
     /**
-     * Constructor.
-     * Sets initial values.
+     * @inheritdoc
      */
-    public function __construct()
+    protected function _construct()
     {
-        parent::__construct();
+        $this->_init('nosto_tagging/meta_account_iframe');
+    }
 
+    /**
+     * Loads the meta data for the given store.
+     *
+     * @param Mage_Core_Model_Store $store the store view to load the data for.
+     */
+    public function loadData(Mage_Core_Model_Store $store)
+    {
         /** @var Mage_Admin_Model_User $user */
         $user = Mage::getSingleton('admin/session')->getUser();
         /** @var Nosto_Tagging_Helper_Url $urlHelper */
@@ -122,23 +129,15 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
             Mage::app()->getLocale()->getLocaleCode(), 0, 2
         );
         $this->_languageIsoCodeShop = substr(
-            Mage::app()->getStore()->getConfig('general/locale/code'), 0, 2
+            $store->getConfig('general/locale/code'), 0, 2
         );
         $this->_uniqueId = $dataHelper->getInstallationId();
-        $this->_previewUrlProduct = $urlHelper->getPreviewUrlProduct();
-        $this->_previewUrlCategory = $urlHelper->getPreviewUrlCategory();
-        $this->_previewUrlSearch = $urlHelper->getPreviewUrlSearch();
-        $this->_previewUrlCart = $urlHelper->getPreviewUrlCart();
-        $this->_previewUrlFront = $urlHelper->getPreviewUrlFront();
-        $this->_shopName = Mage::app()->getStore()->getName();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function _construct()
-    {
-        $this->_init('nosto_tagging/meta_account_iframe');
+        $this->_previewUrlProduct = $urlHelper->getPreviewUrlProduct($store);
+        $this->_previewUrlCategory = $urlHelper->getPreviewUrlCategory($store);
+        $this->_previewUrlSearch = $urlHelper->getPreviewUrlSearch($store);
+        $this->_previewUrlCart = $urlHelper->getPreviewUrlCart($store);
+        $this->_previewUrlFront = $urlHelper->getPreviewUrlFront($store);
+        $this->_shopName = $store->getName();
     }
 
     /**
