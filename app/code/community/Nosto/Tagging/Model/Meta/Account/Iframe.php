@@ -132,11 +132,11 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
             $store->getConfig('general/locale/code'), 0, 2
         );
         $this->_uniqueId = $dataHelper->getInstallationId();
-        $this->_previewUrlProduct = $urlHelper->getPreviewUrlProduct();
-        $this->_previewUrlCategory = $urlHelper->getPreviewUrlCategory();
-        $this->_previewUrlSearch = $urlHelper->getPreviewUrlSearch();
-        $this->_previewUrlCart = $urlHelper->getPreviewUrlCart();
-        $this->_previewUrlFront = $urlHelper->getPreviewUrlFront();
+        $this->_previewUrlProduct = $urlHelper->getPreviewUrlProduct($store);
+        $this->_previewUrlCategory = $urlHelper->getPreviewUrlCategory($store);
+        $this->_previewUrlSearch = $urlHelper->getPreviewUrlSearch($store);
+        $this->_previewUrlCart = $urlHelper->getPreviewUrlCart($store);
+        $this->_previewUrlFront = $urlHelper->getPreviewUrlFront($store);
         $this->_shopName = $store->getName();
     }
 
