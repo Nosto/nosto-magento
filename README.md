@@ -97,6 +97,9 @@ The extension is released under Open Software License ("OSL") v3.0
 
 ## Changelog
 
+### 2.1.2
+* Fix product urls to be tagged with current store info so the crawler sees the correct product data
+
 ### 2.1.1
 * Fix internal store view handling in backend to not apply the current store scope when configuring nosto
 
