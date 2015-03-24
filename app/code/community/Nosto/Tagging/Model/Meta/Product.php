@@ -289,7 +289,9 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
         // Unset the cached url first, as it won't include the `___store` param.
         // We need to define the specific store view in the url for the crawler
         // to see the correct product data when crawling the site.
-        $this->_url = $product->unsetData('url')->getUrlInStore();
+        $this->_url = $product
+            ->unsetData('url')
+            ->getUrlInStore(array('_ignore_category' => true));
 
         $this->_productId = $product->getId();
         $this->_name = $product->getName();
