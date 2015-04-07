@@ -97,6 +97,9 @@ The extension is released under Open Software License ("OSL") v3.0
 
 ## Changelog
 
+### 2.1.3
+* Fix reading email address of account owner when creating new account
+
 ### 2.1.2
 * Fix product urls to be tagged with current store info so the crawler sees the correct product data
 
