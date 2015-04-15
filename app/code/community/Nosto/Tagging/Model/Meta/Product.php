@@ -139,6 +139,16 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
         return $this->_url;
     }
 
+	/**
+	 * Setter for the absolute url to the product page in the shop frontend.
+	 *
+	 * @param $url string the url.
+	 */
+	public function setUrl($url)
+	{
+		$this->_url = $url;
+	}
+
     /**
      * Returns the product's unique identifier.
      *
