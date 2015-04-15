@@ -77,23 +77,21 @@ class Nosto_Tagging_Model_Observer
                 /** @var Mage_Catalog_Model_Product $product */
                 $product = $observer->getEvent()->getProduct();
                 /** @var Mage_Core_Model_Store $store */
-				foreach (Mage::app()->getStores() as $store) {
+                foreach (Mage::app()->getStores() as $store) {
                     /** @var NostoAccount $account */
                     $account = Mage::helper('nosto_tagging/account')
                         ->find($store);
                     if ($account === null || !$account->isConnectedToNosto()) {
                         continue;
                     }
-					$model = new Nosto_Tagging_Model_Meta_Product();
+                    $model = new Nosto_Tagging_Model_Meta_Product();
                     $model->setProductId($product->getId());
-					$model->setUrl($product->unsetData('url')->getUrlInStore(
-						array(
-							'_store' => $store->getCode(),
-							'_ignore_category' => false,
-						)
-					));
+                    $model->setUrl(
+                        $product->unsetData('url')
+                            ->getUrlInStore(array('_store' => $store->getCode()))
+                    );
                     NostoProductReCrawl::send($model, $account);
-				}
+                }
             } catch (NostoException $e) {
                 Mage::log("\n" . $e->__toString(), Zend_Log::ERR, 'nostotagging.log');
             }
