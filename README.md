@@ -97,6 +97,9 @@ The extension is released under Open Software License ("OSL") v3.0
 
 ## Changelog
 
+### 2.2.0
+* Change product re-crawl to send both id and url for products that have been added/modified
+
 ### 2.1.3
 * Fix reading email address of account owner when creating new account
 
