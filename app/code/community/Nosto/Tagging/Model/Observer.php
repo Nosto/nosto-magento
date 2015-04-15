@@ -74,11 +74,9 @@ class Nosto_Tagging_Model_Observer
     {
         if (Mage::helper('nosto_tagging')->isModuleEnabled()) {
             try {
-                /** @var Mage_Catalog_Model_Product $mageProduct */
-                $mageProduct = $observer->getEvent()->getProduct();
-                $product = new Nosto_Tagging_Model_Meta_Product();
-                // We only need the product ID for the re-crawl.
-                $product->setProductId($mageProduct->getId());
+                /** @var Mage_Catalog_Model_Product $product */
+                $product = $observer->getEvent()->getProduct();
+                /** @var Mage_Core_Model_Store $store */
                 foreach (Mage::app()->getStores() as $store) {
                     /** @var NostoAccount $account */
                     $account = Mage::helper('nosto_tagging/account')
@@ -86,7 +84,13 @@ class Nosto_Tagging_Model_Observer
                     if ($account === null || !$account->isConnectedToNosto()) {
                         continue;
                     }
-                    NostoProductReCrawl::send($product, $account);
+                    $model = new Nosto_Tagging_Model_Meta_Product();
+                    $model->setProductId($product->getId());
+                    $model->setUrl(
+                        $product->unsetData('url')
+                            ->getUrlInStore(array('_store' => $store->getCode()))
+                    );
+                    NostoProductReCrawl::send($model, $account);
                 }
             } catch (NostoException $e) {
                 Mage::log("\n" . $e->__toString(), Zend_Log::ERR, 'nostotagging.log');
