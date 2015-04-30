@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "nosto/php-sdk",
-            "version": "1.7.0",
+            "version": "1.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Nosto/php-sdk.git",
-                "reference": "be09ef95284791e5446bf1eb96c68ac6f47a6747"
+                "reference": "dcaf7fc104acc91e337aaf77feee2f6a4df07818"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Nosto/php-sdk/zipball/be09ef95284791e5446bf1eb96c68ac6f47a6747",
-                "reference": "be09ef95284791e5446bf1eb96c68ac6f47a6747",
+                "url": "https://api.github.com/repos/Nosto/php-sdk/zipball/dcaf7fc104acc91e337aaf77feee2f6a4df07818",
+                "reference": "dcaf7fc104acc91e337aaf77feee2f6a4df07818",
                 "shasum": ""
             },
             "require-dev": {
@@ -30,10 +30,10 @@
             ],
             "description": "PHP SDK for developing Nosto modules for e-commerce platforms",
             "support": {
-                "source": "https://github.com/Nosto/php-sdk/tree/1.7.0",
+                "source": "https://github.com/Nosto/php-sdk/tree/1.7.1",
                 "issues": "https://github.com/Nosto/php-sdk/issues"
             },
-            "time": "2015-04-15 09:15:23"
+            "time": "2015-04-30 11:50:36"
         }
     ],
     "packages-dev": [],
