@@ -59,6 +59,13 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
      */
     protected $_paymentProvider;
 
+	/**
+	 * @var string the payment status for the order.
+	 *
+	 * Follows the Magento order "status".
+	 */
+	protected $_paymentStatus;
+
     /**
      * @var Nosto_Tagging_Model_Meta_Order_Buyer The user info of the buyer.
      */
@@ -108,6 +115,16 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
         return $this->_paymentProvider;
     }
 
+	/**
+	 * The orders payment status.
+	 *
+	 * @return string the status.
+	 */
+	public function getPaymentStatus()
+	{
+		return $this->_paymentStatus;
+	}
+
     /**
      * The buyer info of the user who placed the order.
      *
@@ -140,6 +157,7 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
 
         $method = $order->getPayment()->getMethodInstance();
         $this->_paymentProvider = $method->getCode();
+		$this->_paymentStatus = $order->getStatus();
 
         $this->_buyer = new Nosto_Tagging_Model_Meta_Order_Buyer();
         $this->_buyer->loadData($order);
