@@ -97,6 +97,9 @@ The extension is released under Open Software License ("OSL") v3.0
 
 ## Changelog
 
+### 2.3.0
+* Add payment status info to server side order confirmations and order exports
+
 ### 2.2.1
 * Add Enterprise support
 
