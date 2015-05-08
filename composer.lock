@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Nosto/php-sdk.git",
-                "reference": "b7183805d733b3651c34af1db23ca602cff5cd11"
+                "reference": "39678a62e8f06a518cc0c73882716106ea6af5cc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Nosto/php-sdk/zipball/b7183805d733b3651c34af1db23ca602cff5cd11",
-                "reference": "b7183805d733b3651c34af1db23ca602cff5cd11",
+                "url": "https://api.github.com/repos/Nosto/php-sdk/zipball/39678a62e8f06a518cc0c73882716106ea6af5cc",
+                "reference": "39678a62e8f06a518cc0c73882716106ea6af5cc",
                 "shasum": ""
             },
             "require-dev": {
@@ -33,7 +33,7 @@
                 "source": "https://github.com/Nosto/php-sdk/tree/develop",
                 "issues": "https://github.com/Nosto/php-sdk/issues"
             },
-            "time": "2015-05-08 10:50:18"
+            "time": "2015-05-08 11:53:43"
         }
     ],
     "packages-dev": [],
