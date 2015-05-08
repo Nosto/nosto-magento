@@ -140,16 +140,6 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
     }
 
     /**
-     * Setter for the absolute url to the product page in the shop frontend.
-     *
-     * @param $url string the url.
-     */
-    public function setUrl($url)
-    {
-        $this->_url = $url;
-    }
-
-    /**
      * Returns the product's unique identifier.
      *
      * @return int|string the ID.
@@ -160,7 +150,7 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
     }
 
     /**
-     * Sets the product's unique identifier.
+     * Setter for the product's unique identifier.
      *
      * @param int|string $productId the ID.
      */
@@ -293,15 +283,25 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
      * Loads the product info from a Magento product model.
      *
      * @param Mage_Catalog_Model_Product $product the product model.
+     * @param Mage_Core_Model_Store|null $store the store to get the product data for.
      */
-    public function loadData(Mage_Catalog_Model_Product $product)
+    public function loadData(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store = null)
     {
+        if (is_null($store)) {
+            $store = Mage::app()->getStore();
+        }
+
         // Unset the cached url first, as it won't include the `___store` param.
         // We need to define the specific store view in the url for the crawler
         // to see the correct product data when crawling the site.
         $this->_url = $product
             ->unsetData('url')
-            ->getUrlInStore(array('_ignore_category' => true));
+            ->getUrlInStore(
+                array(
+                    '_ignore_category' => true,
+                    '_store' => $store->getCode(),
+                )
+            );
 
         $this->_productId = $product->getId();
         $this->_name = $product->getName();
@@ -323,9 +323,7 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
             Mage::helper('nosto_tagging/price')->getProductPrice($product),
             true
         );
-        $this->_currencyCode = Mage::app()->getStore()
-            ->getCurrentCurrencyCode();
-
+        $this->_currencyCode = $store->getCurrentCurrencyCode();
         $this->_availability = $product->isAvailable()
             ? self::PRODUCT_IN_STOCK
             : self::PRODUCT_OUT_OF_STOCK;
@@ -337,7 +335,7 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
                 ->addStatusFilter(Mage_Tag_Model_Tag::STATUS_APPROVED)
                 ->addProductFilter($product->getId())
                 ->setFlag('relation', true)
-                ->addStoreFilter(Mage::app()->getStore()->getId())
+                ->addStoreFilter($store->getId())
                 ->setActiveFilter();
             foreach ($tagCollection as $tag) {
                 $this->_tags[] = $tag->getName();

@@ -98,22 +98,25 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
      */
     public function connectAccountAction()
     {
+        $this->getResponse()->setHeader('Content-type', 'application/json');
+
         $store = $this->getSelectedStore();
         if ($this->getRequest()->isPost() && $store !== null) {
             $client = new NostoOAuthClient(
                 Mage::helper('nosto_tagging/oauth')->getMetaData($store)
             );
-            $response = new NostoXhrResponse();
-            $response->setSuccess(true)
-                ->setRedirectUrl($client->getAuthorizationUrl());
+            $responseBody = array(
+                'success' => true,
+                'redirect_url' => $client->getAuthorizationUrl(),
+            );
         }
 
-        if (!isset($response)) {
+        if (!isset($responseBody)) {
             /** @var Nosto_Tagging_Helper_Account $accountHelper */
             $accountHelper = Mage::helper('nosto_tagging/account');
-            $response = new NostoXhrResponse();
-            $response->setRedirectUrl(
-                $accountHelper->getIframeUrl(
+            $responseBody = array(
+                'success' => false,
+                'redirect_url' => $accountHelper->getIframeUrl(
                     $store,
                     null, // connect attempt failed, so we have no account.
                     array(
@@ -124,7 +127,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
             );
         }
 
-        $this->sendXhrResponse($response);
+        $this->getResponse()->setBody(json_encode($responseBody));
     }
 
     /**
@@ -132,6 +135,8 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
      */
     public function createAccountAction()
     {
+        $this->getResponse()->setHeader('Content-type', 'application/json');
+
         /** @var Nosto_Tagging_Helper_Account $accountHelper */
         $accountHelper = Mage::helper('nosto_tagging/account');
 
@@ -145,9 +150,9 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                 }
                 $account = NostoAccount::create($meta);
                 if ($accountHelper->save($account, $store)) {
-                    $response = new NostoXhrResponse();
-                    $response->setSuccess(true)->setRedirectUrl(
-                        $accountHelper->getIframeUrl(
+                    $responseBody = array(
+                        'success' => true,
+                        'redirect_url' => $accountHelper->getIframeUrl(
                             $store,
                             $account,
                             array(
@@ -164,10 +169,10 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
             }
         }
 
-        if (!isset($response)) {
-            $response = new NostoXhrResponse();
-            $response->setRedirectUrl(
-                $accountHelper->getIframeUrl(
+        if (!isset($responseBody)) {
+            $responseBody = array(
+                'success' => false,
+                'redirect_url' => $accountHelper->getIframeUrl(
                     $store,
                     null, // account creation failed, so we have none.
                     array(
@@ -178,7 +183,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
             );
         }
 
-        $this->sendXhrResponse($response);
+        $this->getResponse()->setBody(json_encode($responseBody));
     }
 
     /**
@@ -186,6 +191,8 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
      */
     public function removeAccountAction()
     {
+        $this->getResponse()->setHeader('Content-type', 'application/json');
+
         /** @var Nosto_Tagging_Helper_Account $accountHelper */
         $accountHelper = Mage::helper('nosto_tagging/account');
 
@@ -193,9 +200,9 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         if ($this->getRequest()->isPost() && $store !== null) {
             $account = $accountHelper->find($store);
             if ($account !== null && $accountHelper->remove($account, $store)) {
-                $response = new NostoXhrResponse();
-                $response->setSuccess(true)->setRedirectUrl(
-                    $accountHelper->getIframeUrl(
+                $responseBody = array(
+                    'success' => true,
+                    'redirect_url' => $accountHelper->getIframeUrl(
                         $store,
                         null, // we don't have an account anymore
                         array(
@@ -207,10 +214,10 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
             }
         }
 
-        if (!isset($response)) {
-            $response = new NostoXhrResponse();
-            $response->setRedirectUrl(
-                $accountHelper->getIframeUrl(
+        if (!isset($responseBody)) {
+            $responseBody = array(
+                'success' => false,
+                'redirect_url' => $accountHelper->getIframeUrl(
                     $store,
                     $accountHelper->find($store),
                     array(
@@ -221,7 +228,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
             );
         }
 
-        $this->sendXhrResponse($response);
+        $this->getResponse()->setBody(json_encode($responseBody));
     }
 
     /**
@@ -241,16 +248,5 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         } else {
             return null;
         }
-    }
-
-    /**
-     * Sends an XHR response to the browser.
-     *
-     * @param NostoXhrResponse $response the response object.
-     */
-    protected function sendXhrResponse(NostoXhrResponse $response)
-    {
-        $this->getResponse()->setHeader('Content-type', $response->contentType);
-        $this->getResponse()->setBody($response->__toString());
     }
 }

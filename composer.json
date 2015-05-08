@@ -8,7 +8,8 @@
             "url": "https://github.com/Nosto/php-sdk.git"
         }
     ],
+    "minimum-stability": "dev",
     "require": {
-        "nosto/php-sdk": "1.7.*"
+        "nosto/php-sdk": "dev-develop"
     }
 }

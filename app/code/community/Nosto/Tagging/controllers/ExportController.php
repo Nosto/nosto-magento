@@ -115,9 +115,9 @@ class Nosto_tagging_ExportController extends Mage_Core_Controller_Front_Action
     /**
      * Encrypts the export collection and outputs it to the browser.
      *
-     * @param NostoExportCollection $collection the data collection to export.
+     * @param NostoExportCollectionInterface $collection the data collection to export.
      */
-    protected function export(NostoExportCollection $collection)
+    protected function export(NostoExportCollectionInterface $collection)
     {
         $account = Mage::helper('nosto_tagging/account')->find();
         if ($account !== null) {
