@@ -306,11 +306,15 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
         $this->_productId = $product->getId();
         $this->_name = $product->getName();
 
-        if (!$product->getImage() || $product->getImage() == 'no_selection') {
-            $this->_imageUrl = $product->getImageUrl();
-        } else {
-            $this->_imageUrl = $product->getMediaConfig()
-                ->getMediaUrl($product->getImage());
+        try {
+            if (!$product->getImage() || $product->getImage() == 'no_selection') {
+                $this->_imageUrl = $product->getImageUrl();
+            } else {
+                $this->_imageUrl = $product->getMediaConfig()
+                    ->getMediaUrl($product->getImage());
+            }
+        } catch (Exception $e) {
+            // Do nothing.
         }
 
         $this->_price = Mage::helper('tax')->getPrice(
