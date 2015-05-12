@@ -76,27 +76,33 @@ class Nosto_Tagging_Model_Observer
             try {
                 /** @var Mage_Catalog_Model_Product $product */
                 $product = $observer->getEvent()->getProduct();
-                if ($product->isVisibleInSiteVisibility()) {
-                    /** @var Mage_Core_Model_Store $store */
-                    foreach (Mage::app()->getStores() as $store) {
-                        /** @var NostoAccount $account */
-                        $account = Mage::helper('nosto_tagging/account')
-                            ->find($store);
-                        if ($account === null || !$account->isConnectedToNosto()) {
-                            continue;
-                        }
+                $validator = new NostoModelValidator();
+                /** @var Mage_Core_Model_Store $store */
+                foreach (Mage::app()->getStores() as $store) {
+                    /** @var NostoAccount $account */
+                    $account = Mage::helper('nosto_tagging/account')
+                        ->find($store);
+                    if ($account === null || !$account->isConnectedToNosto()) {
+                        continue;
+                    }
 
-                        // Load the product model for this particular store view.
-                        $product = Mage::getModel('catalog/product')
-                            ->setStoreId($store->getId())
-                            ->load($product->getId());
-                        if (is_null($product)) {
-                            continue;
-                        }
+                    // Load the product model for this particular store view.
+                    $product = Mage::getModel('catalog/product')
+                        ->setStoreId($store->getId())
+                        ->load($product->getId());
+                    if (is_null($product)) {
+                        continue;
+                    }
+                    if (!$product->isVisibleInSiteVisibility()) {
+                        continue;
+                    }
 
-                        $model = new Nosto_Tagging_Model_Meta_Product();
-                        $model->loadData($product, $store);
+                    $model = new Nosto_Tagging_Model_Meta_Product();
+                    $model->loadData($product, $store);
 
+                    // Only send product update if we have all required
+                    // data for the product model.
+                    if ($validator->validate($model)) {
                         $op = new NostoOperationProduct($account);
                         $op->addProduct($model);
                         $op->update();
@@ -124,24 +130,22 @@ class Nosto_Tagging_Model_Observer
             try {
                 /** @var Mage_Catalog_Model_Product $product */
                 $product = $observer->getEvent()->getProduct();
-                if ($product->isVisibleInSiteVisibility()) {
-                    /** @var Mage_Core_Model_Store $store */
-                    foreach (Mage::app()->getStores() as $store) {
-                        /** @var NostoAccount $account */
-                        $account = Mage::helper('nosto_tagging/account')
-                            ->find($store);
+                /** @var Mage_Core_Model_Store $store */
+                foreach (Mage::app()->getStores() as $store) {
+                    /** @var NostoAccount $account */
+                    $account = Mage::helper('nosto_tagging/account')
+                        ->find($store);
 
-                        if ($account === null || !$account->isConnectedToNosto()) {
-                            continue;
-                        }
-
-                        $model = new Nosto_Tagging_Model_Meta_Product();
-                        $model->setProductId($product->getId());
-
-                        $op = new NostoOperationProduct($account);
-                        $op->addProduct($model);
-                        $op->delete();
+                    if ($account === null || !$account->isConnectedToNosto()) {
+                        continue;
                     }
+
+                    $model = new Nosto_Tagging_Model_Meta_Product();
+                    $model->setProductId($product->getId());
+
+                    $op = new NostoOperationProduct($account);
+                    $op->addProduct($model);
+                    $op->delete();
                 }
             } catch (NostoException $e) {
                 Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');

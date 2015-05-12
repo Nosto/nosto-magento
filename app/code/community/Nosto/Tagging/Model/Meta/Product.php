@@ -34,7 +34,7 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implements NostoProductInterface
+class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implements NostoProductInterface, NostoValidatableModelInterface
 {
     /**
      * Product "in stock" tagging string.
@@ -127,6 +127,28 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
     protected function _construct()
     {
         $this->_init('nosto_tagging/meta_product');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getValidationRules()
+    {
+        return array(
+            array(
+                array(
+                    '_url',
+                    '_productId',
+                    '_name',
+                    '_imageUrl',
+                    '_price',
+                    '_listPrice',
+                    '_currencyCode',
+                    '_availability'
+                ),
+                'required'
+            )
+        );
     }
 
     /**
@@ -291,13 +313,14 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
             $store = Mage::app()->getStore();
         }
 
-        // Unset the cached url first, as it won't include the `___store` param.
-        // We need to define the specific store view in the url for the crawler
-        // to see the correct product data when crawling the site.
+        // Unset the cached url first, as it won't include the `___store` param
+        // if it's cached. We need to define the specific store view in the url
+        // in case the same domain is used for all sites.
         $this->_url = $product
             ->unsetData('url')
             ->getUrlInStore(
                 array(
+                    '_nosid' => true,
                     '_ignore_category' => true,
                     '_store' => $store->getCode(),
                 )
@@ -306,15 +329,14 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
         $this->_productId = $product->getId();
         $this->_name = $product->getName();
 
-        try {
-            if (!$product->getImage() || $product->getImage() == 'no_selection') {
-                $this->_imageUrl = $product->getImageUrl();
-            } else {
-                $this->_imageUrl = $product->getMediaConfig()
-                    ->getMediaUrl($product->getImage());
-            }
-        } catch (Exception $e) {
-            // Do nothing.
+        $image = $product->getImage();
+        if (!empty($image) && $image !== 'no_selection') {
+            // We build the image url manually in order get the correct base url,
+            // even if this product is populated in the backend.
+            $baseUrl = rtrim($store->getBaseUrl('media'), '/');
+            $file = str_replace(DS, '/', $image);
+            $file = ltrim($file, '/');
+            $this->_imageUrl = $baseUrl.'/catalog/product/'.$file;
         }
 
         $this->_price = Mage::helper('tax')->getPrice(
