@@ -34,7 +34,7 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implements NostoProductInterface
+class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implements NostoProductInterface, NostoValidatableModelInterface
 {
     /**
      * Product "in stock" tagging string.
@@ -130,6 +130,28 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
     }
 
     /**
+     * @inheritdoc
+     */
+    public function getValidationRules()
+    {
+        return array(
+            array(
+                array(
+                    '_url',
+                    '_productId',
+                    '_name',
+                    '_imageUrl',
+                    '_price',
+                    '_listPrice',
+                    '_currencyCode',
+                    '_availability'
+                ),
+                'required'
+            )
+        );
+    }
+
+    /**
      * Returns the absolute url to the product page in the shop frontend.
      *
      * @return string the url.
@@ -137,16 +159,6 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
     public function getUrl()
     {
         return $this->_url;
-    }
-
-    /**
-     * Setter for the absolute url to the product page in the shop frontend.
-     *
-     * @param $url string the url.
-     */
-    public function setUrl($url)
-    {
-        $this->_url = $url;
     }
 
     /**
@@ -160,7 +172,7 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
     }
 
     /**
-     * Sets the product's unique identifier.
+     * Setter for the product's unique identifier.
      *
      * @param int|string $productId the ID.
      */
@@ -293,24 +305,38 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
      * Loads the product info from a Magento product model.
      *
      * @param Mage_Catalog_Model_Product $product the product model.
+     * @param Mage_Core_Model_Store|null $store the store to get the product data for.
      */
-    public function loadData(Mage_Catalog_Model_Product $product)
+    public function loadData(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store = null)
     {
-        // Unset the cached url first, as it won't include the `___store` param.
-        // We need to define the specific store view in the url for the crawler
-        // to see the correct product data when crawling the site.
+        if (is_null($store)) {
+            $store = Mage::app()->getStore();
+        }
+
+        // Unset the cached url first, as it won't include the `___store` param
+        // if it's cached. We need to define the specific store view in the url
+        // in case the same domain is used for all sites.
         $this->_url = $product
             ->unsetData('url')
-            ->getUrlInStore(array('_ignore_category' => true));
+            ->getUrlInStore(
+                array(
+                    '_nosid' => true,
+                    '_ignore_category' => true,
+                    '_store' => $store->getCode(),
+                )
+            );
 
         $this->_productId = $product->getId();
         $this->_name = $product->getName();
 
-        if (!$product->getImage() || $product->getImage() == 'no_selection') {
-            $this->_imageUrl = $product->getImageUrl();
-        } else {
-            $this->_imageUrl = $product->getMediaConfig()
-                ->getMediaUrl($product->getImage());
+        $image = $product->getImage();
+        if (!empty($image) && $image !== 'no_selection') {
+            // We build the image url manually in order get the correct base url,
+            // even if this product is populated in the backend.
+            $baseUrl = rtrim($store->getBaseUrl('media'), '/');
+            $file = str_replace(DS, '/', $image);
+            $file = ltrim($file, '/');
+            $this->_imageUrl = $baseUrl.'/catalog/product/'.$file;
         }
 
         $this->_price = Mage::helper('tax')->getPrice(
@@ -323,9 +349,7 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
             Mage::helper('nosto_tagging/price')->getProductPrice($product),
             true
         );
-        $this->_currencyCode = Mage::app()->getStore()
-            ->getCurrentCurrencyCode();
-
+        $this->_currencyCode = $store->getCurrentCurrencyCode();
         $this->_availability = $product->isAvailable()
             ? self::PRODUCT_IN_STOCK
             : self::PRODUCT_OUT_OF_STOCK;
@@ -337,7 +361,7 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
                 ->addStatusFilter(Mage_Tag_Model_Tag::STATUS_APPROVED)
                 ->addProductFilter($product->getId())
                 ->setFlag('relation', true)
-                ->addStoreFilter(Mage::app()->getStore()->getId())
+                ->addStoreFilter($store->getId())
                 ->setActiveFilter();
             foreach ($tagCollection as $tag) {
                 $this->_tags[] = $tag->getName();

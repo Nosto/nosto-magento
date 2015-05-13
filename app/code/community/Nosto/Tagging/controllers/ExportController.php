@@ -97,6 +97,7 @@ class Nosto_tagging_ExportController extends Mage_Core_Controller_Front_Action
             if ($currentPage > $products->getLastPageNumber()) {
                 $products = array();
             }
+            $validator = new NostoModelValidator();
             $collection = new NostoExportProductCollection();
             foreach ($products as $product) {
                 if ($product->getTypeId() === Mage_Catalog_Model_Product_Type::TYPE_BUNDLE
@@ -106,7 +107,9 @@ class Nosto_tagging_ExportController extends Mage_Core_Controller_Front_Action
                 }
                 $meta = new Nosto_Tagging_Model_Meta_Product();
                 $meta->loadData($product);
-                $collection[] = $meta;
+                if ($validator->validate($meta)) {
+                    $collection[] = $meta;
+                }
             }
             $this->export($collection);
         }
@@ -115,9 +118,9 @@ class Nosto_tagging_ExportController extends Mage_Core_Controller_Front_Action
     /**
      * Encrypts the export collection and outputs it to the browser.
      *
-     * @param NostoExportCollection $collection the data collection to export.
+     * @param NostoExportCollectionInterface $collection the data collection to export.
      */
-    protected function export(NostoExportCollection $collection)
+    protected function export(NostoExportCollectionInterface $collection)
     {
         $account = Mage::helper('nosto_tagging/account')->find();
         if ($account !== null) {

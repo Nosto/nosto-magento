@@ -43,6 +43,11 @@
             <block type="nosto_tagging/embed" name="nosto.embed" template="nostotagging/embed.phtml"/>
         </reference>
 
+        <!-- Adds Nosto `add-to-cart` script to head -->
+        <reference name="head">
+            <block type="nosto_tagging/addtocart" name="nosto.addtocart" template="nostotagging/addtocart.phtml"/>
+        </reference>
+
         <!-- Tag shopping cart -->
         <reference name="after_body_start">
             <block type="nosto_tagging/cart" name="nosto.cart" template="nostotagging/cart.phtml"/>
