@@ -97,6 +97,11 @@ The extension is released under Open Software License ("OSL") v3.0
 
 ## Changelog
 
+### 2.4.0
+* Deprecate product re-crawl feature and implement product update API in it's place
+* Add JavaScript "add-to-cart" feature to enable adding products to cart directly from recommendations
+* Refactor order status handling in order confirmations and order exports
+
 ### 2.3.0
 * Add payment status info to server side order confirmations and order exports
 
