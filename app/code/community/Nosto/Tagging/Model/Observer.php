@@ -75,7 +75,6 @@ class Nosto_Tagging_Model_Observer
         if (Mage::helper('nosto_tagging')->isModuleEnabled()) {
             /** @var Mage_Catalog_Model_Product $product */
             $product = $observer->getEvent()->getProduct();
-            $validator = new NostoModelValidator();
             /** @var Mage_Core_Model_Store $store */
             foreach (Mage::app()->getStores() as $store) {
                 /** @var NostoAccount $account */
@@ -101,11 +100,12 @@ class Nosto_Tagging_Model_Observer
 
                 // Only send product update if we have all required
                 // data for the product model.
-                if ($validator->validate($model)) {
+				$validator = new NostoValidator($model);
+                if ($validator->validate()) {
                     try {
                         $op = new NostoOperationProduct($account);
                         $op->addProduct($model);
-                        $op->update();
+                        $op->upsert();
                     } catch (NostoException $e) {
                         Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
                     }

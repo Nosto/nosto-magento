@@ -34,7 +34,7 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implements NostoProductInterface, NostoValidatableModelInterface
+class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implements NostoProductInterface, NostoValidatableInterface
 {
     /**
      * Product "in stock" tagging string.
