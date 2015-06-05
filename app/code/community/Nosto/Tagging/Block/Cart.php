@@ -118,10 +118,11 @@ class Nosto_Tagging_Block_Cart extends Mage_Checkout_Block_Cart_Abstract
             /** @var Mage_Catalog_Model_Product_Type_Configurable $model */
             $model = Mage::getModel('catalog/product_type_configurable');
             $parentIds = $model->getParentIdsByChild($item->getProductId());
+            $attributes = $item->getBuyRequest()->getData('super_attribute');
             // If the product has a configurable parent, we assume we should tag
             // the parent. If there are many parent IDs, we are safer to tag the
             // products own ID.
-            if (count($parentIds) === 1) {
+            if (count($parentIds) === 1 && !empty($attributes)) {
                 return $parentIds[0];
             }
         }
@@ -152,12 +153,12 @@ class Nosto_Tagging_Block_Cart extends Mage_Checkout_Block_Cart_Abstract
             // the parent. If there are many parent IDs, we are safer to tag the
             // products own name alone.
             if (count($parentIds) === 1) {
-                $data = $item->getBuyRequest()->getData('super_attribute');
-                foreach ($data as $attrId => $attr) {
-                    $label = Mage::getModel('catalog/resource_eav_attribute')
-                        ->load($attrId)
-                        ->getSource()
-                        ->getOptionText($attr);
+                $attributes = $item->getBuyRequest()->getData('super_attribute');
+                foreach ($attributes as $id => $value) {
+                    /** @var Mage_Catalog_Model_Resource_Eav_Attribute $attribute */
+                    $attribute = Mage::getModel('catalog/resource_eav_attribute')
+                        ->load($id);
+                    $label = $attribute->getSource()->getOptionText($value);
                     if (!empty($label)) {
                         $optNames[] = $label;
                     }
