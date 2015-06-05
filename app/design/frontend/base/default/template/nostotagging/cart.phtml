@@ -42,11 +42,11 @@ $nostoPriceHelper = Mage::helper('nosto_tagging/price');
 <div class="nosto_cart" style="display:none">
     <?php foreach ($items as $item): ?>
     <div class="line_item">
-        <span class="product_id"><?php echo $this->getProductId($item); ?></span>
+        <span class="product_id"><?php echo (int)$this->getProductId($item); ?></span>
         <span class="quantity"><?php echo (int)$item->getQty(); ?></span>
-        <span class="name"><?php echo $nostoHelper->escapeHtml($item->getName()); ?></span>
+        <span class="name"><?php echo $nostoHelper->escapeHtml($this->getProductName($item)); ?></span>
         <span class="unit_price"><?php echo $nostoPriceHelper->getFormattedPrice($item->getPriceInclTax()); ?></span>
-        <span class="price_currency_code"><?php echo $currency; ?></span>
+        <span class="price_currency_code"><?php echo strtoupper($currency); ?></span>
     </div>
     <?php endforeach; ?>
 </div>

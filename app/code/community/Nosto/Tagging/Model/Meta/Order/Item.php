@@ -178,24 +178,112 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
      */
     public function loadData(Mage_Sales_Model_Order_Item $item)
     {
-        switch ($item->getProductType()) {
-            case Mage_Catalog_Model_Product_Type::TYPE_GROUPED:
-                $info = $item->getProductOptionByCode('info_buyRequest');
-                if ($info !== null && isset($info['super_product_config']['product_id'])) {
-                    $this->_productId = (int)$info['super_product_config']['product_id'];
-                } else {
-                    $this->_productId = (int)$item->getProductId();
-                }
-                break;
+        $order = $item->getOrder();
+        $this->_productId = (int)$this->fetchProductId($item);
+        $this->_quantity = (int)$item->getQtyOrdered();
+        $this->_name = $this->fetchProductName($item);
+        $this->_unitPrice = $item->getPriceInclTax();
+        $this->_currencyCode = strtoupper($order->getOrderCurrencyCode());
+    }
 
-            default:
-                $this->_productId = (int)$item->getProductId();
-                break;
+    /**
+     * Returns the product id for a quote item.
+     * Always try to find the "parent" product ID if the product is a child of
+     * another product type. We do this because it is the parent product that
+     * we tag on the product page, and the child does not always have it's own
+     * product page. This is important because it is the tagged info on the
+     * product page that is used to generate recommendations and email content.
+     *
+     * @param Mage_Sales_Model_Order_Item $item the sales item model.
+     *
+     * @return int
+     */
+    protected function fetchProductId(Mage_Sales_Model_Order_Item $item)
+    {
+        $parent = $item->getProductOptionByCode('super_product_config');
+        if (isset($parent['product_id'])) {
+            return $parent['product_id'];
+        } elseif ($item->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_SIMPLE) {
+            /** @var Mage_Catalog_Model_Product_Type_Configurable $model */
+            $model = Mage::getModel('catalog/product_type_configurable');
+            $parentIds = $model->getParentIdsByChild($item->getProductId());
+            // If the product has a configurable parent, we assume we should tag
+            // the parent. If there are many parent IDs, we are safer to tag the
+            // products own ID.
+            if (count($parentIds) === 1) {
+                return $parentIds[0];
+            }
+        }
+        return $item->getProductId();
+    }
+
+    /**
+     * Returns the name for a sales item.
+     * Configurable products will have their chosen options added to their name.
+     * Bundle products will have their chosen child product names added.
+     * Grouped products will have the child products name only.
+     * All others will have their own name only.
+     *
+     * @param Mage_Sales_Model_Order_Item $item the sales item model.
+     *
+     * @return string
+     */
+    protected function fetchProductName(Mage_Sales_Model_Order_Item $item)
+    {
+        $name = $item->getName();
+        $optNames = array();
+
+        if ($item->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_SIMPLE) {
+            /** @var Mage_Catalog_Model_Product_Type_Configurable $model */
+            $model = Mage::getModel('catalog/product_type_configurable');
+            $parentIds = $model->getParentIdsByChild($item->getProductId());
+            // If the product has a configurable parent, we assume we should tag
+            // the parent. If there are many parent IDs, we are safer to tag the
+            // products own name alone.
+            if (count($parentIds) === 1) {
+                $data = $item->getBuyRequest()->getData('super_attribute');
+                foreach ($data as $attrId => $attr) {
+                    $label = Mage::getModel('catalog/resource_eav_attribute')
+                        ->load($attrId)
+                        ->getSource()
+                        ->getOptionText($attr);
+                    if (!empty($label)) {
+                        $optNames[] = $label;
+                    }
+                }
+            }
+        } elseif ($item->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE) {
+            $opts = $item->getProductOptionByCode('attributes_info');
+            if (is_array($opts)) {
+                foreach ($opts as $opt) {
+                    if (isset($opt['value']) && is_string($opt['value'])) {
+                        $optNames[] = $opt['value'];
+                    }
+                }
+            }
+        } elseif ($item->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_BUNDLE) {
+            $opts = $item->getProductOptionByCode('bundle_options');
+            if (is_array($opts)) {
+                foreach ($opts as $opt) {
+                    if (isset($opt['value']) && is_array($opt['value'])) {
+                        foreach ($opt['value'] as $val) {
+                            $qty = '';
+                            if (isset($val['qty']) && is_int($val['qty'])) {
+                                $qty .= $val['qty'] . ' x ';
+                            }
+                            if (isset($val['title']) && is_string($val['title'])) {
+                                $optNames[] = $qty . $val['title'];
+                            }
+                        }
+                    }
+                }
+            }
         }
 
-        $this->_quantity = (int)$item->getQtyOrdered();
-        $this->_name = $item->getName();
-        $this->_unitPrice = $item->getPriceInclTax();
-        $this->_currencyCode = $item->getOrder()->getOrderCurrencyCode();
+        if (!empty($optNames)) {
+            $name .= ' (' . implode(', ', $optNames) . ')';
+        }
+
+        return $name;
     }
 }
