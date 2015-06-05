@@ -221,7 +221,7 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
      * Returns the name for a sales item.
      * Configurable products will have their chosen options added to their name.
      * Bundle products will have their chosen child product names added.
-     * Grouped products will have the child products name only.
+     * Grouped products will have their parents name prepended.
      * All others will have their own name only.
      *
      * @param Mage_Sales_Model_Order_Item $item the sales item model.
@@ -276,6 +276,17 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
                             }
                         }
                     }
+                }
+            }
+        } elseif ($item->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_GROUPED) {
+            $config = $item->getProductOptionByCode('super_product_config');
+            if (isset($config['product_id'])) {
+                /** @var Mage_Catalog_Model_Product $parent */
+                $parent = Mage::getModel('catalog/product')
+                    ->load($config['product_id']);
+                $parentName = $parent->getName();
+                if (!empty($parentName)) {
+                    $name = $parentName.' - '.$name;
                 }
             }
         }

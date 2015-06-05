@@ -132,7 +132,7 @@ class Nosto_Tagging_Block_Cart extends Mage_Checkout_Block_Cart_Abstract
      * Returns the name for a quote item.
      * Configurable products will have their chosen options added to their name.
      * Bundle products will have their chosen child product names added.
-     * Grouped products will have the child products name only.
+     * Grouped products will have their parent product name prepended.
      * All others will have their own name only.
      *
      * @param Mage_Sales_Model_Quote_Item $item the quote item model.
@@ -187,6 +187,17 @@ class Nosto_Tagging_Block_Cart extends Mage_Checkout_Block_Cart_Abstract
                             }
                         }
                     }
+                }
+            }
+        } elseif ($item->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_GROUPED) {
+            $config = $item->getBuyRequest()->getData('super_product_config');
+            if (isset($config['product_id'])) {
+                /** @var Mage_Catalog_Model_Product $parent */
+                $parent = Mage::getModel('catalog/product')
+                    ->load($config['product_id']);
+                $parentName = $parent->getName();
+                if (!empty($parentName)) {
+                    $name = $parentName.' - '.$name;
                 }
             }
         }
