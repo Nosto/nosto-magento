@@ -150,6 +150,14 @@ Open Software License ("OSL") v3.0
 
 ## Changelog
 
+### 2.5.0
+* Add order status and payment provider info to order tagging
+* Add support for account specific sub-domains when configuring Nosto
+* Add support for choosing the product image version used in tagging
+* Fix product update event observer store scope
+* Fix cart/order tagging to always tag the same product ID as on the product
+page the item was added to the cart/ordered from
+
 ### 2.4.0
 * Deprecate product re-crawl feature and implement product update API in it's
 place
