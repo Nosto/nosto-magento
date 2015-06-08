@@ -106,7 +106,7 @@ class Nosto_tagging_ExportController extends Mage_Core_Controller_Front_Action
                 }
                 $meta = new Nosto_Tagging_Model_Meta_Product();
                 $meta->loadData($product);
-				$validator = new NostoValidator($meta);
+                $validator = new NostoValidator($meta);
                 if ($validator->validate()) {
                     $collection[] = $meta;
                 }

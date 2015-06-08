@@ -105,7 +105,7 @@ class Nosto_Tagging_Model_Observer
 
                 // Only send product update if we have all required
                 // data for the product model.
-				$validator = new NostoValidator($model);
+                $validator = new NostoValidator($model);
                 if ($validator->validate()) {
                     try {
                         $op = new NostoOperationProduct($account);
