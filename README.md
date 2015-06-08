@@ -66,7 +66,7 @@ page](http://www.magentocommerce.com/magento-connect/nosto-personalization-for-m
 4. Go back to your Magento installation and paste the link into the text field
 under the "Install New Extensions" section and click "install"
 5. Wait for the the installation to finish and go back to the Magento admin
-6. Learn how to [configure](#Configuration) the extension
+6. Learn how to [configure](#configuration) the extension
 
 #### Local
 
