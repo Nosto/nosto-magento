@@ -75,8 +75,13 @@ class Nosto_Tagging_Model_Observer
         if (Mage::helper('nosto_tagging')->isModuleEnabled()) {
             /** @var Mage_Catalog_Model_Product $product */
             $product = $observer->getEvent()->getProduct();
-            /** @var Mage_Core_Model_Store $store */
-            foreach (Mage::app()->getStores() as $store) {
+            // Always "upsert" the product for all stores it is available in.
+            // This is done to avoid data inconsistencies as even if a product
+            // is edited for only one store, the updated data can reflect in
+            // other stores as well.
+            foreach ($product->getStoreIds() as $storeId) {
+                $store = Mage::app()->getStore($storeId);
+
                 /** @var NostoAccount $account */
                 $account = Mage::helper('nosto_tagging/account')
                     ->find($store);
@@ -129,6 +134,8 @@ class Nosto_Tagging_Model_Observer
         if (Mage::helper('nosto_tagging')->isModuleEnabled()) {
             /** @var Mage_Catalog_Model_Product $product */
             $product = $observer->getEvent()->getProduct();
+            // Products are always deleted from all store views, regardless of
+            // the store view scope switcher on the product edit page.
             /** @var Mage_Core_Model_Store $store */
             foreach (Mage::app()->getStores() as $store) {
                 /** @var NostoAccount $account */
