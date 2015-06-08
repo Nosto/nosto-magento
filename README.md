@@ -1,105 +1,160 @@
-# Nosto Tagging
+# Personalization for Magento
 
-The extension implements the required tagging blocks for using Nosto marketing automation service.
+Increase your conversion rate and average order value by delivering your
+customers personalized product recommendations throughout their shopping
+journey.
 
-If the store uses a layout similar to the Magento default layout, the required tagging blocks will attach automatically
-to the correct places. If the layout is heavily customized, the tagging blocks must be added manually to the correct
-places in the layout.
+Nosto allows you to deliver every customer a personalized shopping experience
+through recommendations based on their unique user behavior - increasing
+conversion, average order value and customer retention as a result.
 
-After Nosto tagging has been implemented to the store, Nosto can produce product recommendations and other elements
-back to the store. These elements are called Nosto elements and they can be added to the store by dropping simple
-placeholder div-elements to correct places in the store.
+[http://nosto.com](http://nosto.com/)
 
-By default the extension creates the following nosto elements:
+## Getting started
 
-* 4 elements on the front page ( "frontpage-nosto-1", "frontpage-nosto-2", "frontpage-nosto-3", "frontpage-nosto-4" )
-* 3 elements to the product page ( "nosto-page-product1", "nosto-page-product2", "nosto-page-product3" )
-* 3 elements to the shopping cart page ( "nosto-page-cart1", "nosto-page-car2, "nosto-page-cart3" )
-* 2 elements to the product category page, top and bottom ( "nosto-page-category1"  and "nosto-page-category2" )
-* 2 element to the search results page, top and bottom ( "nosto-page-search1 and "nosto-page-search2" )
-* 2 elements to all pages, top and bottom ( "nosto-page-top" and "nosto-page-footer" )
-* 2 elements to sidebars, 1 left and 1 right ( "nosto-column-left" and "nosto-column-right" )
+### How it works
 
-Other ways to add new nosto elements to a page:
+The extension automatically adds product recommendation elements to the store
+when installed. Basically, empty "div" placeholder elements. These elements will
+appear on the home page, product pages, category pages, search result pages and
+the shopping cart page. These elements are automatically populated with product
+recommendations from your store.
 
-* Add block to CMS pages via editor: {{block type="nosto_tagging/element" div_id="unique-id" }}
-* Add nosto element div directly to CMS or phtml files: <div class="nosto_element" id="unique-id"></div>
+This is possible by mining data from the store when the user visits the pages.
+For example, when the user is browsing a product page, the product information
+is asynchronously sent to Nosto, that in turn delivers product recommendations
+based on that product to the store and displays them to the user.
 
-Here are the implemented Nosto tagging blocks described in case you need to manually add the blocks to your store's
-layout:
+The more users that are visiting the site, and the more page views they create,
+the better and more accurate the recommendations become.
 
-* [Block Name] ( [what it does], [where should it be shown] )
-* Embed ( the Nosto embed script, for all pages of the site )
-* Product (product information to Nosto, for product pages )
-* Category ( currently viewed product category to Nosto, for product category pages )
-* Cart ( current shopping cart contents to Nosto, for all pages of the site)
-* Customer ( current customer's name and email to Nosto, for all pages of the site if user has logged in )
-* Order ( order details to Nosto, for order success page )
-* Element ( placeholder where Nosto will produce content, anywhere )
+In addition to the recommendation elements and the real time data gathering, the
+extension also includes some behind the scenes features for keeping the product
+information up to date and keeping track of orders in the store.
 
-## Installation
+Every time a product is updated in the store, e.g. the price is changed, the
+information is sent to Nosto over an API. This will sync the data across all
+the users visiting the store that will see up to date recommendations.
 
-Please refer to the Magento documentation in order to get the module to appear in your site backend.
+All orders that are placed in the store are also sent to Nosto. This is done to
+keep track of the orders that were a direct result of the product
+recommendations, i.e. when a user clicks a product in the recommendation,
+adds it to the shopping cart and places the order.
 
-After installing the module, go to your site backend and click the "Nosto" menu item in the top menu. If you cannot see
-this menu item, please clear the cache and try again. On the settings page you can create a Nosto account or attach a
-existing Nosto account to each store you have configured in Magento. You will need one Nosto account per store where
-you want to use Nosto.
+Nosto also keeps track of the order statuses, i.e. when an order is changed to
+"payed" or "canceled" the order is updated over an API.
 
-In order to create a new account for a store, you first choose the store in the drop down menu at the top left of the
-page. After this you choose "No" where it says "Do you have an existing Nosto account?". This shows you a input field,
-where you should put the email address of the Nosto account owner, and a create button. Clocking this button will create
-a new account through Nosto's API, and show you the configuration page for this account. You need to repeat this
-procedure for each store you want to configure Nosto for.
+All you need to take Nosto into use in your store, is to install the extension
+and create a Nosto account for your store. This is as easy as clicking a button,
+so read on.
 
-If you already have a Nosto account, you can attach it to any of your stores by simply choosing "Yes" where it says
-"Do you have an existing Nosto account?" and clicking the add button. This will take you to Nosto where you need to
-authenticate by logging in with your Nosto account credentials. After this you are presented with a choice of Nosto
-accounts that are linked with your Nosto user. You need to choose the account you want to attach to your store and
-click the accept button. This will take you back to your shops backend and you should see the configuration page for
-you account. Please note that you can abort the "attaching process" at any time.
+### Installing
 
-Now the extension is ready for use. Please note that the extension will not make any visual changes to your shops front
-office at this time. This is normal procedure as configurations in the Nosto backend are required for the extension to
-be able to show any product recommendations.
+The preferred way of installing the extension is through the Magento Connect
+Manager. It can, however, also be installed as a local extension package or
+directly from the GitHub repository if needed.
 
-Please refer to the Nosto documentation, or contact Nosto support, for information and instructions on how to proceed:
-[Nosto support] (http://support.nosto.com)
+#### Magento Connect (preferred)
 
-## Extending
+The preferred way of installing the extension is through Magento Connect.
 
-Here you can find some guidelines for extending the functionality added by this extension.
+1. Open the Magento Connect Manager from your Magento backend, and click the
+connect link under the "Install New Extensions" section
+2. Search for the Nosto extension to find the [Nosto extension
+page](http://www.magentocommerce.com/magento-connect/nosto-personalization-for-magento.html)
+3. Click the "Install Now" button and copy the install link
+4. Go back to your Magento installation and paste the link into the text field
+under the "Install New Extensions" section and click "install"
+5. Wait for the the installation to finish and go back to the Magento admin
+6. Learn how to [configure](#Configuration) the extension
 
-The Nosto marketing automation service supports additional data to be tagged than that included by this extension. For
-a complete set of supported features, please refer to the official documentation at http://connect.nosto.com/tagging.
+#### Local
+
+The extension can also be installed as a local package by uploading the
+extension package archive manually in the Magento Connect Manager, or by
+unpacking it directly into the Magento installation directory which will place
+the files and folders in the correct places.
+
+The extension package archive can be obtained from the projects
+[releases](https://github.com/Nosto/nosto-magento-extension/releases) page on
+GitHub.
+
+Note: do NOT download the "source code" as that will not include the needed
+dependencies for the extension, instead use the "Nosto_Tagging-x.x.x.tgz"
+archive.
+
+#### Repository
+
+For development purposes the plugin can be installed directly from the GitHub
+repository by cloning the project to your server. For the extension to work,
+it's dependencies also need to be installed. For this we recommend using
+[composer](https://getcomposer.org/), which is a dependency manager for PHP. By
+executing `composer install` in the root folder of the cloned extension, the
+dependencies will automatically be fetched and installed in a `vendor` folder
+relative to the extension root directory.
+
+After this you need to either copy or symlink the files and folders to the
+correct locations in Magento. You can following the guidelines in the "modman"
+file located in the extension root folder.
+
+### Configuration
+
+The extension creates a new menu item, to the backend top menu, during
+installation. Note that you may have to clear the cache for the menu item to
+show up.
+
+By clicking the menu item, you will be redirected to the Nosto account
+configuration page were you can create and manage your Nosto accounts. You will
+need a Nosto account for each store view in the installation.
+
+Creating the account is as easy as clicking the install button on the page. Note
+the email field above it. You will need to enter your own email to be able to
+activate your account. After clicking install, the window will refresh and show
+the account configuration.
+
+You can also connect and existing Nosto account to a store, by using the link
+below the install button. This will take you to Nosto where you choose the
+account to connect, and you will then be redirected back where you will see the
+same configuration screen as when having created a new account.
+
+This concludes the needed configurations in Magento. Now you should be able to
+view the default recommendations in your stores frontend by clicking the preview
+button on the page.
+
+You can read more about how to modify Nosto to suit your needs in our
+[support center](https://support.nosto.com/), where you will find Magento
+related documentation and guides.
+
+### Extending
+
+Here you can find some guidelines for extending the functionality of the
+extension.
 
 Example 1:
 
-If you wish to add tag data to the product tagging, then the easiest way to achieve this is to override the
-template file used to render the product tagging data.
-The template file can be located in
-"YOUR_MAGENTO_INSTALLATION/app/design/frontend/base/default/template/nostotagging/product.phtml".
-You will need to do the following:
-
-1. Copy the file to
- "YOUR_MAGENTO_INSTALLATION/app/design/frontend/YOUR_THEME_FOLDER/default/template/nostotagging/product.phtml"
-2. Add the additional html for the tagging, as well as the logic to fetch the data to be tagged
-
-That's it; now Magento should be able to recognise the overridden file and use that instead of the original.
+If you wish to add/modify data in the the product tagging, then the easiest way
+to achieve this is to override the template file used to render the product
+tagging. You need to copy the template file from
+`app/design/frontend/base/default/template/nostotagging/product.phtml` to
+`app/design/frontend/THEME/default/template/nostotagging/product.phtml`. Then
+you can edit the copied file and add your modifications. Magento will
+automatically recognise the overridden file once the cache is cleared.
 
 ## License
 
-The extension is released under Open Software License ("OSL") v3.0
+Open Software License ("OSL") v3.0
 
 ## Dependencies
 
-* Magento Community Edition; v1.6.x.x - v1.9.x.x
+* Magento Community Edition v1.6.x.x - v1.9.x.x
 
 ## Changelog
 
 ### 2.4.0
-* Deprecate product re-crawl feature and implement product update API in it's place
-* Add JavaScript "add-to-cart" feature to enable adding products to cart directly from recommendations
+* Deprecate product re-crawl feature and implement product update API in it's
+place
+* Add JavaScript "add-to-cart" feature to enable adding products to cart
+directly from recommendations
 * Refactor order status handling in order confirmations and order exports
 
 ### 2.3.0
@@ -109,16 +164,19 @@ The extension is released under Open Software License ("OSL") v3.0
 * Add Enterprise support
 
 ### 2.2.0
-* Change product re-crawl to send both id and url for products that have been added/modified
+* Change product re-crawl to send both id and url for products that have been
+added/modified
 
 ### 2.1.3
 * Fix reading email address of account owner when creating new account
 
 ### 2.1.2
-* Fix product urls to be tagged with current store info so the crawler sees the correct product data
+* Fix product urls to be tagged with current store info so the crawler sees the
+correct product data
 
 ### 2.1.1
-* Fix internal store view handling in backend to not apply the current store scope when configuring nosto
+* Fix internal store view handling in backend to not apply the current store
+scope when configuring nosto
 
 ### 2.1.0
 * New extension administration UI
@@ -169,14 +227,17 @@ The extension is released under Open Software License ("OSL") v3.0
 ### 1.1.1
 * Top list category is no longer created automatically
 * 'nosto_id' attribute is no longer added as a product category attribute.
-* Placeholder image (if configured) is used in recommendations if actual product image is not available.  
+* Placeholder image (if configured) is used in recommendations if actual product
+image is not available.
 
 ### 1.1.0
 * Support for tagging grouped products
-* New configuration setting for enabling/disabling collection of customer email-addresses
+* New configuration setting for enabling/disabling collection of customer email-
+addresses
 
 ### 1.0.6
-* Fix: install script could not create Top Sellers category while the "Use Flat Catalog Category" option was enabled
+* Fix: install script could not create Top Sellers category while the "Use Flat
+Catalog Category" option was enabled
 
 ### 1.0.5
 * Dist package updated with correct metadata
@@ -196,11 +257,12 @@ The extension is released under Open Software License ("OSL") v3.0
 ## Known issues
 
 * Does not support bundle products with fixed price setting
-* Does not support bundle products including products that are not listed individually in the store
-* The default position of the top nosto element on both the category page and the search result page is above the page
-title. It may be relevant to move the element below the title. In order to do this you need to first remove it from
-the layout by using the "remove" tag in your local.xml file. Then you need to add a div element directly in the .phtml
-file that contains the page layout. In the Magento default theme the files are located in
+* The default position of the top nosto element on both the category page and
+the search result page is above the page title. It may be relevant to move the
+element below the title. In order to do this you need to first remove it from
+the layout by using the "remove" tag in your local.xml file. Then you need to
+add a div element directly in the .phtml file that contains the page layout. In
+the Magento default theme the files are located in
 "app\design\frontend\base\default\template\catalog\category\view.phtml" and
-"app\design\frontend\base\default\template\catalogsearch\result.phtml". However, the path may vary if you are using a
-custom theme.
+"app\design\frontend\base\default\template\catalogsearch\result.phtml". However,
+the path may vary if you are using a custom theme.
