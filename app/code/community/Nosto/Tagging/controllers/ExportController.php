@@ -97,7 +97,6 @@ class Nosto_tagging_ExportController extends Mage_Core_Controller_Front_Action
             if ($currentPage > $products->getLastPageNumber()) {
                 $products = array();
             }
-            $validator = new NostoModelValidator();
             $collection = new NostoExportProductCollection();
             foreach ($products as $product) {
                 if ($product->getTypeId() === Mage_Catalog_Model_Product_Type::TYPE_BUNDLE
@@ -107,7 +106,8 @@ class Nosto_tagging_ExportController extends Mage_Core_Controller_Front_Action
                 }
                 $meta = new Nosto_Tagging_Model_Meta_Product();
                 $meta->loadData($product);
-                if ($validator->validate($meta)) {
+                $validator = new NostoValidator($meta);
+                if ($validator->validate()) {
                     $collection[] = $meta;
                 }
             }

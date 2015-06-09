@@ -75,9 +75,13 @@ class Nosto_Tagging_Model_Observer
         if (Mage::helper('nosto_tagging')->isModuleEnabled()) {
             /** @var Mage_Catalog_Model_Product $product */
             $product = $observer->getEvent()->getProduct();
-            $validator = new NostoModelValidator();
-            /** @var Mage_Core_Model_Store $store */
-            foreach (Mage::app()->getStores() as $store) {
+            // Always "upsert" the product for all stores it is available in.
+            // This is done to avoid data inconsistencies as even if a product
+            // is edited for only one store, the updated data can reflect in
+            // other stores as well.
+            foreach ($product->getStoreIds() as $storeId) {
+                $store = Mage::app()->getStore($storeId);
+
                 /** @var NostoAccount $account */
                 $account = Mage::helper('nosto_tagging/account')
                     ->find($store);
@@ -101,11 +105,12 @@ class Nosto_Tagging_Model_Observer
 
                 // Only send product update if we have all required
                 // data for the product model.
-                if ($validator->validate($model)) {
+                $validator = new NostoValidator($model);
+                if ($validator->validate()) {
                     try {
                         $op = new NostoOperationProduct($account);
                         $op->addProduct($model);
-                        $op->update();
+                        $op->upsert();
                     } catch (NostoException $e) {
                         Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
                     }
@@ -129,6 +134,8 @@ class Nosto_Tagging_Model_Observer
         if (Mage::helper('nosto_tagging')->isModuleEnabled()) {
             /** @var Mage_Catalog_Model_Product $product */
             $product = $observer->getEvent()->getProduct();
+            // Products are always deleted from all store views, regardless of
+            // the store view scope switcher on the product edit page.
             /** @var Mage_Core_Model_Store $store */
             foreach (Mage::app()->getStores() as $store) {
                 /** @var NostoAccount $account */

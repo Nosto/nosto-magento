@@ -29,7 +29,7 @@
 <config>
     <modules>
         <Nosto_Tagging>
-            <version>2.4.0</version>
+            <version>2.5.0</version>
         </Nosto_Tagging>
     </modules>
     <global>
@@ -153,4 +153,11 @@
             </nosto>
         </routers>
     </frontend>
+    <default>
+        <nosto_tagging>
+            <image_options>
+                <image_version>image</image_version>
+            </image_options>
+        </nosto_tagging>
+    </default>
 </config>

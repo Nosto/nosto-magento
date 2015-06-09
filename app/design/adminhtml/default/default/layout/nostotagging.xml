@@ -33,7 +33,7 @@
         <reference name="head">
             <action method="addJs"><script>nosto/iframeresizer.min.js</script></action>
             <action method="addJs"><script>nosto/NostoIframe.min.js</script></action>
-            <action method="addJs"><script>nosto/nostotagging-config.js</script></action>
+            <action method="addJs"><script>nosto/NostoAdmin.js</script></action>
         </reference>
          <!--Set active menu item-->
         <reference name="menu">

@@ -38,6 +38,17 @@
         <resources>
             <admin>
                 <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <nosto_tagging translate="title">
+                                        <title>Nosto</title>
+                                    </nosto_tagging>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
                     <nosto>
                         <title translate="title">Nosto</title>
                         <sort_order>500</sort_order>

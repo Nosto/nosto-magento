@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "185ebfb70bd49c42ce58d3067732e04f",
+    "hash": "f50f1e23d48dff0cb5b51eb9eeff7d96",
     "packages": [
         {
             "name": "nosto/php-sdk",
-            "version": "1.10.1",
+            "version": "1.12.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Nosto/php-sdk.git",
-                "reference": "030975ec6b64609771a119e0c267c35edf9357b5"
+                "reference": "78e95e9a9f37f361c92c2c5c7ef3d2e216e15bf7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Nosto/php-sdk/zipball/030975ec6b64609771a119e0c267c35edf9357b5",
-                "reference": "030975ec6b64609771a119e0c267c35edf9357b5",
+                "url": "https://api.github.com/repos/Nosto/php-sdk/zipball/78e95e9a9f37f361c92c2c5c7ef3d2e216e15bf7",
+                "reference": "78e95e9a9f37f361c92c2c5c7ef3d2e216e15bf7",
                 "shasum": ""
             },
             "require-dev": {
@@ -30,10 +30,10 @@
             ],
             "description": "PHP SDK for developing Nosto modules for e-commerce platforms",
             "support": {
-                "source": "https://github.com/Nosto/php-sdk/tree/1.10.1",
+                "source": "https://github.com/Nosto/php-sdk/tree/1.12.1",
                 "issues": "https://github.com/Nosto/php-sdk/issues"
             },
-            "time": "2015-05-13 10:34:05"
+            "time": "2015-06-05 06:44:51"
         }
     ],
     "packages-dev": [],

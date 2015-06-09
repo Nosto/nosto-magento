@@ -34,7 +34,7 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implements NostoProductInterface, NostoValidatableModelInterface
+class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implements NostoProductInterface, NostoValidatableInterface
 {
     /**
      * Product "in stock" tagging string.
@@ -328,16 +328,7 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
 
         $this->_productId = $product->getId();
         $this->_name = $product->getName();
-
-        $image = $product->getImage();
-        if (!empty($image) && $image !== 'no_selection') {
-            // We build the image url manually in order get the correct base url,
-            // even if this product is populated in the backend.
-            $baseUrl = rtrim($store->getBaseUrl('media'), '/');
-            $file = str_replace(DS, '/', $image);
-            $file = ltrim($file, '/');
-            $this->_imageUrl = $baseUrl.'/catalog/product/'.$file;
-        }
+        $this->_imageUrl = $this->buildImageUrl($product, $store);
 
         $this->_price = Mage::helper('tax')->getPrice(
             $product,
@@ -412,5 +403,46 @@ class Nosto_Tagging_Model_Meta_Product extends Mage_Core_Model_Abstract implemen
         }
 
         return $data;
+    }
+
+    /**
+     * Builds the product absolute image url for the store and returns it.
+     * The image version is primarily taken from the store config, but falls
+     * back the the base image if nothing is configured.
+     *
+     * @param Mage_Catalog_Model_Product $product the product model.
+     * @param Mage_Core_Model_Store      $store the store model.
+     *
+     * @return null|string
+     */
+    protected function buildImageUrl(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
+    {
+        $url = null;
+        /** @var Nosto_Tagging_Helper_Data $helper */
+        $helper = Mage::helper('nosto_tagging');
+        $imageVersion = $helper->getProductImageVersion($store);
+        $img = $product->getData($imageVersion);
+        $img = $this->isValidImage($img) ? $img : $product->getData('image');
+        if ($this->isValidImage($img)) {
+            // We build the image url manually in order get the correct base
+            // url, even if this product is populated in the backend.
+            $baseUrl = rtrim($store->getBaseUrl('media'), '/');
+            $file = str_replace(DS, '/', $img);
+            $file = ltrim($file, '/');
+            $url = $baseUrl.'/catalog/product/'.$file;
+        }
+        return $url;
+    }
+
+    /**
+     * Checks if the given image file path is valid.
+     *
+     * @param string $image the image file path.
+     *
+     * @return bool
+     */
+    protected function isValidImage($image)
+    {
+        return (!empty($image) && $image !== 'no_selection');
     }
 }

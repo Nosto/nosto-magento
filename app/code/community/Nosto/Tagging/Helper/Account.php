@@ -67,11 +67,11 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
         /** @var Mage_Core_Model_Config $config */
         $config = Mage::getModel('core/config');
         $config->saveConfig(
-            self::XML_PATH_ACCOUNT, $account->name, 'stores', $store->getId()
+            self::XML_PATH_ACCOUNT, $account->getName(), 'stores', $store->getId()
         );
         $tokens = array();
-        foreach ($account->tokens as $token) {
-            $tokens[$token->name] = $token->value;
+        foreach ($account->getTokens() as $token) {
+            $tokens[$token->getName()] = $token->getValue();
         }
         $config->saveConfig(
             self::XML_PATH_TOKENS, json_encode($tokens), 'stores',
@@ -134,17 +134,14 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
         }
         $accountName = $store->getConfig(self::XML_PATH_ACCOUNT);
         if (!empty($accountName)) {
-            $account = new NostoAccount();
-            $account->name = $accountName;
+            $account = new NostoAccount($accountName);
             $tokens = json_decode(
                 $store->getConfig(self::XML_PATH_TOKENS), true
             );
             if (is_array($tokens) && !empty($tokens)) {
                 foreach ($tokens as $name => $value) {
-                    $token = new NostoApiToken();
-                    $token->name = $name;
-                    $token->value = $value;
-                    $account->tokens[] = $token;
+                    $token = new NostoApiToken($name, $value);
+                    $account->addApiToken($token);
                 }
             }
             return $account;
