@@ -28,25 +28,10 @@
 
 <?php
 /**
- * @var $this               Nosto_Tagging_Block_Cart
- * @var $nostoHelper        Nosto_Tagging_Helper_Data
- * @var $nostoPriceHelper   Nosto_Tagging_Helper_Price
+ * @var $this Mage_Core_Block_Template
  */
-$items = $this->getItems();
-$currency = Mage::app()->getStore()->getBaseCurrencyCode();
-$nostoHelper = Mage::helper('nosto_tagging');
-$nostoPriceHelper = Mage::helper('nosto_tagging/price');
+$currency = Mage::app()->getStore()->getCurrentCurrencyCode();
 ?>
 
-<!-- Nosto Cart Tagging -->
-<div class="nosto_cart" style="display:none">
-    <?php foreach ($items as $item): ?>
-    <div class="line_item">
-        <span class="product_id"><?php echo (int)$this->getProductId($item); ?></span>
-        <span class="quantity"><?php echo (int)$item->getQty(); ?></span>
-        <span class="name"><?php echo $nostoHelper->escapeHtml($this->getProductName($item)); ?></span>
-        <span class="unit_price"><?php echo $nostoPriceHelper->getFormattedPrice($item->getBasePriceInclTax()); ?></span>
-        <span class="price_currency_code"><?php echo strtoupper($currency); ?></span>
-    </div>
-    <?php endforeach; ?>
-</div>
+<!-- Nosto Price Variation Tagging -->
+<div class="nosto_price_variation" style="display:none"><?php echo strtoupper($currency); ?></div>

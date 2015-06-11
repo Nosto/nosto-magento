@@ -25,7 +25,7 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-require_once Mage::getBaseDir('lib') . '/nosto/php-sdk/src/config.inc.php';
+require_once Mage::getBaseDir('lib') . '/nosto/php-sdk/autoload.php';
 
 /**
  * Nosto admin controller.
@@ -150,6 +150,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                 }
                 $account = NostoAccount::create($meta);
                 if ($accountHelper->save($account, $store)) {
+                    $accountHelper->updateCurrencyExchangeRates($account, $store);
                     $responseBody = array(
                         'success' => true,
                         'redirect_url' => $accountHelper->getIframeUrl(

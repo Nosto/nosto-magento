@@ -87,6 +87,11 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     protected $_currencyCode;
 
     /**
+     * @var string the price variation ID currently in use.
+     */
+    protected $_priceVariationId;
+
+    /**
      * @var string the availability of the product, i.e. is in stock or not.
      */
     protected $_availability;
@@ -120,6 +125,11 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
      * @var string the product publication date in the shop.
      */
     protected $_datePublished;
+
+    /**
+     * @var Nosto_Tagging_Model_Meta_Product_Price_Variation[] the product price variations.
+     */
+    protected $_priceVariations = array();
 
     /**
      * @inheritdoc
@@ -232,6 +242,16 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     }
 
     /**
+     * Returns the ID of the price variation that is currently in use.
+     *
+     * @return string the price variation ID.
+     */
+    public function getPriceVariationId()
+    {
+        return $this->_priceVariationId;
+    }
+
+    /**
      * Returns the availability of the product, i.e. if it is in stock or not.
      *
      * @return string the availability, either "InStock" or "OutOfStock".
@@ -302,6 +322,16 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     }
 
     /**
+     * Returns the product price variations if any exist.
+     *
+     * @return NostoProductPriceVariationInterface[] the price variations.
+     */
+    public function getPriceVariations()
+    {
+        return $this->_priceVariations;
+    }
+
+    /**
      * Loads the product info from a Magento product model.
      *
      * @param Mage_Catalog_Model_Product $product the product model.
@@ -313,64 +343,54 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
             $store = Mage::app()->getStore();
         }
 
-        // Unset the cached url first, as it won't include the `___store` param
-        // if it's cached. We need to define the specific store view in the url
-        // in case the same domain is used for all sites.
-        $this->_url = $product
-            ->unsetData('url')
-            ->getUrlInStore(
-                array(
-                    '_nosid' => true,
-                    '_ignore_category' => true,
-                    '_store' => $store->getCode(),
-                )
-            );
+        /** @var Nosto_Tagging_Helper_Price $priceHelper */
+        $priceHelper = Mage::helper('nosto_tagging/price');
+        /** @var Mage_Tax_Helper_Data $taxHelper */
+        $taxHelper = Mage::helper('tax');
 
+        $this->_url = $this->buildUrl($product, $store);
         $this->_productId = $product->getId();
         $this->_name = $product->getName();
         $this->_imageUrl = $this->buildImageUrl($product, $store);
-
-        $this->_price = Mage::helper('tax')->getPrice(
+        $this->_price = $taxHelper->getPrice(
             $product,
-            Mage::helper('nosto_tagging/price')->getProductFinalPrice($product),
+            $priceHelper->getProductFinalPrice($product),
             true
         );
-        $this->_listPrice = Mage::helper('tax')->getPrice(
+        $this->_listPrice = $taxHelper->getPrice(
             $product,
-            Mage::helper('nosto_tagging/price')->getProductPrice($product),
+            $priceHelper->getProductPrice($product),
             true
         );
-        $this->_currencyCode = $store->getCurrentCurrencyCode();
+        $this->_currencyCode = strtoupper($store->getBaseCurrencyCode());
         $this->_availability = $product->isAvailable()
             ? self::PRODUCT_IN_STOCK
             : self::PRODUCT_OUT_OF_STOCK;
-
-        if (Mage::helper('core')->isModuleEnabled('Mage_Tag')) {
-            $tagCollection = Mage::getModel('tag/tag')
-                ->getCollection()
-                ->addPopularity()
-                ->addStatusFilter(Mage_Tag_Model_Tag::STATUS_APPROVED)
-                ->addProductFilter($product->getId())
-                ->setFlag('relation', true)
-                ->addStoreFilter($store->getId())
-                ->setActiveFilter();
-            foreach ($tagCollection as $tag) {
-                $this->_tags[] = $tag->getName();
+        $this->_tags = $this->buildTags($product, $store);
+        $this->_categories = $this->getProductCategories($product);
+        $this->_shortDescription = (string)$product->getData('short_description');
+        $this->_description = (string)$product->getData('description');
+        $this->_datePublished = $product->getData('created_at');
+        if ($product->getData('manufacturer')) {
+            $this->_brand = (string)$product->getAttributeText('manufacturer');
+        }
+        foreach ($store->getAvailableCurrencyCodes() as $code) {
+            if (strtoupper($code) === $this->_currencyCode) {
+                continue;
+            }
+            try {
+                $variation = new Nosto_Tagging_Model_Meta_Product_Price_Variation();
+                $variation->loadData($product, $store, $code);
+                $this->_priceVariations[] = $variation;
+            } catch (Exception $e) {
+                // The price variation cannot be obtained if there are no
+                // exchange rates defined for the currency and Magento will
+                // throw and exception.
             }
         }
-
-        if (!$product->canConfigure()) {
-            $this->_tags[] = self::PRODUCT_ADD_TO_CART;
+        if (!empty($this->_priceVariations)) {
+            $this->_priceVariationId = $this->_currencyCode;
         }
-
-        $this->_categories = $this->getProductCategories($product);
-        $this->_shortDescription = (string)$product->getShortDescription();
-        $this->_description = (string)$product->getDescription();
-        $this->_brand = $product->getManufacturer()
-            ? (string)$product->getAttributeText('manufacturer')
-            : '';
-
-        $this->_datePublished = $product->getCreatedAt();
     }
 
     /**
@@ -391,18 +411,41 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     {
         $data = array();
 
-        if ($product instanceof Mage_Catalog_Model_Product) {
-            $categoryCollection = $product->getCategoryCollection();
-            foreach ($categoryCollection as $category) {
-                $categoryString = Mage::helper('nosto_tagging')
-                    ->buildCategoryString($category);
-                if (!empty($categoryString)) {
-                    $data[] = $categoryString;
-                }
+        $collection = $product->getCategoryCollection();
+        /** @var Nosto_Tagging_Helper_Data $helper */
+        $helper =  Mage::helper('nosto_tagging');
+        foreach ($collection as $category) {
+            $categoryString = $helper->buildCategoryString($category);
+            if (!empty($categoryString)) {
+                $data[] = $categoryString;
             }
         }
 
         return $data;
+    }
+
+    /**
+     * Builds the url to the product page.
+     *
+     * @param Mage_Catalog_Model_Product $product the product model.
+     * @param Mage_Core_Model_Store      $store the store model.
+     *
+     * @return string
+     */
+    protected function buildUrl(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
+    {
+        // Unset the cached url first, as it won't include the `___store` param
+        // if it's cached. We need to define the specific store view in the url
+        // in case the same domain is used for all sites.
+        return $product
+            ->unsetData('url')
+            ->getUrlInStore(
+                array(
+                    '_nosid' => true,
+                    '_ignore_category' => true,
+                    '_store' => $store->getCode(),
+                )
+            );
     }
 
     /**
@@ -444,5 +487,40 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     protected function isValidImage($image)
     {
         return (!empty($image) && $image !== 'no_selection');
+    }
+
+    /**
+     * Build the product tags list.
+     * Also adds the "add-to-cart" tag if the product does not have any
+     * configuration, i.e. it can be added to the cart directly without the
+     * user having to choose any options, like size etc.
+     *
+     * @param Mage_Catalog_Model_Product $product the product model.
+     * @param Mage_Core_Model_Store      $store the store model.
+     *
+     * @return array
+     */
+    protected function buildTags(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
+    {
+        $tags = array();
+        if (Mage::helper('core')->isModuleEnabled('Mage_Tag')) {
+            $tagCollection = Mage::getModel('tag/tag')
+                ->getCollection()
+                ->addPopularity()
+                ->addStatusFilter(Mage_Tag_Model_Tag::STATUS_APPROVED)
+                ->addProductFilter($product->getId())
+                ->setFlag('relation', true)
+                ->addStoreFilter($store->getId())
+                ->setActiveFilter();
+            foreach ($tagCollection as $tag) {
+                /** @var Mage_Tag_Model_Tag $tag */
+                $tags[] = $tag->getName();
+            }
+        }
+
+        if (!$product->canConfigure()) {
+            $tags[] = self::PRODUCT_ADD_TO_CART;
+        }
+        return $tags;
     }
 }

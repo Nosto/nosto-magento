@@ -57,6 +57,11 @@
         <reference name="after_body_start">
             <block type="nosto_tagging/customer" name="nosto.customer" template="nostotagging/customer.phtml"/>
         </reference>
+
+        <!-- Tag currency variation -->
+        <reference name="after_body_start">
+            <block type="core/template" name="nosto.currency" template="nostotagging/currency.phtml"/>
+        </reference>
     </default>
 
     <!-- Tag category -->

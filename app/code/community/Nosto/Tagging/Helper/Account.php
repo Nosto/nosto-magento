@@ -25,7 +25,7 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-require_once Mage::getBaseDir('lib') . '/nosto/php-sdk/src/config.inc.php';
+require_once Mage::getBaseDir('lib') . '/nosto/php-sdk/autoload.php';
 
 /**
  * Helper class for managing Nosto accounts.
@@ -194,5 +194,28 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
         $meta = new Nosto_Tagging_Model_Meta_Account_Iframe();
         $meta->loadData($store);
         return Nosto::helper('iframe')->getUrl($meta, $account, $params);
+    }
+
+    /**
+     * Sends a currency exchange rate update request to Nosto via the API.
+     *
+     * @param NostoAccount          $account the account for which tp update the rates.
+     * @param Mage_Core_Model_Store $store the store which rates are to be updated.
+     */
+    public function updateCurrencyExchangeRates(NostoAccount $account, Mage_Core_Model_Store $store)
+    {
+        $baseCurrencyCode = $store->getBaseCurrencyCode();
+        $currencyCodes = $store->getAvailableCurrencyCodes();
+        /** @var Nosto_Tagging_Helper_Currency $helper */
+        $helper = Mage::helper('nosto_tagging/currency');
+        try {
+            $collection = $helper
+                ->getExchangeRateCollection($baseCurrencyCode, $currencyCodes);
+            if ($collection->count() > 0) {
+                NostoServiceUpdateCurrencyExchangeRate::send($account, $collection);
+            }
+        } catch (NostoException $e) {
+            Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
+        }
     }
 }

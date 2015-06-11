@@ -25,7 +25,7 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-require_once Mage::getBaseDir('lib') . '/nosto/php-sdk/src/config.inc.php';
+require_once Mage::getBaseDir('lib') . '/nosto/php-sdk/autoload.php';
 
 /**
  * History data export controller.
@@ -57,7 +57,7 @@ class Nosto_tagging_ExportController extends Mage_Core_Controller_Front_Action
             if ($currentPage > $orders->getLastPageNumber()) {
                 $orders = array();
             }
-            $collection = new NostoExportOrderCollection();
+            $collection = new NostoExportCollectionOrder();
             foreach ($orders as $order) {
                 $meta = new Nosto_Tagging_Model_Meta_Order();
                 // We don't need special items like shipping cost and discounts.
@@ -97,7 +97,7 @@ class Nosto_tagging_ExportController extends Mage_Core_Controller_Front_Action
             if ($currentPage > $products->getLastPageNumber()) {
                 $products = array();
             }
-            $collection = new NostoExportProductCollection();
+            $collection = new NostoExportCollectionProduct();
             foreach ($products as $product) {
                 if ($product->getTypeId() === Mage_Catalog_Model_Product_Type::TYPE_BUNDLE
                     && (int)$product->getPriceType() === Mage_Bundle_Model_Product_Price::PRICE_TYPE_FIXED

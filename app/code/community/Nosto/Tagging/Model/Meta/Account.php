@@ -33,7 +33,7 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implements NostoAccountMetaDataInterface
+class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implements NostoAccountMetaInterface
 {
     /**
      * @var string the store name.
@@ -76,6 +76,11 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     protected $_billing;
 
     /**
+     * @var NostoCurrency[] list of supported currencies by the store.
+     */
+    protected $_currencies = array();
+
+    /**
      * @var string the API token used to identify an account creation.
      */
     protected $_signUpApiToken = 'YBDKYwSqTCzSsU8Bwbg4im2pkHMcgTy9cCX7vevjJwON1UISJIwXOLMM0a8nZY7h';
@@ -107,9 +112,8 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
             $store->getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB)
         );
         $this->_currencyCode = $store->getBaseCurrencyCode();
-        $this->_languageCode = substr(
-            $store->getConfig('general/locale/code'), 0, 2
-        );
+        $storeLocale = $store->getConfig('general/locale/code');
+        $this->_languageCode = substr($storeLocale, 0, 2);
         $this->_ownerLanguageCode = substr(
             Mage::app()->getLocale()->getLocaleCode(), 0, 2
         );
@@ -117,6 +121,12 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
         $this->_owner->loadData($store);
         $this->_billing = new Nosto_Tagging_Model_Meta_Account_Billing();
         $this->_billing->loadData($store);
+        /** @var Nosto_Tagging_Helper_Currency $helper */
+        $helper = Mage::helper('nosto_tagging/currency');
+        $codes = $store->getAvailableCurrencyCodes(true);
+        foreach ($codes as $code) {
+            $this->_currencies[$code] = $helper->getCurrencyObject($storeLocale, $code);
+		}
     }
 
     /**
@@ -259,7 +269,7 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     /**
      * Meta data model for the account owner who is creating the account.
      *
-     * @return NostoAccountMetaDataOwnerInterface the meta data model.
+     * @return NostoAccountMetaOwnerInterface the meta data model.
      */
     public function getOwner()
     {
@@ -269,11 +279,22 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     /**
      * Meta data model for the account billing details.
      *
-     * @return NostoAccountMetaDataBillingDetailsInterface the meta data model.
+     * @return NostoAccountMetaBillingInterface the meta data model.
      */
     public function getBillingDetails()
     {
         return $this->_billing;
+    }
+
+    /**
+     * Returns a list of currency objects supported by the store the account is
+     * to be created for.
+     *
+     * @return NostoCurrency[] the currencies.
+     */
+    public function getCurrencies()
+    {
+        return $this->_currencies;
     }
 
     /**

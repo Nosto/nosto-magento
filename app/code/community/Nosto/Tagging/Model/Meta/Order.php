@@ -126,7 +126,7 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
     /**
      * The purchased items which were included in the order.
      *
-     * @return NostoOrderPurchasedItemInterface[] the meta data models.
+     * @return NostoOrderItemInterface[] the meta data models.
      */
     public function getPurchasedItems()
     {
@@ -178,23 +178,23 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
         }
 
         if ($this->includeSpecialItems) {
-            if (($discount = $order->getDiscountAmount()) > 0) {
+            if (($discount = $order->getBaseDiscountAmount()) > 0) {
                 $orderItem = new Nosto_Tagging_Model_Meta_Order_Item();
                 $orderItem->setProductId(-1);
                 $orderItem->setQuantity(1);
                 $orderItem->setName('Discount');
                 $orderItem->setUnitPrice($discount);
-                $orderItem->setCurrencyCode($order->getOrderCurrencyCode());
+                $orderItem->setCurrencyCode($order->getBaseCurrencyCode());
                 $this->_items[] = $orderItem;
             }
 
-            if (($shippingInclTax = $order->getShippingInclTax()) > 0) {
+            if (($shippingInclTax = $order->getBaseShippingInclTax()) > 0) {
                 $orderItem = new Nosto_Tagging_Model_Meta_Order_Item();
                 $orderItem->setProductId(-1);
                 $orderItem->setQuantity(1);
                 $orderItem->setName('Shipping and handling');
                 $orderItem->setUnitPrice($shippingInclTax);
-                $orderItem->setCurrencyCode($order->getOrderCurrencyCode());
+                $orderItem->setCurrencyCode($order->getBaseCurrencyCode());
                 $this->_items[] = $orderItem;
             }
         }

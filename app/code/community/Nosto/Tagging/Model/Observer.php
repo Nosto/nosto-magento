@@ -25,7 +25,7 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-require_once Mage::getBaseDir('lib') . '/nosto/php-sdk/src/config.inc.php';
+require_once Mage::getBaseDir('lib') . '/nosto/php-sdk/autoload.php';
 
 /**
  * Event observer model.
@@ -88,7 +88,6 @@ class Nosto_Tagging_Model_Observer
                 if ($account === null || !$account->isConnectedToNosto()) {
                     continue;
                 }
-
                 // Load the product model for this particular store view.
                 $product = Mage::getModel('catalog/product')
                     ->setStoreId($store->getId())
@@ -108,7 +107,7 @@ class Nosto_Tagging_Model_Observer
                 $validator = new NostoValidator($model);
                 if ($validator->validate()) {
                     try {
-                        $op = new NostoOperationProduct($account);
+                        $op = new NostoServiceUpdateProduct($account);
                         $op->addProduct($model);
                         $op->upsert();
                     } catch (NostoException $e) {
@@ -150,7 +149,7 @@ class Nosto_Tagging_Model_Observer
                 $model->setProductId($product->getId());
 
                 try {
-                    $op = new NostoOperationProduct($account);
+                    $op = new NostoServiceUpdateProduct($account);
                     $op->addProduct($model);
                     $op->delete();
                 } catch (NostoException $e) {
@@ -185,7 +184,7 @@ class Nosto_Tagging_Model_Observer
                 $customerId = Mage::helper('nosto_tagging/customer')
                     ->getNostoId($mageOrder);
                 if ($account !== null && $account->isConnectedToNosto()) {
-                    NostoOrderConfirmation::send($order, $account, $customerId);
+                    NostoServiceConfirmOrder::send($order, $account, $customerId);
                 }
             } catch (NostoException $e) {
                 Mage::log("\n" . $e->__toString(), Zend_Log::ERR, 'nostotagging.log');

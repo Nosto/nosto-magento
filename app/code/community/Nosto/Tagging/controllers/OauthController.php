@@ -25,7 +25,7 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-require_once Mage::getBaseDir('lib') . '/nosto/php-sdk/src/config.inc.php';
+require_once Mage::getBaseDir('lib') . '/nosto/php-sdk/autoload.php';
 
 /**
  * OAuth2 controller.
@@ -66,12 +66,17 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
         $request = $this->getRequest();
         if (($code = $request->getParam('code')) !== null) {
             $store = Mage::app()->getStore();
+            /** @var Nosto_Tagging_Helper_Oauth $oauthHelper */
+            $oauthHelper = Mage::helper('nosto_tagging/oauth');
+            /** @var Nosto_Tagging_Helper_Account $accountHelper */
+            $accountHelper = Mage::helper('nosto_tagging/account');
             try {
                 $account = NostoAccount::syncFromNosto(
-                    Mage::helper('nosto_tagging/oauth')->getMetaData($store),
+                    $oauthHelper->getMetaData($store),
                     $code
                 );
-                if (Mage::helper('nosto_tagging/account')->save($account, $store)) {
+                if ($accountHelper->save($account, $store)) {
+                    $accountHelper->updateCurrencyExchangeRates($account, $store);
                     $params = array(
                         'message_type' => NostoMessage::TYPE_SUCCESS,
                         'message_code' => NostoMessage::CODE_ACCOUNT_CONNECT,

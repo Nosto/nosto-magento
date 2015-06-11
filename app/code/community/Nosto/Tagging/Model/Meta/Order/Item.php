@@ -34,7 +34,7 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract implements NostoOrderPurchasedItemInterface
+class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract implements NostoOrderItemInterface
 {
     /**
      * @var string|int the unique identifier of the purchased item.
@@ -182,8 +182,8 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
         $this->_productId = (int)$this->fetchProductId($item);
         $this->_quantity = (int)$item->getQtyOrdered();
         $this->_name = $this->fetchProductName($item);
-        $this->_unitPrice = $item->getPriceInclTax();
-        $this->_currencyCode = strtoupper($order->getOrderCurrencyCode());
+        $this->_unitPrice = $item->getBasePriceInclTax();
+        $this->_currencyCode = strtoupper($order->getBaseCurrencyCode());
     }
 
     /**
