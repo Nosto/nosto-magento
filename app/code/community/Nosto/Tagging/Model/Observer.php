@@ -107,7 +107,7 @@ class Nosto_Tagging_Model_Observer
                 $validator = new NostoValidator($model);
                 if ($validator->validate()) {
                     try {
-                        $op = new NostoServiceUpdateProduct($account);
+                        $op = new NostoServiceProduct($account);
                         $op->addProduct($model);
                         $op->upsert();
                     } catch (NostoException $e) {
@@ -149,7 +149,7 @@ class Nosto_Tagging_Model_Observer
                 $model->setProductId($product->getId());
 
                 try {
-                    $op = new NostoServiceUpdateProduct($account);
+                    $op = new NostoServiceProduct($account);
                     $op->addProduct($model);
                     $op->delete();
                 } catch (NostoException $e) {
@@ -184,7 +184,8 @@ class Nosto_Tagging_Model_Observer
                 $customerId = Mage::helper('nosto_tagging/customer')
                     ->getNostoId($mageOrder);
                 if ($account !== null && $account->isConnectedToNosto()) {
-                    NostoServiceConfirmOrder::send($order, $account, $customerId);
+                    $service = new NostoServiceOrder($account);
+                    $service->confirm($order, $customerId);
                 }
             } catch (NostoException $e) {
                 Mage::log("\n" . $e->__toString(), Zend_Log::ERR, 'nostotagging.log');

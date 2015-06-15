@@ -150,7 +150,8 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                 }
                 $account = NostoAccount::create($meta);
                 if ($accountHelper->save($account, $store)) {
-                    $accountHelper->updateCurrencyExchangeRates($account, $store);
+                    $accountHelper
+                        ->updateCurrencyExchangeRates($account, $store);
                     $responseBody = array(
                         'success' => true,
                         'redirect_url' => $accountHelper->getIframeUrl(
@@ -227,6 +228,66 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                     )
                 )
             );
+        }
+
+        $this->getResponse()->setBody(json_encode($responseBody));
+    }
+
+    /**
+     * Ajax action for updating the currency exchange rates.
+     * Used from the extension system configuration page.
+     * Checks if any stores support multi currency before trying to update the
+     * exchange rate for each store/account.
+     */
+    public function ajaxUpdateExchangeRatesAction()
+    {
+        $this->getResponse()->setHeader('Content-type', 'application/json');
+        $responseBody = array('success' => true, 'data' => array());
+
+        /** @var Nosto_Tagging_Helper_Data $helper */
+        $helper = Mage::helper('nosto_tagging');
+        /** @var Nosto_Tagging_Helper_Account $accountHelper */
+        $accountHelper = Mage::helper('nosto_tagging/account');
+        /** @var Mage_Core_Model_Store[] $stores */
+        $stores = Mage::app()->getStores();
+
+        // Check if any of the stores has multi currency configured.
+        $multiCurrency = false;
+        foreach ($stores as $store) {
+            if ($helper->getStoreHasMultiCurrency($store)) {
+                $multiCurrency = true;
+                break;
+            }
+        }
+        if (!$multiCurrency) {
+            $responseBody['data'][] = array(
+                'type' => 'error',
+                'message' => $helper->__("Failed to find any stores with other currencies than the base currency configured.")
+            );
+        } else {
+            foreach ($stores as $store) {
+                $account = $accountHelper->find($store);
+                if (is_null($account) || !$account->isConnectedToNosto()) {
+                    continue;
+                }
+                if ($accountHelper->updateCurrencyExchangeRates($account, $store)) {
+                    $responseBody['data'][] = array(
+                        'type' => 'success',
+                        'message' => $helper->__(sprintf("The exchange rates have been updated for the %s store.", $store->getName()))
+                    );
+                } else {
+                    $responseBody['data'][] = array(
+                        'type' => 'error',
+                        'message' => $helper->__(sprintf("There was an error updating the exchange rates for the %s store.", $store->getName()))
+                    );
+                }
+            }
+            if (empty($responseBody['data'])) {
+                $responseBody['data'][] = array(
+                    'type' => 'error',
+                    'message' => $helper->__("Failed to find any stores where Nosto has been installed. Please make sure you have installed Nosto to at least one of your stores.")
+                );
+            }
         }
 
         $this->getResponse()->setBody(json_encode($responseBody));

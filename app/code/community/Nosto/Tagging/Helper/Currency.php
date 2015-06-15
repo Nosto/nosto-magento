@@ -101,6 +101,10 @@ class Nosto_Tagging_Helper_Currency extends Mage_Core_Helper_Abstract
         $currency = Mage::getModel('directory/currency');
         $rates = $currency->getCurrencyRates($baseCurrencyCode, $currencyCodes);
         foreach ($rates as $code => $rate) {
+            // Skip base currency.
+            if ($baseCurrencyCode === $code) {
+                continue;
+            }
             $collection[] = new NostoCurrencyExchangeRate($code, $rate);
         }
         return $collection;

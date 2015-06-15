@@ -123,9 +123,10 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
         $this->_billing->loadData($store);
         /** @var Nosto_Tagging_Helper_Currency $helper */
         $helper = Mage::helper('nosto_tagging/currency');
-        $codes = $store->getAvailableCurrencyCodes(true);
-        foreach ($codes as $code) {
-            $this->_currencies[$code] = $helper->getCurrencyObject($storeLocale, $code);
+        $currencyCodes = $store->getAvailableCurrencyCodes(true);
+        foreach ($currencyCodes as $currencyCode) {
+            $this->_currencies[$currencyCode] = $helper
+                ->getCurrencyObject($storeLocale, $currencyCode);
 		}
     }
 

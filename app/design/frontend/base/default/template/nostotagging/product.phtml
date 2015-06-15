@@ -61,17 +61,19 @@ $dateHelper = Mage::helper('nosto_tagging/date');
     <?php foreach ($product->getTags() as $tag): ?>
         <span class="tag1"><?php echo $helper->escapeHtml($tag); ?></span>
     <?php endforeach; ?>
-    <?php if (count($product->getPriceVariations()) > 0): ?>
+    <?php if ($helper->getStoreHasMultiCurrency()): ?>
         <span class="variation_id"><?php echo strtoupper($product->getPriceVariationId()); ?></span>
-        <?php foreach ($product->getPriceVariations() as $variation): ?>
-            <div class="variation">
-                <span class="variation_id"><?php echo strtoupper($variation->getId()); ?></span>
-                <span class="price_currency_code"><?php echo strtoupper($variation->getCurrencyCode()); ?></span>
-                <span class="price"><?php echo $priceHelper->getFormattedPrice($variation->getPrice()); ?></span>
-                <span class="list_price"><?php echo $priceHelper->getFormattedPrice($variation->getListPrice()); ?></span>
-                <span class="availability"><?php echo $variation->getAvailability(); ?></span>
-            </div>
-        <?php endforeach; ?>
+        <?php if ($this->inclPriceVariations() && count($product->getPriceVariations()) > 0): ?>
+            <?php foreach ($product->getPriceVariations() as $variation): ?>
+                <div class="variation">
+                    <span class="variation_id"><?php echo strtoupper($variation->getId()); ?></span>
+                    <span class="price_currency_code"><?php echo strtoupper($variation->getCurrencyCode()); ?></span>
+                    <span class="price"><?php echo $priceHelper->getFormattedPrice($variation->getPrice()); ?></span>
+                    <span class="list_price"><?php echo $priceHelper->getFormattedPrice($variation->getListPrice()); ?></span>
+                    <span class="availability"><?php echo $variation->getAvailability(); ?></span>
+                </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
     <?php endif; ?>
 </div>
 <?php if (!empty($currentCategory)): ?>

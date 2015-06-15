@@ -45,6 +45,17 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_IMAGE_VERSION = 'nosto_tagging/image_options/image_version';
 
     /**
+     * Path to store config nosto multi currency method.
+     */
+    const XML_PATH_MULTI_CURRENCY_METHOD = 'nosto_tagging/multi_currency/method';
+
+    /**
+     * The multi currency method options.
+     */
+    const MULTI_CURRENCY_METHOD_EXCHANGE_RATE = 'exchangeRate';
+    const MULTI_CURRENCY_METHOD_PRODUCT_TAGGING = 'productTagging';
+
+    /**
      * Builds a tagging string of the given category including all its parent
      * categories.
      * The categories are sorted by their position in the category tree path.
@@ -108,5 +119,75 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     public function getProductImageVersion($store = null)
     {
         return Mage::getStoreConfig(self::XML_PATH_IMAGE_VERSION, $store);
+    }
+
+    /**
+     * Return the multi currency method in use, i.e. "exchangeRate" or
+     * "productTagging".
+     *
+     * If "exchangeRate", it means that the product prices in the recommendation
+     * is updated through the Exchange Rate API to Nosto.
+     *
+     * If "productTagging", it means that the product price variations should be
+     * tagged along side the product.
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     *
+     * @return string
+     */
+    public function getMultiCurrencyMethod($store = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_MULTI_CURRENCY_METHOD, $store);
+    }
+
+    /**
+     * Checks if the multi currency method in use is the "exchangeRate", i.e.
+     * the product prices in the recommendation is updated through the Exchange
+     * Rate API to Nosto.
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     *
+     * @return bool
+     */
+    public function isMultiCurrencyMethodExchangeRate($store = null)
+    {
+        $method = $this->getMultiCurrencyMethod($store);
+        return ($method === self::MULTI_CURRENCY_METHOD_EXCHANGE_RATE);
+    }
+
+    /**
+     * Checks if the multi currency method in use is the "productTagging", i.e.
+     * the product price variations should be tagged along side the product.
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     *
+     * @return bool
+     */
+    public function isMultiCurrencyMethodProductTagging($store = null)
+    {
+        $method = $this->getMultiCurrencyMethod($store);
+        return ($method === self::MULTI_CURRENCY_METHOD_PRODUCT_TAGGING);
+    }
+
+    /**
+     * Checks if the store has any other currency configured than the base one.
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     *
+     * @return bool
+     */
+    public function getStoreHasMultiCurrency($store = null)
+    {
+        if (is_null($store)) {
+            $store = Mage::app()->getStore();
+        }
+        $currencyCodes = $store->getAvailableCurrencyCodes(true);
+        $baseCurrencyCode = $store->getBaseCurrencyCode();
+        foreach ($currencyCodes as $currencyCode) {
+            if ($currencyCode !== $baseCurrencyCode) {
+                return true;
+            }
+        }
+        return false;
     }
 }

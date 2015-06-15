@@ -199,23 +199,36 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
     /**
      * Sends a currency exchange rate update request to Nosto via the API.
      *
-     * @param NostoAccount          $account the account for which tp update the rates.
+     * Checks if multi currency is enabled for the store before attempting to
+     * send the exchange rates.
+     *
+     * @param NostoAccount $account the account for which tp update the rates.
      * @param Mage_Core_Model_Store $store the store which rates are to be updated.
+     *
+     * @return bool
      */
     public function updateCurrencyExchangeRates(NostoAccount $account, Mage_Core_Model_Store $store)
     {
+        /** @var Nosto_Tagging_Helper_Data $helper */
+        $helper = Mage::helper('nosto_tagging');
+        if (!$helper->getStoreHasMultiCurrency($store)) {
+            return false;
+        }
+
+        $currencyCodes = $store->getAvailableCurrencyCodes(true);
         $baseCurrencyCode = $store->getBaseCurrencyCode();
-        $currencyCodes = $store->getAvailableCurrencyCodes();
+
         /** @var Nosto_Tagging_Helper_Currency $helper */
         $helper = Mage::helper('nosto_tagging/currency');
         try {
             $collection = $helper
                 ->getExchangeRateCollection($baseCurrencyCode, $currencyCodes);
-            if ($collection->count() > 0) {
-                NostoServiceUpdateCurrencyExchangeRate::send($account, $collection);
-            }
+            $service = new NostoServiceCurrencyExchangeRate($account);
+            return $service->update($collection);
         } catch (NostoException $e) {
             Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
         }
+
+        return false;
     }
 }

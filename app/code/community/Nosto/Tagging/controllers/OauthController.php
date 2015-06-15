@@ -76,7 +76,8 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
                     $code
                 );
                 if ($accountHelper->save($account, $store)) {
-                    $accountHelper->updateCurrencyExchangeRates($account, $store);
+                    $accountHelper
+                        ->updateCurrencyExchangeRates($account, $store);
                     $params = array(
                         'message_type' => NostoMessage::TYPE_SUCCESS,
                         'message_code' => NostoMessage::CODE_ACCOUNT_CONNECT,

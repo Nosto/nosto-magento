@@ -158,6 +158,9 @@
             <image_options>
                 <image_version>image</image_version>
             </image_options>
+            <multi_currency>
+                <method>exchangeRate</method>
+            </multi_currency>
         </nosto_tagging>
     </default>
 </config>
