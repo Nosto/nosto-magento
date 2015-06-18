@@ -47,6 +47,7 @@
                     <fields>
                         <image_version translate="label">
                             <label>Image Version</label>
+                            <comment>The product image version used in recommendations.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>nosto_tagging/system_config_source_image</source_model>
                             <sort_order>1</sort_order>
@@ -56,6 +57,7 @@
                         </image_version>
                         <multi_currency_method translate="label">
                             <label>Multi Currency Method</label>
+                            <comment>Use either exchange rates or price variations for multi currency product recommendations.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>nosto_tagging/system_config_source_multi_currency_method</source_model>
                             <sort_order>2</sort_order>
@@ -85,6 +87,7 @@
                         </enabled>
                         <time translate="label">
                             <label>Start Time</label>
+                            <comment>The start time is entered in the default timezone configured for the installation.</comment>
                             <frontend_type>time</frontend_type>
                             <sort_order>2</sort_order>
                             <show_in_default>1</show_in_default>

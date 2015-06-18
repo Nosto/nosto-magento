@@ -110,6 +110,6 @@ class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
     {
         /** @var Nosto_Tagging_Helper_Data $helper */
         $helper = Mage::helper('nosto_tagging');
-        return $helper->isMultiCurrencyMethodProductTagging();
+        return $helper->isMultiCurrencyMethodPriceVariation();
     }
 }

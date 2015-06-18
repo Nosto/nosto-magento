@@ -60,9 +60,9 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const MULTI_CURRENCY_METHOD_EXCHANGE_RATE = 'exchangeRate';
 
     /**
-     * Multi currency method option for product tagging.
+     * Multi currency method option for price variations in tagging.
      */
-    const MULTI_CURRENCY_METHOD_PRODUCT_TAGGING = 'productTagging';
+    const MULTI_CURRENCY_METHOD_PRICE_VARIATION = 'priceVariation';
 
     /**
      * Builds a tagging string of the given category including all its parent
@@ -132,12 +132,12 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Return the multi currency method in use, i.e. "exchangeRate" or
-     * "productTagging".
+     * "priceVariation".
      *
      * If "exchangeRate", it means that the product prices in the recommendation
      * is updated through the Exchange Rate API to Nosto.
      *
-     * If "productTagging", it means that the product price variations should be
+     * If "priceVariation", it means that the product price variations should be
      * tagged along side the product.
      *
      * @param Mage_Core_Model_Store|null $store the store model or null.
@@ -165,17 +165,17 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Checks if the multi currency method in use is the "productTagging", i.e.
+     * Checks if the multi currency method in use is the "priceVariation", i.e.
      * the product price variations should be tagged along side the product.
      *
      * @param Mage_Core_Model_Store|null $store the store model or null.
      *
      * @return bool
      */
-    public function isMultiCurrencyMethodProductTagging($store = null)
+    public function isMultiCurrencyMethodPriceVariation($store = null)
     {
         $method = $this->getMultiCurrencyMethod($store);
-        return ($method === self::MULTI_CURRENCY_METHOD_PRODUCT_TAGGING);
+        return ($method === self::MULTI_CURRENCY_METHOD_PRICE_VARIATION);
     }
 
     /**

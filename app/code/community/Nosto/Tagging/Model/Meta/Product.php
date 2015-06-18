@@ -381,7 +381,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
             // Only try populate the price variations if we need them in the
             // product tagging. This is determined by the backend system setting
             // for the multi-currency method.
-            if ($helper->isMultiCurrencyMethodProductTagging($store)) {
+            if ($helper->isMultiCurrencyMethodPriceVariation($store)) {
                 $currencyCodes = $store->getAvailableCurrencyCodes(true);
                 foreach ($currencyCodes as $currencyCode) {
                     // Skip base currency.
