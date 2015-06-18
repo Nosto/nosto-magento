@@ -78,7 +78,7 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Multi_Currency_Exchange_Rate_B
             ->setData(
                 array(
                     'id'  => 'nostotagging_update_exchange_rates_button',
-                    'label' => $this->helper('nosto_tagging')->__('Update Exchange Rates'),
+                    'label' => $this->helper('nosto_tagging')->__('Update Now'),
                     'onclick' => 'javascript:Nosto.updateExchangeRates(); return false;'
                 )
             )

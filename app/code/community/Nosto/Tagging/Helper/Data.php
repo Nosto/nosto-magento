@@ -40,19 +40,28 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_INSTALLATION_ID = 'nosto_tagging/installation/id';
 
     /**
-     * Path to store config nosto product image version.
+     * Path to store config product image version setting.
      */
-    const XML_PATH_IMAGE_VERSION = 'nosto_tagging/image_options/image_version';
+    const XML_PATH_IMAGE_VERSION = 'nosto_tagging/general/image_version';
 
     /**
-     * Path to store config nosto multi currency method.
+     * Path to store config multi currency method setting.
      */
-    const XML_PATH_MULTI_CURRENCY_METHOD = 'nosto_tagging/multi_currency/method';
+    const XML_PATH_MULTI_CURRENCY_METHOD = 'nosto_tagging/general/multi_currency_method';
 
     /**
-     * The multi currency method options.
+     * Path to store config scheduled currency exchange rate update enabled setting.
+     */
+    const XML_PATH_SCHEDULED_CURRENCY_EXCHANGE_RATE_UPDATE_ENABLED = 'nosto_tagging/scheduled_currency_exchange_rate_update/enabled';
+
+    /**
+     * Multi currency method option for currency exchange rates.
      */
     const MULTI_CURRENCY_METHOD_EXCHANGE_RATE = 'exchangeRate';
+
+    /**
+     * Multi currency method option for product tagging.
+     */
     const MULTI_CURRENCY_METHOD_PRODUCT_TAGGING = 'productTagging';
 
     /**
@@ -189,5 +198,17 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
             }
         }
         return false;
+    }
+
+    /**
+     * Returns if the scheduled currency exchange rate update is enabled.
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     *
+     * @return bool
+     */
+    public function isScheduledCurrencyExchangeRateUpdateEnabled($store = null)
+    {
+        return (bool)Mage::getStoreConfig(self::XML_PATH_SCHEDULED_CURRENCY_EXCHANGE_RATE_UPDATE_ENABLED, $store);
     }
 }

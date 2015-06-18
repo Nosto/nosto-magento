@@ -36,8 +36,8 @@
             <show_in_website>1</show_in_website>
             <show_in_store>1</show_in_store>
             <groups>
-                <image_options translate="label">
-                    <label>Image Options</label>
+                <general translate="label">
+                    <label>General</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>10</sort_order>
                     <show_in_default>1</show_in_default>
@@ -49,15 +49,24 @@
                             <label>Image Version</label>
                             <frontend_type>select</frontend_type>
                             <source_model>nosto_tagging/system_config_source_image</source_model>
-                            <sort_order>10</sort_order>
+                            <sort_order>1</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </image_version>
+                        <multi_currency_method translate="label">
+                            <label>Multi Currency Method</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>nosto_tagging/system_config_source_multi_currency_method</source_model>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </multi_currency_method>
                     </fields>
-                </image_options>
-                <multi_currency translate="label">
-                    <label>Multi Currency Options</label>
+                </general>
+                <scheduled_currency_exchange_rate_update>
+                    <label>Scheduled Currency Exchange Rate Update</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>20</sort_order>
                     <show_in_default>1</show_in_default>
@@ -65,25 +74,43 @@
                     <show_in_store>1</show_in_store>
                     <expanded>1</expanded>
                     <fields>
-                        <method translate="label">
-                            <label>Method</label>
+                        <enabled translate="label">
+                            <label>Enabled</label>
                             <frontend_type>select</frontend_type>
-                            <source_model>nosto_tagging/system_config_source_multi_currency_method</source_model>
-                            <sort_order>10</sort_order>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
                             <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </method>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </enabled>
+                        <time translate="label">
+                            <label>Start Time</label>
+                            <frontend_type>time</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </time>
+                        <frequency translate="label">
+                            <label>Frequency</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_cron_frequency</source_model>
+                            <backend_model>nosto_tagging/system_config_backend_currency_exchange_rate_cron</backend_model>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </frequency>
                         <update_exchange_rates translate="label">
                             <frontend_type>button</frontend_type>
                             <frontend_model>nosto_tagging/adminhtml_system_config_multi_currency_exchange_rate_button</frontend_model>
-                            <sort_order>20</sort_order>
+                            <sort_order>4</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </update_exchange_rates>
                     </fields>
-                </multi_currency>
+                </scheduled_currency_exchange_rate_update>
             </groups>
         </nosto_tagging>
     </sections>

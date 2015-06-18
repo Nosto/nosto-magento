@@ -162,7 +162,8 @@ class Nosto_Tagging_Model_Observer
     }
 
     /**
-     * Sends an order confirmation API request to Nosto if the order is completed.
+     * Sends an order confirmation API request to Nosto if the order is
+     * completed.
      *
      * Event 'sales_order_save_commit_after'.
      *
@@ -188,10 +189,45 @@ class Nosto_Tagging_Model_Observer
                     $service->confirm($order, $customerId);
                 }
             } catch (NostoException $e) {
-                Mage::log("\n" . $e->__toString(), Zend_Log::ERR, 'nostotagging.log');
+                Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
             }
         }
 
         return $this;
+    }
+
+    /**
+     * Cron job for syncing currency exchange rates to Nosto.
+     * Only stores that have the scheduled update enabled, have more currencies
+     * than the default one defined and has a Nosto account are synced.
+     */
+    public function scheduledCurrencyExchangeRateUpdate()
+    {
+        /** @var Nosto_Tagging_Helper_Data $helper */
+        $helper = Mage::helper('nosto_tagging');
+        if ($helper->isModuleEnabled()) {
+            /** @var Nosto_Tagging_Helper_Account $accountHelper */
+            $accountHelper = Mage::helper('nosto_tagging/account');
+            $error = false;
+            foreach (Mage::app()->getStores() as $store) {
+                /** @var Mage_Core_Model_Store $store */
+                if (!$helper->isScheduledCurrencyExchangeRateUpdateEnabled($store)) {
+                    continue;
+                }
+                if (!$helper->getStoreHasMultiCurrency($store)) {
+                    continue;
+                }
+                $account = $accountHelper->find($store);
+                if (is_null($account) || !$account->isConnectedToNosto()) {
+                    continue;
+                }
+                if (!$accountHelper->updateCurrencyExchangeRates($account, $store)) {
+                    $error = true;
+                }
+            }
+            if ($error) {
+                throw new Mage_Cron_Exception('There was an error updating the exchange rates. More info in "var/log/nostotagging.log".');
+            }
+        }
     }
 }
