@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f50f1e23d48dff0cb5b51eb9eeff7d96",
+    "hash": "d80f1f2ac83299898346b8301aabb2c6",
     "packages": [
         {
             "name": "nosto/php-sdk",
-            "version": "1.12.1",
+            "version": "dev-feature/multi-currency",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Nosto/php-sdk.git",
-                "reference": "78e95e9a9f37f361c92c2c5c7ef3d2e216e15bf7"
+                "reference": "4aab0e0b33718cc9f0b2398e3d53d46ee2e24585"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Nosto/php-sdk/zipball/78e95e9a9f37f361c92c2c5c7ef3d2e216e15bf7",
-                "reference": "78e95e9a9f37f361c92c2c5c7ef3d2e216e15bf7",
+                "url": "https://api.github.com/repos/Nosto/php-sdk/zipball/4aab0e0b33718cc9f0b2398e3d53d46ee2e24585",
+                "reference": "4aab0e0b33718cc9f0b2398e3d53d46ee2e24585",
                 "shasum": ""
             },
             "require-dev": {
@@ -30,16 +30,18 @@
             ],
             "description": "PHP SDK for developing Nosto modules for e-commerce platforms",
             "support": {
-                "source": "https://github.com/Nosto/php-sdk/tree/1.12.1",
+                "source": "https://github.com/Nosto/php-sdk/tree/feature/multi-currency",
                 "issues": "https://github.com/Nosto/php-sdk/issues"
             },
-            "time": "2015-06-05 06:44:51"
+            "time": "2015-06-18 06:35:19"
         }
     ],
     "packages-dev": [],
     "aliases": [],
-    "minimum-stability": "stable",
-    "stability-flags": [],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "nosto/php-sdk": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
