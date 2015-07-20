@@ -152,9 +152,7 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
     {
         $this->_orderNumber = $order->getId();
         $this->_createdDate = $order->getCreatedAt();
-
-        $method = $order->getPayment()->getMethodInstance();
-        $this->_paymentProvider = $method->getCode();
+        $this->_paymentProvider = $order->getPayment()->getMethod();
 
         $this->_orderStatus = new Nosto_Tagging_Model_Meta_Order_Status();
         $this->_orderStatus->loadData($order);
