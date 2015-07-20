@@ -66,10 +66,13 @@ class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
         $session = Mage::getSingleton('adminhtml/session');
         if ($session !== null) {
             $nostoMessage = $session->getData('nosto_message');
-            if (is_array($nostoMessage)) {
+            if (!empty($nostoMessage)) {
                 if (isset($nostoMessage['type'], $nostoMessage['code'])) {
                     $params['message_type'] = $nostoMessage['type'];
                     $params['message_code'] = $nostoMessage['code'];
+                    if (isset($nostoMessage['text'])) {
+                        $params['message_text'] = $nostoMessage['text'];
+                    }
                 }
                 $session->setData('nosto_message', null);
             }

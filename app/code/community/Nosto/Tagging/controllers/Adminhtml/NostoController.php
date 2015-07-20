@@ -57,10 +57,12 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         if ($session !== null) {
             $type = $this->getRequest()->getParam('message_type');
             $code = $this->getRequest()->getParam('message_code');
+            $text = $this->getRequest()->getParam('message_text');
             if ($type !== null && $code !== null) {
                 $session->setData('nosto_message', array(
                     'type' => $type,
                     'code' => $code,
+                    'text' => $text,
                 ));
             }
         }
