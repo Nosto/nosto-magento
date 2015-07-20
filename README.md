@@ -150,6 +150,9 @@ Open Software License ("OSL") v3.0
 
 ## Changelog
 
+### 2.5.1
+* Re-packaged extension to support installs from Magento Connect with the latest (1.9.2) Magento version.
+
 ### 2.5.0
 * Add order status and payment provider info to order tagging
 * Add support for account specific sub-domains when configuring Nosto
