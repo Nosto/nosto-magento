@@ -83,6 +83,61 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
     }
 
     /**
+     * Loads the order info from a Magento order model.
+     *
+     * @param Mage_Sales_Model_Order $order the order model.
+     */
+    public function loadData(Mage_Sales_Model_Order $order)
+    {
+        $this->_orderNumber = $order->getId();
+        $this->_createdDate = $order->getCreatedAt();
+        $this->_paymentProvider = $order->getPayment()->getMethod();
+
+        $this->_orderStatus = new Nosto_Tagging_Model_Meta_Order_Status();
+        $this->_orderStatus->loadData($order);
+
+        $this->_buyer = new Nosto_Tagging_Model_Meta_Order_Buyer();
+        $this->_buyer->loadData($order);
+
+        /** @var $item Mage_Sales_Model_Order_Item */
+        foreach ($order->getAllVisibleItems() as $item) {
+            /** @var Mage_Catalog_Model_Product $product */
+            $product = Mage::getModel('catalog/product')
+                ->load($item->getProductId());
+            if ($product->getTypeId() === Mage_Catalog_Model_Product_Type::TYPE_BUNDLE
+                && (int)$product->getPriceType() === Mage_Bundle_Model_Product_Price::PRICE_TYPE_FIXED
+            ) {
+                continue;
+            }
+            $orderItem = new Nosto_Tagging_Model_Meta_Order_Item();
+            $orderItem->loadData($item);
+            $this->_items[] = $orderItem;
+        }
+
+        if ($this->includeSpecialItems) {
+            if (($discount = $order->getDiscountAmount()) > 0) {
+                $orderItem = new Nosto_Tagging_Model_Meta_Order_Item();
+                $orderItem->loadSpecialItemData(
+                    'Discount',
+                    $discount,
+                    $order->getOrderCurrencyCode()
+                );
+                $this->_items[] = $orderItem;
+            }
+
+            if (($shippingInclTax = $order->getShippingInclTax()) > 0) {
+                $orderItem = new Nosto_Tagging_Model_Meta_Order_Item();
+                $orderItem->loadSpecialItemData(
+                    'Shipping and handling',
+                    $shippingInclTax,
+                    $order->getOrderCurrencyCode()
+                );
+                $this->_items[] = $orderItem;
+            }
+        }
+    }
+
+    /**
      * The unique order number identifying the order.
      *
      * @return string|int the order number.
@@ -141,60 +196,5 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
     public function getOrderStatus()
     {
         return $this->_orderStatus;
-    }
-
-    /**
-     * Loads the order info from a Magento order model.
-     *
-     * @param Mage_Sales_Model_Order $order the order model.
-     */
-    public function loadData(Mage_Sales_Model_Order $order)
-    {
-        $this->_orderNumber = $order->getId();
-        $this->_createdDate = $order->getCreatedAt();
-        $this->_paymentProvider = $order->getPayment()->getMethod();
-
-        $this->_orderStatus = new Nosto_Tagging_Model_Meta_Order_Status();
-        $this->_orderStatus->loadData($order);
-
-        $this->_buyer = new Nosto_Tagging_Model_Meta_Order_Buyer();
-        $this->_buyer->loadData($order);
-
-        /** @var $item Mage_Sales_Model_Order_Item */
-        foreach ($order->getAllVisibleItems() as $item) {
-            /** @var Mage_Catalog_Model_Product $product */
-            $product = Mage::getModel('catalog/product')
-                ->load($item->getProductId());
-            if ($product->getTypeId() === Mage_Catalog_Model_Product_Type::TYPE_BUNDLE
-                && (int)$product->getPriceType() === Mage_Bundle_Model_Product_Price::PRICE_TYPE_FIXED
-            ) {
-                continue;
-            }
-            $orderItem = new Nosto_Tagging_Model_Meta_Order_Item();
-            $orderItem->loadData($item);
-            $this->_items[] = $orderItem;
-        }
-
-        if ($this->includeSpecialItems) {
-            if (($discount = $order->getDiscountAmount()) > 0) {
-                $orderItem = new Nosto_Tagging_Model_Meta_Order_Item();
-                $orderItem->setProductId(-1);
-                $orderItem->setQuantity(1);
-                $orderItem->setName('Discount');
-                $orderItem->setUnitPrice($discount);
-                $orderItem->setCurrencyCode($order->getOrderCurrencyCode());
-                $this->_items[] = $orderItem;
-            }
-
-            if (($shippingInclTax = $order->getShippingInclTax()) > 0) {
-                $orderItem = new Nosto_Tagging_Model_Meta_Order_Item();
-                $orderItem->setProductId(-1);
-                $orderItem->setQuantity(1);
-                $orderItem->setName('Shipping and handling');
-                $orderItem->setUnitPrice($shippingInclTax);
-                $orderItem->setCurrencyCode($order->getOrderCurrencyCode());
-                $this->_items[] = $orderItem;
-            }
-        }
     }
 }

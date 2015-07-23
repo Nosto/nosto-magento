@@ -59,16 +59,6 @@ class Nosto_Tagging_Model_Meta_Account_Billing extends Mage_Core_Model_Abstract 
     }
 
     /**
-     * Sets the account billing details country ISO (ISO 3166-1 alpha-2) code.
-     *
-     * @param string $country the country ISO code.
-     */
-    public function setCountry($country)
-    {
-        $this->_country = $country;
-    }
-
-    /**
      * The 2-letter ISO code (ISO 3166-1 alpha-2) for billing details country.
      *
      * @return string the country ISO code.

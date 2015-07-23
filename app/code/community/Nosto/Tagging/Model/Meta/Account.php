@@ -120,16 +120,6 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     }
 
     /**
-     * Sets the store title.
-     *
-     * @param string $title the store title.
-     */
-    public function setTitle($title)
-    {
-        $this->_title = $title;
-    }
-
-    /**
      * The shops name for which the account is to be created for.
      *
      * @return string the name.
@@ -137,16 +127,6 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     public function getTitle()
     {
         return $this->_title;
-    }
-
-    /**
-     * Sets the account name.
-     *
-     * @param string $name the account name.
-     */
-    public function setName($name)
-    {
-        $this->_name = $name;
     }
 
     /**
@@ -173,16 +153,6 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     }
 
     /**
-     * Sets the store front page url.
-     *
-     * @param string $url the front page url.
-     */
-    public function setFrontPageUrl($url)
-    {
-        $this->_frontPageUrl = $url;
-    }
-
-    /**
      * Absolute url to the front page of the shop for which the account is
      * created for.
      *
@@ -191,16 +161,6 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     public function getFrontPageUrl()
     {
         return $this->_frontPageUrl;
-    }
-
-    /**
-     * Sets the store currency ISO (ISO 4217) code.
-     *
-     * @param string $code the currency ISO code.
-     */
-    public function setCurrencyCode($code)
-    {
-        $this->_currencyCode = $code;
     }
 
     /**
@@ -215,16 +175,6 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     }
 
     /**
-     * Sets the store language ISO (ISO 639-1) code.
-     *
-     * @param string $languageCode the language ISO code.
-     */
-    public function setLanguageCode($languageCode)
-    {
-        $this->_languageCode = $languageCode;
-    }
-
-    /**
      * The 2-letter ISO code (ISO 639-1) for the language used by the shop for
      * which the account is created for.
      *
@@ -233,16 +183,6 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     public function getLanguageCode()
     {
         return $this->_languageCode;
-    }
-
-    /**
-     * Sets the owner language ISO (ISO 639-1) code.
-     *
-     * @param string $languageCode the language ISO code.
-     */
-    public function setOwnerLanguageCode($languageCode)
-    {
-        $this->_ownerLanguageCode = $languageCode;
     }
 
     /**
