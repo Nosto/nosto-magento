@@ -154,13 +154,15 @@ class Nosto_Tagging_Block_Cart extends Mage_Checkout_Block_Cart_Abstract
             // products own name alone.
             if (count($parentIds) === 1) {
                 $attributes = $item->getBuyRequest()->getData('super_attribute');
-                foreach ($attributes as $id => $value) {
-                    /** @var Mage_Catalog_Model_Resource_Eav_Attribute $attribute */
-                    $attribute = Mage::getModel('catalog/resource_eav_attribute')
-                        ->load($id);
-                    $label = $attribute->getSource()->getOptionText($value);
-                    if (!empty($label)) {
-                        $optNames[] = $label;
+                if (is_array($attributes)) {
+                    foreach ($attributes as $id => $value) {
+                        /** @var Mage_Catalog_Model_Resource_Eav_Attribute $attribute */
+                        $attribute = Mage::getModel('catalog/resource_eav_attribute')
+                            ->load($id);
+                        $label = $attribute->getSource()->getOptionText($value);
+                        if (!empty($label)) {
+                            $optNames[] = $label;
+                        }
                     }
                 }
             }

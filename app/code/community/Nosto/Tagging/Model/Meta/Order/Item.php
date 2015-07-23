@@ -243,13 +243,15 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
             // products own name alone.
             if (count($parentIds) === 1) {
                 $attributes = $item->getBuyRequest()->getData('super_attribute');
-                foreach ($attributes as $id => $value) {
-                    /** @var Mage_Catalog_Model_Resource_Eav_Attribute $attribute */
-                    $attribute = Mage::getModel('catalog/resource_eav_attribute')
-                        ->load($id);
-                    $label = $attribute->getSource()->getOptionText($value);
-                    if (!empty($label)) {
-                        $optNames[] = $label;
+                if (is_array($attributes)) {
+                    foreach ($attributes as $id => $value) {
+                        /** @var Mage_Catalog_Model_Resource_Eav_Attribute $attribute */
+                        $attribute = Mage::getModel('catalog/resource_eav_attribute')
+                            ->load($id);
+                        $label = $attribute->getSource()->getOptionText($value);
+                        if (!empty($label)) {
+                            $optNames[] = $label;
+                        }
                     }
                 }
             }
