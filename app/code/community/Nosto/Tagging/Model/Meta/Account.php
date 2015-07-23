@@ -286,4 +286,15 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     {
         return $this->_signUpApiToken;
     }
+
+    /**
+     * Optional partner code for Nosto partners.
+     * The code is issued by Nosto to partners only.
+     *
+     * @return string|null the partner code or null if none exist.
+     */
+    public function getPartnerCode()
+    {
+        return Mage::helper('nosto_tagging')->getPartnerCode();
+    }
 }

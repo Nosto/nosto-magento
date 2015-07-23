@@ -45,6 +45,11 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_IMAGE_VERSION = 'nosto_tagging/image_options/image_version';
 
     /**
+     * Path to store config nosto partner code.
+     */
+    const XML_PATH_PARTNER_CODE = 'nosto_tagging/general/partner_code';
+
+    /**
      * Builds a tagging string of the given category including all its parent
      * categories.
      * The categories are sorted by their position in the category tree path.
@@ -108,5 +113,17 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     public function getProductImageVersion($store = null)
     {
         return Mage::getStoreConfig(self::XML_PATH_IMAGE_VERSION, $store);
+    }
+
+    /**
+     * Returns the Nosto partner code or null if none is set.
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     *
+     * @return string|null
+     */
+    public function getPartnerCode($store = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_PARTNER_CODE, $store);
     }
 }
