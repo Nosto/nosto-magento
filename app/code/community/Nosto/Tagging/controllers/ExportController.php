@@ -59,7 +59,8 @@ class Nosto_tagging_ExportController extends Mage_Core_Controller_Front_Action
             }
             $collection = new NostoExportOrderCollection();
             foreach ($orders as $order) {
-                $meta = new Nosto_Tagging_Model_Meta_Order();
+                /** @var Nosto_Tagging_Model_Meta_Order $meta */
+                $meta = Mage::getModel('nosto_tagging/meta_order');
                 // We don't need special items like shipping cost and discounts.
                 $meta->includeSpecialItems = false;
                 $meta->loadData($order);
@@ -104,7 +105,8 @@ class Nosto_tagging_ExportController extends Mage_Core_Controller_Front_Action
                 ) {
                     continue;
                 }
-                $meta = new Nosto_Tagging_Model_Meta_Product();
+                /** @var Nosto_Tagging_Model_Meta_Product $meta */
+                $meta = Mage::getModel('nosto_tagging/meta_product');
                 $meta->loadData($product);
                 $validator = new NostoValidator($meta);
                 if ($validator->validate()) {

@@ -94,7 +94,11 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     /**
      * @var array the tags for the product.
      */
-    protected $_tags = array();
+    protected $_tags = array(
+        'tag1' => array(),
+        'tag2' => array(),
+        'tag3' => array(),
+    );
 
     /**
      * @var array the categories the product is located in.
@@ -205,12 +209,12 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
                 ->addStoreFilter($store->getId())
                 ->setActiveFilter();
             foreach ($tagCollection as $tag) {
-                $this->_tags[] = $tag->getName();
+                $this->_tags['tag1'][] = $tag->getName();
             }
         }
 
         if (!$product->canConfigure()) {
-            $this->_tags[] = self::PRODUCT_ADD_TO_CART;
+            $this->_tags['tag1'][] = self::PRODUCT_ADD_TO_CART;
         }
 
         $this->_categories = $this->getProductCategories($product);
@@ -389,7 +393,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     /**
      * Returns the tags for the product.
      *
-     * @return array the tags array, e.g. array("winter", "shoe").
+     * @return array the tags array, e.g. array('tag1' => array("winter", "shoe")).
      */
     public function getTags()
     {
@@ -424,6 +428,24 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     public function getDescription()
     {
         return $this->_description;
+    }
+
+    /**
+     * Returns the full product description,
+     * i.e. both the "short" and "normal" descriptions concatenated.
+     *
+     * @return string the full descriptions.
+     */
+    public function getFullDescription()
+    {
+        $descriptions = array();
+        if (!empty($this->_shortDescription)) {
+            $descriptions[] = $this->_shortDescription;
+        }
+        if (!empty($this->_description)) {
+            $descriptions[] = $this->_description;
+        }
+        return implode(' ', $descriptions);
     }
 
     /**

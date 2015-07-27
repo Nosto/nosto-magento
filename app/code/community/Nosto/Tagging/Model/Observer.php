@@ -100,7 +100,8 @@ class Nosto_Tagging_Model_Observer
                     continue;
                 }
 
-                $model = new Nosto_Tagging_Model_Meta_Product();
+                /** @var Nosto_Tagging_Model_Meta_Product $model */
+                $model = Mage::getModel('nosto_tagging/meta_product');
                 $model->loadData($product, $store);
 
                 // Only send product update if we have all required
@@ -146,7 +147,8 @@ class Nosto_Tagging_Model_Observer
                     continue;
                 }
 
-                $model = new Nosto_Tagging_Model_Meta_Product();
+                /** @var Nosto_Tagging_Model_Meta_Product $model */
+                $model = Mage::getModel('nosto_tagging/meta_product');
                 $model->setProductId($product->getId());
 
                 try {
@@ -177,7 +179,8 @@ class Nosto_Tagging_Model_Observer
             try {
                 /** @var Mage_Sales_Model_Order $mageOrder */
                 $mageOrder = $observer->getEvent()->getOrder();
-                $order = new Nosto_Tagging_Model_Meta_Order();
+                /** @var Nosto_Tagging_Model_Meta_Order $order */
+                $order = Mage::getModel('nosto_tagging/meta_order');
                 $order->loadData($mageOrder);
                 /** @var NostoAccount $account */
                 $account = Mage::helper('nosto_tagging/account')

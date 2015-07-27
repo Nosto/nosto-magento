@@ -76,8 +76,10 @@ class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
     public function getMetaProduct()
     {
         if ($this->_product === null) {
-            $this->_product = new Nosto_Tagging_Model_Meta_Product();
-            $this->_product->loadData($this->getProduct());
+            /** @var Nosto_Tagging_Model_Meta_Product $model */
+            $model = Mage::getModel('nosto_tagging/meta_product');
+            $model->loadData($this->getProduct());
+            $this->_product = $model;
         }
         return $this->_product;
     }

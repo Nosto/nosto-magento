@@ -113,10 +113,16 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
         $this->_ownerLanguageCode = substr(
             Mage::app()->getLocale()->getLocaleCode(), 0, 2
         );
-        $this->_owner = new Nosto_Tagging_Model_Meta_Account_Owner();
-        $this->_owner->loadData($store);
-        $this->_billing = new Nosto_Tagging_Model_Meta_Account_Billing();
-        $this->_billing->loadData($store);
+
+        /** @var Nosto_Tagging_Model_Meta_Account_Owner $owner */
+        $owner = Mage::getModel('nosto_tagging/meta_account_owner');
+        $owner->loadData($store);
+        $this->_owner = $owner;
+
+        /** @var Nosto_Tagging_Model_Meta_Account_Billing $billing */
+        $billing = Mage::getModel('nosto_tagging/meta_account_billing');
+        $billing->loadData($store);
+        $this->_billing = $billing;
     }
 
     /**

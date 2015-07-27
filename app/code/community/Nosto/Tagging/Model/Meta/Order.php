@@ -93,11 +93,15 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
         $this->_createdDate = $order->getCreatedAt();
         $this->_paymentProvider = $order->getPayment()->getMethod();
 
-        $this->_orderStatus = new Nosto_Tagging_Model_Meta_Order_Status();
-        $this->_orderStatus->loadData($order);
+        /** @var Nosto_Tagging_Model_Meta_Order_Status $orderStatus */
+        $orderStatus = Mage::getModel('nosto_tagging/meta_order_status');
+        $orderStatus->loadData($order);
+        $this->_orderStatus = $orderStatus;
 
-        $this->_buyer = new Nosto_Tagging_Model_Meta_Order_Buyer();
-        $this->_buyer->loadData($order);
+        /** @var Nosto_Tagging_Model_Meta_Order_Buyer $orderBuyer */
+        $orderBuyer = Mage::getModel('nosto_tagging/meta_order_buyer');
+        $orderBuyer->loadData($order);
+        $this->_buyer = $orderBuyer;
 
         /** @var $item Mage_Sales_Model_Order_Item */
         foreach ($order->getAllVisibleItems() as $item) {
@@ -109,14 +113,16 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
             ) {
                 continue;
             }
-            $orderItem = new Nosto_Tagging_Model_Meta_Order_Item();
+            /** @var Nosto_Tagging_Model_Meta_Order_Item $orderItem */
+            $orderItem = Mage::getModel('nosto_tagging/meta_order_item');
             $orderItem->loadData($item);
             $this->_items[] = $orderItem;
         }
 
         if ($this->includeSpecialItems) {
             if (($discount = $order->getDiscountAmount()) > 0) {
-                $orderItem = new Nosto_Tagging_Model_Meta_Order_Item();
+                /** @var Nosto_Tagging_Model_Meta_Order_Item $orderItem */
+                $orderItem = Mage::getModel('nosto_tagging/meta_order_item');
                 $orderItem->loadSpecialItemData(
                     'Discount',
                     $discount,
@@ -126,7 +132,8 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
             }
 
             if (($shippingInclTax = $order->getShippingInclTax()) > 0) {
-                $orderItem = new Nosto_Tagging_Model_Meta_Order_Item();
+                /** @var Nosto_Tagging_Model_Meta_Order_Item $orderItem */
+                $orderItem = Mage::getModel('nosto_tagging/meta_order_item');
                 $orderItem->loadSpecialItemData(
                     'Shipping and handling',
                     $shippingInclTax,
