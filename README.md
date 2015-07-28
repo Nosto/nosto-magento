@@ -125,21 +125,6 @@ You can read more about how to modify Nosto to suit your needs in our
 [support center](https://support.nosto.com/), where you will find Magento
 related documentation and guides.
 
-### Extending
-
-Here you can find some guidelines for extending the functionality of the
-extension.
-
-Example 1:
-
-If you wish to add/modify data in the the product tagging, then the easiest way
-to achieve this is to override the template file used to render the product
-tagging. You need to copy the template file from
-`app/design/frontend/base/default/template/nostotagging/product.phtml` to
-`app/design/frontend/THEME/default/template/nostotagging/product.phtml`. Then
-you can edit the copied file and add your modifications. Magento will
-automatically recognise the overridden file once the cache is cleared.
-
 ## License
 
 Open Software License ("OSL") v3.0
