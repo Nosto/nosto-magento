@@ -167,37 +167,58 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
             $store = Mage::app()->getStore();
         }
 
-        // Unset the cached url first, as it won't include the `___store` param
-        // if it's cached. We need to define the specific store view in the url
-        // in case the same domain is used for all sites.
-        $this->_url = $product
-            ->unsetData('url')
-            ->getUrlInStore(
-                array(
-                    '_nosid' => true,
-                    '_ignore_category' => true,
-                    '_store' => $store->getCode(),
-                )
-            );
+        /** @var Nosto_Tagging_Helper_Price $priceHelper */
+        $priceHelper = Mage::helper('nosto_tagging/price');
 
+        $this->_url = $this->buildUrl($product, $store);
         $this->_productId = $product->getId();
         $this->_name = $product->getName();
         $this->_imageUrl = $this->buildImageUrl($product, $store);
-
-        $this->_price = Mage::helper('tax')->getPrice(
-            $product,
-            Mage::helper('nosto_tagging/price')->getProductFinalPrice($product),
-            true
-        );
-        $this->_listPrice = Mage::helper('tax')->getPrice(
-            $product,
-            Mage::helper('nosto_tagging/price')->getProductPrice($product),
-            true
-        );
+        $this->_price = $priceHelper->getProductFinalPriceInclTax($product);
+        $this->_listPrice = $priceHelper->getProductPriceInclTax($product);
         $this->_currencyCode = $store->getCurrentCurrencyCode();
         $this->_availability = $product->isAvailable()
             ? self::PRODUCT_IN_STOCK
             : self::PRODUCT_OUT_OF_STOCK;
+        $this->_categories = $this->buildCategories($product);
+
+        // Optional properties.
+
+        if ($product->hasData('short_description')) {
+            $this->_shortDescription = $product->getData('short_description');
+        }
+        if ($product->hasData('description')) {
+            $this->_description = $product->getData('description');
+        }
+        if ($product->hasData('manufacturer')) {
+            $this->_brand = $product->getAttributeText('manufacturer');
+        }
+        if (($tags = $this->buildTags($product, $store)) !== array()) {
+            $this->_tags['tag1'] = $tags;
+        }
+        if ($product->hasData('created_at')) {
+            $this->_datePublished = $product->getData('created_at');
+        }
+    }
+
+    /**
+     * Builds the "tag1" tags.
+     *
+     * These include any "tag/tag" model names linked to the product, as well
+     * as a special "add-to-cart" tag if the product can be added to the
+     * cart directly without any choices, i.e. it is a non-configurable simple
+     * product.
+     * This special tag can then be used in the store frontend to enable a
+     * "add to cart" button in the product recommendations.
+     *
+     * @param Mage_Catalog_Model_Product $product the product model.
+     * @param Mage_Core_Model_Store      $store the store model.
+     *
+     * @return array
+     */
+    protected function buildTags(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
+    {
+        $tags = array();
 
         if (Mage::helper('core')->isModuleEnabled('Mage_Tag')) {
             $tagCollection = Mage::getModel('tag/tag')
@@ -209,54 +230,44 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
                 ->addStoreFilter($store->getId())
                 ->setActiveFilter();
             foreach ($tagCollection as $tag) {
-                $this->_tags['tag1'][] = $tag->getName();
+                /** @var Mage_Tag_Model_Tag $tag */
+                $tags[] = $tag->getName();
             }
         }
 
         if (!$product->canConfigure()) {
-            $this->_tags['tag1'][] = self::PRODUCT_ADD_TO_CART;
+            $tags[] = self::PRODUCT_ADD_TO_CART;
         }
 
-        $this->_categories = $this->getProductCategories($product);
-        $this->_shortDescription = (string)$product->getShortDescription();
-        $this->_description = (string)$product->getDescription();
-        $this->_brand = $product->getManufacturer()
-            ? (string)$product->getAttributeText('manufacturer')
-            : '';
-
-        $this->_datePublished = $product->getCreatedAt();
+        return $tags;
     }
 
     /**
-     * Return array of categories for the product.
-     * The items in the array are strings combined of the complete category
-     * path to the products own category.
+     * Builds the absolute store front url for the product page.
      *
-     * Structure:
-     * array (
-     *     /Electronics/Computers
-     * )
+     * The url includes the "___store" GET parameter in order for the Nosto
+     * crawler to distinguish between stores that do not have separate domains
+     * or paths.
      *
      * @param Mage_Catalog_Model_Product $product the product model.
+     * @param Mage_Core_Model_Store      $store the store model.
      *
-     * @return array
+     * @return string
      */
-    public function getProductCategories(Mage_Catalog_Model_Product $product)
+    protected function buildUrl(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
-        $data = array();
-
-        if ($product instanceof Mage_Catalog_Model_Product) {
-            $categoryCollection = $product->getCategoryCollection();
-            foreach ($categoryCollection as $category) {
-                $categoryString = Mage::helper('nosto_tagging')
-                    ->buildCategoryString($category);
-                if (!empty($categoryString)) {
-                    $data[] = $categoryString;
-                }
-            }
-        }
-
-        return $data;
+        // Unset the cached url first, as it won't include the `___store` param
+        // if it's cached. We need to define the specific store view in the url
+        // in case the same domain is used for all sites.
+        $product->unsetData('url');
+        return $product
+            ->getUrlInStore(
+                array(
+                    '_nosid' => true,
+                    '_ignore_category' => true,
+                    '_store' => $store->getCode(),
+                )
+            );
     }
 
     /**
@@ -286,6 +297,39 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
             $url = $baseUrl.'/catalog/product/'.$file;
         }
         return $url;
+    }
+
+    /**
+     * Return array of categories for the product.
+     * The items in the array are strings combined of the complete category
+     * path to the products own category.
+     *
+     * Structure:
+     * array (
+     *     /Electronics/Computers
+     * )
+     *
+     * @param Mage_Catalog_Model_Product $product the product model.
+     *
+     * @return array
+     */
+    protected function buildCategories(Mage_Catalog_Model_Product $product)
+    {
+        $data = array();
+
+        if ($product instanceof Mage_Catalog_Model_Product) {
+            /** @var Nosto_Tagging_Helper_Data $helper */
+            $helper = Mage::helper('nosto_tagging');
+            $categoryCollection = $product->getCategoryCollection();
+            foreach ($categoryCollection as $category) {
+                $categoryString = $helper->buildCategoryString($category);
+                if (!empty($categoryString)) {
+                    $data[] = $categoryString;
+                }
+            }
+        }
+
+        return $data;
     }
 
     /**
@@ -431,24 +475,6 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     }
 
     /**
-     * Returns the full product description,
-     * i.e. both the "short" and "normal" descriptions concatenated.
-     *
-     * @return string the full descriptions.
-     */
-    public function getFullDescription()
-    {
-        $descriptions = array();
-        if (!empty($this->_shortDescription)) {
-            $descriptions[] = $this->_shortDescription;
-        }
-        if (!empty($this->_description)) {
-            $descriptions[] = $this->_description;
-        }
-        return implode(' ', $descriptions);
-    }
-
-    /**
      * Returns the product brand name.
      *
      * @return string the brand name.
@@ -466,5 +492,23 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     public function getDatePublished()
     {
         return $this->_datePublished;
+    }
+
+    /**
+     * Returns the full product description,
+     * i.e. both the "short" and "normal" descriptions concatenated.
+     *
+     * @return string the full descriptions.
+     */
+    public function getFullDescription()
+    {
+        $descriptions = array();
+        if (!empty($this->_shortDescription)) {
+            $descriptions[] = $this->_shortDescription;
+        }
+        if (!empty($this->_description)) {
+            $descriptions[] = $this->_description;
+        }
+        return implode(' ', $descriptions);
     }
 }

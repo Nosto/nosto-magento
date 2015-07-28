@@ -47,27 +47,27 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Gets the unit price for a product model.
+     * Gets the unit price for a product model including taxes.
      *
      * @param Mage_Catalog_Model_Product $product the product model.
      *
      * @return float
      */
-    public function getProductPrice($product)
+    public function getProductPriceInclTax($product)
     {
-        return $this->_getProductPrice($product);
+        return $this->_getProductPrice($product, false, true);
     }
 
     /**
-     * Get the final price for a product model.
+     * Get the final price for a product model including taxes.
      *
      * @param Mage_Catalog_Model_Product $product the product model.
      *
      * @return float
      */
-    public function getProductFinalPrice($product)
+    public function getProductFinalPriceInclTax($product)
     {
-        return $this->_getProductPrice($product, true);
+        return $this->_getProductPrice($product, true, true);
     }
 
     /**
@@ -75,10 +75,11 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
      *
      * @param Mage_Catalog_Model_Product $product    the product model.
      * @param bool                       $finalPrice if final price.
+     * @param bool                       $inclTax    if tax is to be included.
      *
      * @return float
      */
-    protected function _getProductPrice($product, $finalPrice = false)
+    protected function _getProductPrice($product, $finalPrice = false, $inclTax = true)
     {
         $price = 0;
 
@@ -118,6 +119,10 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
                 break;
         }
 
-        return (float)$price;
+        if ($inclTax) {
+            return Mage::helper('tax')->getPrice($product, $price, true);
+        } else {
+            return $price;
+        }
     }
 }

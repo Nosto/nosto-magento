@@ -49,6 +49,7 @@ class Nosto_tagging_ExportController extends Mage_Core_Controller_Front_Action
             $pageSize = (int)$this->getRequest()->getParam('limit', 100);
             $currentOffset = (int)$this->getRequest()->getParam('offset', 0);
             $currentPage = ($currentOffset / $pageSize) + 1;
+            /** @var Mage_Sales_Model_Resource_Order_Collection $orders */
             $orders = Mage::getModel('sales/order')
                 ->getCollection()
                 ->addFieldToFilter('store_id', Mage::app()->getStore()->getId())
@@ -80,7 +81,10 @@ class Nosto_tagging_ExportController extends Mage_Core_Controller_Front_Action
             $pageSize = (int)$this->getRequest()->getParam('limit', 100);
             $currentOffset = (int)$this->getRequest()->getParam('offset', 0);
             $currentPage = ($currentOffset / $pageSize) + 1;
-            $products = Mage::getModel('catalog/product')
+            // We use our own collection object to avoid issues with the product
+            // flat collection. It's missing required data by default.
+            /** @var Nosto_Tagging_Model_Resource_Product_Collection $products */
+            $products = Mage::getModel('nosto_tagging/product')
                 ->getCollection()
                 ->addStoreFilter(Mage::app()->getStore()->getId())
                 ->addAttributeToSelect('*')
