@@ -36,11 +36,6 @@
 class Nosto_Tagging_Block_Cart extends Mage_Checkout_Block_Cart_Abstract
 {
     /**
-     * @var Mage_Sales_Model_Quote_Item[] Cached items in cart.
-     */
-    protected $_items;
-
-    /**
      * Render shopping cart content as hidden meta data if the module is
      * enabled for the current store.
      *
@@ -70,31 +65,6 @@ class Nosto_Tagging_Block_Cart extends Mage_Checkout_Block_Cart_Abstract
         }
 
         return parent::_toHtml();
-    }
-
-    /**
-     * Returns all visible cart items.
-     * Fixed price bundle products are not supported.
-     *
-     * @return Mage_Sales_Model_Quote_Item[]
-     */
-    public function getItems()
-    {
-        if (!$this->_items) {
-            $items = array();
-            foreach (parent::getItems() as $item) {
-                /** @var Mage_Sales_Model_Quote_Item $item */
-                $product = $item->getProduct();
-                if ($product->getTypeId() === Mage_Catalog_Model_Product_Type::TYPE_BUNDLE
-                    && (int)$product->getPriceType() === Mage_Bundle_Model_Product_Price::PRICE_TYPE_FIXED
-                ) {
-                    continue;
-                }
-                $items[] = $item;
-            }
-            $this->_items = $items;
-        }
-        return $this->_items;
     }
 
     /**

@@ -105,14 +105,6 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
 
         /** @var $item Mage_Sales_Model_Order_Item */
         foreach ($order->getAllVisibleItems() as $item) {
-            /** @var Mage_Catalog_Model_Product $product */
-            $product = Mage::getModel('catalog/product')
-                ->load($item->getProductId());
-            if ($product->getTypeId() === Mage_Catalog_Model_Product_Type::TYPE_BUNDLE
-                && (int)$product->getPriceType() === Mage_Bundle_Model_Product_Price::PRICE_TYPE_FIXED
-            ) {
-                continue;
-            }
             /** @var Nosto_Tagging_Model_Meta_Order_Item $orderItem */
             $orderItem = Mage::getModel('nosto_tagging/meta_order_item');
             $orderItem->loadData($item);

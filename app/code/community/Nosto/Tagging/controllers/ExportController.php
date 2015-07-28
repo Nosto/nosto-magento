@@ -100,11 +100,7 @@ class Nosto_tagging_ExportController extends Mage_Core_Controller_Front_Action
             }
             $collection = new NostoExportProductCollection();
             foreach ($products as $product) {
-                if ($product->getTypeId() === Mage_Catalog_Model_Product_Type::TYPE_BUNDLE
-                    && (int)$product->getPriceType() === Mage_Bundle_Model_Product_Price::PRICE_TYPE_FIXED
-                ) {
-                    continue;
-                }
+                /** @var Mage_Catalog_Model_Product $product */
                 /** @var Nosto_Tagging_Model_Meta_Product $meta */
                 $meta = Mage::getModel('nosto_tagging/meta_product');
                 $meta->loadData($product);

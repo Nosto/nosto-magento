@@ -267,7 +267,6 @@ Catalog Category" option was enabled
 
 ## Known issues
 
-* Does not support bundle products with fixed price setting
 * The default position of the top nosto element on both the category page and
 the search result page is above the page title. It may be relevant to move the
 element below the title. In order to do this you need to first remove it from
