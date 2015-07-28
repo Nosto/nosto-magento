@@ -50,6 +50,17 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_PARTNER_CODE = 'nosto_tagging/general/partner_code';
 
     /**
+     * @inheritdoc
+     */
+    public function quoteEscape($data, $addSlashes = false)
+    {
+        if ($addSlashes === true) {
+            $data = addslashes($data);
+        }
+        return htmlspecialchars($data, ENT_QUOTES, null, false);
+    }
+
+    /**
      * Builds a tagging string of the given category including all its parent
      * categories.
      * The categories are sorted by their position in the category tree path.
