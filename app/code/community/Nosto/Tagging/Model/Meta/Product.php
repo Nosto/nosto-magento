@@ -317,15 +317,13 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     {
         $data = array();
 
-        if ($product instanceof Mage_Catalog_Model_Product) {
-            /** @var Nosto_Tagging_Helper_Data $helper */
-            $helper = Mage::helper('nosto_tagging');
-            $categoryCollection = $product->getCategoryCollection();
-            foreach ($categoryCollection as $category) {
-                $categoryString = $helper->buildCategoryString($category);
-                if (!empty($categoryString)) {
-                    $data[] = $categoryString;
-                }
+        /** @var Nosto_Tagging_Helper_Data $helper */
+        $helper = Mage::helper('nosto_tagging');
+        $categoryCollection = $product->getCategoryCollection();
+        foreach ($categoryCollection as $category) {
+            $categoryString = $helper->buildCategoryString($category);
+            if (!empty($categoryString)) {
+                $data[] = $categoryString;
             }
         }
 
