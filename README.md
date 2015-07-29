@@ -135,8 +135,20 @@ Open Software License ("OSL") v3.0
 
 ## Changelog
 
+### x.x.x
+* Add better error handling and notifications to Nosto account OAuth cycle
+* Add support for bundle products with fixed pricing
+* Add support for using "tag1", "tag2" and "tag3" properties in Nosto product
+tagging and product update API
+* Add support for Nosto partner code in account creation API
+* Add support for overriding meta data models
+* Fix bug in cart/order item name tagging while running Magento Dev Mode
+* Fix bug in product export while having product flat tables enabled
+* Fix bug in order confirmation API when payment provider is no longer available
+
 ### 2.5.1
-* Re-packaged extension to support installs from Magento Connect with the latest (1.9.2) Magento version.
+* Re-packaged extension to support installs from Magento Connect with the latest
+(1.9.2) Magento version.
 
 ### 2.5.0
 * Add order status and payment provider info to order tagging
