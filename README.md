@@ -135,7 +135,7 @@ Open Software License ("OSL") v3.0
 
 ## Changelog
 
-### x.x.x
+### 2.6.0
 * Add better error handling and notifications to Nosto account OAuth cycle
 * Add support for bundle products with fixed pricing
 * Add support for using "tag1", "tag2" and "tag3" properties in Nosto product

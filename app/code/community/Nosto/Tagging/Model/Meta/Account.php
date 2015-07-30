@@ -241,7 +241,7 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
      */
     public function getPartnerCode()
     {
-		// todo: implement partner code storage.
+        // todo: implement partner code storage.
         return null;
     }
 }
