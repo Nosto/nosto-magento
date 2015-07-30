@@ -121,16 +121,6 @@ class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements
     }
 
     /**
-     * Sets the redirect url.
-     *
-     * @param string $url the url.
-     */
-    public function setRedirectUrl($url)
-    {
-        $this->_redirectUrl = $url;
-    }
-
-    /**
      * The 2-letter ISO code (ISO 639-1) for the language the OAuth2 server
      * uses for UI localization.
      *
@@ -139,15 +129,5 @@ class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements
     public function getLanguageIsoCode()
     {
         return $this->_languageIsoCode;
-    }
-
-    /**
-     * Sets the language ISO code.
-     *
-     * @param string $code the ISO code.
-     */
-    public function setLanguageIsoCode($code)
-    {
-        $this->_languageIsoCode = $code;
     }
 }

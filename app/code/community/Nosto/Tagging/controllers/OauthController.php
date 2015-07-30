@@ -103,7 +103,8 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
             $this->_redirect(
                 'adminhtml/nosto/redirectProxy', array(
                     'message_type' => NostoMessage::TYPE_ERROR,
-                    'message_code' => !empty($reason) ? $reason : NostoMessage::CODE_ACCOUNT_CONNECT,
+                    'message_code' => NostoMessage::CODE_ACCOUNT_CONNECT,
+                    'message_text' => $desc,
                     'store' => (int)Mage::app()->getStore()->getId(),
                 )
             );

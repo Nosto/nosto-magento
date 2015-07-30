@@ -26,45 +26,21 @@
  */
 
 /**
- * Meta data class which holds information about Nosto account billing.
- * This is used during the Nosto account creation.
+ * Product collection that extends the Magento catalog product collection.
+ * Used to disable flat collections in product exports to Nosto.
  *
  * @category Nosto
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Account_Billing extends Mage_Core_Model_Abstract implements NostoAccountMetaDataBillingDetailsInterface
+class Nosto_Tagging_Model_Resource_Product_Collection extends Mage_Catalog_Model_Resource_Product_Collection
 {
-    /**
-     * @var string country ISO (ISO 3166-1 alpha-2) code for billing details.
-     */
-    protected $_country;
-
     /**
      * @inheritdoc
      */
-    protected function _construct()
+    public function isEnabledFlat()
     {
-        $this->_init('nosto_tagging/meta_account_billing');
-    }
-
-    /**
-     * Loads the meta data for the given store.
-     *
-     * @param Mage_Core_Model_Store $store the store view to load the data for.
-     */
-    public function loadData(Mage_Core_Model_Store $store)
-    {
-        $this->_country = $store->getConfig('general/country/default');
-    }
-
-    /**
-     * The 2-letter ISO code (ISO 3166-1 alpha-2) for billing details country.
-     *
-     * @return string the country ISO code.
-     */
-    public function getCountry()
-    {
-        return $this->_country;
+        // Never use the flat collection.
+        return false;
     }
 }

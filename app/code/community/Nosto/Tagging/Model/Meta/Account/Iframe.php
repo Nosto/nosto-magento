@@ -152,16 +152,6 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
     }
 
     /**
-     * Sets the first name of the admin user.
-     *
-     * @param string $firstName the first name.
-     */
-    public function setFirstName($firstName)
-    {
-        $this->_firstName = $firstName;
-    }
-
-    /**
      * The first name of the user who is loading the config iframe.
      *
      * @return string the first name.
@@ -169,16 +159,6 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
     public function getFirstName()
     {
         return $this->_firstName;
-    }
-
-    /**
-     * Sets the last name of the admin user.
-     *
-     * @param string $lastName the last name.
-     */
-    public function setLastName($lastName)
-    {
-        $this->_lastName = $lastName;
     }
 
     /**
@@ -192,16 +172,6 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
     }
 
     /**
-     * Sets the email address of the admin user.
-     *
-     * @param string $email the email address.
-     */
-    public function setEmail($email)
-    {
-        $this->_email = $email;
-    }
-
-    /**
      * The email address of the user who is loading the config iframe.
      *
      * @return string the email address.
@@ -209,16 +179,6 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
     public function getEmail()
     {
         return $this->_email;
-    }
-
-    /**
-     * Sets the language ISO code.
-     *
-     * @param string $code the ISO code.
-     */
-    public function setLanguageIsoCode($code)
-    {
-        $this->_languageIsoCode = $code;
     }
 
     /**

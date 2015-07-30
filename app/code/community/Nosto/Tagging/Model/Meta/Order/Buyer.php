@@ -60,6 +60,18 @@ class Nosto_Tagging_Model_Meta_Order_Buyer extends Mage_Core_Model_Abstract impl
     }
 
     /**
+     * Loads the buyer info from a Magento order model.
+     *
+     * @param Mage_Sales_Model_Order $order the order model.
+     */
+    public function loadData(Mage_Sales_Model_Order $order)
+    {
+        $this->_firstName = $order->getCustomerFirstname();
+        $this->_lastName = $order->getCustomerLastname();
+        $this->_email = $order->getCustomerEmail();
+    }
+
+    /**
      * Gets the first name of the user who placed the order.
      *
      * @return string the first name.
@@ -87,17 +99,5 @@ class Nosto_Tagging_Model_Meta_Order_Buyer extends Mage_Core_Model_Abstract impl
     public function getEmail()
     {
         return $this->_email;
-    }
-
-    /**
-     * Loads the buyer info from a Magento order model.
-     *
-     * @param Mage_Sales_Model_Order $order the order model.
-     */
-    public function loadData(Mage_Sales_Model_Order $order)
-    {
-        $this->_firstName = $order->getCustomerFirstname();
-        $this->_lastName = $order->getCustomerLastname();
-        $this->_email = $order->getCustomerEmail();
     }
 }

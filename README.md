@@ -125,21 +125,6 @@ You can read more about how to modify Nosto to suit your needs in our
 [support center](https://support.nosto.com/), where you will find Magento
 related documentation and guides.
 
-### Extending
-
-Here you can find some guidelines for extending the functionality of the
-extension.
-
-Example 1:
-
-If you wish to add/modify data in the the product tagging, then the easiest way
-to achieve this is to override the template file used to render the product
-tagging. You need to copy the template file from
-`app/design/frontend/base/default/template/nostotagging/product.phtml` to
-`app/design/frontend/THEME/default/template/nostotagging/product.phtml`. Then
-you can edit the copied file and add your modifications. Magento will
-automatically recognise the overridden file once the cache is cleared.
-
 ## License
 
 Open Software License ("OSL") v3.0
@@ -150,8 +135,20 @@ Open Software License ("OSL") v3.0
 
 ## Changelog
 
+### 2.6.0
+* Add better error handling and notifications to Nosto account OAuth cycle
+* Add support for bundle products with fixed pricing
+* Add support for using "tag1", "tag2" and "tag3" properties in Nosto product
+tagging and product update API
+* Add support for Nosto partner code in account creation API
+* Add support for overriding meta data models
+* Fix bug in cart/order item name tagging while running Magento Dev Mode
+* Fix bug in product export while having product flat tables enabled
+* Fix bug in order confirmation API when payment provider is no longer available
+
 ### 2.5.1
-* Re-packaged extension to support installs from Magento Connect with the latest (1.9.2) Magento version.
+* Re-packaged extension to support installs from Magento Connect with the latest
+(1.9.2) Magento version.
 
 ### 2.5.0
 * Add order status and payment provider info to order tagging
@@ -267,7 +264,6 @@ Catalog Category" option was enabled
 
 ## Known issues
 
-* Does not support bundle products with fixed price setting
 * The default position of the top nosto element on both the category page and
 the search result page is above the page title. It may be relevant to move the
 element below the title. In order to do this you need to first remove it from

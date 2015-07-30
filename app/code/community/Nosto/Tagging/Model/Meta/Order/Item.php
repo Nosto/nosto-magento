@@ -71,107 +71,6 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
     }
 
     /**
-     * The unique identifier of the purchased item.
-     * If this item is for discounts or shipping cost, the id can be 0.
-     *
-     * @return string|int
-     */
-    public function getProductId()
-    {
-        return $this->_productId;
-    }
-
-    /**
-     * Sets the unique identifier for the item.
-     *
-     * @param string|int $id the product id.
-     */
-    public function setProductId($id)
-    {
-        $this->_productId = $id;
-    }
-
-    /**
-     * The quantity of the item included in the order.
-     *
-     * @return int the quantity.
-     */
-    public function getQuantity()
-    {
-        return $this->_quantity;
-    }
-
-    /**
-     * Sets the item quantity.
-     *
-     * @param int $qty the quantity.
-     */
-    public function setQuantity($qty)
-    {
-        $this->_quantity = $qty;
-    }
-
-    /**
-     * The name of the item included in the order.
-     *
-     * @return string the name.
-     */
-    public function getName()
-    {
-        return $this->_name;
-    }
-
-    /**
-     * Sets the item name.
-     *
-     * @param string $name the item name.
-     */
-    public function setName($name)
-    {
-        $this->_name = $name;
-    }
-
-    /**
-     * The unit price of the item included in the order.
-     *
-     * @return float the unit price.
-     */
-    public function getUnitPrice()
-    {
-        return $this->_unitPrice;
-    }
-
-    /**
-     * Sets the item unit price.
-     *
-     * @param float $price the item unit price.
-     */
-    public function setUnitPrice($price)
-    {
-        $this->_unitPrice = $price;
-    }
-
-    /**
-     * The 3-letter ISO code (ISO 4217) for the item currency.
-     *
-     * @return string the currency ISO code.
-     */
-    public function getCurrencyCode()
-    {
-        return $this->_currencyCode;
-    }
-
-    /**
-     * Sets the items currency code (ISO 4217).
-     *
-     * @param string $code the currency ISO code.
-     */
-    public function setCurrencyCode($code)
-    {
-        $this->_currencyCode = $code;
-    }
-
-    /**
      * Loads the item info from the Magento order item model.
      *
      * @param Mage_Sales_Model_Order_Item $item the item model.
@@ -184,6 +83,24 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
         $this->_name = $this->fetchProductName($item);
         $this->_unitPrice = $item->getPriceInclTax();
         $this->_currencyCode = strtoupper($order->getOrderCurrencyCode());
+    }
+
+    /**
+     * Loads the "special item" info from provided data.
+     * A "special item" is an item that is included in an order but does not
+     * represent an item being bough, e.g. shipping fees, discounts etc.
+     *
+     * @param string $name the name of the item.
+     * @param float|int|string $unitPrice the unit price of the item.
+     * @param string $currencyCode the currency code for the item unit price.
+     */
+    public function loadSpecialItemData($name, $unitPrice, $currencyCode)
+    {
+        $this->_productId = -1;
+        $this->_quantity = 1;
+        $this->_name = (string)$name;
+        $this->_unitPrice = $unitPrice;
+        $this->_currencyCode = strtoupper($currencyCode);
     }
 
     /**
@@ -243,13 +160,15 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
             // products own name alone.
             if (count($parentIds) === 1) {
                 $attributes = $item->getBuyRequest()->getData('super_attribute');
-                foreach ($attributes as $id => $value) {
-                    /** @var Mage_Catalog_Model_Resource_Eav_Attribute $attribute */
-                    $attribute = Mage::getModel('catalog/resource_eav_attribute')
-                        ->load($id);
-                    $label = $attribute->getSource()->getOptionText($value);
-                    if (!empty($label)) {
-                        $optNames[] = $label;
+                if (is_array($attributes)) {
+                    foreach ($attributes as $id => $value) {
+                        /** @var Mage_Catalog_Model_Resource_Eav_Attribute $attribute */
+                        $attribute = Mage::getModel('catalog/resource_eav_attribute')
+                            ->load($id);
+                        $label = $attribute->getSource()->getOptionText($value);
+                        if (!empty($label)) {
+                            $optNames[] = $label;
+                        }
                     }
                 }
             }
@@ -297,5 +216,56 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
         }
 
         return $name;
+    }
+
+    /**
+     * The unique identifier of the purchased item.
+     * If this item is for discounts or shipping cost, the id can be 0.
+     *
+     * @return string|int
+     */
+    public function getProductId()
+    {
+        return $this->_productId;
+    }
+
+    /**
+     * The quantity of the item included in the order.
+     *
+     * @return int the quantity.
+     */
+    public function getQuantity()
+    {
+        return $this->_quantity;
+    }
+
+    /**
+     * The name of the item included in the order.
+     *
+     * @return string the name.
+     */
+    public function getName()
+    {
+        return $this->_name;
+    }
+
+    /**
+     * The unit price of the item included in the order.
+     *
+     * @return float the unit price.
+     */
+    public function getUnitPrice()
+    {
+        return $this->_unitPrice;
+    }
+
+    /**
+     * The 3-letter ISO code (ISO 4217) for the item currency.
+     *
+     * @return string the currency ISO code.
+     */
+    public function getCurrencyCode()
+    {
+        return $this->_currencyCode;
     }
 }

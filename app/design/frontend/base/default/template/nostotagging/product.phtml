@@ -34,7 +34,6 @@
  * @var $dateHelper  Nosto_Tagging_Helper_Date
  */
 $product = $this->getMetaProduct();
-$currentCategory = $this->getCurrentCategory();
 $helper = Mage::helper('nosto_tagging');
 $priceHelper = Mage::helper('nosto_tagging/price');
 $dateHelper = Mage::helper('nosto_tagging/date');
@@ -52,16 +51,24 @@ $dateHelper = Mage::helper('nosto_tagging/date');
     <?php foreach ($product->getCategories() as $category): ?>
         <span class="category"><?php echo $helper->escapeHtml($category); ?></span>
     <?php endforeach; ?>
-    <span class="description"><?php echo $helper->escapeHtml($product->getDescription()); ?></span>
-    <span class="list_price"><?php echo $priceHelper->getFormattedPrice($product->getListPrice()); ?></span>
-    <?php if ($product->getBrand() !== ""): ?>
+    <?php if ($product->getFullDescription()): ?>
+        <span class="description"><?php echo $helper->escapeHtml($product->getFullDescription()); ?></span>
+    <?php endif; ?>
+    <?php if ($product->getListPrice()): ?>
+        <span class="list_price"><?php echo $priceHelper->getFormattedPrice($product->getListPrice()); ?></span>
+    <?php endif; ?>
+    <?php if ($product->getBrand()): ?>
         <span class="brand"><?php echo $helper->escapeHtml($product->getBrand()); ?></span>
     <?php endif; ?>
-    <span class="date_published"><?php echo $dateHelper->getFormattedDate($product->getDatePublished()); ?></span>
-    <?php foreach ($product->getTags() as $tag): ?>
-        <span class="tag1"><?php echo $helper->escapeHtml($tag); ?></span>
+    <?php foreach ($product->getTags() as $type => $tags): ?>
+        <?php foreach ($tags as $tag): ?>
+            <span class="<?php echo $helper->quoteEscape($type); ?>"><?php echo $helper->escapeHtml($tag); ?></span>
+        <?php endforeach; ?>
     <?php endforeach; ?>
+    <?php if ($product->getDatePublished()): ?>
+        <span class="date_published"><?php echo $dateHelper->getFormattedDate($product->getDatePublished()); ?></span>
+    <?php endif; ?>
 </div>
-<?php if (!empty($currentCategory)): ?>
-    <div class="nosto_category" style="display:none"><?php echo $helper->escapeHtml($currentCategory); ?></div>
+<?php if ($this->getCurrentCategory()): ?>
+    <div class="nosto_category" style="display:none"><?php echo $helper->escapeHtml($this->getCurrentCategory()); ?></div>
 <?php endif; ?>

@@ -26,45 +26,20 @@
  */
 
 /**
- * Meta data class which holds information about Nosto account billing.
- * This is used during the Nosto account creation.
+ * Product model that extends the Magento catalog product model.
+ * Used to define custom product collection in product exports to Nosto.
  *
  * @category Nosto
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Account_Billing extends Mage_Core_Model_Abstract implements NostoAccountMetaDataBillingDetailsInterface
+class Nosto_Tagging_Model_Product extends Mage_Catalog_Model_Product
 {
-    /**
-     * @var string country ISO (ISO 3166-1 alpha-2) code for billing details.
-     */
-    protected $_country;
-
     /**
      * @inheritdoc
      */
     protected function _construct()
     {
-        $this->_init('nosto_tagging/meta_account_billing');
-    }
-
-    /**
-     * Loads the meta data for the given store.
-     *
-     * @param Mage_Core_Model_Store $store the store view to load the data for.
-     */
-    public function loadData(Mage_Core_Model_Store $store)
-    {
-        $this->_country = $store->getConfig('general/country/default');
-    }
-
-    /**
-     * The 2-letter ISO code (ISO 3166-1 alpha-2) for billing details country.
-     *
-     * @return string the country ISO code.
-     */
-    public function getCountry()
-    {
-        return $this->_country;
+        $this->_init('nosto_tagging/product');
     }
 }
