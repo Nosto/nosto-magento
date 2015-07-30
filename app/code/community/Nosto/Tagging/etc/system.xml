@@ -36,25 +36,6 @@
             <show_in_website>1</show_in_website>
             <show_in_store>1</show_in_store>
             <groups>
-                <general translate="label">
-                    <label>General</label>
-                    <frontend_type>text</frontend_type>
-                    <sort_order>10</sort_order>
-                    <show_in_default>1</show_in_default>
-                    <show_in_website>1</show_in_website>
-                    <show_in_store>1</show_in_store>
-                    <expanded>0</expanded>
-                    <fields>
-                        <partner_code translate="label">
-                            <label>Partner Code</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>10</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </partner_code>
-                    </fields>
-                </general>
                 <image_options translate="label">
                     <label>Image Options</label>
                     <frontend_type>text</frontend_type>
