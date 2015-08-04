@@ -33,7 +33,7 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Account_Owner extends Mage_Core_Model_Abstract implements NostoAccountMetaDataOwnerInterface
+class Nosto_Tagging_Model_Meta_Account_Owner extends Mage_Core_Model_Abstract implements NostoAccountMetaOwnerInterface
 {
     /**
      * @var string the account owner first name.

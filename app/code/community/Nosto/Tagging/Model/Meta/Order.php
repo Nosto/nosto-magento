@@ -180,7 +180,7 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
     /**
      * The purchased items which were included in the order.
      *
-     * @return NostoOrderPurchasedItemInterface[] the meta data models.
+     * @return NostoOrderItemInterface[] the meta data models.
      */
     public function getPurchasedItems()
     {

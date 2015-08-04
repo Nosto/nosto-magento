@@ -25,7 +25,7 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-require_once Mage::getBaseDir('lib') . '/nosto/php-sdk/src/config.inc.php';
+require_once Mage::getBaseDir('lib') . '/nosto/php-sdk/autoload.php';
 
 /**
  * Event observer model.
@@ -109,9 +109,9 @@ class Nosto_Tagging_Model_Observer
                 $validator = new NostoValidator($model);
                 if ($validator->validate()) {
                     try {
-                        $op = new NostoOperationProduct($account);
-                        $op->addProduct($model);
-                        $op->upsert();
+                        $service = new NostoServiceProduct($account);
+                        $service->addProduct($model);
+                        $service->upsert();
                     } catch (NostoException $e) {
                         Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
                     }
@@ -152,9 +152,9 @@ class Nosto_Tagging_Model_Observer
                 $model->setProductId($product->getId());
 
                 try {
-                    $op = new NostoOperationProduct($account);
-                    $op->addProduct($model);
-                    $op->delete();
+                    $service = new NostoServiceProduct($account);
+                    $service->addProduct($model);
+                    $service->delete();
                 } catch (NostoException $e) {
                     Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
                 }
@@ -188,7 +188,8 @@ class Nosto_Tagging_Model_Observer
                 $customerId = Mage::helper('nosto_tagging/customer')
                     ->getNostoId($mageOrder);
                 if ($account !== null && $account->isConnectedToNosto()) {
-                    NostoOrderConfirmation::send($order, $account, $customerId);
+                    $service = new NostoServiceOrder($account);
+                    $service->confirm($order, $customerId);
                 }
             } catch (NostoException $e) {
                 Mage::log("\n" . $e->__toString(), Zend_Log::ERR, 'nostotagging.log');
