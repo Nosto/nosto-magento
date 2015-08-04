@@ -72,27 +72,13 @@ class Nosto_Tagging_Model_Meta_Product_Price_Variation implements NostoProductPr
         $currency = Mage::getModel('directory/currency')->load($currencyCode);
         /** @var Nosto_Tagging_Helper_Price $priceHelper */
         $priceHelper = Mage::helper('nosto_tagging/price');
-        /** @var Mage_Tax_Helper_Data $taxHelper */
-        $taxHelper = Mage::helper('tax');
 
         $this->_id = strtoupper($currencyCode);
         $this->_currencyCode = strtoupper($currencyCode);
-        $this->_price = $store->getBaseCurrency()->convert(
-            $taxHelper->getPrice(
-                $product,
-                $priceHelper->getProductFinalPrice($product),
-                true
-            ),
-            $currency
-        );
-        $this->_listPrice = $store->getBaseCurrency()->convert(
-            $taxHelper->getPrice(
-                $product,
-                $priceHelper->getProductPrice($product),
-                true
-            ),
-            $currency
-        );
+        $price = $priceHelper->getProductFinalPriceInclTax($product);
+        $this->_price = $store->getBaseCurrency()->convert($price, $currency);
+        $listPrice = $priceHelper->getProductPriceInclTax($product);
+        $this->_listPrice = $store->getBaseCurrency()->convert($listPrice, $currency);
         $this->_availability = $product->isAvailable()
             ? Nosto_Tagging_Model_Meta_Product::PRODUCT_IN_STOCK
             : Nosto_Tagging_Model_Meta_Product::PRODUCT_OUT_OF_STOCK;
