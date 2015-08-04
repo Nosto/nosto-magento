@@ -173,7 +173,8 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
      */
     public function getMetaData(Mage_Core_Model_Store $store)
     {
-        $meta = new Nosto_Tagging_Model_Meta_Account();
+        /** @var Nosto_Tagging_Model_Meta_Account $meta */
+        $meta = Mage::getModel('nosto_tagging/meta_account');
         $meta->loadData($store);
         return $meta;
     }
@@ -191,7 +192,8 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
      */
     public function getIframeUrl(Mage_Core_Model_Store $store, NostoAccount $account = null, array $params = array())
     {
-        $meta = new Nosto_Tagging_Model_Meta_Account_Iframe();
+        /** @var Nosto_Tagging_Model_Meta_Account_Iframe $meta */
+        $meta = Mage::getModel('nosto_tagging/meta_account_iframe');
         $meta->loadData($store);
         return Nosto::helper('iframe')->getUrl($meta, $account, $params);
     }

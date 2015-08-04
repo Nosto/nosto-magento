@@ -117,27 +117,24 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
         $this->_ownerLanguageCode = substr(
             Mage::app()->getLocale()->getLocaleCode(), 0, 2
         );
-        $this->_owner = new Nosto_Tagging_Model_Meta_Account_Owner();
-        $this->_owner->loadData($store);
-        $this->_billing = new Nosto_Tagging_Model_Meta_Account_Billing();
-        $this->_billing->loadData($store);
+
+        /** @var Nosto_Tagging_Model_Meta_Account_Owner $owner */
+        $owner = Mage::getModel('nosto_tagging/meta_account_owner');
+        $owner->loadData($store);
+        $this->_owner = $owner;
+
+        /** @var Nosto_Tagging_Model_Meta_Account_Billing $billing */
+        $billing = Mage::getModel('nosto_tagging/meta_account_billing');
+        $billing->loadData($store);
+        $this->_billing = $billing;
+
         /** @var Nosto_Tagging_Helper_Currency $helper */
         $helper = Mage::helper('nosto_tagging/currency');
         $currencyCodes = $store->getAvailableCurrencyCodes(true);
         foreach ($currencyCodes as $currencyCode) {
             $this->_currencies[$currencyCode] = $helper
                 ->getCurrencyObject($storeLocale, $currencyCode);
-		}
-    }
-
-    /**
-     * Sets the store title.
-     *
-     * @param string $title the store title.
-     */
-    public function setTitle($title)
-    {
-        $this->_title = $title;
+        }
     }
 
     /**
@@ -148,16 +145,6 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     public function getTitle()
     {
         return $this->_title;
-    }
-
-    /**
-     * Sets the account name.
-     *
-     * @param string $name the account name.
-     */
-    public function setName($name)
-    {
-        $this->_name = $name;
     }
 
     /**
@@ -184,16 +171,6 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     }
 
     /**
-     * Sets the store front page url.
-     *
-     * @param string $url the front page url.
-     */
-    public function setFrontPageUrl($url)
-    {
-        $this->_frontPageUrl = $url;
-    }
-
-    /**
      * Absolute url to the front page of the shop for which the account is
      * created for.
      *
@@ -202,16 +179,6 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     public function getFrontPageUrl()
     {
         return $this->_frontPageUrl;
-    }
-
-    /**
-     * Sets the store currency ISO (ISO 4217) code.
-     *
-     * @param string $code the currency ISO code.
-     */
-    public function setCurrencyCode($code)
-    {
-        $this->_currencyCode = $code;
     }
 
     /**
@@ -226,16 +193,6 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     }
 
     /**
-     * Sets the store language ISO (ISO 639-1) code.
-     *
-     * @param string $languageCode the language ISO code.
-     */
-    public function setLanguageCode($languageCode)
-    {
-        $this->_languageCode = $languageCode;
-    }
-
-    /**
      * The 2-letter ISO code (ISO 639-1) for the language used by the shop for
      * which the account is created for.
      *
@@ -244,16 +201,6 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     public function getLanguageCode()
     {
         return $this->_languageCode;
-    }
-
-    /**
-     * Sets the owner language ISO (ISO 639-1) code.
-     *
-     * @param string $languageCode the language ISO code.
-     */
-    public function setOwnerLanguageCode($languageCode)
-    {
-        $this->_ownerLanguageCode = $languageCode;
     }
 
     /**
@@ -307,5 +254,17 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     public function getSignUpApiToken()
     {
         return $this->_signUpApiToken;
+    }
+
+    /**
+     * Optional partner code for Nosto partners.
+     * The code is issued by Nosto to partners only.
+     *
+     * @return string|null the partner code or null if none exist.
+     */
+    public function getPartnerCode()
+    {
+        // todo: implement partner code storage.
+        return null;
     }
 }

@@ -26,45 +26,21 @@
  */
 
 /**
- * Order tagging block.
- * Adds meta-data to the HTML document for successful orders.
+ * Product collection that extends the Magento catalog product collection.
+ * Used to disable flat collections in product exports to Nosto.
  *
  * @category Nosto
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Block_Order extends Mage_Checkout_Block_Success
+class Nosto_Tagging_Model_Resource_Product_Collection extends Mage_Catalog_Model_Resource_Product_Collection
 {
     /**
-     * Render order info as hidden meta data if the module is enabled for the
-     * current store.
-     *
-     * @return string
+     * @inheritdoc
      */
-    protected function _toHtml()
+    public function isEnabledFlat()
     {
-        if (!Mage::helper('nosto_tagging')->isModuleEnabled()
-            || !Mage::helper('nosto_tagging/account')->existsAndIsConnected()
-        ) {
-            return '';
-        }
-
-        return parent::_toHtml();
-    }
-
-    /**
-     * Return the last placed order meta data for the customer.
-     *
-     * @return Nosto_Tagging_Model_Meta_Order the order meta data model.
-     */
-    public function getLastOrder()
-    {
-        $orderId = Mage::getSingleton('checkout/session')->getLastOrderId();
-        /** @var Mage_Sales_Model_Order $order */
-        $order = Mage::getModel('sales/order')->load($orderId);
-        /** @var Nosto_Tagging_Model_Meta_Order $meta */
-        $meta = Mage::getModel('nosto_tagging/meta_order');
-        $meta->loadData($order);
-        return $meta;
+        // Never use the flat collection.
+        return false;
     }
 }

@@ -46,7 +46,8 @@ class Nosto_Tagging_Helper_Oauth extends Mage_Core_Helper_Abstract
      */
     public function getMetaData(Mage_Core_Model_Store $store)
     {
-        $meta = new Nosto_Tagging_Model_Meta_Oauth();
+        /** @var Nosto_Tagging_Model_Meta_Oauth $meta */
+        $meta = Mage::getModel('nosto_tagging/meta_oauth');
         $meta->loadData($store);
         return $meta;
     }

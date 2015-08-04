@@ -73,16 +73,6 @@ class Nosto_Tagging_Model_Meta_Account_Owner extends Mage_Core_Model_Abstract im
     }
 
     /**
-     * Sets the first name of the account owner.
-     *
-     * @param string $firstName the first name.
-     */
-    public function setFirstName($firstName)
-    {
-        $this->_firstName = $firstName;
-    }
-
-    /**
      * The first name of the account owner.
      *
      * @return string the first name.
@@ -93,16 +83,6 @@ class Nosto_Tagging_Model_Meta_Account_Owner extends Mage_Core_Model_Abstract im
     }
 
     /**
-     * Sets the last name of the account owner.
-     *
-     * @param string $lastName the last name.
-     */
-    public function setLastName($lastName)
-    {
-        $this->_lastName = $lastName;
-    }
-
-    /**
      * The last name of the account owner.
      *
      * @return string the last name.
@@ -110,16 +90,6 @@ class Nosto_Tagging_Model_Meta_Account_Owner extends Mage_Core_Model_Abstract im
     public function getLastName()
     {
         return $this->_lastName;
-    }
-
-    /**
-     * Sets the email address of the account owner.
-     *
-     * @param string $email the email address.
-     */
-    public function setEmail($email)
-    {
-        $this->_email = $email;
     }
 
     /**
