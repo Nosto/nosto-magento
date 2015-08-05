@@ -225,7 +225,8 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
                         continue;
                     }
                     try {
-                        $variation = new Nosto_Tagging_Model_Meta_Product_Price_Variation();
+                        /** @var Nosto_Tagging_Model_Meta_Product_Price_Variation $variation */
+                        $variation = Mage::getModel('nosto_tagging/meta_product_price_variation');
                         $variation->loadData($product, $store, $currencyCode);
                         $this->_priceVariations[] = $variation;
                     } catch (Exception $e) {

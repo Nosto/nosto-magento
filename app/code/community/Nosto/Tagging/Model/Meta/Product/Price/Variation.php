@@ -33,7 +33,7 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Product_Price_Variation implements NostoProductPriceVariationInterface
+class Nosto_Tagging_Model_Meta_Product_Price_Variation extends Nosto_Tagging_Model_Base implements NostoProductPriceVariationInterface
 {
     /**
      * @var string the price variation ID, e.g. the currency code.
@@ -59,6 +59,14 @@ class Nosto_Tagging_Model_Meta_Product_Price_Variation implements NostoProductPr
      * @var string the availability of the price variation, i.e. if it is in stock or not.
      */
     protected $_availability;
+
+    /**
+     * @inheritdoc
+     */
+    protected function _construct()
+    {
+        $this->_init('nosto_tagging/meta_product_price_variation');
+    }
 
     /**
      * Loads the price variation data from product and store.
