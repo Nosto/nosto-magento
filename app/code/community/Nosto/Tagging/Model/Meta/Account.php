@@ -81,6 +81,16 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     protected $_currencies = array();
 
     /**
+     * @var string the default currency variant ID if using multiple currencies.
+     */
+    protected $_defaultCurrencyVariantId;
+
+    /**
+     * @var bool if the store uses exchange rates to manage multiple currencies.
+     */
+    protected $_useCurrencyExchangeRates = false;
+
+    /**
      * @var string the API token used to identify an account creation.
      */
     protected $_signUpApiToken = 'YBDKYwSqTCzSsU8Bwbg4im2pkHMcgTy9cCX7vevjJwON1UISJIwXOLMM0a8nZY7h';
@@ -100,6 +110,9 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
      */
     public function loadData(Mage_Core_Model_Store $store)
     {
+        /** @var Nosto_Tagging_Helper_Data $helper */
+        $helper = Mage::helper('nosto_tagging');
+
         $this->_title = $store->getWebsite()->getName()
             . ' - '
             . $store->getGroup()->getName()
@@ -128,12 +141,19 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
         $billing->loadData($store);
         $this->_billing = $billing;
 
-        /** @var Nosto_Tagging_Helper_Currency $helper */
-        $helper = Mage::helper('nosto_tagging/currency');
         $currencyCodes = $store->getAvailableCurrencyCodes(true);
-        foreach ($currencyCodes as $currencyCode) {
-            $this->_currencies[$currencyCode] = $helper
-                ->getCurrencyObject($storeLocale, $currencyCode);
+        if (is_array($currencyCodes) && count($currencyCodes) > 0) {
+            /** @var Nosto_Tagging_Helper_Currency $currencyHelper */
+            $currencyHelper = Mage::helper('nosto_tagging/currency');
+            foreach ($currencyCodes as $currencyCode) {
+                $this->_currencies[$currencyCode] = $currencyHelper
+                    ->getCurrencyObject($storeLocale, $currencyCode);
+            }
+            if (count($currencyCodes) > 1) {
+                $this->_defaultCurrencyVariantId = $this->_currencyCode;
+                $this->_useCurrencyExchangeRates = $helper
+                    ->isMultiCurrencyMethodExchangeRate($store);
+            }
         }
     }
 
@@ -243,6 +263,31 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     public function getCurrencies()
     {
         return $this->_currencies;
+    }
+
+    /**
+     * Returns the default currency ID if store is using multiple currencies.
+     * This ID identifies the currency that products are specified in and can
+     * be set to the currency ISO 639-1 code
+     *
+     * @return string|null the currency ID or null if not set.
+     */
+    public function getDefaultCurrencyVariantId()
+    {
+        return $this->_defaultCurrencyVariantId;
+    }
+
+    /**
+     * Returns if exchange rates are used to handle multi-currency setups.
+     * It is also possible to handle multi-currency setups using variation
+     * tagging on the product pages, i.e. in addition to the product base price,
+     * you also tag all price variations.
+     *
+     * @return bool if the rates are used.
+     */
+    public function getUseCurrencyExchangeRates()
+    {
+        return $this->_useCurrencyExchangeRates;
     }
 
     /**

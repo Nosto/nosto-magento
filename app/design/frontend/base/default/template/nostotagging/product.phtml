@@ -69,7 +69,7 @@ $dateHelper = Mage::helper('nosto_tagging/date');
         <span class="date_published"><?php echo $dateHelper->getFormattedDate($product->getDatePublished()); ?></span>
     <?php endif; ?>
     <?php if ($helper->getStoreHasMultiCurrency()): ?>
-        <span class="variation_id"><?php echo strtoupper($product->getPriceVariationId()); ?></span>
+        <span class="variation_id"><?php echo $product->getPriceVariationId(); ?></span>
         <?php if ($this->inclPriceVariations() && count($product->getPriceVariations()) > 0): ?>
             <?php foreach ($product->getPriceVariations() as $variation): ?>
                 <div class="variation">
