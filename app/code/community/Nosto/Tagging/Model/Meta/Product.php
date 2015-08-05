@@ -188,7 +188,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         $this->_imageUrl = $this->buildImageUrl($product, $store);
         $this->_price = $priceHelper->getProductFinalPriceInclTax($product);
         $this->_listPrice = $priceHelper->getProductPriceInclTax($product);
-        $this->_currencyCode = $store->getBaseCurrencyCode();
+        $this->_currencyCode = strtoupper($store->getBaseCurrencyCode());
         $this->_availability = $product->isAvailable()
             ? self::PRODUCT_IN_STOCK
             : self::PRODUCT_OUT_OF_STOCK;

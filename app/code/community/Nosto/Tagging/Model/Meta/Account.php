@@ -81,9 +81,9 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     protected $_currencies = array();
 
     /**
-     * @var string the default currency variant ID if using multiple currencies.
+     * @var string the default price variation ID if using multiple currencies.
      */
-    protected $_defaultCurrencyVariantId;
+    protected $_defaultPriceVariationId;
 
     /**
      * @var bool if the store uses exchange rates to manage multiple currencies.
@@ -150,7 +150,7 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
                     ->getCurrencyObject($storeLocale, $currencyCode);
             }
             if (count($currencyCodes) > 1) {
-                $this->_defaultCurrencyVariantId = $this->_currencyCode;
+                $this->_defaultPriceVariationId = $this->_currencyCode;
                 $this->_useCurrencyExchangeRates = $helper
                     ->isMultiCurrencyMethodExchangeRate($store);
             }
@@ -266,15 +266,16 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     }
 
     /**
-     * Returns the default currency ID if store is using multiple currencies.
-     * This ID identifies the currency that products are specified in and can
+     * Returns the default price variation ID if store is using multiple
+     * currencies.
+     * This ID identifies the price that products are specified in and can
      * be set to the currency ISO 639-1 code
      *
      * @return string|null the currency ID or null if not set.
      */
-    public function getDefaultCurrencyVariantId()
+    public function getDefaultPriceVariationId()
     {
-        return $this->_defaultCurrencyVariantId;
+        return $this->_defaultPriceVariationId;
     }
 
     /**

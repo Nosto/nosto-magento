@@ -41,7 +41,7 @@ class Nosto_Tagging_Model_Meta_Product_Price_Variation extends Nosto_Tagging_Mod
     protected $_id;
 
     /**
-     * @var string the currency code (SIO 4217) for the price variation.
+     * @var string the currency code (ISO 4217) for the price variation.
      */
     protected $_currencyCode;
 
@@ -81,7 +81,7 @@ class Nosto_Tagging_Model_Meta_Product_Price_Variation extends Nosto_Tagging_Mod
         /** @var Nosto_Tagging_Helper_Price $priceHelper */
         $priceHelper = Mage::helper('nosto_tagging/price');
 
-        $this->_id = strtoupper($currencyCode);
+        $this->_id = $currencyCode;
         $this->_currencyCode = strtoupper($currencyCode);
         $price = $priceHelper->getProductFinalPriceInclTax($product);
         $this->_price = $store->getBaseCurrency()->convert($price, $currency);
@@ -103,7 +103,7 @@ class Nosto_Tagging_Model_Meta_Product_Price_Variation extends Nosto_Tagging_Mod
     }
 
     /**
-     * Returns the currency code (SIO 4217) for the price variation.
+     * Returns the currency code (ISO 4217) for the price variation.
      *
      * @return string the price currency code.
      */
