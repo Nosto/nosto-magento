@@ -135,6 +135,9 @@ Open Software License ("OSL") v3.0
 
 ## Changelog
 
+### 2.6.1
+* Re-package for Enterprise Edition release
+
 ### 2.6.0
 * Add better error handling and notifications to Nosto account OAuth cycle
 * Add support for bundle products with fixed pricing
