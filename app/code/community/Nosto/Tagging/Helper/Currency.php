@@ -53,8 +53,8 @@ class Nosto_Tagging_Helper_Currency extends Mage_Core_Helper_Abstract
         }
         // Check if the currency symbol is before or after the amount.
         $symbolPosition = (strpos(trim($format), '¤') === 0)
-            ? NostoCurrency::SYMBOL_POS_LEFT
-            : NostoCurrency::SYMBOL_POS_RIGHT;
+            ? NostoCurrencySymbol::SYMBOL_POS_LEFT
+            : NostoCurrencySymbol::SYMBOL_POS_RIGHT;
         // Remove all other characters than "0", "#", "." and ",",
         $format = preg_replace('/[^0\#\.,]/', '', $format);
         // Calculate the decimal precision.
@@ -74,15 +74,21 @@ class Nosto_Tagging_Helper_Currency extends Mage_Core_Helper_Abstract
         } else {
             $groupLength = strrpos($format, '.');
         }
+        // If the symbol is missing for the current locale, use the ISO code.
+        $currencySymbol = $currency->getSymbol();
+        if (is_null($currencySymbol)) {
+            $currencySymbol = $currencyCode;
+        }
 
         return new NostoCurrency(
-            $currencyCode,
-            $currency->getSymbol(),
-            $symbolPosition,
-            $symbols['group'],
-            $symbols['decimal'],
-            $groupLength,
-            $precision
+            new NostoCurrencyCode($currencyCode),
+            new NostoCurrencySymbol($currencySymbol, $symbolPosition),
+            new NostoCurrencyFormat(
+                $symbols['group'],
+                $groupLength,
+                $symbols['decimal'],
+                $precision
+            )
         );
     }
 
@@ -105,7 +111,7 @@ class Nosto_Tagging_Helper_Currency extends Mage_Core_Helper_Abstract
             if ($baseCurrencyCode === $code) {
                 continue;
             }
-            $collection[] = new NostoCurrencyExchangeRate($code, $rate);
+            $collection[] = new NostoCurrencyExchangeRate(new NostoCurrencyCode($code), $rate);
         }
         return $collection;
     }
