@@ -35,18 +35,6 @@
 class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
 {
     /**
-     * Formats price into Nosto format, e.g. 1000.99.
-     *
-     * @param string|int|float $price the price to format.
-     *
-     * @return string
-     */
-    public function getFormattedPrice($price)
-    {
-        return number_format($price, 2, '.', '');
-    }
-
-    /**
      * Gets the unit price for a product model including taxes.
      *
      * @param Mage_Catalog_Model_Product $product the product model.

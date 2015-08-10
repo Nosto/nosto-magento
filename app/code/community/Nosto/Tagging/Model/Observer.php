@@ -101,19 +101,13 @@ class Nosto_Tagging_Model_Observer
 
                 /** @var Nosto_Tagging_Model_Meta_Product $model */
                 $model = Mage::getModel('nosto_tagging/meta_product');
-                $model->loadData($product, $store);
-
-                // Only send product update if we have all required
-                // data for the product model.
-                $validator = new NostoValidator($model);
-                if ($validator->validate()) {
-                    try {
-                        $service = new NostoServiceProduct($account);
-                        $service->addProduct($model);
-                        $service->upsert();
-                    } catch (NostoException $e) {
-                        Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
-                    }
+                try {
+                    $model->loadData($product, $store);
+                    $service = new NostoServiceProduct($account);
+                    $service->addProduct($model);
+                    $service->upsert();
+                } catch (NostoException $e) {
+                    Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
                 }
             }
         }

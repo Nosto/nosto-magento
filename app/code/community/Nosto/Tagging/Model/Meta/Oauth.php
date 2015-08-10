@@ -41,9 +41,10 @@ class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements
     protected $_redirectUrl;
 
     /**
-     * @var string the language ISO code for localization on oauth2 server.
+     * @var NostoLanguageCode the 2-letter ISO code (ISO 639-1) for localization
+     * on oauth2 server.
      */
-    protected $_languageIsoCode;
+    protected $_language;
 
     /**
      * @inheritdoc
@@ -67,8 +68,8 @@ class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements
                 '_store_to_url' => true
             )
         );
-        $this->_languageIsoCode = substr(
-            Mage::app()->getLocale()->getLocaleCode(), 0, 2
+        $this->_language = new NostoLanguageCode(
+            substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2)
         );
     }
 
@@ -124,10 +125,10 @@ class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements
      * The 2-letter ISO code (ISO 639-1) for the language the OAuth2 server
      * uses for UI localization.
      *
-     * @return string the ISO code.
+     * @return NostoLanguageCode the language code.
      */
-    public function getLanguageIsoCode()
+    public function getLanguage()
     {
-        return $this->_languageIsoCode;
+        return $this->_language;
     }
 }

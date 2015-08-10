@@ -26,7 +26,7 @@
  */
 
 /**
- * Meta data class which holds information about the order status.
+ * Data Transfer object representing the order status.
  * This is used during the order confirmation API request and the order history
  * export.
  *
@@ -55,7 +55,7 @@ class Nosto_Tagging_Model_Meta_Order_Status extends Mage_Core_Model_Abstract imp
     }
 
     /**
-     * Loads the status info from a Magento order model.
+     * Loads the Data Transfer Object.
      *
      * @param Mage_Sales_Model_Order $order the order model.
      */

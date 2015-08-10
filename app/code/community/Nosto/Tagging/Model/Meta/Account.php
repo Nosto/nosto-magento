@@ -51,19 +51,19 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     protected $_frontPageUrl;
 
     /**
-     * @var string the store currency ISO (ISO 4217) code.
+     * @var NostoCurrencyCode the store currency ISO (ISO 4217) code.
      */
-    protected $_currencyCode;
+    protected $_currency;
 
     /**
-     * @var string the store language ISO (ISO 639-1) code.
+     * @var NostoLanguageCode the store language ISO (ISO 639-1) code.
      */
-    protected $_languageCode;
+    protected $_language;
 
     /**
-     * @var string the owner language ISO (ISO 639-1) code.
+     * @var NostoLanguageCode the owner language ISO (ISO 639-1) code.
      */
-    protected $_ownerLanguageCode;
+    protected $_ownerLanguage;
 
     /**
      * @var Nosto_Tagging_Model_Meta_Account_Owner the account owner meta model.
@@ -124,11 +124,11 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
             $store->getCode(),
             $store->getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB)
         );
-        $this->_currencyCode = $store->getBaseCurrencyCode();
+        $this->_currency = new NostoCurrencyCode($store->getBaseCurrencyCode());
         $storeLocale = $store->getConfig('general/locale/code');
-        $this->_languageCode = substr($storeLocale, 0, 2);
-        $this->_ownerLanguageCode = substr(
-            Mage::app()->getLocale()->getLocaleCode(), 0, 2
+        $this->_language = new NostoLanguageCode(substr($storeLocale, 0, 2));
+        $this->_ownerLanguage = new NostoLanguageCode(
+            substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2)
         );
 
         /** @var Nosto_Tagging_Model_Meta_Account_Owner $owner */
@@ -150,7 +150,7 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
                     ->getCurrencyObject($storeLocale, $currencyCode);
             }
             if (count($currencyCodes) > 1) {
-                $this->_defaultPriceVariationId = $this->_currencyCode;
+                $this->_defaultPriceVariationId = $store->getBaseCurrencyCode();
                 $this->_useCurrencyExchangeRates = $helper
                     ->isMultiCurrencyMethodExchangeRate($store);
             }
@@ -205,33 +205,33 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
      * The 3-letter ISO code (ISO 4217) for the currency used by the shop for
      * which the account is created for.
      *
-     * @return string the currency ISO code.
+     * @return NostoCurrencyCode the currency code.
      */
-    public function getCurrencyCode()
+    public function getCurrency()
     {
-        return $this->_currencyCode;
+        return $this->_currency;
     }
 
     /**
      * The 2-letter ISO code (ISO 639-1) for the language used by the shop for
      * which the account is created for.
      *
-     * @return string the language ISO code.
+     * @return NostoLanguageCode the language code.
      */
-    public function getLanguageCode()
+    public function getLanguage()
     {
-        return $this->_languageCode;
+        return $this->_language;
     }
 
     /**
      * The 2-letter ISO code (ISO 639-1) for the language of the account owner
      * who is creating the account.
      *
-     * @return string the language ISO code.
+     * @return NostoLanguageCode the language code.
      */
-    public function getOwnerLanguageCode()
+    public function getOwnerLanguage()
     {
-        return $this->_ownerLanguageCode;
+        return $this->_ownerLanguage;
     }
 
     /**

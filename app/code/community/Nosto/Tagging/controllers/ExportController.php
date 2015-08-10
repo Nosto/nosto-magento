@@ -64,8 +64,12 @@ class Nosto_tagging_ExportController extends Mage_Core_Controller_Front_Action
                 $meta = Mage::getModel('nosto_tagging/meta_order');
                 // We don't need special items like shipping cost and discounts.
                 $meta->includeSpecialItems = false;
-                $meta->loadData($order);
-                $collection[] = $meta;
+                try {
+                    $meta->loadData($order);
+                    $collection[] = $meta;
+                } catch (NostoException $e) {
+                    Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
+                }
             }
             $this->export($collection);
         }
@@ -107,10 +111,11 @@ class Nosto_tagging_ExportController extends Mage_Core_Controller_Front_Action
                 /** @var Mage_Catalog_Model_Product $product */
                 /** @var Nosto_Tagging_Model_Meta_Product $meta */
                 $meta = Mage::getModel('nosto_tagging/meta_product');
-                $meta->loadData($product);
-                $validator = new NostoValidator($meta);
-                if ($validator->validate()) {
+                try {
+                    $meta->loadData($product);
                     $collection[] = $meta;
+                } catch (NostoException $e) {
+                    Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
                 }
             }
             $this->export($collection);

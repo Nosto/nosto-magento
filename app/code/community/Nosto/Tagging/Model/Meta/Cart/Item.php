@@ -26,39 +26,37 @@
  */
 
 /**
- * Data Transfer object representing an item included in an order.
- * This is used during the order confirmation API request and the order history
- * export.
+ * Data Transfer Object representing a cart item.
+ * This is used in the cart tagging.
  *
  * @category Nosto
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract implements NostoOrderItemInterface
+class Nosto_Tagging_Model_Meta_Cart_Item extends Mage_Core_Model_Abstract
 {
     /**
-     * @var string|int the unique identifier of the purchased item.
-     * If this item is for discounts or shipping cost, the id can be 0.
+     * @var string|int the cart item product ID.
      */
     protected $_productId;
 
     /**
-     * @var int the quantity of the item included in the order.
+     * @var int the amount of items in cart.
      */
     protected $_quantity;
 
     /**
-     * @var string the name of the item included in the order.
+     * @var string the cart item name.
      */
     protected $_name;
 
     /**
-     * @var NostoPrice The unit price of the item included in the order.
+     * @var NostoPrice the cart item unit price.
      */
     protected $_unitPrice;
 
     /**
-     * @var NostoCurrencyCode the 3-letter ISO code (ISO 4217) for the currency.
+     * @var NostoCurrencyCode the price currency.
      */
     protected $_currency;
 
@@ -67,40 +65,72 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
      */
     protected function _construct()
     {
-        $this->_init('nosto_tagging/meta_order_item');
+        $this->_init('nosto_tagging/meta_cart_item');
     }
 
     /**
      * Loads the Data Transfer Object.
      *
-     * @param Mage_Sales_Model_Order_Item $item the item model.
-     * @param NostoCurrencyCode $currencyCode the order currency code.
+     * @param Mage_Sales_Model_Quote_Item $item the quote item.
+     * @param NostoCurrencyCode           $currencyCode the currency code.
      */
-    public function loadData(Mage_Sales_Model_Order_Item $item, NostoCurrencyCode $currencyCode)
+    public function loadData(Mage_Sales_Model_Quote_Item $item, NostoCurrencyCode $currencyCode)
     {
         $this->_productId = $this->fetchProductId($item);
-        $this->_quantity = (int)$item->getQtyOrdered();
+        $this->_quantity = (int)$item->getQty();
         $this->_name = $this->fetchProductName($item);
         $this->_unitPrice = new NostoPrice($item->getBasePriceInclTax());
         $this->_currency = $currencyCode;
     }
 
     /**
-     * Loads the "special item" info from provided data.
-     * A "special item" is an item that is included in an order but does not
-     * represent an item being bough, e.g. shipping fees, discounts etc.
+     * Returns the cart item product ID.
      *
-     * @param string $name the name of the item.
-     * @param NostoPrice $unitPrice the unit price of the item.
-     * @param NostoCurrencyCode $currencyCode the currency code for the item unit price.
+     * @return int|string the cart item product ID.
      */
-    public function loadSpecialItemData($name, NostoPrice $unitPrice, NostoCurrencyCode $currencyCode)
+    public function getProductId()
     {
-        $this->_productId = -1;
-        $this->_quantity = 1;
-        $this->_name = (string)$name;
-        $this->_unitPrice = $unitPrice;
-        $this->_currency = $currencyCode;
+        return $this->_productId;
+    }
+
+    /**
+     * Returns the amount of items in cart.
+     *
+     * @return int the amount of items in cart.
+     */
+    public function getQuantity()
+    {
+        return $this->_quantity;
+    }
+
+    /**
+     * Returns the cart item name.
+     *
+     * @return string the cart item name.
+     */
+    public function getName()
+    {
+        return $this->_name;
+    }
+
+    /**
+     * Returns the cart item unit price.
+     *
+     * @return NostoPrice the cart item unit price.
+     */
+    public function getUnitPrice()
+    {
+        return $this->_unitPrice;
+    }
+
+    /**
+     * Returns the price currency.
+     *
+     * @return NostoCurrencyCode the price currency.
+     */
+    public function getCurrency()
+    {
+        return $this->_currency;
     }
 
     /**
@@ -111,15 +141,15 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
      * product page. This is important because it is the tagged info on the
      * product page that is used to generate recommendations and email content.
      *
-     * @param Mage_Sales_Model_Order_Item $item the sales item model.
+     * @param Mage_Sales_Model_Quote_Item $item the quote item model.
      *
-     * @return int
+     * @return int|string
      */
-    protected function fetchProductId(Mage_Sales_Model_Order_Item $item)
+    protected function fetchProductId($item)
     {
-        $parent = $item->getProductOptionByCode('super_product_config');
-        if (isset($parent['product_id'])) {
-            return $parent['product_id'];
+        $parentItem = $item->getOptionByCode('product_type');
+        if (!is_null($parentItem)) {
+            return $parentItem->getProductId();
         } elseif ($item->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_SIMPLE) {
             /** @var Mage_Catalog_Model_Product_Type_Configurable $model */
             $model = Mage::getModel('catalog/product_type_configurable');
@@ -136,17 +166,17 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
     }
 
     /**
-     * Returns the name for a sales item.
+     * Returns the name for a quote item.
      * Configurable products will have their chosen options added to their name.
      * Bundle products will have their chosen child product names added.
-     * Grouped products will have their parents name prepended.
+     * Grouped products will have their parent product name prepended.
      * All others will have their own name only.
      *
-     * @param Mage_Sales_Model_Order_Item $item the sales item model.
+     * @param Mage_Sales_Model_Quote_Item $item the quote item model.
      *
      * @return string
      */
-    protected function fetchProductName(Mage_Sales_Model_Order_Item $item)
+    protected function fetchProductName($item)
     {
         $name = $item->getName();
         $optNames = array();
@@ -173,18 +203,18 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
                 }
             }
         } elseif ($item->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE) {
-            $opts = $item->getProductOptionByCode('attributes_info');
-            if (is_array($opts)) {
-                foreach ($opts as $opt) {
-                    if (isset($opt['value']) && is_string($opt['value'])) {
-                        $optNames[] = $opt['value'];
-                    }
+            /* @var $helper Mage_Catalog_Helper_Product_Configuration */
+            $helper = Mage::helper('catalog/product_configuration');
+            foreach ($helper->getConfigurableOptions($item) as $opt) {
+                if (isset($opt['value']) && is_string($opt['value'])) {
+                    $optNames[] = $opt['value'];
                 }
             }
         } elseif ($item->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_BUNDLE) {
-            $opts = $item->getProductOptionByCode('bundle_options');
-            if (is_array($opts)) {
-                foreach ($opts as $opt) {
+            $type = $item->getProduct()->getTypeInstance(true);
+            $opts = $type->getOrderOptions($item->getProduct());
+            if (isset($opts['bundle_options']) && is_array($opts['bundle_options'])) {
+                foreach ($opts['bundle_options'] as $opt) {
                     if (isset($opt['value']) && is_array($opt['value'])) {
                         foreach ($opt['value'] as $val) {
                             $qty = '';
@@ -199,7 +229,7 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
                 }
             }
         } elseif ($item->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_GROUPED) {
-            $config = $item->getProductOptionByCode('super_product_config');
+            $config = $item->getBuyRequest()->getData('super_product_config');
             if (isset($config['product_id'])) {
                 /** @var Mage_Catalog_Model_Product $parent */
                 $parent = Mage::getModel('catalog/product')
@@ -216,56 +246,5 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
         }
 
         return $name;
-    }
-
-    /**
-     * The unique identifier of the purchased item.
-     * If this item is for discounts or shipping cost, the id can be 0.
-     *
-     * @return string|int
-     */
-    public function getProductId()
-    {
-        return $this->_productId;
-    }
-
-    /**
-     * The quantity of the item included in the order.
-     *
-     * @return int the quantity.
-     */
-    public function getQuantity()
-    {
-        return $this->_quantity;
-    }
-
-    /**
-     * The name of the item included in the order.
-     *
-     * @return string the name.
-     */
-    public function getName()
-    {
-        return $this->_name;
-    }
-
-    /**
-     * The unit price of the item included in the order.
-     *
-     * @return NostoPrice the unit price.
-     */
-    public function getUnitPrice()
-    {
-        return $this->_unitPrice;
-    }
-
-    /**
-     * The 3-letter ISO code (ISO 4217) for the item currency.
-     *
-     * @return NostoCurrencyCode the currency ISO code.
-     */
-    public function getCurrency()
-    {
-        return $this->_currency;
     }
 }

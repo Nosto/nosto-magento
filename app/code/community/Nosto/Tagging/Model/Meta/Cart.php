@@ -26,48 +26,55 @@
  */
 
 /**
- * Meta data class which holds information about Nosto account billing.
- * This is used during the Nosto account creation.
+ * Data Transfer Object representing a shopping cart.
+ * This is used in the cart tagging.
  *
  * @category Nosto
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Account_Billing extends Mage_Core_Model_Abstract implements NostoAccountMetaBillingInterface
+class Nosto_Tagging_Model_Meta_Cart extends Mage_Core_Model_Abstract
 {
     /**
-     * @var NostoCountryCode country ISO (ISO 3166-1 alpha-2) code for billing details.
+     * @var Nosto_Tagging_Model_Meta_Cart_Item[] list of cart items.
      */
-    protected $_country;
+    protected $_lineItems = array();
 
     /**
      * @inheritdoc
      */
     protected function _construct()
     {
-        $this->_init('nosto_tagging/meta_account_billing');
+        $this->_init('nosto_tagging/meta_cart');
     }
 
     /**
-     * Loads the meta data for the given store.
+     * Loads the Data Transfer Object.
      *
-     * @param Mage_Core_Model_Store $store the store view to load the data for.
+     * @param Mage_Sales_Model_Quote_Item[] $quoteItems the quote items.
+     * @param Mage_Core_Model_Store         $store the store view.
      */
-    public function loadData(Mage_Core_Model_Store $store)
+    public function loadData(array $quoteItems, Mage_Core_Model_Store $store = null)
     {
-        $country = $store->getConfig('general/country/default');
-        if (!empty($country)) {
-            $this->_country = new NostoCountryCode($country);
+        if (is_null($store)) {
+            $store = Mage::app()->getStore();
+        }
+        $currencyCode = new NostoCurrencyCode($store->getBaseCurrencyCode());
+        foreach ($quoteItems as $quoteItem) {
+            /** @var Nosto_Tagging_Model_Meta_Cart_Item $model */
+            $model = Mage::getModel('nosto_tagging/meta_cart_item');
+            $model->loadData($quoteItem, $currencyCode);
+            $this->_lineItems[] = $model;
         }
     }
 
     /**
-     * The 2-letter ISO code (ISO 3166-1 alpha-2) for billing details country.
+     * Returns the cart line items.
      *
-     * @return NostoCountryCode the country code.
+     * @return Nosto_Tagging_Model_Meta_Cart_Item[] the items.
      */
-    public function getCountry()
+    public function getLineItems()
     {
-        return $this->_country;
+        return $this->_lineItems;
     }
 }

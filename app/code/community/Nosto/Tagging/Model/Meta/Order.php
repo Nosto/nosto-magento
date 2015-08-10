@@ -26,7 +26,7 @@
  */
 
 /**
- * Meta data class which holds information about an order.
+ * Data Transfer object representing an order.
  * This is used during the order confirmation API request and the order
  * history export.
  *
@@ -48,7 +48,7 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
     protected $_orderNumber;
 
     /**
-     * @var string the date when the order was placed.
+     * @var NostoDate the date when the order was placed.
      */
     protected $_createdDate;
 
@@ -83,14 +83,14 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
     }
 
     /**
-     * Loads the order info from a Magento order model.
+     * Loads the Data Transfer Object.
      *
      * @param Mage_Sales_Model_Order $order the order model.
      */
     public function loadData(Mage_Sales_Model_Order $order)
     {
         $this->_orderNumber = $order->getId();
-        $this->_createdDate = $order->getCreatedAt();
+        $this->_createdDate = new NostoDate(strtotime($order->getCreatedAt()));
         $this->_paymentProvider = $order->getPayment()->getMethod();
 
         /** @var Nosto_Tagging_Model_Meta_Order_Status $orderStatus */
@@ -103,11 +103,13 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
         $orderBuyer->loadData($order);
         $this->_buyer = $orderBuyer;
 
+        $currencyCode = new NostoCurrencyCode($order->getBaseCurrencyCode());
+
         /** @var $item Mage_Sales_Model_Order_Item */
         foreach ($order->getAllVisibleItems() as $item) {
             /** @var Nosto_Tagging_Model_Meta_Order_Item $orderItem */
             $orderItem = Mage::getModel('nosto_tagging/meta_order_item');
-            $orderItem->loadData($item);
+            $orderItem->loadData($item, $currencyCode);
             $this->_items[] = $orderItem;
         }
 
@@ -117,8 +119,8 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
                 $orderItem = Mage::getModel('nosto_tagging/meta_order_item');
                 $orderItem->loadSpecialItemData(
                     'Discount',
-                    $discount,
-                    $order->getBaseCurrencyCode()
+                    new NostoPrice($discount),
+                    $currencyCode
                 );
                 $this->_items[] = $orderItem;
             }
@@ -128,8 +130,8 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
                 $orderItem = Mage::getModel('nosto_tagging/meta_order_item');
                 $orderItem->loadSpecialItemData(
                     'Shipping and handling',
-                    $shippingInclTax,
-                    $order->getBaseCurrencyCode()
+                    new NostoPrice($shippingInclTax),
+                    $currencyCode
                 );
                 $this->_items[] = $orderItem;
             }
@@ -149,7 +151,7 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
     /**
      * The date when the order was placed.
      *
-     * @return string the creation date.
+     * @return NostoDate the creation date.
      */
     public function getCreatedDate()
     {

@@ -28,25 +28,25 @@
 
 <?php
 /**
- * @var $this               Nosto_Tagging_Block_Cart
- * @var $nostoHelper        Nosto_Tagging_Helper_Data
- * @var $nostoPriceHelper   Nosto_Tagging_Helper_Price
+ * @var $this           Nosto_Tagging_Block_Cart
+ * @var $helper         Nosto_Tagging_Helper_Data
+ * @var $priceFormatter NostoFormatterPrice
  */
-$items = $this->getItems();
-$currency = Mage::app()->getStore()->getBaseCurrencyCode();
-$nostoHelper = Mage::helper('nosto_tagging');
-$nostoPriceHelper = Mage::helper('nosto_tagging/price');
+$cart = $this->getCart();
+$helper = Mage::helper('nosto_tagging');
+$priceFormatter = Nosto::formatter('price');
+$priceFormat = new NostoPriceFormat(2, '.', '');
 ?>
 
 <!-- Nosto Cart Tagging -->
 <div class="nosto_cart" style="display:none">
-    <?php foreach ($items as $item): ?>
+    <?php foreach ($cart->getLineItems() as $item): ?>
     <div class="line_item">
-        <span class="product_id"><?php echo (int)$this->getProductId($item); ?></span>
-        <span class="quantity"><?php echo (int)$item->getQty(); ?></span>
-        <span class="name"><?php echo $nostoHelper->escapeHtml($this->getProductName($item)); ?></span>
-        <span class="unit_price"><?php echo $nostoPriceHelper->getFormattedPrice($item->getBasePriceInclTax()); ?></span>
-        <span class="price_currency_code"><?php echo strtoupper($currency); ?></span>
+        <span class="product_id"><?php echo $helper->escapeHtml($item->getProductId()); ?></span>
+        <span class="quantity"><?php echo (int)$item->getQuantity(); ?></span>
+        <span class="name"><?php echo $helper->escapeHtml($item->getName()); ?></span>
+        <span class="unit_price"><?php echo $priceFormatter->format($item->getUnitPrice(), $priceFormat); ?></span>
+        <span class="price_currency_code"><?php echo $item->getCurrency()->getCode(); ?></span>
     </div>
     <?php endforeach; ?>
 </div>

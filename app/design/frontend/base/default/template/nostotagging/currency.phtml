@@ -30,8 +30,7 @@
 /**
  * @var $this Mage_Core_Block_Template
  */
-$currency = Mage::app()->getStore()->getCurrentCurrencyCode();
 ?>
 
 <!-- Nosto Price Variation Tagging -->
-<div class="nosto_price_variation" style="display:none"><?php echo strtoupper($currency); ?></div>
+<div class="nosto_price_variation" style="display:none"><?php echo Mage::app()->getStore()->getCurrentCurrencyCode(); ?></div>

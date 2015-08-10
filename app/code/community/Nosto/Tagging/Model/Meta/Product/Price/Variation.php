@@ -26,7 +26,7 @@
  */
 
 /**
- * Meta data class which holds information about a product price variation.
+ * Data Transfer object representing a product price variation.
  * This is used by the the Nosto_Tagging_Model_Meta_Product class.
  *
  * @category Nosto
@@ -41,22 +41,22 @@ class Nosto_Tagging_Model_Meta_Product_Price_Variation extends Nosto_Tagging_Mod
     protected $_id;
 
     /**
-     * @var string the currency code (ISO 4217) for the price variation.
+     * @var NostoCurrencyCode the currency code (ISO 4217) for the price variation.
      */
-    protected $_currencyCode;
+    protected $_currency;
 
     /**
-     * @var float the price of the variation including possible discounts and taxes.
+     * @var NostoPrice the price of the variation including possible discounts and taxes.
      */
     protected $_price;
 
     /**
-     * @var float the list price of the variation without discounts but incl taxes.
+     * @var NostoPrice the list price of the variation without discounts but incl taxes.
      */
     protected $_listPrice;
 
     /**
-     * @var string the availability of the price variation, i.e. if it is in stock or not.
+     * @var NostoProductAvailability the availability of the price variation.
      */
     protected $_availability;
 
@@ -69,27 +69,32 @@ class Nosto_Tagging_Model_Meta_Product_Price_Variation extends Nosto_Tagging_Mod
     }
 
     /**
-     * Loads the price variation data from product and store.
+     * Loads the Data Transfer Object.
      *
      * @param Mage_Catalog_Model_Product $product the product model.
      * @param Mage_Core_Model_Store      $store the store model.
-     * @param string                     $currencyCode
+     * @param NostoCurrencyCode          $currencyCode the currency code.
      */
-    public function loadData(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store = null, $currencyCode)
+    public function loadData(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store, NostoCurrencyCode $currencyCode)
     {
-        $currency = Mage::getModel('directory/currency')->load($currencyCode);
+        $currency = Mage::getModel('directory/currency')
+            ->load($currencyCode->getCode());
         /** @var Nosto_Tagging_Helper_Price $priceHelper */
         $priceHelper = Mage::helper('nosto_tagging/price');
 
-        $this->_id = $currencyCode;
-        $this->_currencyCode = strtoupper($currencyCode);
+        $this->_id = $currencyCode->getCode();
+        $this->_currency = $currencyCode;
         $price = $priceHelper->getProductFinalPriceInclTax($product);
-        $this->_price = $store->getBaseCurrency()->convert($price, $currency);
+        $price = $store->getBaseCurrency()->convert($price, $currency);
+        $this->_price = new NostoPrice($price);
         $listPrice = $priceHelper->getProductPriceInclTax($product);
-        $this->_listPrice = $store->getBaseCurrency()->convert($listPrice, $currency);
-        $this->_availability = $product->isAvailable()
-            ? Nosto_Tagging_Model_Meta_Product::PRODUCT_IN_STOCK
-            : Nosto_Tagging_Model_Meta_Product::PRODUCT_OUT_OF_STOCK;
+        $listPrice = $store->getBaseCurrency()->convert($listPrice, $currency);
+        $this->_listPrice = new NostoPrice($listPrice);
+        $this->_availability = new NostoProductAvailability(
+            $product->isAvailable()
+                ? NostoProductAvailability::IN_STOCK
+                : NostoProductAvailability::OUT_OF_STOCK
+        );
     }
 
     /**
@@ -105,17 +110,17 @@ class Nosto_Tagging_Model_Meta_Product_Price_Variation extends Nosto_Tagging_Mod
     /**
      * Returns the currency code (ISO 4217) for the price variation.
      *
-     * @return string the price currency code.
+     * @return NostoCurrencyCode the price currency code.
      */
-    public function getCurrencyCode()
+    public function getCurrency()
     {
-        return $this->_currencyCode;
+        return $this->_currency;
     }
 
     /**
      * Returns the price of the variation including possible discounts and taxes.
      *
-     * @return float the price.
+     * @return NostoPrice the price.
      */
     public function getPrice()
     {
@@ -125,7 +130,7 @@ class Nosto_Tagging_Model_Meta_Product_Price_Variation extends Nosto_Tagging_Mod
     /**
      * Returns the list price of the variation without discounts but incl taxes.
      *
-     * @return float the price.
+     * @return NostoPrice the price.
      */
     public function getListPrice()
     {
@@ -135,7 +140,7 @@ class Nosto_Tagging_Model_Meta_Product_Price_Variation extends Nosto_Tagging_Mod
     /**
      * Returns the availability of the price variation, i.e. if it is in stock or not.
      *
-     * @return string the availability, either "InStock" or "OutOfStock".
+     * @return NostoProductAvailability the availability.
      */
     public function getAvailability()
     {

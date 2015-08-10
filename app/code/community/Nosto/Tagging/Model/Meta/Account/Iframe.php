@@ -56,14 +56,14 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
     protected $_email;
 
     /**
-     * @var string the language ISO (ISO 639-1) code for oauth server locale.
+     * @var NostoLanguageCode the language code for oauth server locale.
      */
-    protected $_languageIsoCode;
+    protected $_language;
 
     /**
-     * @var string the language ISO (ISO 639-1) for the store view scope.
+     * @var NostoLanguageCode the language code for the store view scope.
      */
-    protected $_languageIsoCodeShop;
+    protected $_shopLanguage;
 
     /**
      * @var string unique ID that identifies the Magento installation.
@@ -125,11 +125,11 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
         $this->_firstName = $user->getFirstname();
         $this->_lastName = $user->getLastname();
         $this->_email = $user->getEmail();
-        $this->_languageIsoCode = substr(
-            Mage::app()->getLocale()->getLocaleCode(), 0, 2
+        $this->_language = new NostoLanguageCode(
+            substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2)
         );
-        $this->_languageIsoCodeShop = substr(
-            $store->getConfig('general/locale/code'), 0, 2
+        $this->_shopLanguage = new NostoLanguageCode(
+            substr($store->getConfig('general/locale/code'), 0, 2)
         );
         $this->_uniqueId = $dataHelper->getInstallationId();
         $this->_previewUrlProduct = $urlHelper->getPreviewUrlProduct($store);
@@ -185,22 +185,22 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
      * The 2-letter ISO code (ISO 639-1) for the language of the user who is
      * loading the config iframe.
      *
-     * @return string the language ISO code.
+     * @return NostoLanguageCode the language code.
      */
-    public function getLanguageIsoCode()
+    public function getLanguage()
     {
-        return $this->_languageIsoCode;
+        return $this->_language;
     }
 
     /**
      * The 2-letter ISO code (ISO 639-1) for the language of the shop the
      * account belongs to.
      *
-     * @return string the language ISO code.
+     * @return NostoLanguageCode the language code.
      */
-    public function getLanguageIsoCodeShop()
+    public function getShopLanguage()
     {
-        return $this->_languageIsoCodeShop;
+        return $this->_shopLanguage;
     }
 
     /**
