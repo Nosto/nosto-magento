@@ -289,12 +289,23 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         $img = $product->getData($imageVersion);
         $img = $this->isValidImage($img) ? $img : $product->getData('image');
         if ($this->isValidImage($img)) {
-            // We build the image url manually in order get the correct base
-            // url, even if this product is populated in the backend.
-            $baseUrl = rtrim($store->getBaseUrl('media'), '/');
-            $file = str_replace(DS, '/', $img);
-            $file = ltrim($file, '/');
-            $url = $baseUrl.'/catalog/product/'.$file;
+            // Emulate the correct store, needed when building the URL from admin
+            $appEmulation = Mage::getSingleton('core/app_emulation');
+            $initialEnvironmentInfo = $appEmulation->startEnvironmentEmulation($store->getId());
+
+            $imageCached = $helper->getProductImageCached($store);
+            if(!$imageCached) {
+                $url = $product->getMediaConfig()->getMediaUrl($img);
+            } else {
+                $imageCachedWidth = $helper->getProductImageCachedWidth($store);
+                $imageCachedHeight = $helper->getProductImageCachedHeight($store);
+                if(!$imageCachedHeight) {
+                    $url = (string)Mage::helper('catalog/image')->init($product, $imageVersion)->resize($imageCachedWidth);
+                } else {
+                    $url = (string)Mage::helper('catalog/image')->init($product, $imageVersion)->resize($imageCachedWidth, $imageCachedHeight);
+                }
+            }
+            $appEmulation->stopEnvironmentEmulation($initialEnvironmentInfo);
         }
         return $url;
     }

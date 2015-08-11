@@ -53,7 +53,44 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Image attribute to be used for the product tagging.]]></comment>
                         </image_version>
+                        <image_cached translate="label">
+                            <label>Use cached image</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Use a cached and resized version of the image instead of the original image.]]></comment>
+                        </image_cached>
+                        <image_cached_width translate="label">
+                            <label>Cached image width</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Width in pixels of the cached image]]></comment>
+                            <validate>required-entry validate-greater-than-zero</validate>
+                            <depends>
+                                <image_cached>1</image_cached>
+                            </depends>
+                        </image_cached_width>
+                        <image_cached_height translate="label">
+                            <label>Cached image height</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Height in pixels of the cached image. Leave blank for squared images.]]></comment>
+                            <validate>validate-greater-than-zero</validate>
+                            <depends>
+                                <image_cached>1</image_cached>
+                            </depends>
+                        </image_cached_height>
                     </fields>
                 </image_options>
             </groups>

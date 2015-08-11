@@ -45,6 +45,21 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_IMAGE_VERSION = 'nosto_tagging/image_options/image_version';
 
     /**
+     * Path to store config nosto product image cached.
+     */
+    const XML_PATH_IMAGE_CACHED = 'nosto_tagging/image_options/image_cached';
+
+        /**
+     * Path to store config nosto product image cached width.
+     */
+    const XML_PATH_IMAGE_CACHED_WIDTH = 'nosto_tagging/image_options/image_cached_width';
+
+    /**
+     * Path to store config nosto product image cached height.
+     */
+    const XML_PATH_IMAGE_CACHED_HEIGHT = 'nosto_tagging/image_options/image_cached_height';
+
+    /**
      * @inheritdoc
      */
     public function quoteEscape($data, $addSlashes = false)
@@ -119,5 +134,41 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     public function getProductImageVersion($store = null)
     {
         return Mage::getStoreConfig(self::XML_PATH_IMAGE_VERSION, $store);
+    }
+
+    /**
+     * Return if a cached version of the image should be used in product tagging.
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     *
+     * @return bool
+     */
+    public function getProductImageCached($store = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_IMAGE_CACHED, $store);
+    }
+
+    /**
+     * Return the prefered cached image width.
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     *
+     * @return string
+     */
+    public function getProductImageCachedWidth($store = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_IMAGE_CACHED_WIDTH, $store);
+    }
+
+    /**
+     * Return the prefered cached image height.
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     *
+     * @return string
+     */
+    public function getProductImageCachedHeight($store = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_IMAGE_CACHED_HEIGHT, $store);
     }
 }
