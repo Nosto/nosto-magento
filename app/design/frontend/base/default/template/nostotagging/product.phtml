@@ -47,9 +47,15 @@ $dateFormat = new NostoDateFormat(NostoDateFormat::YMD);
     <span class="product_id"><?php echo $helper->escapeHtml($product->getProductId()); ?></span>
     <span class="name"><?php echo $helper->escapeHtml($product->getName()); ?></span>
     <span class="image_url"><?php echo $product->getImageUrl(); ?></span>
-    <span class="price"><?php echo $priceFormatter->format($product->getPrice(), $priceFormat); ?></span>
-    <span class="price_currency_code"><?php echo $helper->escapeHtml($product->getCurrency()->getCode()); ?></span>
-    <span class="availability"><?php echo $helper->escapeHtml($product->getAvailability()->getAvailability()); ?></span>
+    <?php if ($product->getPrice()): ?>
+        <span class="price"><?php echo $priceFormatter->format($product->getPrice(), $priceFormat); ?></span>
+    <?php endif; ?>
+    <?php if ($product->getCurrency()): ?>
+        <span class="price_currency_code"><?php echo $helper->escapeHtml($product->getCurrency()->getCode()); ?></span>
+    <?php endif; ?>
+    <?php if ($product->getAvailability()): ?>
+        <span class="availability"><?php echo $helper->escapeHtml($product->getAvailability()->getAvailability()); ?></span>
+    <?php endif; ?>
     <?php foreach ($product->getCategories() as $category): ?>
         <span class="category"><?php echo $helper->escapeHtml($category); ?></span>
     <?php endforeach; ?>
