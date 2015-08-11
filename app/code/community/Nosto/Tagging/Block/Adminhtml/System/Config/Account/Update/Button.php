@@ -26,23 +26,22 @@
  */
 
 /**
- * Nosto "update exchange rates" button block.
+ * Nosto "update account" button block.
  *
- * Adds the button to update currency exchange rates in Nosto to the system
- * config page.
+ * Adds a button to update the Nosto account to the system config page.
  *
  * @category Nosto
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Block_Adminhtml_System_Config_Multi_Currency_Exchange_Rate_Button extends Nosto_Tagging_Block_Adminhtml_System_Config_Ajax_Button
+class Nosto_Tagging_Block_Adminhtml_System_Config_Account_Update_Button extends Nosto_Tagging_Block_Adminhtml_System_Config_Ajax_Button
 {
     /**
      * @inheritdoc
      */
     public function getButtonId()
     {
-        return 'nostotagging_update_exchange_rates_button';
+        return 'nostotagging_update_account_button';
     }
 
     /**
@@ -50,9 +49,17 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Multi_Currency_Exchange_Rate_B
      */
     public function getButtonUrl()
     {
+        $params = array();
+        $store = $this->getRequest()->getParam('store');
+        $website = $this->getRequest()->getParam('website');
+        if (!is_null($store)) {
+            $params['store'] = $store;
+        } elseif (!is_null($website)) {
+            $params['website'] = $website;
+        }
         /** @var Mage_Adminhtml_Helper_Data $helper */
         $helper = Mage::helper('adminhtml');
-        return $helper->getUrl('adminhtml/nosto/ajaxUpdateExchangeRates');
+        return $helper->getUrl('adminhtml/nosto/ajaxUpdateAccount', $params);
     }
 
     /**
@@ -60,6 +67,6 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Multi_Currency_Exchange_Rate_B
      */
     public function getButtonOnClick()
     {
-        return 'updateExchangeRates';
+        return 'updateAccount';
     }
 }

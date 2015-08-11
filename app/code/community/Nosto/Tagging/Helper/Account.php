@@ -233,4 +233,28 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
 
         return false;
     }
+
+    /**
+     * Sends a update account request to Nosto via the API.
+     *
+     * This is used to update the details of a Nosto account from the
+     * "Advanced Settings" page, as well as after an account has been
+     * successfully connected through OAuth.
+     *
+     * @param NostoAccount          $account the account to update.
+     * @param Mage_Core_Model_Store $store the store to which the account belongs.
+     *
+     * @return bool
+     */
+    public function updateAccount(NostoAccount $account, Mage_Core_Model_Store $store)
+    {
+        try {
+            $service = new NostoServiceAccount($account);
+            return $service->update($this->getMetaData($store));
+        } catch (NostoException $e) {
+            Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
+        }
+
+        return false;
+    }
 }

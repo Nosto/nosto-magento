@@ -105,6 +105,8 @@
                             <show_in_store>0</show_in_store>
                         </frequency>
                         <update_exchange_rates translate="label">
+                            <label>Update Exchange Rates</label>
+                            <comment>Push exchange rates to Nosto</comment>
                             <frontend_type>button</frontend_type>
                             <frontend_model>nosto_tagging/adminhtml_system_config_multi_currency_exchange_rate_button</frontend_model>
                             <sort_order>4</sort_order>
@@ -114,6 +116,27 @@
                         </update_exchange_rates>
                     </fields>
                 </scheduled_currency_exchange_rate_update>
+                <account_settings>
+                    <label>Account Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>30</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>0</expanded>
+                    <fields>
+                        <update translate="label">
+                            <label>Update Account</label>
+                            <comment>Synchronise account settings with Nosto</comment>
+                            <frontend_type>button</frontend_type>
+                            <frontend_model>nosto_tagging/adminhtml_system_config_account_update_button</frontend_model>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </update>
+                    </fields>
+                </account_settings>
             </groups>
         </nosto_tagging>
     </sections>

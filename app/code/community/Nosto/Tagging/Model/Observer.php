@@ -85,7 +85,7 @@ class Nosto_Tagging_Model_Observer
                 /** @var NostoAccount $account */
                 $account = Mage::helper('nosto_tagging/account')
                     ->find($store);
-                if ($account === null || !$account->isConnectedToNosto()) {
+                if (is_null($account)) {
                     continue;
                 }
                 // Load the product model for this particular store view.
@@ -135,8 +135,7 @@ class Nosto_Tagging_Model_Observer
                 /** @var NostoAccount $account */
                 $account = Mage::helper('nosto_tagging/account')
                     ->find($store);
-
-                if ($account === null || !$account->isConnectedToNosto()) {
+                if (is_null($account)) {
                     continue;
                 }
 
@@ -181,7 +180,7 @@ class Nosto_Tagging_Model_Observer
                     ->find($mageOrder->getStore());
                 $customerId = Mage::helper('nosto_tagging/customer')
                     ->getNostoId($mageOrder);
-                if ($account !== null && $account->isConnectedToNosto()) {
+                if (!is_null($account)) {
                     $service = new NostoServiceOrder($account);
                     $service->confirm($order, $customerId);
                 }
@@ -215,7 +214,7 @@ class Nosto_Tagging_Model_Observer
                     continue;
                 }
                 $account = $accountHelper->find($store);
-                if (is_null($account) || !$account->isConnectedToNosto()) {
+                if (is_null($account)) {
                     continue;
                 }
                 if (!$accountHelper->updateCurrencyExchangeRates($account, $store)) {

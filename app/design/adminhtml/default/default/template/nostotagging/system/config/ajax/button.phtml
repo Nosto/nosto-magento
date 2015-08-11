@@ -28,7 +28,7 @@
 
 <?php
 /**
- * @var $this Nosto_Tagging_Block_Adminhtml_System_Config_Multi_Currency_Exchange_Rate_Button
+ * @var $this Nosto_Tagging_Block_Adminhtml_System_Config_Ajax_Button
  */
 ?>
 <?php echo $this->getButtonHtml(); ?>
@@ -38,8 +38,8 @@
     if (typeof Nosto === "undefined") {
         var Nosto = {};
     }
-    Nosto.updateExchangeRates = function () {
-        $("nostotagging_update_exchange_rates_button").addClassName("disabled");
+    Nosto.<?php echo $this->getButtonOnClick(); ?> = function () {
+        $("<?php echo $this->getButtonId(); ?>").addClassName("disabled");
         var showMessages = function(messages) {
             var html = "", type, msg;
             for (var i = 0, l = messages.length; i < l; i++) {
@@ -51,17 +51,17 @@
                 $("messages").update("<ul class=\"messages\">"+html+"</ul>");
             }
         };
-        new Ajax.Request("<?php echo $this->getAjaxUpdateExchangeRatesUrl(); ?>", {
+        new Ajax.Request("<?php echo $this->getButtonUrl(); ?>", {
             method: "POST",
             onSuccess: function(transport) {
                 var response = JSON.parse(transport.responseText);
                 showMessages(response.data);
             },
             onFailure: function(transport) {
-                showMessages([{"error": "There was an error updating the currency exchange rates (Error "+transport.status+")."}]);
+                showMessages([{"error": "There was an unknown error (Error "+transport.status+")."}]);
             },
             onComplete: function() {
-                $("nostotagging_update_exchange_rates_button").removeClassName("disabled");
+                $("<?php echo $this->getButtonId(); ?>").removeClassName("disabled");
             }
         });
     };
