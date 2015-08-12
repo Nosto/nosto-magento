@@ -26,7 +26,7 @@
  */
 
 /**
- * Meta data class which holds information about an item included in an order.
+ * Data Transfer object representing an item included in an order.
  * This is used during the order confirmation API request and the order history
  * export.
  *
@@ -53,14 +53,14 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
     protected $_name;
 
     /**
-     * @var float The unit price of the item included in the order.
+     * @var NostoPrice The unit price of the item included in the order.
      */
     protected $_unitPrice;
 
     /**
-     * @var string the 3-letter ISO code (ISO 4217) for the item currency.
+     * @var NostoCurrencyCode the 3-letter ISO code (ISO 4217) for the currency.
      */
-    protected $_currencyCode;
+    protected $_currency;
 
     /**
      * @inheritdoc
@@ -71,18 +71,18 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
     }
 
     /**
-     * Loads the item info from the Magento order item model.
+     * Loads the Data Transfer Object.
      *
      * @param Mage_Sales_Model_Order_Item $item the item model.
+     * @param NostoCurrencyCode $currencyCode the order currency code.
      */
-    public function loadData(Mage_Sales_Model_Order_Item $item)
+    public function loadData(Mage_Sales_Model_Order_Item $item, NostoCurrencyCode $currencyCode)
     {
-        $order = $item->getOrder();
-        $this->_productId = (int)$this->fetchProductId($item);
+        $this->_productId = $this->fetchProductId($item);
         $this->_quantity = (int)$item->getQtyOrdered();
         $this->_name = $this->fetchProductName($item);
-        $this->_unitPrice = $item->getPriceInclTax();
-        $this->_currencyCode = strtoupper($order->getOrderCurrencyCode());
+        $this->_unitPrice = new NostoPrice($item->getBasePriceInclTax());
+        $this->_currency = $currencyCode;
     }
 
     /**
@@ -91,16 +91,16 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
      * represent an item being bough, e.g. shipping fees, discounts etc.
      *
      * @param string $name the name of the item.
-     * @param float|int|string $unitPrice the unit price of the item.
-     * @param string $currencyCode the currency code for the item unit price.
+     * @param NostoPrice $unitPrice the unit price of the item.
+     * @param NostoCurrencyCode $currencyCode the currency code for the item unit price.
      */
-    public function loadSpecialItemData($name, $unitPrice, $currencyCode)
+    public function loadSpecialItemData($name, NostoPrice $unitPrice, NostoCurrencyCode $currencyCode)
     {
         $this->_productId = -1;
         $this->_quantity = 1;
         $this->_name = (string)$name;
         $this->_unitPrice = $unitPrice;
-        $this->_currencyCode = strtoupper($currencyCode);
+        $this->_currency = $currencyCode;
     }
 
     /**
@@ -252,7 +252,7 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
     /**
      * The unit price of the item included in the order.
      *
-     * @return float the unit price.
+     * @return NostoPrice the unit price.
      */
     public function getUnitPrice()
     {
@@ -262,10 +262,10 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
     /**
      * The 3-letter ISO code (ISO 4217) for the item currency.
      *
-     * @return string the currency ISO code.
+     * @return NostoCurrencyCode the currency ISO code.
      */
-    public function getCurrencyCode()
+    public function getCurrency()
     {
-        return $this->_currencyCode;
+        return $this->_currency;
     }
 }

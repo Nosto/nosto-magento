@@ -26,23 +26,35 @@
  */
 
 /**
- * Helper class for common date operations.
+ * Extension system setting source model for choosing the multi-currency method
+ * to use.
+ *
+ * Options are "Exchange Rate" and "Product Tagging". The former makes use of the built
+ * in currency exchange rates and is the preferred method. The latter is the old
+ * way of tagging all price variations on the product pages.
  *
  * @category Nosto
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Helper_Date extends Mage_Core_Helper_Abstract
+class Nosto_Tagging_Model_System_Config_Source_Multi_Currency_Method
 {
     /**
-     * Formats date into Nosto format, i.e. Y-m-d.
+     * Returns the method options to choose from.
      *
-     * @param string $date the date to format.
-     *
-     * @return string the formatted date.
+     * @return array the options.
      */
-    public function getFormattedDate($date)
+    public function toOptionArray()
     {
-        return date('Y-m-d', strtotime($date));
+        return array(
+            array(
+                'value' => Nosto_Tagging_Helper_Data::MULTI_CURRENCY_METHOD_EXCHANGE_RATE,
+                'label' => 'Exchange Rate',
+            ),
+            array(
+                'value' => Nosto_Tagging_Helper_Data::MULTI_CURRENCY_METHOD_PRICE_VARIATION,
+                'label' => 'Price Variation',
+            )
+        );
     }
 }

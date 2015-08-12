@@ -47,7 +47,7 @@ class Nosto_Tagging_Block_Embed extends Mage_Core_Block_Template
     protected function _toHtml()
     {
         if (!Mage::helper('nosto_tagging')->isModuleEnabled()
-            || !Mage::helper('nosto_tagging/account')->existsAndIsConnected()
+            || !Mage::helper('nosto_tagging/account')->exists()
         ) {
             return '';
         }
@@ -62,9 +62,10 @@ class Nosto_Tagging_Block_Embed extends Mage_Core_Block_Template
      */
     public function getAccountName()
     {
+        /** @var NostoAccount $account */
         $account = Mage::helper('nosto_tagging/account')->find();
         if ($account !== null) {
-            return $account->name;
+            return $account->getName();
         }
         return '';
     }

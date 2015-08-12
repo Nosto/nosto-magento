@@ -44,7 +44,7 @@ class Nosto_Tagging_Block_Order extends Mage_Checkout_Block_Success
     protected function _toHtml()
     {
         if (!Mage::helper('nosto_tagging')->isModuleEnabled()
-            || !Mage::helper('nosto_tagging/account')->existsAndIsConnected()
+            || !Mage::helper('nosto_tagging/account')->exists()
         ) {
             return '';
         }
@@ -64,7 +64,11 @@ class Nosto_Tagging_Block_Order extends Mage_Checkout_Block_Success
         $order = Mage::getModel('sales/order')->load($orderId);
         /** @var Nosto_Tagging_Model_Meta_Order $meta */
         $meta = Mage::getModel('nosto_tagging/meta_order');
-        $meta->loadData($order);
+        try {
+            $meta->loadData($order);
+        } catch (NostoException $e) {
+            Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
+        }
         return $meta;
     }
 }

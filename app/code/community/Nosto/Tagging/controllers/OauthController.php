@@ -64,26 +64,41 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
         }
 
         $request = $this->getRequest();
-        if (($code = $request->getParam('code')) !== null) {
+        if (($authCode = $request->getParam('code')) !== null) {
             $store = Mage::app()->getStore();
+            /** @var Nosto_Tagging_Helper_Account $accountHelper */
+            $accountHelper = Mage::helper('nosto_tagging/account');
             try {
-                $account = NostoAccount::syncFromNosto(
-                    Mage::helper('nosto_tagging/oauth')->getMetaData($store),
-                    $code
-                );
-                if (Mage::helper('nosto_tagging/account')->save($account, $store)) {
+                $oldAccount = $accountHelper->find($store);
+
+                /** @var Nosto_Tagging_Model_Meta_Oauth $meta */
+                $meta = Mage::getModel('nosto_tagging/meta_oauth');
+                $meta->loadData($store, $oldAccount);
+
+                $service = new NostoServiceAccount();
+                $newAccount = $service->sync($meta, $authCode);
+
+                // If we are updating an existing account, double check that we
+                // got the same account back from Nosto.
+                if (!is_null($oldAccount) && !$newAccount->equals($oldAccount)) {
+                    throw new NostoException('Failed to sync account details, account mismatch.');
+                }
+
+                if ($accountHelper->save($newAccount, $store)) {
+                    $accountHelper
+                        ->updateCurrencyExchangeRates($newAccount, $store);
+                    $accountHelper
+                        ->updateAccount($newAccount, $store);
                     $params = array(
                         'message_type' => NostoMessage::TYPE_SUCCESS,
                         'message_code' => NostoMessage::CODE_ACCOUNT_CONNECT,
                         'store' => (int)$store->getId(),
                     );
                 } else {
-                    throw new NostoException('Failed to connect account');
+                    throw new NostoException('Failed to save account.');
                 }
             } catch (NostoException $e) {
-                Mage::log(
-                    "\n" . $e->__toString(), Zend_Log::ERR, 'nostotagging.log'
-                );
+                Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
                 $params = array(
                     'message_type' => NostoMessage::TYPE_ERROR,
                     'message_code' => NostoMessage::CODE_ACCOUNT_CONNECT,

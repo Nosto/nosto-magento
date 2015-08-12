@@ -28,19 +28,20 @@
 
 <?php
 /**
- * @var $this          Nosto_Tagging_Block_Order
- * @var $helper        Nosto_Tagging_Helper_Data
- * @var $priceHelper   Nosto_Tagging_Helper_Price
+ * @var $this           Nosto_Tagging_Block_Order
+ * @var $helper         Nosto_Tagging_Helper_Data
+ * @var $priceFormatter NostoFormatterPrice
  */
 $order = $this->getLastOrder();
 $helper = Mage::helper('nosto_tagging');
-$priceHelper = Mage::helper('nosto_tagging/price');
+$priceFormatter = Nosto::formatter('price');
+$priceFormat = new NostoPriceFormat(2, '.', '');
 ?>
 
 <?php if ($order->getPurchasedItems() !== array()): ?>
 <!-- Nosto Order Tagging -->
 <div class="nosto_purchase_order" style="display:none">
-    <span class="order_number"><?php echo $order->getOrderNumber(); ?></span>
+    <span class="order_number"><?php echo $helper->escapeHtml($order->getOrderNumber()); ?></span>
     <span class="order_status_code"><?php echo $helper->escapeHtml($order->getOrderStatus()->getCode()); ?></span>
     <span class="order_status_label"><?php echo $helper->escapeHtml($order->getOrderStatus()->getLabel()); ?></span>
     <span class="payment_provider"><?php echo $helper->escapeHtml($order->getPaymentProvider()); ?></span>
@@ -52,11 +53,11 @@ $priceHelper = Mage::helper('nosto_tagging/price');
     <div class="purchased_items">
         <?php foreach ($order->getPurchasedItems() as $item): ?>
         <div class="line_item">
-            <span class="product_id"><?php echo (int)$item->getProductId(); ?></span>
+            <span class="product_id"><?php echo $helper->escapeHtml($item->getProductId()); ?></span>
             <span class="quantity"><?php echo (int)$item->getQuantity(); ?></span>
             <span class="name"><?php echo $helper->escapeHtml($item->getName()); ?></span>
-            <span class="unit_price"><?php echo $priceHelper->getFormattedPrice($item->getUnitPrice()); ?></span>
-            <span class="price_currency_code"><?php echo strtoupper($item->getCurrencyCode()); ?></span>
+            <span class="unit_price"><?php echo $priceFormatter->format($item->getUnitPrice(), $priceFormat); ?></span>
+            <span class="price_currency_code"><?php echo $item->getCurrency()->getCode(); ?></span>
         </div>
         <?php endforeach; ?>
     </div>

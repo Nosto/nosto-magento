@@ -109,12 +109,11 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
 
         try {
             // Notify Nosto that the account was deleted.
-            $account->delete();
+            $service = new NostoServiceAccount();
+            $service->delete($account);
         } catch (NostoException $e) {
             // Failures are logged but not shown to the user.
-            Mage::log(
-                "\n" . $e->__toString(), Zend_Log::ERR, 'nostotagging.log'
-            );
+            Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
         }
 
         return true;
@@ -150,17 +149,16 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Checks that an account exists for the given store and that it is
-     * connected to nosto.
+     * Checks that an account exists for the given store.
      *
      * @param Mage_Core_Model_Store $store the store to check the account for.
      *
-     * @return bool true if exists and is connected, false otherwise.
+     * @return bool true if exists, false otherwise.
      */
-    public function existsAndIsConnected(Mage_Core_Model_Store $store = null)
+    public function exists(Mage_Core_Model_Store $store = null)
     {
         $account = $this->find($store);
-        return ($account !== null && $account->isConnectedToNosto());
+        return !is_null($account);
     }
 
     /**
@@ -192,9 +190,74 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
      */
     public function getIframeUrl(Mage_Core_Model_Store $store, NostoAccount $account = null, array $params = array())
     {
-        /** @var Nosto_Tagging_Model_Meta_Account_Iframe $meta */
-        $meta = Mage::getModel('nosto_tagging/meta_account_iframe');
-        $meta->loadData($store);
-        return Nosto::helper('iframe')->getUrl($meta, $account, $params);
+        /** @var Nosto_Tagging_Model_Meta_Account_Sso $sso */
+        $sso = Mage::getModel('nosto_tagging/meta_account_sso');
+        $sso->loadData();
+        /** @var Nosto_Tagging_Model_Meta_Account_Iframe $iframe */
+        $iframe = Mage::getModel('nosto_tagging/meta_account_iframe');
+        $iframe->loadData($store);
+        /** @var NostoHelperIframe $helper */
+        $helper = Nosto::helper('iframe');
+        return $helper->getUrl($sso, $iframe, $account, $params);
+    }
+
+    /**
+     * Sends a currency exchange rate update request to Nosto via the API.
+     *
+     * Checks if multi currency is enabled for the store before attempting to
+     * send the exchange rates.
+     *
+     * @param NostoAccount $account the account for which tp update the rates.
+     * @param Mage_Core_Model_Store $store the store which rates are to be updated.
+     *
+     * @return bool
+     */
+    public function updateCurrencyExchangeRates(NostoAccount $account, Mage_Core_Model_Store $store)
+    {
+        /** @var Nosto_Tagging_Helper_Data $helper */
+        $helper = Mage::helper('nosto_tagging');
+        if (!$helper->getStoreHasMultiCurrency($store)) {
+            return false;
+        }
+
+        $currencyCodes = $store->getAvailableCurrencyCodes(true);
+        $baseCurrencyCode = $store->getBaseCurrencyCode();
+
+        /** @var Nosto_Tagging_Helper_Currency $helper */
+        $helper = Mage::helper('nosto_tagging/currency');
+        try {
+            $collection = $helper
+                ->getExchangeRateCollection($baseCurrencyCode, $currencyCodes);
+            $service = new NostoServiceCurrencyExchangeRate($account);
+            return $service->update($collection);
+        } catch (NostoException $e) {
+            Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
+        }
+
+        return false;
+    }
+
+    /**
+     * Sends a update account request to Nosto via the API.
+     *
+     * This is used to update the details of a Nosto account from the
+     * "Advanced Settings" page, as well as after an account has been
+     * successfully connected through OAuth.
+     *
+     * @param NostoAccount          $account the account to update.
+     * @param Mage_Core_Model_Store $store the store to which the account belongs.
+     *
+     * @return bool
+     */
+    public function updateAccount(NostoAccount $account, Mage_Core_Model_Store $store)
+    {
+        try {
+            $service = new NostoServiceAccount();
+            return $service->update($account, $this->getMetaData($store));
+        } catch (NostoException $e) {
+            Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
+        }
+
+        return false;
     }
 }

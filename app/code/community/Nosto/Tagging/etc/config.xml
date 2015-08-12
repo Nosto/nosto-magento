@@ -155,9 +155,19 @@
     </frontend>
     <default>
         <nosto_tagging>
-            <image_options>
+            <general>
                 <image_version>image</image_version>
-            </image_options>
+                <multi_currency_method>exchangeRate</multi_currency_method>
+            </general>
         </nosto_tagging>
     </default>
+    <crontab>
+        <jobs>
+            <nostotagging_currency_exchange_rate_update>
+                <run>
+                    <model>nosto_tagging/observer::scheduledCurrencyExchangeRateUpdate</model>
+                </run>
+            </nostotagging_currency_exchange_rate_update>
+        </jobs>
+    </crontab>
 </config>

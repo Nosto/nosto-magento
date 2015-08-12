@@ -40,9 +40,29 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_INSTALLATION_ID = 'nosto_tagging/installation/id';
 
     /**
-     * Path to store config nosto product image version.
+     * Path to store config product image version setting.
      */
     const XML_PATH_IMAGE_VERSION = 'nosto_tagging/image_options/image_version';
+
+    /**
+     * Path to store config multi currency method setting.
+     */
+    const XML_PATH_MULTI_CURRENCY_METHOD = 'nosto_tagging/multi_currency/method';
+
+    /**
+     * Path to store config scheduled currency exchange rate update enabled setting.
+     */
+    const XML_PATH_SCHEDULED_CURRENCY_EXCHANGE_RATE_UPDATE_ENABLED = 'nosto_tagging/scheduled_currency_exchange_rate_update/enabled';
+
+    /**
+     * Multi currency method option for currency exchange rates.
+     */
+    const MULTI_CURRENCY_METHOD_EXCHANGE_RATE = 'exchangeRate';
+
+    /**
+     * Multi currency method option for price variations in tagging.
+     */
+    const MULTI_CURRENCY_METHOD_PRICE_VARIATION = 'priceVariation';
 
     /**
      * @inheritdoc
@@ -119,5 +139,87 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     public function getProductImageVersion($store = null)
     {
         return Mage::getStoreConfig(self::XML_PATH_IMAGE_VERSION, $store);
+    }
+
+    /**
+     * Return the multi currency method in use, i.e. "exchangeRate" or
+     * "priceVariation".
+     *
+     * If "exchangeRate", it means that the product prices in the recommendation
+     * is updated through the Exchange Rate API to Nosto.
+     *
+     * If "priceVariation", it means that the product price variations should be
+     * tagged along side the product.
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     *
+     * @return string
+     */
+    public function getMultiCurrencyMethod($store = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_MULTI_CURRENCY_METHOD, $store);
+    }
+
+    /**
+     * Checks if the multi currency method in use is the "exchangeRate", i.e.
+     * the product prices in the recommendation is updated through the Exchange
+     * Rate API to Nosto.
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     *
+     * @return bool
+     */
+    public function isMultiCurrencyMethodExchangeRate($store = null)
+    {
+        $method = $this->getMultiCurrencyMethod($store);
+        return ($method === self::MULTI_CURRENCY_METHOD_EXCHANGE_RATE);
+    }
+
+    /**
+     * Checks if the multi currency method in use is the "priceVariation", i.e.
+     * the product price variations should be tagged along side the product.
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     *
+     * @return bool
+     */
+    public function isMultiCurrencyMethodPriceVariation($store = null)
+    {
+        $method = $this->getMultiCurrencyMethod($store);
+        return ($method === self::MULTI_CURRENCY_METHOD_PRICE_VARIATION);
+    }
+
+    /**
+     * Checks if the store has any other currency configured than the base one.
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     *
+     * @return bool
+     */
+    public function getStoreHasMultiCurrency($store = null)
+    {
+        if (is_null($store)) {
+            $store = Mage::app()->getStore();
+        }
+        $currencyCodes = $store->getAvailableCurrencyCodes(true);
+        $baseCurrencyCode = $store->getBaseCurrencyCode();
+        foreach ($currencyCodes as $currencyCode) {
+            if ($currencyCode !== $baseCurrencyCode) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns if the scheduled currency exchange rate update is enabled.
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     *
+     * @return bool
+     */
+    public function isScheduledCurrencyExchangeRateUpdateEnabled($store = null)
+    {
+        return (bool)Mage::getStoreConfig(self::XML_PATH_SCHEDULED_CURRENCY_EXCHANGE_RATE_UPDATE_ENABLED, $store);
     }
 }

@@ -36,34 +36,14 @@
 class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract implements NostoAccountMetaIframeInterface
 {
     /**
-     * @var string the name of the platform the iframe is used on.
+     * @var NostoLanguageCode the language code for oauth server locale.
      */
-    protected $_platform = 'magento';
+    protected $_language;
 
     /**
-     * @var string the admin user first name.
+     * @var NostoLanguageCode the language code for the store view scope.
      */
-    protected $_firstName;
-
-    /**
-     * @var string the admin user last name.
-     */
-    protected $_lastName;
-
-    /**
-     * @var    string the admin user email address.
-     */
-    protected $_email;
-
-    /**
-     * @var string the language ISO (ISO 639-1) code for oauth server locale.
-     */
-    protected $_languageIsoCode;
-
-    /**
-     * @var string the language ISO (ISO 639-1) for the store view scope.
-     */
-    protected $_languageIsoCodeShop;
+    protected $_shopLanguage;
 
     /**
      * @var string unique ID that identifies the Magento installation.
@@ -115,21 +95,16 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
      */
     public function loadData(Mage_Core_Model_Store $store)
     {
-        /** @var Mage_Admin_Model_User $user */
-        $user = Mage::getSingleton('admin/session')->getUser();
         /** @var Nosto_Tagging_Helper_Url $urlHelper */
         $urlHelper = Mage::helper('nosto_tagging/url');
         /** @var Nosto_Tagging_Helper_Data $dataHelper */
         $dataHelper = Mage::helper('nosto_tagging/data');
 
-        $this->_firstName = $user->getFirstname();
-        $this->_lastName = $user->getLastname();
-        $this->_email = $user->getEmail();
-        $this->_languageIsoCode = substr(
-            Mage::app()->getLocale()->getLocaleCode(), 0, 2
+        $this->_language = new NostoLanguageCode(
+            substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2)
         );
-        $this->_languageIsoCodeShop = substr(
-            $store->getConfig('general/locale/code'), 0, 2
+        $this->_shopLanguage = new NostoLanguageCode(
+            substr($store->getConfig('general/locale/code'), 0, 2)
         );
         $this->_uniqueId = $dataHelper->getInstallationId();
         $this->_previewUrlProduct = $urlHelper->getPreviewUrlProduct($store);
@@ -141,66 +116,25 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
     }
 
     /**
-     * The name of the platform the iframe is used on.
-     * A list of valid platform names is issued by Nosto.
-     *
-     * @return string the platform name.
-     */
-    public function getPlatform()
-    {
-        return $this->_platform;
-    }
-
-    /**
-     * The first name of the user who is loading the config iframe.
-     *
-     * @return string the first name.
-     */
-    public function getFirstName()
-    {
-        return $this->_firstName;
-    }
-
-    /**
-     * The last name of the user who is loading the config iframe.
-     *
-     * @return string the last name.
-     */
-    public function getLastName()
-    {
-        return $this->_lastName;
-    }
-
-    /**
-     * The email address of the user who is loading the config iframe.
-     *
-     * @return string the email address.
-     */
-    public function getEmail()
-    {
-        return $this->_email;
-    }
-
-    /**
      * The 2-letter ISO code (ISO 639-1) for the language of the user who is
      * loading the config iframe.
      *
-     * @return string the language ISO code.
+     * @return NostoLanguageCode the language code.
      */
-    public function getLanguageIsoCode()
+    public function getLanguage()
     {
-        return $this->_languageIsoCode;
+        return $this->_language;
     }
 
     /**
      * The 2-letter ISO code (ISO 639-1) for the language of the shop the
      * account belongs to.
      *
-     * @return string the language ISO code.
+     * @return NostoLanguageCode the language code.
      */
-    public function getLanguageIsoCodeShop()
+    public function getShopLanguage()
     {
-        return $this->_languageIsoCodeShop;
+        return $this->_shopLanguage;
     }
 
     /**
