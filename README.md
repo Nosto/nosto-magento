@@ -135,6 +135,10 @@ Open Software License ("OSL") v3.0
 
 ## Changelog
 
+### x.x.x
+* Add multi-currency + exchange rate support
+* Add account synchronisation support
+
 ### 2.6.1
 * Re-package for Enterprise Edition release
 
