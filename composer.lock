@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d80f1f2ac83299898346b8301aabb2c6",
+    "hash": "1530387a478f9ad72bbe52cf8753bf01",
     "packages": [
         {
             "name": "nosto/php-sdk",
-            "version": "dev-feature/multi-currency",
+            "version": "dev-develop",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Nosto/php-sdk.git",
-                "reference": "e73aa170e9b642ae9504facb7e2048b3a56bdc86"
+                "reference": "d9e2dbad3407e3cc0138b78ceab8b1818443e808"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Nosto/php-sdk/zipball/e73aa170e9b642ae9504facb7e2048b3a56bdc86",
-                "reference": "e73aa170e9b642ae9504facb7e2048b3a56bdc86",
+                "url": "https://api.github.com/repos/Nosto/php-sdk/zipball/d9e2dbad3407e3cc0138b78ceab8b1818443e808",
+                "reference": "d9e2dbad3407e3cc0138b78ceab8b1818443e808",
                 "shasum": ""
             },
             "require-dev": {
@@ -30,10 +30,10 @@
             ],
             "description": "PHP SDK for developing Nosto modules for e-commerce platforms",
             "support": {
-                "source": "https://github.com/Nosto/php-sdk/tree/feature/multi-currency",
+                "source": "https://github.com/Nosto/php-sdk/tree/develop",
                 "issues": "https://github.com/Nosto/php-sdk/issues"
             },
-            "time": "2015-08-12 10:16:13"
+            "time": "2015-08-12 11:05:22"
         }
     ],
     "packages-dev": [],

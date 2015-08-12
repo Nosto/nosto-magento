@@ -10,6 +10,6 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "nosto/php-sdk": "dev-feature/multi-currency"
+        "nosto/php-sdk": "dev-develop"
     }
 }
