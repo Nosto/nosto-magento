@@ -155,10 +155,12 @@
     </frontend>
     <default>
         <nosto_tagging>
-            <general>
+            <image_options>
                 <image_version>image</image_version>
-                <multi_currency_method>exchangeRate</multi_currency_method>
-            </general>
+            </image_options>
+            <multi_currency>
+                <method>exchangeRate</method>
+            </multi_currency>
         </nosto_tagging>
     </default>
     <crontab>
