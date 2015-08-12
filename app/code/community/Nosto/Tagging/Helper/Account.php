@@ -149,17 +149,16 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Checks that an account exists for the given store and that it is
-     * connected to nosto.
+     * Checks that an account exists for the given store.
      *
      * @param Mage_Core_Model_Store $store the store to check the account for.
      *
-     * @return bool true if exists and is connected, false otherwise.
+     * @return bool true if exists, false otherwise.
      */
-    public function existsAndIsConnected(Mage_Core_Model_Store $store = null)
+    public function exists(Mage_Core_Model_Store $store = null)
     {
         $account = $this->find($store);
-        return ($account !== null && $account->isConnectedToNosto());
+        return !is_null($account);
     }
 
     /**

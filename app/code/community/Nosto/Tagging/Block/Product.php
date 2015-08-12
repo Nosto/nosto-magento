@@ -57,7 +57,7 @@ class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
     protected function _toHtml()
     {
         if (!Mage::helper('nosto_tagging')->isModuleEnabled()
-            || !Mage::helper('nosto_tagging/account')->existsAndIsConnected()
+            || !Mage::helper('nosto_tagging/account')->exists()
         ) {
             return '';
         }

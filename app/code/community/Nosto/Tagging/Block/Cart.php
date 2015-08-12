@@ -44,7 +44,7 @@ class Nosto_Tagging_Block_Cart extends Mage_Checkout_Block_Cart_Abstract
     protected function _toHtml()
     {
         if (!Mage::helper('nosto_tagging')->isModuleEnabled()
-            || !Mage::helper('nosto_tagging/account')->existsAndIsConnected()
+            || !Mage::helper('nosto_tagging/account')->exists()
         ) {
             return '';
         }
