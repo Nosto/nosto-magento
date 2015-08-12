@@ -42,12 +42,12 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Path to store config product image version setting.
      */
-    const XML_PATH_IMAGE_VERSION = 'nosto_tagging/general/image_version';
+    const XML_PATH_IMAGE_VERSION = 'nosto_tagging/image_options/image_version';
 
     /**
      * Path to store config multi currency method setting.
      */
-    const XML_PATH_MULTI_CURRENCY_METHOD = 'nosto_tagging/general/multi_currency_method';
+    const XML_PATH_MULTI_CURRENCY_METHOD = 'nosto_tagging/multi_currency/method';
 
     /**
      * Path to store config scheduled currency exchange rate update enabled setting.

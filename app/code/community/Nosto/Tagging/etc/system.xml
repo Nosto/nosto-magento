@@ -36,8 +36,8 @@
             <show_in_website>1</show_in_website>
             <show_in_store>1</show_in_store>
             <groups>
-                <general translate="label">
-                    <label>General</label>
+                <account_settings translate="label">
+                    <label>Account Settings</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>10</sort_order>
                     <show_in_default>1</show_in_default>
@@ -45,32 +45,73 @@
                     <show_in_store>1</show_in_store>
                     <expanded>0</expanded>
                     <fields>
+                        <update translate="label">
+                            <label>Update Account</label>
+                            <comment>Synchronise account settings with Nosto</comment>
+                            <frontend_type>button</frontend_type>
+                            <frontend_model>nosto_tagging/adminhtml_system_config_account_update_button</frontend_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </update>
+                    </fields>
+                </account_settings>
+                <image_options translate="label">
+                    <label>Image Options</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>20</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>0</expanded>
+                    <fields>
                         <image_version translate="label">
                             <label>Image Version</label>
-                            <comment>The product image version used in recommendations.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>nosto_tagging/system_config_source_image</source_model>
-                            <sort_order>1</sort_order>
+                            <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </image_version>
-                        <multi_currency_method translate="label">
+                    </fields>
+                </image_options>
+                <multi_currency translate="label">
+                    <label>Multi Currency</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>30</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>0</expanded>
+                    <fields>
+                        <method translate="label">
                             <label>Multi Currency Method</label>
                             <comment>Use either exchange rates or price variations for multi currency product recommendations.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>nosto_tagging/system_config_source_multi_currency_method</source_model>
-                            <sort_order>2</sort_order>
+                            <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </multi_currency_method>
+                        </method>
+                        <update_exchange_rates translate="label">
+                            <label>Update Exchange Rates</label>
+                            <comment>Push exchange rates to Nosto</comment>
+                            <frontend_type>button</frontend_type>
+                            <frontend_model>nosto_tagging/adminhtml_system_config_multi_currency_exchange_rate_button</frontend_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </update_exchange_rates>
                     </fields>
-                </general>
-                <scheduled_currency_exchange_rate_update>
+                </multi_currency>
+                <scheduled_currency_exchange_rate_update translate="label">
                     <label>Scheduled Currency Exchange Rate Update</label>
                     <frontend_type>text</frontend_type>
-                    <sort_order>20</sort_order>
+                    <sort_order>40</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
@@ -104,39 +145,8 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
                         </frequency>
-                        <update_exchange_rates translate="label">
-                            <label>Update Exchange Rates</label>
-                            <comment>Push exchange rates to Nosto</comment>
-                            <frontend_type>button</frontend_type>
-                            <frontend_model>nosto_tagging/adminhtml_system_config_multi_currency_exchange_rate_button</frontend_model>
-                            <sort_order>4</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </update_exchange_rates>
                     </fields>
                 </scheduled_currency_exchange_rate_update>
-                <account_settings>
-                    <label>Account Settings</label>
-                    <frontend_type>text</frontend_type>
-                    <sort_order>30</sort_order>
-                    <show_in_default>1</show_in_default>
-                    <show_in_website>1</show_in_website>
-                    <show_in_store>1</show_in_store>
-                    <expanded>0</expanded>
-                    <fields>
-                        <update translate="label">
-                            <label>Update Account</label>
-                            <comment>Synchronise account settings with Nosto</comment>
-                            <frontend_type>button</frontend_type>
-                            <frontend_model>nosto_tagging/adminhtml_system_config_account_update_button</frontend_model>
-                            <sort_order>4</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </update>
-                    </fields>
-                </account_settings>
             </groups>
         </nosto_tagging>
     </sections>
