@@ -109,12 +109,11 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
 
         try {
             // Notify Nosto that the account was deleted.
-            $account->delete();
+            $service = new NostoServiceAccount();
+            $service->delete($account);
         } catch (NostoException $e) {
             // Failures are logged but not shown to the user.
-            Mage::log(
-                "\n" . $e->__toString(), Zend_Log::ERR, 'nostotagging.log'
-            );
+            Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
         }
 
         return true;
@@ -249,8 +248,8 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
     public function updateAccount(NostoAccount $account, Mage_Core_Model_Store $store)
     {
         try {
-            $service = new NostoServiceAccount($account);
-            return $service->update($this->getMetaData($store));
+            $service = new NostoServiceAccount();
+            return $service->update($account, $this->getMetaData($store));
         } catch (NostoException $e) {
             Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
         }

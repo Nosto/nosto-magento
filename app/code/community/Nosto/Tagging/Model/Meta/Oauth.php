@@ -47,6 +47,11 @@ class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements
     protected $_language;
 
     /**
+     * @var NostoAccount account if OAuth is to sync details.
+     */
+    protected $_account;
+
+    /**
      * @inheritdoc
      */
     protected function _construct()
@@ -58,8 +63,9 @@ class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements
      * Loads the meta data for the given store.
      *
      * @param Mage_Core_Model_Store $store the store view to load the data for.
+     * @param NostoAccount|null $account account if OAuth is to sync details.
      */
-    public function loadData(Mage_Core_Model_Store $store)
+    public function loadData(Mage_Core_Model_Store $store, NostoAccount $account = null)
     {
         $this->_redirectUrl = Mage::getUrl(
             'nosto/oauth',
@@ -71,6 +77,10 @@ class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements
         $this->_language = new NostoLanguageCode(
             substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2)
         );
+
+        if (!is_null($account)) {
+            $this->_account = $account;
+        }
     }
 
     /**
@@ -130,5 +140,15 @@ class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements
     public function getLanguage()
     {
         return $this->_language;
+    }
+
+    /**
+     * The Nosto account if we are to sync account details from Nosto.
+     *
+     * @return NostoAccount|null the account.
+     */
+    public function getAccount()
+    {
+        return $this->_account;
     }
 }

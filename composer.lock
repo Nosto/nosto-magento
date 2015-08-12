@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Nosto/php-sdk.git",
-                "reference": "68f9cb90751283b625be969614ea9bcc4f8768ed"
+                "reference": "c055f67b64c7bf435fb1d15bd50dd604c10240e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Nosto/php-sdk/zipball/68f9cb90751283b625be969614ea9bcc4f8768ed",
-                "reference": "68f9cb90751283b625be969614ea9bcc4f8768ed",
+                "url": "https://api.github.com/repos/Nosto/php-sdk/zipball/c055f67b64c7bf435fb1d15bd50dd604c10240e6",
+                "reference": "c055f67b64c7bf435fb1d15bd50dd604c10240e6",
                 "shasum": ""
             },
             "require-dev": {
@@ -33,7 +33,7 @@
                 "source": "https://github.com/Nosto/php-sdk/tree/feature/multi-currency",
                 "issues": "https://github.com/Nosto/php-sdk/issues"
             },
-            "time": "2015-08-10 12:44:18"
+            "time": "2015-08-12 08:40:23"
         }
     ],
     "packages-dev": [],

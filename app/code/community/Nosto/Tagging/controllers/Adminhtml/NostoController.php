@@ -104,9 +104,11 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
 
         $store = $this->getSelectedStore();
         if ($this->getRequest()->isPost() && $store !== null) {
-            $client = new NostoOAuthClient(
-                Mage::helper('nosto_tagging/oauth')->getMetaData($store)
-            );
+            /** @var Nosto_Tagging_Model_Meta_Oauth $meta */
+            $meta = Mage::getModel('nosto_tagging/meta_oauth');
+            $meta->loadData($store);
+            $client = new NostoOAuthClient($meta);
+
             $responseBody = array(
                 'success' => true,
                 'redirect_url' => $client->getAuthorizationUrl(),
@@ -133,6 +135,49 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
     }
 
     /**
+     * Redirects user to the Nosto OAuth 2 authorization server to fetch missing
+     * scopes (API tokens) for an account.
+     */
+    public function syncAccountAction()
+    {
+        $this->getResponse()->setHeader('Content-type', 'application/json');
+
+        /** @var Nosto_Tagging_Helper_Account $accountHelper */
+        $accountHelper = Mage::helper('nosto_tagging/account');
+
+        $store = $this->getSelectedStore();
+        $account = !is_null($store) ? $accountHelper->find($store) : null;
+
+        if ($this->getRequest()->isPost() && !is_null($store) && !is_null($account)) {
+            /** @var Nosto_Tagging_Model_Meta_Oauth $meta */
+            $meta = Mage::getModel('nosto_tagging/meta_oauth');
+            $meta->loadData($store, $account);
+            $client = new NostoOAuthClient($meta);
+
+            $responseBody = array(
+                'success' => true,
+                'redirect_url' => $client->getAuthorizationUrl(),
+            );
+        }
+
+        if (!isset($responseBody)) {
+            $responseBody = array(
+                'success' => false,
+                'redirect_url' => $accountHelper->getIframeUrl(
+                        $store,
+                        $account,
+                        array(
+                            'message_type' => NostoMessage::TYPE_ERROR,
+                            'message_code' => NostoMessage::CODE_ACCOUNT_CONNECT,
+                        )
+                    )
+            );
+        }
+
+        $this->getResponse()->setBody(json_encode($responseBody));
+    }
+
+    /**
      * Creates a new Nosto account for the current scope using the Nosto API.
      */
     public function createAccountAction()
@@ -150,7 +195,8 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                 if (Zend_Validate::is($email, 'EmailAddress')) {
                     $meta->getOwner()->setEmail($email);
                 }
-                $account = NostoAccount::create($meta);
+                $service = new NostoServiceAccount();
+                $account = $service->create($meta);
                 if ($accountHelper->save($account, $store)) {
                     $accountHelper
                         ->updateCurrencyExchangeRates($account, $store);
@@ -167,9 +213,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                     );
                 }
             } catch (NostoException $e) {
-                Mage::log(
-                    "\n" . $e->__toString(), Zend_Log::ERR, 'nostotagging.log'
-                );
+                Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
             }
         }
 
