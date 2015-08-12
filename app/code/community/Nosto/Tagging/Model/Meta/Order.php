@@ -114,7 +114,7 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
         }
 
         if ($this->includeSpecialItems) {
-            if (($discount = $order->getDiscountAmount()) > 0) {
+            if (($discount = $order->getBaseDiscountAmount()) > 0) {
                 /** @var Nosto_Tagging_Model_Meta_Order_Item $orderItem */
                 $orderItem = Mage::getModel('nosto_tagging/meta_order_item');
                 $orderItem->loadSpecialItemData(
@@ -125,7 +125,7 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
                 $this->_items[] = $orderItem;
             }
 
-            if (($shippingInclTax = $order->getShippingInclTax()) > 0) {
+            if (($shippingInclTax = $order->getBaseShippingInclTax()) > 0) {
                 /** @var Nosto_Tagging_Model_Meta_Order_Item $orderItem */
                 $orderItem = Mage::getModel('nosto_tagging/meta_order_item');
                 $orderItem->loadSpecialItemData(
