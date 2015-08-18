@@ -9,6 +9,6 @@
         }
     ],
     "require": {
-        "nosto/php-sdk": "2.0.0"
+        "nosto/php-sdk": "2.0.1"
     }
 }
