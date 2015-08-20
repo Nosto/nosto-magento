@@ -87,7 +87,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
             case Mage_Catalog_Model_Product_Type::TYPE_BUNDLE:
                 // Get the bundle product "from" price.
                 $price = $product->getPriceModel()
-                    ->getTotalPrices($product, 'min', true);
+                    ->getTotalPrices($product, 'min', $inclTax);
                 break;
 
             case Mage_Catalog_Model_Product_Type::TYPE_GROUPED:
@@ -107,22 +107,24 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
                     ->getFirstItem();
                 if ($tmpProduct) {
                     $price = $tmpProduct->getMinimalPrice();
+                    if ($inclTax) {
+                        $price = Mage::helper('tax')
+                            ->getPrice($tmpProduct, $price, true);
+                    }
                 }
                 break;
 
             default:
-                if ($finalPrice) {
-                    $price = $product->getFinalPrice();
-                } else {
-                    $price = $product->getPrice();
+                $price = $finalPrice
+                    ? $product->getFinalPrice()
+                    : $product->getPrice();
+                if ($inclTax) {
+                    $price = Mage::helper('tax')
+                        ->getPrice($product, $price, true);
                 }
                 break;
         }
 
-        if ($inclTax) {
-            return Mage::helper('tax')->getPrice($product, $price, true);
-        } else {
-            return $price;
-        }
+        return $price;
     }
 }
