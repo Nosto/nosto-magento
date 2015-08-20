@@ -135,6 +135,9 @@ Open Software License ("OSL") v3.0
 
 ## Changelog
 
+### 2.6.3
+* Fix tax price calculation for fixed priced bundle and grouped products
+
 ### 2.6.2
 * Fix account owner email address assignment when creating new account
 
