@@ -80,20 +80,19 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
 
             case Mage_Catalog_Model_Product_Type::TYPE_GROUPED:
                 // Get the grouped product "starting at" price.
+                /** @var Mage_Catalog_Model_Config $config */
+                $config = Mage::getSingleton('catalog/config');
                 /** @var $tmpProduct Mage_Catalog_Model_Product */
                 $tmpProduct = Mage::getModel('catalog/product')
                     ->getCollection()
-                    ->addAttributeToSelect(
-                        Mage::getSingleton('catalog/config')
-                            ->getProductAttributes()
-                    )
+                    ->addAttributeToSelect($config->getProductAttributes())
                     ->addAttributeToFilter('entity_id', $product->getId())
-                    ->setPage(1, 1)
                     ->addMinimalPrice()
                     ->addTaxPercents()
-                    ->load()
+                    ->setPage(1, 1)
                     ->getFirstItem();
-                if ($tmpProduct) {
+
+                if (!$tmpProduct->isEmpty()) {
                     $price = $tmpProduct->getMinimalPrice();
                     if ($inclTax) {
                         $price = Mage::helper('tax')

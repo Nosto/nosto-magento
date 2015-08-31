@@ -65,13 +65,14 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const MULTI_CURRENCY_METHOD_PRICE_VARIATION = 'priceVariation';
 
     /**
-     * @inheritdoc
+     * Escape quotes inside html attributes.
+     *
+     * @param string $data the data to escape.
+     *
+     * @return string
      */
-    public function quoteEscape($data, $addSlashes = false)
+    public function escapeQuotes($data)
     {
-        if ($addSlashes === true) {
-            $data = addslashes($data);
-        }
         return htmlspecialchars($data, ENT_QUOTES, null, false);
     }
 

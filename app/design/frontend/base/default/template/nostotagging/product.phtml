@@ -70,7 +70,7 @@ $dateFormat = new NostoDateFormat(NostoDateFormat::YMD);
     <?php endif; ?>
     <?php foreach ($product->getTags() as $type => $tags): ?>
         <?php foreach ($tags as $tag): ?>
-            <span class="<?php echo $helper->quoteEscape($type); ?>"><?php echo $helper->escapeHtml($tag); ?></span>
+            <span class="<?php echo $helper->escapeQuotes($type); ?>"><?php echo $helper->escapeHtml($tag); ?></span>
         <?php endforeach; ?>
     <?php endforeach; ?>
     <?php if ($product->getDatePublished()): ?>
