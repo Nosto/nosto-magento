@@ -120,6 +120,52 @@ abstract class Nosto_Tagging_Model_Meta_LineItem extends Mage_Core_Model_Abstrac
     }
 
     /**
+     * Returns a list of attribute labels based on given attribute option map.
+     *
+     * The map must be passed with attribute id's as keys and the option id's
+     * as values.
+     *
+     * @param array $attributes the attribute id map.
+     *
+     * @return array
+     */
+    protected function getAttributeLabels(array $attributes)
+    {
+        $labels = array();
+        if (count($attributes) > 0) {
+            /** @var Mage_Eav_Model_Entity_Attribute[] $collection */
+            $collection = Mage::getModel('eav/entity_attribute')
+                ->getCollection()
+                ->addFieldToFilter(
+                    'attribute_id',
+                    array(
+                        'in' => array_keys($attributes)
+                    )
+                );
+            foreach ($collection as $attribute) {
+                $optionId = $attributes[$attribute->getId()];
+                if (!$attribute->getData('source_model')) {
+                    $attribute->setData(
+                        'source_model',
+                        'eav/entity_attribute_source_table'
+                    );
+                }
+                try {
+                    $label = $attribute->getSource()->getOptionText($optionId);
+                    if (!empty($label)) {
+                        $labels[] = $label;
+                    }
+                } catch (Mage_Core_Exception $e) {
+                    // If the source model cannot be found, just continue;
+                    continue;
+                }
+
+            }
+        }
+        return $labels;
+    }
+
+    /**
      * The unique identifier for the item.
      *
      * @return string|int

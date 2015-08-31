@@ -111,15 +111,7 @@ class Nosto_Tagging_Model_Meta_Cart_Item extends Nosto_Tagging_Model_Meta_LineIt
         if (count($parentIds) === 1) {
             $attributes = $item->getBuyRequest()->getData('super_attribute');
             if (is_array($attributes) && count($attributes) > 0) {
-                foreach ($attributes as $id => $value) {
-                    /** @var Mage_Catalog_Model_Resource_Eav_Attribute $attribute */
-                    $attribute = Mage::getModel('catalog/resource_eav_attribute')
-                        ->load($id);
-                    $label = $attribute->getSource()->getOptionText($value);
-                    if (!empty($label)) {
-                        $nameOptions[] = $label;
-                    }
-                }
+                $nameOptions = $this->getAttributeLabels($attributes);
             }
         }
 
