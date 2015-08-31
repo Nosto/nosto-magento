@@ -150,8 +150,6 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         /** @var Nosto_Tagging_Helper_Price $priceHelper */
         $priceHelper = Mage::helper('nosto_tagging/price');
 
-        $baseCurrencyCode = $store->getBaseCurrencyCode();
-
         $this->_url = $this->buildUrl($product, $store);
         $this->_productId = $product->getId();
         $this->_name = $product->getName();
@@ -160,7 +158,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         $this->_price = new NostoPrice($price);
         $listPrice = $priceHelper->getProductPriceInclTax($product);
         $this->_listPrice = new NostoPrice($listPrice);
-        $this->_currency = new NostoCurrencyCode($baseCurrencyCode);
+        $this->_currency = new NostoCurrencyCode($store->getBaseCurrencyCode());
         $this->_availability = new NostoProductAvailability(
             $product->isAvailable()
                 ? NostoProductAvailability::IN_STOCK
@@ -189,31 +187,46 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         }
 
         if ($helper->getStoreHasMultiCurrency($store)) {
-            // The store base currency code is used as the variation ID.
-            $this->_priceVariationId = $baseCurrencyCode;
-            // Only try populate the price variations if we need them in the
-            // product tagging. This is determined by the backend system setting
-            // for the multi-currency method.
+            $this->_priceVariationId = $store->getBaseCurrencyCode();
             if ($helper->isMultiCurrencyMethodPriceVariation($store)) {
-                $currencyCodes = $store->getAvailableCurrencyCodes(true);
-                foreach ($currencyCodes as $currencyCode) {
-                    // Skip base currency.
-                    if ($currencyCode === $baseCurrencyCode) {
-                        continue;
-                    }
-                    try {
-                        /** @var Nosto_Tagging_Model_Meta_Product_Price_Variation $variation */
-                        $variation = Mage::getModel('nosto_tagging/meta_product_price_variation');
-                        $variation->loadData($product, $store, new NostoCurrencyCode($currencyCode));
-                        $this->_priceVariations[] = $variation;
-                    } catch (Exception $e) {
-                        // The price variation cannot be obtained if there are no
-                        // exchange rates defined for the currency and Magento will
-                        // throw and exception.
-                    }
-                }
+                $this->_priceVariations = $this->buildPriceVariations($product, $store);
             }
         }
+    }
+
+    /**
+     * Build the product price variations.
+     *
+     * These are the different prices for the product's supported currencies.
+     * Only used when the multi currency method is set to 'priceVariation'.
+     *
+     * @param Mage_Catalog_Model_Product $product the product model.
+     * @param Mage_Core_Model_Store      $store the store model.
+     *
+     * @return array
+     */
+    protected function buildPriceVariations(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
+    {
+        $variations = array();
+        $currencyCodes = $store->getAvailableCurrencyCodes(true);
+        foreach ($currencyCodes as $currencyCode) {
+            // Skip base currency.
+            if ($currencyCode === $store->getBaseCurrencyCode()) {
+                continue;
+            }
+            try {
+                /** @var Nosto_Tagging_Model_Meta_Product_Price_Variation $variation */
+                $variation = Mage::getModel('nosto_tagging/meta_product_price_variation');
+                $variation->loadData($product, $store, new NostoCurrencyCode($currencyCode));
+                $variations[] = $variation;
+            } catch (Exception $e) {
+                // The price variation cannot be obtained if there are no
+                // exchange rates defined for the currency and Magento will
+                // throw and exception. Just ignore this and continue.
+                continue;
+            }
+        }
+        return $variations;
     }
 
     /**

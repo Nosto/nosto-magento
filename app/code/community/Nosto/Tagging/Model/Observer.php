@@ -196,6 +196,8 @@ class Nosto_Tagging_Model_Observer
      * Cron job for syncing currency exchange rates to Nosto.
      * Only stores that have the scheduled update enabled, have more currencies
      * than the default one defined and has a Nosto account are synced.
+     *
+     * @throws Mage_Cron_Exception
      */
     public function scheduledCurrencyExchangeRateUpdate()
     {
@@ -222,7 +224,10 @@ class Nosto_Tagging_Model_Observer
                 }
             }
             if ($error) {
-                throw new Mage_Cron_Exception('There was an error updating the exchange rates. More info in "var/log/nostotagging.log".');
+                throw Mage::exception(
+                    'Mage_Cron',
+                    'There was an error updating the exchange rates. More info in "var/log/nostotagging.log".'
+                );
             }
         }
     }

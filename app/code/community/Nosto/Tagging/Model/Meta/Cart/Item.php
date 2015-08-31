@@ -33,33 +33,8 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Cart_Item extends Mage_Core_Model_Abstract
+class Nosto_Tagging_Model_Meta_Cart_Item extends Nosto_Tagging_Model_Meta_LineItem
 {
-    /**
-     * @var string|int the cart item product ID.
-     */
-    protected $_productId;
-
-    /**
-     * @var int the amount of items in cart.
-     */
-    protected $_quantity;
-
-    /**
-     * @var string the cart item name.
-     */
-    protected $_name;
-
-    /**
-     * @var NostoPrice the cart item unit price.
-     */
-    protected $_unitPrice;
-
-    /**
-     * @var NostoCurrencyCode the price currency.
-     */
-    protected $_currency;
-
     /**
      * @inheritdoc
      */
@@ -81,56 +56,6 @@ class Nosto_Tagging_Model_Meta_Cart_Item extends Mage_Core_Model_Abstract
         $this->_name = $this->fetchProductName($item);
         $this->_unitPrice = new NostoPrice($item->getBasePriceInclTax());
         $this->_currency = $currencyCode;
-    }
-
-    /**
-     * Returns the cart item product ID.
-     *
-     * @return int|string the cart item product ID.
-     */
-    public function getProductId()
-    {
-        return $this->_productId;
-    }
-
-    /**
-     * Returns the amount of items in cart.
-     *
-     * @return int the amount of items in cart.
-     */
-    public function getQuantity()
-    {
-        return $this->_quantity;
-    }
-
-    /**
-     * Returns the cart item name.
-     *
-     * @return string the cart item name.
-     */
-    public function getName()
-    {
-        return $this->_name;
-    }
-
-    /**
-     * Returns the cart item unit price.
-     *
-     * @return NostoPrice the cart item unit price.
-     */
-    public function getUnitPrice()
-    {
-        return $this->_unitPrice;
-    }
-
-    /**
-     * Returns the price currency.
-     *
-     * @return NostoCurrencyCode the price currency.
-     */
-    public function getCurrency()
-    {
-        return $this->_currency;
     }
 
     /**
@@ -166,83 +91,117 @@ class Nosto_Tagging_Model_Meta_Cart_Item extends Mage_Core_Model_Abstract
     }
 
     /**
-     * Returns the name for a quote item.
-     * Configurable products will have their chosen options added to their name.
-     * Bundle products will have their chosen child product names added.
-     * Grouped products will have their parent product name prepended.
-     * All others will have their own name only.
+     * Returns the name for an quote/order item representing a simple product.
      *
-     * @param Mage_Sales_Model_Quote_Item $item the quote item model.
+     * @param Mage_Sales_Model_Quote_Item|Mage_Sales_Model_Order_Item $item the item model.
      *
      * @return string
      */
-    protected function fetchProductName($item)
+    protected function fetchSimpleProductName($item)
     {
         $name = $item->getName();
-        $optNames = array();
+        $nameOptions = array();
 
-        if ($item->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_SIMPLE) {
-            /** @var Mage_Catalog_Model_Product_Type_Configurable $model */
-            $model = Mage::getModel('catalog/product_type_configurable');
-            $parentIds = $model->getParentIdsByChild($item->getProductId());
-            // If the product has a configurable parent, we assume we should tag
-            // the parent. If there are many parent IDs, we are safer to tag the
-            // products own name alone.
-            if (count($parentIds) === 1) {
-                $attributes = $item->getBuyRequest()->getData('super_attribute');
-                if (is_array($attributes)) {
-                    foreach ($attributes as $id => $value) {
-                        /** @var Mage_Catalog_Model_Resource_Eav_Attribute $attribute */
-                        $attribute = Mage::getModel('catalog/resource_eav_attribute')
-                            ->load($id);
-                        $label = $attribute->getSource()->getOptionText($value);
-                        if (!empty($label)) {
-                            $optNames[] = $label;
-                        }
+        /** @var Mage_Catalog_Model_Product_Type_Configurable $model */
+        $model = Mage::getModel('catalog/product_type_configurable');
+        $parentIds = $model->getParentIdsByChild($item->getProductId());
+        // If the product has a configurable parent, we assume we should tag
+        // the parent. If there are many parent IDs, we are safer to tag the
+        // products own name alone.
+        if (count($parentIds) === 1) {
+            $attributes = $item->getBuyRequest()->getData('super_attribute');
+            if (is_array($attributes) && count($attributes) > 0) {
+                foreach ($attributes as $id => $value) {
+                    /** @var Mage_Catalog_Model_Resource_Eav_Attribute $attribute */
+                    $attribute = Mage::getModel('catalog/resource_eav_attribute')
+                        ->load($id);
+                    $label = $attribute->getSource()->getOptionText($value);
+                    if (!empty($label)) {
+                        $nameOptions[] = $label;
                     }
-                }
-            }
-        } elseif ($item->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE) {
-            /* @var $helper Mage_Catalog_Helper_Product_Configuration */
-            $helper = Mage::helper('catalog/product_configuration');
-            foreach ($helper->getConfigurableOptions($item) as $opt) {
-                if (isset($opt['value']) && is_string($opt['value'])) {
-                    $optNames[] = $opt['value'];
-                }
-            }
-        } elseif ($item->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_BUNDLE) {
-            $type = $item->getProduct()->getTypeInstance(true);
-            $opts = $type->getOrderOptions($item->getProduct());
-            if (isset($opts['bundle_options']) && is_array($opts['bundle_options'])) {
-                foreach ($opts['bundle_options'] as $opt) {
-                    if (isset($opt['value']) && is_array($opt['value'])) {
-                        foreach ($opt['value'] as $val) {
-                            $qty = '';
-                            if (isset($val['qty']) && is_int($val['qty'])) {
-                                $qty .= $val['qty'] . ' x ';
-                            }
-                            if (isset($val['title']) && is_string($val['title'])) {
-                                $optNames[] = $qty . $val['title'];
-                            }
-                        }
-                    }
-                }
-            }
-        } elseif ($item->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_GROUPED) {
-            $config = $item->getBuyRequest()->getData('super_product_config');
-            if (isset($config['product_id'])) {
-                /** @var Mage_Catalog_Model_Product $parent */
-                $parent = Mage::getModel('catalog/product')
-                    ->load($config['product_id']);
-                $parentName = $parent->getName();
-                if (!empty($parentName)) {
-                    $name = $parentName.' - '.$name;
                 }
             }
         }
 
-        if (!empty($optNames)) {
-            $name .= ' (' . implode(', ', $optNames) . ')';
+        return $this->applyProductNameOptions($name, $nameOptions);
+    }
+
+    /**
+     * Returns the name for an quote/order item representing a configurable product.
+     *
+     * @param Mage_Sales_Model_Quote_Item|Mage_Sales_Model_Order_Item $item the item model.
+     *
+     * @return string
+     */
+    protected function fetchConfigurableProductName($item)
+    {
+        $name = $item->getName();
+        $nameOptions = array();
+
+        /* @var $helper Mage_Catalog_Helper_Product_Configuration */
+        $helper = Mage::helper('catalog/product_configuration');
+        foreach ($helper->getConfigurableOptions($item) as $opt) {
+            if (isset($opt['value']) && is_string($opt['value'])) {
+                $nameOptions[] = $opt['value'];
+            }
+        }
+
+        return $this->applyProductNameOptions($name, $nameOptions);
+    }
+
+    /**
+     * Returns the name for an quote/order item representing a bundle product.
+     *
+     * @param Mage_Sales_Model_Quote_Item|Mage_Sales_Model_Order_Item $item the item model.
+     *
+     * @return string
+     */
+    protected function fetchBundleProductName($item)
+    {
+        $name = $item->getName();
+        $nameOptions = array();
+
+        $type = $item->getProduct()->getTypeInstance(true);
+        $opts = $type->getOrderOptions($item->getProduct());
+        if (isset($opts['bundle_options']) && is_array($opts['bundle_options'])) {
+            foreach ($opts['bundle_options'] as $opt) {
+                if (isset($opt['value']) && is_array($opt['value'])) {
+                    foreach ($opt['value'] as $val) {
+                        $qty = '';
+                        if (isset($val['qty']) && is_int($val['qty'])) {
+                            $qty .= $val['qty'] . ' x ';
+                        }
+                        if (isset($val['title']) && is_string($val['title'])) {
+                            $nameOptions[] = $qty . $val['title'];
+                        }
+                    }
+                }
+            }
+        }
+
+        return $this->applyProductNameOptions($name, $nameOptions);
+    }
+
+    /**
+     * Returns the name for an quote/order item representing a grouped product.
+     *
+     * @param Mage_Sales_Model_Quote_Item|Mage_Sales_Model_Order_Item $item the item model.
+     *
+     * @return string
+     */
+    protected function fetchGroupedProductName($item)
+    {
+        $name = $item->getName();
+
+        $config = $item->getBuyRequest()->getData('super_product_config');
+        if (isset($config['product_id'])) {
+            /** @var Mage_Catalog_Model_Product $parent */
+            $parent = Mage::getModel('catalog/product')
+                ->load($config['product_id']);
+            $parentName = $parent->getName();
+            if (!empty($parentName)) {
+                $name = $parentName . ' - ' . $name;
+            }
         }
 
         return $name;

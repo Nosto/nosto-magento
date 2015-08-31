@@ -133,7 +133,11 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
 
         /** @var Nosto_Tagging_Model_Meta_Account_Owner $owner */
         $owner = Mage::getModel('nosto_tagging/meta_account_owner');
-        $owner->loadData($store);
+        /** @var Mage_Admin_Model_User $user */
+        $user = Mage::getSingleton('admin/session')->getUser();
+        if (!is_null($user)) {
+            $owner->loadData($user);
+        }
         $this->_owner = $owner;
 
         /** @var Nosto_Tagging_Model_Meta_Account_Billing $billing */
@@ -310,7 +314,6 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
      */
     public function getPartnerCode()
     {
-        // todo: implement partner code storage.
         return null;
     }
 }
