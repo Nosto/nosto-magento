@@ -53,24 +53,33 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Account_Currency_Formats exten
     }
 
     /**
-     * Returns a list of Zend_Currency objects configured for the current stores locale.
+     * Returns a list of Zend_Currency objects for selected store scope,
+     * configured for the stores locale.
      * These can be used to format the price string in the view file.
      *
-     * @return Zend_Currency[] the currency objects.
+     * @return array the currency objects per store.
      */
     public function getCurrencyFormats()
     {
         $formats = array();
         $storeId = $this->getRequest()->getParam('store');
-        $store = Mage::app()->getStore($storeId);
-        $currencyCodes = $store->getAvailableCurrencyCodes(true);
-        if (is_array($currencyCodes) && count($currencyCodes) > 0) {
-            $locale = $store->getConfig('general/locale/code');
-            foreach ($currencyCodes as $currencyCode) {
-                try {
-                    $formats[] = new Zend_Currency($currencyCode, $locale);
-                } catch (Zend_Exception $e) {
-                    continue;
+        /** @var Mage_Core_Model_Store[] $stores */
+        if (!empty($storeId)) {
+            $stores = array(Mage::app()->getStore($storeId));
+        } else {
+            $stores = Mage::app()->getStores();
+        }
+        foreach ($stores as $store) {
+            $formats[$store->getName()] = array();
+            $currencyCodes = $store->getAvailableCurrencyCodes(true);
+            if (is_array($currencyCodes) && count($currencyCodes) > 0) {
+                $locale = $store->getConfig('general/locale/code');
+                foreach ($currencyCodes as $currencyCode) {
+                    try {
+                        $formats[$store->getName()][] = new Zend_Currency($currencyCode, $locale);
+                    } catch (Zend_Exception $e) {
+                        continue;
+                    }
                 }
             }
         }
