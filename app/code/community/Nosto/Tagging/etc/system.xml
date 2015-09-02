@@ -55,6 +55,16 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>1</show_in_store>
                         </update>
+                        <currency_formats translate="label">
+                            <label>Currency Formats</label>
+                            <comment>Preview of the current currency formats extracted from Magento. These can be synced to Nosto by clicking the "Update Now" button above. Syncing is only needed if the formats have changed in Magento since Nosto was installed.</comment>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>nosto_tagging/adminhtml_system_config_account_currency_formats</frontend_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </currency_formats>
                     </fields>
                 </account_settings>
                 <image_options translate="label">
