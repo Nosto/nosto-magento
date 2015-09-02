@@ -298,7 +298,12 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         $accountHelper = Mage::helper('nosto_tagging/account');
 
         /** @var Mage_Core_Model_Store[] $stores */
-        $stores = Mage::app()->getStores();
+        $storeId = $this->getRequest()->getParam('store');
+        if (!empty($storeId)) {
+            $stores = array(Mage::app()->getStore($storeId));
+        } else {
+            $stores = Mage::app()->getStores();
+        }
 
         $countStores = count($stores);
         $countStoresWithoutMultiCurrency = 0;
@@ -327,12 +332,12 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         if ($countStores === $countStoresWithoutMultiCurrency) {
             $responseBody['data'][] = array(
                 'type' => 'error',
-                'message' => $helper->__("Failed to find any stores with other currencies than the base currency configured.")
+                'message' => $helper->__("Failed to find any stores in the current scope with other currencies than the base currency configured.")
             );
         } elseif (empty($responseBody['data'])) {
             $responseBody['data'][] = array(
                 'type' => 'error',
-                'message' => $helper->__("Failed to find any stores where Nosto has been installed. Please make sure you have installed Nosto to at least one of your stores.")
+                'message' => $helper->__("Nosto has not been installed in any of the stores in the current scope. Please make sure you have installed Nosto to at least one of your stores in the scope.")
             );
         }
 
@@ -351,9 +356,9 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         $responseBody = array('success' => true, 'data' => array());
 
         /** @var Mage_Core_Model_Store[] $stores */
-        $store = $this->getRequest()->getParam('store');
-        if (!empty($store)) {
-            $stores = array(Mage::app()->getStore($store));
+        $storeId = $this->getRequest()->getParam('store');
+        if (!empty($storeId)) {
+            $stores = array(Mage::app()->getStore($storeId));
         } else {
             $stores = Mage::app()->getStores();
         }

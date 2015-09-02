@@ -49,17 +49,9 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Account_Update_Button extends 
      */
     public function getButtonUrl()
     {
-        $params = array();
-        $store = $this->getRequest()->getParam('store');
-        $website = $this->getRequest()->getParam('website');
-        if (!is_null($store)) {
-            $params['store'] = $store;
-        } elseif (!is_null($website)) {
-            $params['website'] = $website;
-        }
         /** @var Mage_Adminhtml_Helper_Data $helper */
         $helper = Mage::helper('adminhtml');
-        return $helper->getUrl('adminhtml/nosto/ajaxUpdateAccount', $params);
+        return $helper->getUrl('adminhtml/nosto/ajaxUpdateAccount', $this->getScopeParams());
     }
 
     /**

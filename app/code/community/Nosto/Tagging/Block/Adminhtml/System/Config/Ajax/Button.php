@@ -81,6 +81,24 @@ abstract class Nosto_Tagging_Block_Adminhtml_System_Config_Ajax_Button extends M
     }
 
     /**
+     * Returns the currency scope params, i.e. the selected store or website.
+     *
+     * @return array
+     */
+    protected function getScopeParams()
+    {
+        $params = array();
+        $store = $this->getRequest()->getParam('store');
+        $website = $this->getRequest()->getParam('website');
+        if (!is_null($store)) {
+            $params['store'] = $store;
+        } elseif (!is_null($website)) {
+            $params['website'] = $website;
+        }
+        return $params;
+    }
+
+    /**
      * Returns the element ID for the button.
      *
      * @return string

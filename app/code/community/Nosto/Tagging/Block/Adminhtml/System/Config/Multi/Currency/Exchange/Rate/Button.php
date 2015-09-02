@@ -52,7 +52,7 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Multi_Currency_Exchange_Rate_B
     {
         /** @var Mage_Adminhtml_Helper_Data $helper */
         $helper = Mage::helper('adminhtml');
-        return $helper->getUrl('adminhtml/nosto/ajaxUpdateExchangeRates');
+        return $helper->getUrl('adminhtml/nosto/ajaxUpdateExchangeRates', $this->getScopeParams());
     }
 
     /**
