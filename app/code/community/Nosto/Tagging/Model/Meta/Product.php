@@ -77,9 +77,9 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     protected $_currency;
 
     /**
-     * @var string the price variation ID currently in use.
+     * @var NostoPriceVariation the price variation currently in use.
      */
-    protected $_priceVariationId;
+    protected $_priceVariation;
 
     /**
      * @var NostoProductAvailability the availability of the product.
@@ -187,7 +187,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         }
 
         if ($helper->getStoreHasMultiCurrency($store)) {
-            $this->_priceVariationId = $store->getBaseCurrencyCode();
+            $this->_priceVariation = new NostoPriceVariation($store->getBaseCurrencyCode());
             if ($helper->isMultiCurrencyMethodPriceVariation($store)) {
                 $this->_priceVariations = $this->buildPriceVariations($product, $store);
             }
@@ -421,6 +421,16 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     }
 
     /**
+     * Returns the absolute url to one of the product image thumbnails in the shop frontend.
+     *
+     * @return string the url.
+     */
+    public function getThumbUrl()
+    {
+        return null;
+    }
+
+    /**
      * Returns the price of the product including possible discounts and taxes.
      *
      * @return NostoPrice the price.
@@ -457,7 +467,9 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
      */
     public function getPriceVariationId()
     {
-        return $this->_priceVariationId;
+        return !is_null($this->_priceVariation)
+            ? $this->_priceVariation->getId()
+            : null;
     }
 
     /**

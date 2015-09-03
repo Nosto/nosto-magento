@@ -36,7 +36,7 @@
 class Nosto_Tagging_Model_Meta_Product_Price_Variation extends Nosto_Tagging_Model_Base implements NostoProductPriceVariationInterface
 {
     /**
-     * @var string the price variation ID, e.g. the currency code.
+     * @var NostoPriceVariation the price variation ID, e.g. the currency code.
      */
     protected $_id;
 
@@ -82,7 +82,7 @@ class Nosto_Tagging_Model_Meta_Product_Price_Variation extends Nosto_Tagging_Mod
         /** @var Nosto_Tagging_Helper_Price $priceHelper */
         $priceHelper = Mage::helper('nosto_tagging/price');
 
-        $this->_id = $currencyCode->getCode();
+        $this->_id = new NostoPriceVariation($currencyCode->getCode());
         $this->_currency = $currencyCode;
         $price = $priceHelper->getProductFinalPriceInclTax($product);
         $price = $store->getBaseCurrency()->convert($price, $currency);
@@ -100,7 +100,7 @@ class Nosto_Tagging_Model_Meta_Product_Price_Variation extends Nosto_Tagging_Mod
     /**
      * Returns the price variation ID.
      *
-     * @return string the variation id.
+     * @return NostoPriceVariation the variation ID.
      */
     public function getId()
     {
