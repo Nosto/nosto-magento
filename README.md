@@ -135,6 +135,9 @@ Open Software License ("OSL") v3.0
 
 ## Changelog
 
+### 2.6.4
+* Fix redirect to admin store after OAuth is finished
+
 ### 2.6.3
 * Fix tax price calculation for fixed priced bundle and grouped products
 
