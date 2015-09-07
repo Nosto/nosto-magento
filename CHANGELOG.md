@@ -7,6 +7,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Multi-currency + exchange rate support
 - Account synchronisation support
 
+## [2.6.4]
+### Fixed
+- Redirect to admin store after OAuth is finished
+
 ## [2.6.3]
 ### Fixed
 - Tax price calculation for fixed priced bundle and grouped products
@@ -183,7 +187,8 @@ Catalog Category" option was enabled
 ### Added
 - Initial release
 
-[unreleased]: https://github.com/nosto/nosto-magento-extension/compare/2.6.3...develop
+[unreleased]: https://github.com/nosto/nosto-magento-extension/compare/2.6.4...develop
+[2.6.4]: https://github.com/nosto/nosto-magento-extension/compare/2.6.3...2.6.4
 [2.6.3]: https://github.com/nosto/nosto-magento-extension/compare/2.6.2...2.6.3
 [2.6.2]: https://github.com/nosto/nosto-magento-extension/compare/2.6.1...2.6.2
 [2.6.1]: https://github.com/nosto/nosto-magento-extension/compare/2.6.0...2.6.1
