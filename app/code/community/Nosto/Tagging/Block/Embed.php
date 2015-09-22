@@ -84,4 +84,16 @@ class Nosto_Tagging_Block_Embed extends Mage_Core_Block_Template
             self::DEFAULT_SERVER_ADDRESS
         );
     }
+
+	/**
+	 * Return if we should use the script direct include.
+	 *
+	 * @return bool
+	 */
+	public function useScriptDirectInclude()
+	{
+		/** @var Nosto_Tagging_Helper_Data $helper */
+		$helper = $this->helper('nosto_tagging');
+		return $helper->getUseScriptDirectInclude();
+	}
 }

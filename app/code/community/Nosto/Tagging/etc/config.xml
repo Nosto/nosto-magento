@@ -155,6 +155,9 @@
     </frontend>
     <default>
         <nosto_tagging>
+            <general>
+                <direct_include>0</direct_include>
+            </general>
             <image_options>
                 <image_version>image</image_version>
             </image_options>

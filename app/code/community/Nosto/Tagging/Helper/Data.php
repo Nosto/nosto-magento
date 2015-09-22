@@ -39,6 +39,11 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      */
     const XML_PATH_INSTALLATION_ID = 'nosto_tagging/installation/id';
 
+	/**
+	 * Path to store config script direct include setting.
+	 */
+	const XML_PATH_DIRECT_INCLUDE = 'nosto_tagging/general/direct_include';
+
     /**
      * Path to store config product image version setting.
      */
@@ -223,4 +228,16 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     {
         return (bool)Mage::getStoreConfig(self::XML_PATH_SCHEDULED_CURRENCY_EXCHANGE_RATE_UPDATE_ENABLED, $store);
     }
+
+	/**
+	 * Return if we should use the nosto script direct include.
+	 *
+	 * @param Mage_Core_Model_Store|null $store the store model or null.
+	 *
+	 * @return bool
+	 */
+	public function getUseScriptDirectInclude($store = null)
+	{
+		return (bool)Mage::getStoreConfig(self::XML_PATH_DIRECT_INCLUDE, $store);
+	}
 }
