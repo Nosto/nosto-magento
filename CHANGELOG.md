@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Multi-currency + exchange rate support
 - Account synchronisation support
+- Option to use direct include of Nosto script
 
 ## [2.6.4]
 ### Fixed
