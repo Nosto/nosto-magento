@@ -48,6 +48,11 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
     protected $_orderNumber;
 
     /**
+     * @var string the Magento order "real order ID" property.
+     */
+    protected $_externalOrderRef;
+
+    /**
      * @var string the date when the order was placed.
      */
     protected $_createdDate;
@@ -90,6 +95,7 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
     public function loadData(Mage_Sales_Model_Order $order)
     {
         $this->_orderNumber = $order->getId();
+        $this->_externalOrderRef = $order->getRealOrderId();
         $this->_createdDate = $order->getCreatedAt();
         $this->_paymentProvider = $order->getPayment()->getMethod();
 
@@ -144,6 +150,16 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
     public function getOrderNumber()
     {
         return $this->_orderNumber;
+    }
+
+    /**
+     * Returns the Magento order "real order ID" property.
+     *
+     * @return string the order ref.
+     */
+    public function getExternalOrderRef()
+    {
+        return $this->_externalOrderRef;
     }
 
     /**

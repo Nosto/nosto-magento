@@ -41,6 +41,7 @@ $priceHelper = Mage::helper('nosto_tagging/price');
 <!-- Nosto Order Tagging -->
 <div class="nosto_purchase_order" style="display:none">
     <span class="order_number"><?php echo $order->getOrderNumber(); ?></span>
+    <span class="external_order_ref"><?php echo $helper->escapeHtml($order->getExternalOrderRef()); ?></span>
     <span class="order_status_code"><?php echo $helper->escapeHtml($order->getOrderStatus()->getCode()); ?></span>
     <span class="order_status_label"><?php echo $helper->escapeHtml($order->getOrderStatus()->getLabel()); ?></span>
     <span class="payment_provider"><?php echo $helper->escapeHtml($order->getPaymentProvider()); ?></span>
