@@ -52,23 +52,37 @@ class Nosto_Tagging_Model_Meta_Order_Buyer extends Mage_Core_Model_Abstract impl
     protected $_email;
 
     /**
+     * Constructor.
+     *
+     * Sets up this Value Object.
+     *
+     * @param array $args the object data.
+     *
+     * @throws InvalidArgumentException
+     */
+    public function __construct(array $args)
+    {
+        if (!isset($args['firstName']) || !is_string($args['firstName']) || empty($args['firstName'])) {
+            throw new InvalidArgumentException(sprintf('%s.firstName must be a non-empty string value.', __CLASS__));
+        }
+        if (!isset($args['lastName']) || !is_string($args['lastName']) || empty($args['lastName'])) {
+            throw new InvalidArgumentException(sprintf('%s.lastName must be a non-empty string value.', __CLASS__));
+        }
+        if (!isset($args['email']) || !is_string($args['email']) || empty($args['email'])) {
+            throw new InvalidArgumentException(sprintf('%s.email must be a non-empty string value.', __CLASS__));
+        }
+
+        $this->_firstName = $args['firstName'];
+        $this->_lastName = $args['lastName'];
+        $this->_email = $args['email'];
+    }
+
+    /**
      * @inheritdoc
      */
     protected function _construct()
     {
         $this->_init('nosto_tagging/meta_order_buyer');
-    }
-
-    /**
-     * Loads the buyer info from a Magento order model.
-     *
-     * @param Mage_Sales_Model_Order $order the order model.
-     */
-    public function loadData(Mage_Sales_Model_Order $order)
-    {
-        $this->_firstName = $order->getCustomerFirstname();
-        $this->_lastName = $order->getCustomerLastname();
-        $this->_email = $order->getCustomerEmail();
     }
 
     /**

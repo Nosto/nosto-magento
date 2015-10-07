@@ -63,159 +63,45 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
     protected $_currencyCode;
 
     /**
+     * Constructor.
+     *
+     * Sets up this Value Object.
+     *
+     * @param array $args the object data.
+     *
+     * @throws InvalidArgumentException
+     */
+    public function __construct(array $args)
+    {
+        if (!isset($args['productId']) || !is_int($args['productId'])) {
+            throw new InvalidArgumentException(sprintf('%s.productId must be a integer value.', __CLASS__));
+        }
+        if (!isset($args['quantity']) || !is_int($args['quantity']) || !($args['quantity'] > 0)) {
+            throw new InvalidArgumentException(sprintf('%s.quantity must be a integer value above zero.', __CLASS__));
+        }
+        if (!isset($args['name']) || !is_string($args['name']) || empty($args['name'])) {
+            throw new InvalidArgumentException(sprintf('%s.name must be a non-empty string value.', __CLASS__));
+        }
+        if (!isset($args['unitPrice']) || !is_numeric($args['unitPrice'])) {
+            throw new InvalidArgumentException(sprintf('%s.unitPrice must be a numeric value.', __CLASS__));
+        }
+        if (!isset($args['currencyCode']) || !is_string($args['currencyCode']) || empty($args['currencyCode'])) {
+            throw new InvalidArgumentException(sprintf('%s.currencyCode must be a non-empty string value.', __CLASS__));
+        }
+
+        $this->_productId = $args['productId'];
+        $this->_quantity = $args['quantity'];
+        $this->_name = $args['name'];
+        $this->_unitPrice = $args['unitPrice'];
+        $this->_currencyCode = $args['currencyCode'];
+    }
+
+    /**
      * @inheritdoc
      */
     protected function _construct()
     {
         $this->_init('nosto_tagging/meta_order_item');
-    }
-
-    /**
-     * Loads the item info from the Magento order item model.
-     *
-     * @param Mage_Sales_Model_Order_Item $item the item model.
-     */
-    public function loadData(Mage_Sales_Model_Order_Item $item)
-    {
-        $order = $item->getOrder();
-        $this->_productId = (int)$this->fetchProductId($item);
-        $this->_quantity = (int)$item->getQtyOrdered();
-        $this->_name = $this->fetchProductName($item);
-        $this->_unitPrice = $item->getPriceInclTax();
-        $this->_currencyCode = strtoupper($order->getOrderCurrencyCode());
-    }
-
-    /**
-     * Loads the "special item" info from provided data.
-     * A "special item" is an item that is included in an order but does not
-     * represent an item being bough, e.g. shipping fees, discounts etc.
-     *
-     * @param string $name the name of the item.
-     * @param float|int|string $unitPrice the unit price of the item.
-     * @param string $currencyCode the currency code for the item unit price.
-     */
-    public function loadSpecialItemData($name, $unitPrice, $currencyCode)
-    {
-        $this->_productId = -1;
-        $this->_quantity = 1;
-        $this->_name = (string)$name;
-        $this->_unitPrice = $unitPrice;
-        $this->_currencyCode = strtoupper($currencyCode);
-    }
-
-    /**
-     * Returns the product id for a quote item.
-     * Always try to find the "parent" product ID if the product is a child of
-     * another product type. We do this because it is the parent product that
-     * we tag on the product page, and the child does not always have it's own
-     * product page. This is important because it is the tagged info on the
-     * product page that is used to generate recommendations and email content.
-     *
-     * @param Mage_Sales_Model_Order_Item $item the sales item model.
-     *
-     * @return int
-     */
-    protected function fetchProductId(Mage_Sales_Model_Order_Item $item)
-    {
-        $parent = $item->getProductOptionByCode('super_product_config');
-        if (isset($parent['product_id'])) {
-            return $parent['product_id'];
-        } elseif ($item->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_SIMPLE) {
-            /** @var Mage_Catalog_Model_Product_Type_Configurable $model */
-            $model = Mage::getModel('catalog/product_type_configurable');
-            $parentIds = $model->getParentIdsByChild($item->getProductId());
-            $attributes = $item->getBuyRequest()->getData('super_attribute');
-            // If the product has a configurable parent, we assume we should tag
-            // the parent. If there are many parent IDs, we are safer to tag the
-            // products own ID.
-            if (count($parentIds) === 1 && !empty($attributes)) {
-                return $parentIds[0];
-            }
-        }
-        return $item->getProductId();
-    }
-
-    /**
-     * Returns the name for a sales item.
-     * Configurable products will have their chosen options added to their name.
-     * Bundle products will have their chosen child product names added.
-     * Grouped products will have their parents name prepended.
-     * All others will have their own name only.
-     *
-     * @param Mage_Sales_Model_Order_Item $item the sales item model.
-     *
-     * @return string
-     */
-    protected function fetchProductName(Mage_Sales_Model_Order_Item $item)
-    {
-        $name = $item->getName();
-        $optNames = array();
-
-        if ($item->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_SIMPLE) {
-            /** @var Mage_Catalog_Model_Product_Type_Configurable $model */
-            $model = Mage::getModel('catalog/product_type_configurable');
-            $parentIds = $model->getParentIdsByChild($item->getProductId());
-            // If the product has a configurable parent, we assume we should tag
-            // the parent. If there are many parent IDs, we are safer to tag the
-            // products own name alone.
-            if (count($parentIds) === 1) {
-                $attributes = $item->getBuyRequest()->getData('super_attribute');
-                if (is_array($attributes)) {
-                    foreach ($attributes as $id => $value) {
-                        /** @var Mage_Catalog_Model_Resource_Eav_Attribute $attribute */
-                        $attribute = Mage::getModel('catalog/resource_eav_attribute')
-                            ->load($id);
-                        $label = $attribute->getSource()->getOptionText($value);
-                        if (!empty($label)) {
-                            $optNames[] = $label;
-                        }
-                    }
-                }
-            }
-        } elseif ($item->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE) {
-            $opts = $item->getProductOptionByCode('attributes_info');
-            if (is_array($opts)) {
-                foreach ($opts as $opt) {
-                    if (isset($opt['value']) && is_string($opt['value'])) {
-                        $optNames[] = $opt['value'];
-                    }
-                }
-            }
-        } elseif ($item->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_BUNDLE) {
-            $opts = $item->getProductOptionByCode('bundle_options');
-            if (is_array($opts)) {
-                foreach ($opts as $opt) {
-                    if (isset($opt['value']) && is_array($opt['value'])) {
-                        foreach ($opt['value'] as $val) {
-                            $qty = '';
-                            if (isset($val['qty']) && is_int($val['qty'])) {
-                                $qty .= $val['qty'] . ' x ';
-                            }
-                            if (isset($val['title']) && is_string($val['title'])) {
-                                $optNames[] = $qty . $val['title'];
-                            }
-                        }
-                    }
-                }
-            }
-        } elseif ($item->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_GROUPED) {
-            $config = $item->getProductOptionByCode('super_product_config');
-            if (isset($config['product_id'])) {
-                /** @var Mage_Catalog_Model_Product $parent */
-                $parent = Mage::getModel('catalog/product')
-                    ->load($config['product_id']);
-                $parentName = $parent->getName();
-                if (!empty($parentName)) {
-                    $name = $parentName.' - '.$name;
-                }
-            }
-        }
-
-        if (!empty($optNames)) {
-            $name .= ' (' . implode(', ', $optNames) . ')';
-        }
-
-        return $name;
     }
 
     /**

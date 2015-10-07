@@ -43,6 +43,7 @@ class Nosto_Tagging_Model_Export_Collection_Order extends NostoOrderCollection i
                 'external_order_ref' => $item->getExternalOrderRef(),
                 'order_status_code' => $item->getOrderStatus()->getCode(),
                 'order_status_label' => $item->getOrderStatus()->getLabel(),
+                'order_statuses' => array(),
                 'created_at' => Nosto::helper('date')->format($item->getCreatedDate()),
                 'buyer' => array(
                     'first_name' => $item->getBuyerInfo()->getFirstName(),
@@ -60,6 +61,13 @@ class Nosto_Tagging_Model_Export_Collection_Order extends NostoOrderCollection i
                     'unit_price' => Nosto::helper('price')->format($orderItem->getUnitPrice()),
                     'price_currency_code' => strtoupper($orderItem->getCurrencyCode()),
                 );
+            }
+            foreach ($item->getOrderStatuses() as $status) {
+                if (!isset($data['order_statuses'][$status->getCode()])) {
+                    $data['order_statuses'][$status->getCode()] = array();
+                }
+                $data['order_statuses'][$status->getCode()][] =
+                    date('Y-m-d\TH:i:s\Z', strtotime($status->getCreatedAt()));
             }
             $array[] = $data;
         }
