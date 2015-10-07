@@ -188,7 +188,9 @@ class Nosto_Tagging_Model_Observer
                 $customerId = Mage::helper('nosto_tagging/customer')
                     ->getNostoId($mageOrder);
                 if ($account !== null && $account->isConnectedToNosto()) {
-                    NostoOrderConfirmation::send($order, $account, $customerId);
+                    /** @var Nosto_Tagging_Model_Service_Order $service */
+                    $service = Mage::getModel('nosto_tagging/service_order');
+                    $service->confirm($order, $account, $customerId);
                 }
             } catch (NostoException $e) {
                 Mage::log("\n" . $e->__toString(), Zend_Log::ERR, 'nostotagging.log');

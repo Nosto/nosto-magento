@@ -135,6 +135,10 @@ Open Software License ("OSL") v3.0
 
 ## Changelog
 
+### 2.6.5
+* Add "external_order_ref" to order tagging and API requests in order to better
+track orders
+
 ### 2.6.4
 * Fix redirect to admin store after OAuth is finished
 
