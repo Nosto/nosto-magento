@@ -37,7 +37,7 @@ require_once Mage::getBaseDir('lib') . '/nosto/php-sdk/autoload.php';
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_tagging_ExportController extends Mage_Core_Controller_Front_Action
+class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
 {
     /**
      * Exports completed orders from the current store.
@@ -58,6 +58,7 @@ class Nosto_tagging_ExportController extends Mage_Core_Controller_Front_Action
             if ($currentPage > $orders->getLastPageNumber()) {
                 $orders = array();
             }
+
             $collection = new NostoExportCollectionOrder();
             foreach ($orders as $order) {
                 /** @var Nosto_Tagging_Model_Meta_Order $meta */
