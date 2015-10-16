@@ -30,13 +30,21 @@
      * Nosto iframe postMessage() handler.
      *
      * @param {Object} data the data sent by Nosto.
-     * @param {Object} settings the settings for the requests.
+     * @param {Object} options the options for the requests.
      */
-    var handlePostMessage = function(data, settings) {
+    var handlePostMessage = function(data, options) {
         var TYPE_NEW_ACCOUNT = "newAccount",
             TYPE_CONNECT_ACCOUNT = "connectAccount",
             TYPE_REMOVE_ACCOUNT = "removeAccount";
 
+        var settings = extendObject({
+                iframeId: "nosto_iframe",
+                urls: {
+                    createAccount: "",
+                    connectAccount: "",
+                    deleteAccount: ""
+                }
+        }, options);
         var $iframe = document.getElementById(settings.iframeId);
 
         switch (data.type) {
