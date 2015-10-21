@@ -139,6 +139,7 @@ Open Software License ("OSL") v3.0
 * Fix account removal for self-signup accounts through the iframe
 * Fix uncaught "InvalidArgumentException" exception when order status is missing
 a label
+* Make order buyer info optional in tagging and API calls
 
 ### 2.6.5
 * Add "external_order_ref" to order tagging and API requests in order to better
