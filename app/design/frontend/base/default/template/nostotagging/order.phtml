@@ -46,9 +46,15 @@ $priceHelper = Mage::helper('nosto_tagging/price');
     <span class="order_status_label"><?php echo $helper->escapeHtml($order->getOrderStatus()->getLabel()); ?></span>
     <span class="payment_provider"><?php echo $helper->escapeHtml($order->getPaymentProvider()); ?></span>
     <div class="buyer">
-        <span class="first_name"><?php echo $helper->escapeHtml($order->getBuyerInfo()->getFirstName()); ?></span>
-        <span class="last_name"><?php echo $helper->escapeHtml($order->getBuyerInfo()->getLastName()); ?></span>
-        <span class="email"><?php echo $helper->escapeHtml($order->getBuyerInfo()->getEmail()); ?></span>
+        <?php if ($order->getBuyerInfo()->getFirstName()): ?>
+            <span class="first_name"><?php echo $helper->escapeHtml($order->getBuyerInfo()->getFirstName()); ?></span>
+        <?php endif; ?>
+        <?php if ($order->getBuyerInfo()->getLastName()): ?>
+            <span class="last_name"><?php echo $helper->escapeHtml($order->getBuyerInfo()->getLastName()); ?></span>
+        <?php endif; ?>
+        <?php if ($order->getBuyerInfo()->getEmail()): ?>
+            <span class="email"><?php echo $helper->escapeHtml($order->getBuyerInfo()->getEmail()); ?></span>
+        <?php endif; ?>
     </div>
     <div class="purchased_items">
         <?php foreach ($order->getPurchasedItems() as $item): ?>

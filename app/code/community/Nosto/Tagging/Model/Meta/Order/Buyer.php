@@ -62,19 +62,25 @@ class Nosto_Tagging_Model_Meta_Order_Buyer extends Mage_Core_Model_Abstract impl
      */
     public function __construct(array $args)
     {
-        if (!isset($args['firstName']) || !is_string($args['firstName']) || empty($args['firstName'])) {
-            throw new InvalidArgumentException(sprintf('%s.firstName must be a non-empty string value.', __CLASS__));
+        if (isset($args['firstName'])) {
+            if (!is_string($args['firstName']) || empty($args['firstName'])) {
+                throw new InvalidArgumentException(sprintf('%s.firstName must be a non-empty string value.', __CLASS__));
+            }
         }
-        if (!isset($args['lastName']) || !is_string($args['lastName']) || empty($args['lastName'])) {
-            throw new InvalidArgumentException(sprintf('%s.lastName must be a non-empty string value.', __CLASS__));
+        if (isset($args['lastName'])) {
+            if (!is_string($args['lastName']) || empty($args['lastName'])) {
+                throw new InvalidArgumentException(sprintf('%s.lastName must be a non-empty string value.', __CLASS__));
+            }
         }
-        if (!isset($args['email']) || !is_string($args['email']) || empty($args['email'])) {
-            throw new InvalidArgumentException(sprintf('%s.email must be a non-empty string value.', __CLASS__));
+        if (isset($args['email'])) {
+            if (!is_string($args['email']) || empty($args['email'])) {
+                throw new InvalidArgumentException(sprintf('%s.email must be a non-empty string value.', __CLASS__));
+            }
         }
 
-        $this->_firstName = $args['firstName'];
-        $this->_lastName = $args['lastName'];
-        $this->_email = $args['email'];
+        $this->_firstName = isset($args['firstName']) ? $args['firstName'] : null;
+        $this->_lastName = isset($args['lastName']) ? $args['lastName'] : null;
+        $this->_email = isset($args['email']) ? $args['email'] : null;
     }
 
     /**

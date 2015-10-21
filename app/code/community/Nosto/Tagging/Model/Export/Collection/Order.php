@@ -45,11 +45,7 @@ class Nosto_Tagging_Model_Export_Collection_Order extends NostoOrderCollection i
                 'order_status_label' => $item->getOrderStatus()->getLabel(),
                 'order_statuses' => array(),
                 'created_at' => Nosto::helper('date')->format($item->getCreatedDate()),
-                'buyer' => array(
-                    'first_name' => $item->getBuyerInfo()->getFirstName(),
-                    'last_name' => $item->getBuyerInfo()->getLastName(),
-                    'email' => $item->getBuyerInfo()->getEmail(),
-                ),
+                'buyer' => array(),
                 'payment_provider' => $item->getPaymentProvider(),
                 'purchased_items' => array(),
             );
@@ -69,6 +65,16 @@ class Nosto_Tagging_Model_Export_Collection_Order extends NostoOrderCollection i
                 $data['order_statuses'][$status->getCode()][] =
                     date('Y-m-d\TH:i:s\Z', strtotime($status->getCreatedAt()));
             }
+            if ($item->getBuyerInfo()->getFirstName()) {
+                $data['buyer']['first_name'] = $item->getBuyerInfo()->getFirstName();
+            }
+            if ($item->getBuyerInfo()->getLastName()) {
+                $data['buyer']['last_name'] = $item->getBuyerInfo()->getLastName();
+            }
+            if ($item->getBuyerInfo()->getEmail()) {
+                $data['buyer']['email'] = $item->getBuyerInfo()->getEmail();
+            }
+
             $array[] = $data;
         }
         return json_encode($array);

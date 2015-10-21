@@ -89,11 +89,7 @@ class Nosto_Tagging_Model_Service_Order
             'external_order_ref' => $order->getExternalOrderRef(),
             'order_status_code' => $order->getOrderStatus()->getCode(),
             'order_status_label' => $order->getOrderStatus()->getLabel(),
-            'buyer' => array(
-                'first_name' => $order->getBuyerInfo()->getFirstName(),
-                'last_name' => $order->getBuyerInfo()->getLastName(),
-                'email' => $order->getBuyerInfo()->getEmail(),
-            ),
+            'buyer' => array(),
             'created_at' => Nosto::helper('date')->format($order->getCreatedDate()),
             'payment_provider' => $order->getPaymentProvider(),
             'purchased_items' => array(),
@@ -106,6 +102,15 @@ class Nosto_Tagging_Model_Service_Order
                 'unit_price' => Nosto::helper('price')->format($item->getUnitPrice()),
                 'price_currency_code' => strtoupper($item->getCurrencyCode()),
             );
+        }
+        if ($order->getBuyerInfo()->getFirstName()) {
+            $data['buyer']['first_name'] = $order->getBuyerInfo()->getFirstName();
+        }
+        if ($order->getBuyerInfo()->getLastName()) {
+            $data['buyer']['last_name'] = $order->getBuyerInfo()->getLastName();
+        }
+        if ($order->getBuyerInfo()->getEmail()) {
+            $data['buyer']['email'] = $order->getBuyerInfo()->getEmail();
         }
         return json_encode($data);
     }
