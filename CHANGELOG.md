@@ -7,6 +7,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Multi-currency + exchange rate support
 - Account synchronisation support
 
+## [2.6.6]
+### Fixed
+- Account removal for self-signup accounts through the iframe
+- Uncaught "InvalidArgumentException" exception when order status is missing
+a label
+
+### Changed
+- Make order buyer info optional in tagging and API calls
+
 ## [2.6.5]
 ### Added
 - "external_order_ref" to order tagging and API requests in order to better
@@ -193,7 +202,8 @@ Catalog Category" option was enabled
 ### Added
 - Initial release
 
-[unreleased]: https://github.com/nosto/nosto-magento-extension/compare/2.6.5...develop
+[unreleased]: https://github.com/nosto/nosto-magento-extension/compare/2.6.6...develop
+[2.6.6]: https://github.com/nosto/nosto-magento-extension/compare/2.6.5...2.6.6
 [2.6.5]: https://github.com/nosto/nosto-magento-extension/compare/2.6.4...2.6.5
 [2.6.4]: https://github.com/nosto/nosto-magento-extension/compare/2.6.3...2.6.4
 [2.6.3]: https://github.com/nosto/nosto-magento-extension/compare/2.6.2...2.6.3
