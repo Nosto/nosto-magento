@@ -26,7 +26,7 @@
  */
 
 /**
- * Data Transfer Object representing a line item.
+ * Value Object representing a line item.
  * This is used in the cart & order meta models.
  *
  * @category Nosto
@@ -61,108 +61,45 @@ abstract class Nosto_Tagging_Model_Meta_LineItem extends Mage_Core_Model_Abstrac
     protected $_currency;
 
     /**
+     * Constructor.
+     *
+     * Sets up this Value Object.
+     *
+     * @param array $args the object data.
+     *
+     * @throws NostoInvalidArgumentException
+     */
+    public function __construct(array $args)
+    {
+        if (!isset($args['productId']) || !is_int($args['productId'])) {
+            throw new NostoInvalidArgumentException(sprintf('%s.productId must be a integer value.', __CLASS__));
+        }
+        if (!isset($args['quantity']) || !is_int($args['quantity']) || !($args['quantity'] > 0)) {
+            throw new NostoInvalidArgumentException(sprintf('%s.quantity must be a integer value above zero.', __CLASS__));
+        }
+        if (!isset($args['name']) || !is_string($args['name']) || empty($args['name'])) {
+            throw new NostoInvalidArgumentException(sprintf('%s.name must be a non-empty string value.', __CLASS__));
+        }
+        if (!($args['unitPrice'] instanceof NostoPrice)) {
+            throw new NostoInvalidArgumentException(sprintf('%s.unitPrice must be an instance of NostoPrice.', __CLASS__));
+        }
+        if (!($args['currency'] instanceof NostoCurrencyCode)) {
+            throw new NostoInvalidArgumentException(sprintf('%s.currency must be an instance of NostoCurrencyCode.', __CLASS__));
+        }
+
+        $this->_productId = $args['productId'];
+        $this->_quantity = $args['quantity'];
+        $this->_name = $args['name'];
+        $this->_unitPrice = $args['unitPrice'];
+        $this->_currency = $args['currency'];
+    }
+
+    /**
      * @inheritdoc
      */
     protected function _construct()
     {
         $this->_init('nosto_tagging/meta_lineitem');
-    }
-
-    /**
-     * Returns the name for a quote/order item.
-     * Configurable products will have their chosen options added to their name.
-     * Bundle products will have their chosen child product names added.
-     * Grouped products will have their parent product name prepended.
-     * All others will have their own name only.
-     *
-     * @param Mage_Sales_Model_Quote_Item|Mage_Sales_Model_Order_Item $item the item model.
-     *
-     * @return string
-     */
-    protected function fetchProductName($item)
-    {
-        switch ($item->getProductType()) {
-            case Mage_Catalog_Model_Product_Type::TYPE_SIMPLE:
-                return $this->fetchSimpleProductName($item);
-
-            case Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE:
-                return $this->fetchConfigurableProductName($item);
-
-            case Mage_Catalog_Model_Product_Type::TYPE_BUNDLE:
-                return $this->fetchBundleProductName($item);
-
-            case Mage_Catalog_Model_Product_Type::TYPE_GROUPED:
-                return $this->fetchGroupedProductName($item);
-
-            default:
-                return $item->getName();
-        }
-    }
-
-    /**
-     * Applies given options to the name.
-     *
-     * Format:
-     *
-     * "Product Name (Green, M)"
-     *
-     * @param string $name the name.
-     * @param array  $options list of string values to apply as name option.
-     *
-     * @return string
-     */
-    protected function applyProductNameOptions($name, array $options)
-    {
-        if (!empty($options)) {
-            $name .= ' (' . implode(', ', $options) . ')';
-        }
-        return $name;
-    }
-
-    /**
-     * Returns a list of attribute labels based on given attribute option map.
-     *
-     * The map must be passed with attribute id's as keys and the option id's
-     * as values.
-     *
-     * @param array $attributes the attribute id map.
-     *
-     * @return array
-     */
-    protected function getAttributeLabels(array $attributes)
-    {
-        $labels = array();
-        if (count($attributes) > 0) {
-            /** @var Mage_Eav_Model_Entity_Attribute[] $collection */
-            $collection = Mage::getModel('eav/entity_attribute')
-                ->getCollection()
-                ->addFieldToFilter(
-                    'attribute_id',
-                    array(
-                        'in' => array_keys($attributes)
-                    )
-                );
-            foreach ($collection as $attribute) {
-                $optionId = $attributes[$attribute->getId()];
-                if (!$attribute->getData('source_model')) {
-                    $attribute->setData(
-                        'source_model',
-                        'eav/entity_attribute_source_table'
-                    );
-                }
-                try {
-                    $label = $attribute->getSource()->getOptionText($optionId);
-                    if (!empty($label)) {
-                        $labels[] = $label;
-                    }
-                } catch (Mage_Core_Exception $e) {
-                    // If the source model cannot be found, just continue;
-                    continue;
-                }
-
-            }
-        }
-        return $labels;
     }
 
     /**
@@ -214,40 +151,4 @@ abstract class Nosto_Tagging_Model_Meta_LineItem extends Mage_Core_Model_Abstrac
     {
         return $this->_currency;
     }
-
-    /**
-     * Returns the name for an quote/order item representing a simple product.
-     *
-     * @param Mage_Sales_Model_Quote_Item|Mage_Sales_Model_Order_Item $item the item model.
-     *
-     * @return string
-     */
-    abstract protected function fetchSimpleProductName($item);
-
-    /**
-     * Returns the name for an quote/order item representing a configurable product.
-     *
-     * @param Mage_Sales_Model_Quote_Item|Mage_Sales_Model_Order_Item $item the item model.
-     *
-     * @return string
-     */
-    abstract protected function fetchConfigurableProductName($item);
-
-    /**
-     * Returns the name for an quote/order item representing a bundle product.
-     *
-     * @param Mage_Sales_Model_Quote_Item|Mage_Sales_Model_Order_Item $item the item model.
-     *
-     * @return string
-     */
-    abstract protected function fetchBundleProductName($item);
-
-    /**
-     * Returns the name for an quote/order item representing a grouped product.
-     *
-     * @param Mage_Sales_Model_Quote_Item|Mage_Sales_Model_Order_Item $item the item model.
-     *
-     * @return string
-     */
-    abstract protected function fetchGroupedProductName($item);
 }

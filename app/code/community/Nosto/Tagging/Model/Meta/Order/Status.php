@@ -47,22 +47,46 @@ class Nosto_Tagging_Model_Meta_Order_Status extends Mage_Core_Model_Abstract imp
     protected $_label;
 
     /**
+     * @var NostoDate|null the order status created at date.
+     */
+    protected $_createdAt;
+
+    /**
+     * Constructor.
+     *
+     * Sets up this Value Object.
+     *
+     * @param array $args the object data.
+     *
+     * @throws NostoInvalidArgumentException
+     */
+    public function __construct(array $args)
+    {
+        if (!isset($args['code']) || !is_string($args['code']) || empty($args['code'])) {
+            throw new NostoInvalidArgumentException(sprintf('%s.code must be a non-empty string value.', __CLASS__));
+        }
+        if (isset($args['label'])) {
+			if (!is_string($args['label']) || empty($args['label'])) {
+            	throw new NostoInvalidArgumentException(sprintf('%s.label must be a non-empty string value.', __CLASS__));
+			}
+        }
+        if (isset($args['createdAt'])) {
+            if (!($args['createdAt'] instanceof NostoDate)) {
+                throw new NostoInvalidArgumentException(sprintf('%s.createdAt must be an instance of NostoDate.', __CLASS__));
+            }
+        }
+
+        $this->_code = $args['code'];
+        $this->_label = isset($args['label']) ? $args['label'] : $args['code'];
+		$this->_createdAt = isset($args['createdAt']) ? $args['createdAt'] : null;
+    }
+
+    /**
      * @inheritdoc
      */
     protected function _construct()
     {
         $this->_init('nosto_tagging/meta_order_status');
-    }
-
-    /**
-     * Loads the Data Transfer Object.
-     *
-     * @param Mage_Sales_Model_Order $order the order model.
-     */
-    public function loadData(Mage_Sales_Model_Order $order)
-    {
-        $this->_code = $order->getStatus();
-        $this->_label = $order->getStatusLabel();
     }
 
     /**
@@ -83,5 +107,15 @@ class Nosto_Tagging_Model_Meta_Order_Status extends Mage_Core_Model_Abstract imp
     public function getLabel()
     {
         return $this->_label;
+    }
+
+    /**
+     * Returns the date this order status was created.
+     *
+     * @return NostoDate|null the date or null if not set.
+     */
+    public function getCreatedAt()
+    {
+        return $this->_createdAt;
     }
 }

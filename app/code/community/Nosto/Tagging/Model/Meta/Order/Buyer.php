@@ -52,23 +52,43 @@ class Nosto_Tagging_Model_Meta_Order_Buyer extends Mage_Core_Model_Abstract impl
     protected $_email;
 
     /**
+     * Constructor.
+     *
+     * Sets up this Value Object.
+     *
+     * @param array $args the object data.
+     *
+     * @throws NostoInvalidArgumentException
+     */
+    public function __construct(array $args)
+    {
+        if (isset($args['firstName'])) {
+            if (!is_string($args['firstName']) || empty($args['firstName'])) {
+                throw new NostoInvalidArgumentException(sprintf('%s.firstName must be a non-empty string value.', __CLASS__));
+            }
+        }
+        if (isset($args['lastName'])) {
+            if (!is_string($args['lastName']) || empty($args['lastName'])) {
+                throw new NostoInvalidArgumentException(sprintf('%s.lastName must be a non-empty string value.', __CLASS__));
+            }
+        }
+        if (isset($args['email'])) {
+            if (!is_string($args['email']) || empty($args['email'])) {
+                throw new NostoInvalidArgumentException(sprintf('%s.email must be a non-empty string value.', __CLASS__));
+            }
+        }
+
+        $this->_firstName = isset($args['firstName']) ? $args['firstName'] : null;
+        $this->_lastName = isset($args['lastName']) ? $args['lastName'] : null;
+        $this->_email = isset($args['email']) ? $args['email'] : null;
+    }
+
+    /**
      * @inheritdoc
      */
     protected function _construct()
     {
         $this->_init('nosto_tagging/meta_order_buyer');
-    }
-
-    /**
-     * Loads the Data Transfer Object.
-     *
-     * @param Mage_Sales_Model_Order $order the order model.
-     */
-    public function loadData(Mage_Sales_Model_Order $order)
-    {
-        $this->_firstName = $order->getCustomerFirstname();
-        $this->_lastName = $order->getCustomerLastname();
-        $this->_email = $order->getCustomerEmail();
     }
 
     /**

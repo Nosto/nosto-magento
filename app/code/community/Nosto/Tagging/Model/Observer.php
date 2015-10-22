@@ -182,7 +182,7 @@ class Nosto_Tagging_Model_Observer
                     ->getNostoId($mageOrder);
                 if (!is_null($account)) {
                     $service = new NostoServiceOrder($account);
-                    $service->confirm($order, $customerId);
+					$service->confirm($order, $customerId);
                 }
             } catch (NostoException $e) {
                 Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');

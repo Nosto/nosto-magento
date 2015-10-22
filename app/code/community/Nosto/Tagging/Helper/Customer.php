@@ -78,7 +78,7 @@ class Nosto_Tagging_Helper_Customer extends Mage_Core_Helper_Abstract
                 ->addFieldToFilter('quote_id', $quoteId)
                 ->addFieldToFilter('nosto_id', $nostoId)
                 ->setPageSize(1)
-				->setCurPage(1)
+                ->setCurPage(1)
                 ->getFirstItem();
             if ($customer->hasData()) {
                 $customer->setUpdatedAt(date('Y-m-d H:i:s'));
