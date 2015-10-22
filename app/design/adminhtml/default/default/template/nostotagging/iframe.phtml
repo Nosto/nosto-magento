@@ -34,17 +34,50 @@ $params = array('store' => $this->getSelectedStore()->getId(), 'isAjax' => true)
 ?>
 <iframe id="nosto_iframe" src='<?php echo $this->getIframeUrl(); ?>' width='100%' frameborder='0' scrolling='no' style="min-height: 600px;"></iframe>
 <script type="text/javascript">
-    // Define the "Nosto" namespace if not already defined.
-    if (typeof Nosto === "undefined") {
-        var Nosto = {};
-    }
-    Nosto.settings = {
-        origin: "<?php echo $this->getIframeOrigin(); ?>",
-        urls: {
-            createAccount: "<?php echo $this->getUrl('*/*/createAccount', $params); ?>",
-            connectAccount: "<?php echo $this->getUrl('*/*/connectAccount', $params); ?>",
-            deleteAccount: "<?php echo $this->getUrl('*/*/removeAccount', $params); ?>"
-        },
-        xhrParams: {form_key: window.FORM_KEY}
-    };
+	document.observe("dom:loaded", function() {
+		// Init the iframe re-sizer.
+		iFrameResize({heightCalculationMethod : "bodyScroll"});
+
+		/**
+		 * Window.postMessage() event handler for catching messages from Nosto.
+		 *
+		 * Supported messages must come from [*.]nosto.com and be formatted
+		 * according to the following example:
+		 *
+		 * '[Nosto]{ "type": "the message action", "params": {} }'
+		 *
+		 * @param {Object} event
+		 */
+		function receiveMessage(event) {
+			var settings = {
+				iframeId: "nosto_iframe",
+				urls: {
+					createAccount: "<?php echo $this->getUrl('*/*/createAccount', $params); ?>",
+					connectAccount: "<?php echo $this->getUrl('*/*/connectAccount', $params); ?>",
+					deleteAccount: "<?php echo $this->getUrl('*/*/removeAccount', $params); ?>"
+				}
+			};
+
+			// Check the origin to prevent cross-site scripting.
+			var originRegexp = new RegExp("<?php echo $this->getIframeOrigin(); ?>");
+			if (!originRegexp.test(event.origin)) {
+				return;
+			}
+			// If the message does not start with "[Nosto]", then it is not for us.
+			if ((""+event.data).substr(0, 7) !== "[Nosto]") {
+				return;
+			}
+
+			// Pass the info on to a handler if the data seems sane.
+			var json = (""+event.data).substr(7);
+			var data = JSON.parse(json);
+			if (typeof data === "object" && data.type) {
+				Nosto.handlePostMessage(data, settings);
+			}
+		}
+
+		// Register event handler for window.postMessage() messages from Nosto.
+		window.addEventListener("message", receiveMessage, false);
+	});
+
 </script>

@@ -65,8 +65,10 @@ class Nosto_Tagging_Model_Meta_Order_Status extends Mage_Core_Model_Abstract imp
         if (!isset($args['code']) || !is_string($args['code']) || empty($args['code'])) {
             throw new InvalidArgumentException(sprintf('%s.code must be a non-empty string value.', __CLASS__));
         }
-        if (!isset($args['label']) || !is_string($args['label']) || empty($args['label'])) {
-            throw new InvalidArgumentException(sprintf('%s.label must be a non-empty string value.', __CLASS__));
+        if (isset($args['label'])) {
+			if (!is_string($args['label']) || empty($args['label'])) {
+            	throw new InvalidArgumentException(sprintf('%s.label must be a non-empty string value.', __CLASS__));
+			}
         }
         if (isset($args['createdAt'])) {
             if (!is_string($args['createdAt']) || strtotime($args['createdAt']) === false) {
@@ -75,10 +77,8 @@ class Nosto_Tagging_Model_Meta_Order_Status extends Mage_Core_Model_Abstract imp
         }
 
         $this->_code = $args['code'];
-        $this->_label = $args['label'];
-        if (isset($args['createdAt'])) {
-            $this->_createdAt = $args['createdAt'];
-        }
+        $this->_label = isset($args['label']) ? $args['label'] : $args['code'];
+		$this->_createdAt = isset($args['createdAt']) ? $args['createdAt'] : null;
     }
 
     /**
