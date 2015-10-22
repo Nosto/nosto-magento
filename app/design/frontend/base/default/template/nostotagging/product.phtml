@@ -37,8 +37,6 @@ $product = $this->getMetaProduct();
 $helper = Mage::helper('nosto_tagging');
 $priceFormatter = Nosto::formatter('price');
 $dateFormatter = Nosto::formatter('date');
-$priceFormat = new NostoPriceFormat(2, '.', '');
-$dateFormat = new NostoDateFormat(NostoDateFormat::YMD);
 ?>
 
 <!-- Nosto Product Tagging -->
@@ -48,7 +46,7 @@ $dateFormat = new NostoDateFormat(NostoDateFormat::YMD);
     <span class="name"><?php echo $helper->escapeHtml($product->getName()); ?></span>
     <span class="image_url"><?php echo $product->getImageUrl(); ?></span>
     <?php if ($product->getPrice()): ?>
-        <span class="price"><?php echo $priceFormatter->format($product->getPrice(), $priceFormat); ?></span>
+        <span class="price"><?php echo $priceFormatter->format($product->getPrice()); ?></span>
     <?php endif; ?>
     <?php if ($product->getCurrency()): ?>
         <span class="price_currency_code"><?php echo $helper->escapeHtml($product->getCurrency()->getCode()); ?></span>
@@ -63,7 +61,7 @@ $dateFormat = new NostoDateFormat(NostoDateFormat::YMD);
         <span class="description"><?php echo $helper->escapeHtml($product->getFullDescription()); ?></span>
     <?php endif; ?>
     <?php if ($product->getListPrice()): ?>
-        <span class="list_price"><?php echo $priceFormatter->format($product->getListPrice(), $priceFormat); ?></span>
+        <span class="list_price"><?php echo $priceFormatter->format($product->getListPrice()); ?></span>
     <?php endif; ?>
     <?php if ($product->getBrand()): ?>
         <span class="brand"><?php echo $helper->escapeHtml($product->getBrand()); ?></span>
@@ -74,7 +72,7 @@ $dateFormat = new NostoDateFormat(NostoDateFormat::YMD);
         <?php endforeach; ?>
     <?php endforeach; ?>
     <?php if ($product->getDatePublished()): ?>
-        <span class="date_published"><?php echo $dateFormatter->format($product->getDatePublished(), $dateFormat); ?></span>
+        <span class="date_published"><?php echo $dateFormatter->format($product->getDatePublished()); ?></span>
     <?php endif; ?>
     <?php if ($helper->getStoreHasMultiCurrency()): ?>
         <span class="variation_id"><?php echo $helper->escapeHtml($product->getPriceVariationId()); ?></span>
@@ -83,8 +81,8 @@ $dateFormat = new NostoDateFormat(NostoDateFormat::YMD);
                 <div class="variation">
                     <span class="variation_id"><?php echo $helper->escapeHtml($variation->getId()->getId()); ?></span>
                     <span class="price_currency_code"><?php echo $helper->escapeHtml($variation->getCurrency()->getCode()); ?></span>
-                    <span class="price"><?php echo $priceFormatter->format($variation->getPrice(), $priceFormat); ?></span>
-                    <span class="list_price"><?php echo $priceFormatter->format($variation->getListPrice(), $priceFormat); ?></span>
+                    <span class="price"><?php echo $priceFormatter->format($variation->getPrice()); ?></span>
+                    <span class="list_price"><?php echo $priceFormatter->format($variation->getListPrice()); ?></span>
                     <span class="availability"><?php echo $helper->escapeHtml($variation->getAvailability()->getAvailability()); ?></span>
                 </div>
             <?php endforeach; ?>
