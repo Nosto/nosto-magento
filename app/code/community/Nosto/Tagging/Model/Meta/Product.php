@@ -141,6 +141,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
      */
     public function loadData(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store = null)
     {
+
         if (is_null($store)) {
             $store = Mage::app()->getStore();
         }
@@ -150,46 +151,52 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         /** @var Nosto_Tagging_Helper_Price $priceHelper */
         $priceHelper = Mage::helper('nosto_tagging/price');
 
-        $this->_url = $this->buildUrl($product, $store);
-        $this->_productId = $product->getId();
-        $this->_name = $product->getName();
-        $this->_imageUrl = $this->buildImageUrl($product, $store);
+        $this->setUrl($this->buildUrl($product, $store));
+        $this->setProductId($product->getId());
+        $this->setName($product->getName());
+        $this->setImageUrl($this->buildImageUrl($product, $store));
         $price = $priceHelper->getProductFinalPriceInclTax($product);
-        $this->_price = new NostoPrice($price);
+        $this->setPrice(new NostoPrice($price));
         $listPrice = $priceHelper->getProductPriceInclTax($product);
-        $this->_listPrice = new NostoPrice($listPrice);
-        $this->_currency = new NostoCurrencyCode($store->getBaseCurrencyCode());
-        $this->_availability = new NostoProductAvailability(
+        $this->setListPrice(new NostoPrice($listPrice));
+        $this->setCurrency(new NostoCurrencyCode($store->getBaseCurrencyCode()));
+        $this->setAvailability(new NostoProductAvailability(
             $product->isAvailable()
                 ? NostoProductAvailability::IN_STOCK
                 : NostoProductAvailability::OUT_OF_STOCK
-        );
-        $this->_categories = $this->buildCategories($product);
+        ));
+
+        foreach ($this->buildCategories($product) as $categoryString) {
+            $this->addCategory($categoryString);
+        }
 
         // Optional properties.
 
         if ($product->hasData('short_description')) {
-            $this->_shortDescription = $product->getData('short_description');
+            $this->setShortDescription($product->getData('short_description'));
         }
         if ($product->hasData('description')) {
-            $this->_description = $product->getData('description');
+            $this->setDescription($product->getData('description'));
         }
         if ($product->hasData('manufacturer')) {
-            $this->_brand = $product->getAttributeText('manufacturer');
+            $this->setBrand($product->getAttributeText('manufacturer'));
         }
         if (($tags = $this->buildTags($product, $store)) !== array()) {
-            $this->_tags['tag1'] = $tags;
+            $this->setTag1($tags);
         }
+
         if ($product->hasData('created_at')) {
             if (($timestamp = strtotime($product->getData('created_at')))) {
-                $this->_datePublished = new NostoDate($timestamp);
+                $this->setDatePublished(new NostoDate($timestamp));
             }
         }
 
         if ($helper->getStoreHasMultiCurrency($store)) {
-            $this->_priceVariation = new NostoPriceVariation($store->getBaseCurrencyCode());
+            $this->setPriceVariation(new NostoPriceVariation($store->getBaseCurrencyCode()));
             if ($helper->isMultiCurrencyMethodPriceVariation($store)) {
-                $this->_priceVariations = $this->buildPriceVariations($product, $store);
+                foreach ($this->buildPriceVariations($product, $store) as $priceVariation) {
+                    $this->addPriceVariation($priceVariation);
+                }
             }
         }
     }
@@ -325,6 +332,19 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
             $url = $baseUrl.'/catalog/product/'.$file;
         }
         return $url;
+    }
+
+    /**
+     * Adds a new price variation to the product
+     *
+     * @param Nosto_Tagging_Model_Meta_Product_Price_Variation $priceVariation
+     * @param Mage_Core_Model_Store      $store the store model.
+     *
+     * @return void
+     */
+    protected function addPriceVariation(Nosto_Tagging_Model_Meta_Product_Price_Variation $priceVariation)
+    {
+        $this->_priceVariations[] = $priceVariation;
     }
 
     /**
@@ -569,4 +589,250 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         }
         return implode(' ', $descriptions);
     }
+
+    /**
+     * Setter for availability
+     * @param NostoProductAvailability $availability
+     * @return void
+     */
+    public function setAvailability(NostoProductAvailability $availability)
+    {
+        $this->_availability = $availability;
+    }
+
+    /**
+     * Setter for brand
+     * @param string $brand
+     * @return void
+     */
+    public function setBrand($brand)
+    {
+        $this->_brand = $brand;
+    }
+
+    /**
+     * Adder for category
+     * @param string $category
+     * @return void
+     */
+    public function addCategory($category)
+    {
+        $this->_categories[] = $category;
+    }
+
+    /**
+     * Setter for currency
+     * @param NostoCurrencyCode $currency
+     * @return void
+     */
+    public function setCurrency(NostoCurrencyCode $currency)
+    {
+        $this->_currency = $currency;
+    }
+
+    /**
+     * Setter for datePublished
+     * @param NostoDate $datePublished
+     * @return void
+     */
+    public function setDatePublished(NostoDate $datePublished)
+    {
+        $this->_datePublished = $datePublished;
+    }
+
+    /**
+     * Setter for description
+     * @param string $description
+     * @return void
+     */
+    public function setDescription($description)
+    {
+        $this->_description = $description;
+    }
+
+    /**
+     * Setter for image url
+     * @param string $imageUrl
+     * @return void
+     */
+    public function setImageUrl($imageUrl)
+    {
+        $this->_imageUrl = $imageUrl;
+    }
+
+    /**
+     * Setter for listPrice
+     * @param NostoPrice $listPrice
+     * @return void
+     */
+    public function setListPrice(NostoPrice $listPrice)
+    {
+        $this->_listPrice = $listPrice;
+    }
+
+    /**
+     * Setter for name
+     * @param string $name
+     * @return void
+     */
+    public function setName($name)
+    {
+        $this->_name = $name;
+    }
+
+    /**
+     * Setter for price
+     * @param NostoPrice $price
+     * @return void
+     */
+    public function setPrice(NostoPrice $price)
+    {
+        $this->_price = $price;
+    }
+
+    /**
+     * Setter for priceVariation
+     * @param NostoPriceVariation $priceVariation
+     * @return void
+     */
+    public function setPriceVariation(NostoPriceVariation $priceVariation)
+    {
+        $this->_priceVariation = $priceVariation;
+    }
+
+    /**
+     * Setter for shortDescription
+     * @param string $shortDescription
+     * @return void
+     */
+    public function setShortDescription($shortDescription)
+    {
+        $this->_shortDescription = $shortDescription;
+    }
+
+    /**
+     * Setter for url
+     * @param string $url
+     * @return void
+     */
+    public function setUrl($url)
+    {
+        $this->_url = $url;
+    }
+
+    /**
+     * Sets all the tags to the `tag1` field.
+     *
+     * The tags must be an array of non-empty string values.
+     *
+     * Usage:
+     * $object->setTag1(array('customTag1', 'customTag2'));
+     *
+     * @param array $tags the tags.
+     *
+     * @throws InvalidArgumentException
+     */
+    public function setTag1(array $tags)
+    {
+        $this->_tags['tag1'] = array();
+        foreach ($tags as $tag) {
+            $this->addTag1($tag);
+        }
+    }
+    /**
+     * Adds a new tag to the `tag1` field.
+     *
+     * The tag must be a non-empty string value.
+     *
+     * Usage:
+     * $object->addTag1('customTag');
+     *
+     * @param string $tag the tag to add.
+     *
+     * @throws InvalidArgumentException
+     */
+    public function addTag1($tag)
+    {
+        if (!is_string($tag) || empty($tag)) {
+            throw new NostoInvalidArgumentException('Tag must be a non-empty string value.');
+        }
+        $this->_tags['tag1'][] = $tag;
+    }
+    /**
+     * Sets all the tags to the `tag2` field.
+     *
+     * The tags must be an array of non-empty string values.
+     *
+     * Usage:
+     * $object->setTag2(array('customTag1', 'customTag2'));
+     *
+     * @param array $tags the tags.
+     *
+     * @throws InvalidArgumentException
+     */
+    public function setTag2(array $tags)
+    {
+        $this->_tags['tag2'] = array();
+        foreach ($tags as $tag) {
+            $this->addTag2($tag);
+        }
+    }
+    /**
+     * Adds a new tag to the `tag2` field.
+     *
+     * The tag must be a non-empty string value.
+     *
+     * Usage:
+     * $object->addTag2('customTag');
+     *
+     * @param string $tag the tag to add.
+     *
+     * @throws InvalidArgumentException
+     */
+    public function addTag2($tag)
+    {
+        if (!is_string($tag) || empty($tag)) {
+            throw new InvalidArgumentException('Tag must be a non-empty string value.');
+        }
+        $this->_tags['tag2'][] = $tag;
+    }
+    /**
+     * Sets all the tags to the `tag3` field.
+     *
+     * The tags must be an array of non-empty string values.
+     *
+     * Usage:
+     * $object->setTag3(array('customTag1', 'customTag2'));
+     *
+     * @param array $tags the tags.
+     *
+     * @throws InvalidArgumentException
+     */
+    public function setTag3(array $tags)
+    {
+        $this->_tags['tag3'] = array();
+        foreach ($tags as $tag) {
+            $this->addTag3($tag);
+        }
+    }
+    /**
+     * Adds a new tag to the `tag3` field.
+     *
+     * The tag must be a non-empty string value.
+     *
+     * Usage:
+     * $object->addTag3('customTag');
+     *
+     * @param string $tag the tag to add.
+     *
+     * @throws InvalidArgumentException
+     */
+    public function addTag3($tag)
+    {
+        if (!is_string($tag) || empty($tag)) {
+            throw new InvalidArgumentException('Tag must be a non-empty string value.');
+        }
+        $this->_tags['tag3'][] = $tag;
+    }
+
 }
