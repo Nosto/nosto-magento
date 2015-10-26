@@ -44,35 +44,6 @@ class Nosto_Tagging_Model_Meta_Product_Variation extends Nosto_Tagging_Model_Met
     }
 
     /**
-     * Loads the Data Transfer Object.
-     *
-     * @param Mage_Catalog_Model_Product $product the product model.
-     * @param Mage_Core_Model_Store      $store the store model.
-     * @param NostoCurrencyCode          $currencyCode the currency code.
-     */
-    public function loadData(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store, NostoCurrencyCode $currencyCode)
-    {
-        $currency = Mage::getModel('directory/currency')
-            ->load($currencyCode->getCode());
-        /** @var Nosto_Tagging_Helper_Price $priceHelper */
-        $priceHelper = Mage::helper('nosto_tagging/price');
-
-        $this->setProductId($currencyCode->getCode());
-        $this->setCurrency($currencyCode);
-        $price = $priceHelper->getProductFinalPriceInclTax($product);
-        $price = $store->getBaseCurrency()->convert($price, $currency);
-        $this->setPrice(new NostoPrice($price));
-        $listPrice = $priceHelper->getProductPriceInclTax($product);
-        $listPrice = $store->getBaseCurrency()->convert($listPrice, $currency);
-        $this->setListPrice(new NostoPrice($listPrice));
-        $this->setAvailability(new NostoProductAvailability(
-            $product->isAvailable()
-                ? NostoProductAvailability::IN_STOCK
-                : NostoProductAvailability::OUT_OF_STOCK
-        ));
-    }
-
-    /**
      * Returns the variation ID.
      *
      * @return string|int the variation ID.
@@ -80,5 +51,15 @@ class Nosto_Tagging_Model_Meta_Product_Variation extends Nosto_Tagging_Model_Met
     public function getVariationId()
     {
         return $this->_productId;
+    }
+
+    /**
+     * Sets the variation ID.
+     *
+     * @param string|int $variationId the variation ID.
+     */
+    public function setVariationId($variationId)
+    {
+        $this->_productId = $variationId;
     }
 }

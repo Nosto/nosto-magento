@@ -140,6 +140,9 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Meta_Product_
     protected function buildVariations(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
         $variations = array();
+
+        /** @var Nosto_Tagging_Helper_Price $priceHelper */
+        $priceHelper = Mage::helper('nosto_tagging/price');
         $currencyCodes = $store->getAvailableCurrencyCodes(true);
         foreach ($currencyCodes as $currencyCode) {
             // Skip base currency.
@@ -149,7 +152,19 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Meta_Product_
             try {
                 /** @var Nosto_Tagging_Model_Meta_Product_Variation $variation */
                 $variation = Mage::getModel('nosto_tagging/meta_product_variation');
-                $variation->loadData($product, $store, new NostoCurrencyCode($currencyCode));
+
+                $variation->setVariationId($currencyCode);
+                $variation->setAvailability($this->_availability);
+                $variation->setCurrency(new NostoCurrencyCode($currencyCode));
+
+                $price = $priceHelper->getProductFinalPriceInclTax($product);
+                $price = $store->getBaseCurrency()->convert($price, $currencyCode);
+                $variation->setPrice(new NostoPrice($price));
+
+                $listPrice = $priceHelper->getProductPriceInclTax($product);
+                $listPrice = $store->getBaseCurrency()->convert($listPrice, $currencyCode);
+                $variation->setListPrice(new NostoPrice($listPrice));
+
                 $variations[] = $variation;
             } catch (Exception $e) {
                 // The variation cannot be obtained if there are no
@@ -158,6 +173,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Meta_Product_
                 continue;
             }
         }
+
         return $variations;
     }
 
