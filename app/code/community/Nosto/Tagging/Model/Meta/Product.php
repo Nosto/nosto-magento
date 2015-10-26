@@ -99,7 +99,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Meta_Product_
             $descriptions[] = $product->getData('short_description');
         }
         if ($product->hasData('description')) {
-            $descriptions[] = $product->hasData('description');
+            $descriptions[] = $product->getData('description');
         }
         if (count($descriptions) > 0) {
             $this->setDescription(implode(' ', $descriptions));
