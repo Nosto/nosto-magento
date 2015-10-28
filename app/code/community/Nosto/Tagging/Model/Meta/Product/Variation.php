@@ -33,8 +33,33 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Product_Variation extends Nosto_Tagging_Model_Meta_Product_Abstract implements NostoProductVariationInterface
+class Nosto_Tagging_Model_Meta_Product_Variation extends Nosto_Tagging_Model_Base implements NostoProductVariationInterface
 {
+    /**
+     * @var string|int the variation ID.
+     */
+    protected $_variationId;
+
+    /**
+     * @var NostoCurrencyCode the currency code the product is sold in.
+     */
+    protected $_currency;
+
+    /**
+     * @var NostoPrice the product price including possible discounts and taxes.
+     */
+    protected $_price;
+
+    /**
+     * @var NostoPrice the product list price without discounts but incl taxes.
+     */
+    protected $_listPrice;
+
+    /**
+     * @var NostoProductAvailability the availability of the product.
+     */
+    protected $_availability;
+
     /**
      * @inheritdoc
      */
@@ -50,7 +75,47 @@ class Nosto_Tagging_Model_Meta_Product_Variation extends Nosto_Tagging_Model_Met
      */
     public function getVariationId()
     {
-        return $this->_productId;
+        return $this->_variationId;
+    }
+
+    /**
+     * Returns the currency code (ISO 4217) the variation is sold in.
+     *
+     * @return NostoCurrencyCode the currency ISO code.
+     */
+    public function getCurrency()
+    {
+        return $this->_currency;
+    }
+
+    /**
+     * Returns the price of the variation including possible discounts and taxes.
+     *
+     * @return NostoPrice the price.
+     */
+    public function getPrice()
+    {
+        return $this->_price;
+    }
+
+    /**
+     * Returns the list price of the variation without discounts but incl taxes.
+     *
+     * @return NostoPrice the price.
+     */
+    public function getListPrice()
+    {
+        return $this->_listPrice;
+    }
+
+    /**
+     * Returns the availability of the variation, i.e. if it is in stock or not.
+     *
+     * @return NostoProductAvailability the availability
+     */
+    public function getAvailability()
+    {
+        return $this->_availability;
     }
 
     /**
@@ -60,6 +125,47 @@ class Nosto_Tagging_Model_Meta_Product_Variation extends Nosto_Tagging_Model_Met
      */
     public function setVariationId($variationId)
     {
-        $this->_productId = $variationId;
+        $this->_variationId = $variationId;
+    }
+
+    /**
+     * Sets the currency code (ISO 4217) for the variation.
+     *
+     * @param NostoCurrencyCode $currencyCode the variation price currency.
+     */
+    public function setCurrency(NostoCurrencyCode $currencyCode)
+    {
+        $this->_currency = $currencyCode;
+    }
+
+    /**
+     * Sets the price of the variation including possible discounts and taxes.
+     *
+     * @param NostoPrice $price the price.
+     */
+    public function setPrice(NostoPrice $price)
+    {
+        $this->_price = $price;
+    }
+
+    /**
+     * Sets the list price of the variation without discounts but incl taxes.
+     *
+     * @param NostoPrice $listPrice the list price.
+     */
+    public function setListPrice(NostoPrice $listPrice)
+    {
+        $this->_listPrice = $listPrice;
+    }
+
+    /**
+     * Sets the availability of the variation,
+     * i.e. if it is in stock or not.
+     *
+     * @param NostoProductAvailability $availability the availability.
+     */
+    public function setAvailability(NostoProductAvailability $availability)
+    {
+        $this->_availability = $availability;
     }
 }
