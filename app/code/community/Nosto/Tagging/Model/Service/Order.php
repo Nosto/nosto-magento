@@ -105,14 +105,16 @@ class Nosto_Tagging_Model_Service_Order
                 'price_currency_code' => strtoupper($item->getCurrencyCode()),
             );
         }
-        if ($order->getBuyerInfo()->getFirstName()) {
-            $data['buyer']['first_name'] = $order->getBuyerInfo()->getFirstName();
-        }
-        if ($order->getBuyerInfo()->getLastName()) {
-            $data['buyer']['last_name'] = $order->getBuyerInfo()->getLastName();
-        }
-        if ($order->getBuyerInfo()->getEmail()) {
-            $data['buyer']['email'] = $order->getBuyerInfo()->getEmail();
+        if ($order->getBuyerInfo()) {
+            if ($order->getBuyerInfo()->getFirstName()) {
+                $data['buyer']['first_name'] = $order->getBuyerInfo()->getFirstName();
+            }
+            if ($order->getBuyerInfo()->getLastName()) {
+                $data['buyer']['last_name'] = $order->getBuyerInfo()->getLastName();
+            }
+            if ($order->getBuyerInfo()->getEmail()) {
+                $data['buyer']['email'] = $order->getBuyerInfo()->getEmail();
+            }
         }
         return json_encode($data);
     }

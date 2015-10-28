@@ -69,14 +69,16 @@ class Nosto_Tagging_Model_Export_Collection_Order extends NostoOrderCollection i
                         date('Y-m-d\TH:i:s\Z', strtotime($status->getCreatedAt()));
                 }
             }
-            if ($item->getBuyerInfo()->getFirstName()) {
-                $data['buyer']['first_name'] = $item->getBuyerInfo()->getFirstName();
-            }
-            if ($item->getBuyerInfo()->getLastName()) {
-                $data['buyer']['last_name'] = $item->getBuyerInfo()->getLastName();
-            }
-            if ($item->getBuyerInfo()->getEmail()) {
-                $data['buyer']['email'] = $item->getBuyerInfo()->getEmail();
+            if ($item->getBuyerInfo()) {
+                if ($item->getBuyerInfo()->getFirstName()) {
+                    $data['buyer']['first_name'] = $item->getBuyerInfo()->getFirstName();
+                }
+                if ($item->getBuyerInfo()->getLastName()) {
+                    $data['buyer']['last_name'] = $item->getBuyerInfo()->getLastName();
+                }
+                if ($item->getBuyerInfo()->getEmail()) {
+                    $data['buyer']['email'] = $item->getBuyerInfo()->getEmail();
+                }
             }
 
             $array[] = $data;
