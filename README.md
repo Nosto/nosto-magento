@@ -135,6 +135,10 @@ Open Software License ("OSL") v3.0
 
 ## Changelog
 
+### 2.6.7
+* Ignore order status in tagging and API calls if they are not set properly
+* Ignore empty string values for order buyer information in tagging and API calls
+
 ### 2.6.6
 * Fix account removal for self-signup accounts through the iframe
 * Fix uncaught "InvalidArgumentException" exception when order status is missing
