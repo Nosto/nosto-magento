@@ -41,14 +41,16 @@ class Nosto_Tagging_Model_Export_Collection_Order extends NostoOrderCollection i
             $data = array(
                 'order_number' => $item->getOrderNumber(),
                 'external_order_ref' => $item->getExternalOrderRef(),
-                'order_status_code' => $item->getOrderStatus()->getCode(),
-                'order_status_label' => $item->getOrderStatus()->getLabel(),
                 'order_statuses' => array(),
                 'created_at' => Nosto::helper('date')->format($item->getCreatedDate()),
                 'buyer' => array(),
                 'payment_provider' => $item->getPaymentProvider(),
                 'purchased_items' => array(),
             );
+            if ($item->getOrderStatus()) {
+                $data['order_status_code'] = $item->getOrderStatus()->getCode();
+                $data['order_status_label'] = $item->getOrderStatus()->getLabel();
+            }
             foreach ($item->getPurchasedItems() as $orderItem) {
                 $data['purchased_items'][] = array(
                     'product_id' => $orderItem->getProductId(),
@@ -59,20 +61,24 @@ class Nosto_Tagging_Model_Export_Collection_Order extends NostoOrderCollection i
                 );
             }
             foreach ($item->getOrderStatuses() as $status) {
-                if (!isset($data['order_statuses'][$status->getCode()])) {
-                    $data['order_statuses'][$status->getCode()] = array();
+                if ($status->getCreatedAt()) {
+                    if (!isset($data['order_statuses'][$status->getCode()])) {
+                        $data['order_statuses'][$status->getCode()] = array();
+                    }
+                    $data['order_statuses'][$status->getCode()][] =
+                        date('Y-m-d\TH:i:s\Z', strtotime($status->getCreatedAt()));
                 }
-                $data['order_statuses'][$status->getCode()][] =
-                    date('Y-m-d\TH:i:s\Z', strtotime($status->getCreatedAt()));
             }
-            if ($item->getBuyerInfo()->getFirstName()) {
-                $data['buyer']['first_name'] = $item->getBuyerInfo()->getFirstName();
-            }
-            if ($item->getBuyerInfo()->getLastName()) {
-                $data['buyer']['last_name'] = $item->getBuyerInfo()->getLastName();
-            }
-            if ($item->getBuyerInfo()->getEmail()) {
-                $data['buyer']['email'] = $item->getBuyerInfo()->getEmail();
+            if ($item->getBuyerInfo()) {
+                if ($item->getBuyerInfo()->getFirstName()) {
+                    $data['buyer']['first_name'] = $item->getBuyerInfo()->getFirstName();
+                }
+                if ($item->getBuyerInfo()->getLastName()) {
+                    $data['buyer']['last_name'] = $item->getBuyerInfo()->getLastName();
+                }
+                if ($item->getBuyerInfo()->getEmail()) {
+                    $data['buyer']['email'] = $item->getBuyerInfo()->getEmail();
+                }
             }
 
             $array[] = $data;
