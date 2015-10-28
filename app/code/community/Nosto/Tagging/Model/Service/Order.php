@@ -87,13 +87,15 @@ class Nosto_Tagging_Model_Service_Order
         $data = array(
             'order_number' => $order->getOrderNumber(),
             'external_order_ref' => $order->getExternalOrderRef(),
-            'order_status_code' => $order->getOrderStatus()->getCode(),
-            'order_status_label' => $order->getOrderStatus()->getLabel(),
             'buyer' => array(),
             'created_at' => Nosto::helper('date')->format($order->getCreatedDate()),
             'payment_provider' => $order->getPaymentProvider(),
             'purchased_items' => array(),
         );
+        if ($order->getOrderStatus()) {
+            $data['order_status_code'] = $order->getOrderStatus()->getCode();
+            $data['order_status_label'] = $order->getOrderStatus()->getLabel();
+        }
         foreach ($order->getPurchasedItems() as $item) {
             $data['purchased_items'][] = array(
                 'product_id' => $item->getProductId(),

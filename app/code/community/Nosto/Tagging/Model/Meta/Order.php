@@ -104,24 +104,28 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
         $this->_createdDate = $order->getCreatedAt();
         $this->_paymentProvider = $order->getPayment()->getMethod();
 
-        $this->_orderStatus = Mage::getModel(
-            'nosto_tagging/meta_order_status',
-            array(
-                'code' => $order->getStatus(),
-                'label' => $order->getStatusLabel()
-            )
-        );
+        if ($order->getStatus()) {
+            $this->_orderStatus = Mage::getModel(
+                'nosto_tagging/meta_order_status',
+                array(
+                    'code' => $order->getStatus(),
+                    'label' => $order->getStatusLabel()
+                )
+            );
+        }
 
         foreach ($order->getAllStatusHistory() as $item) {
             /** @var Mage_Sales_Model_Order_Status_History $item */
-            $this->_orderStatuses[] = Mage::getModel(
-                'nosto_tagging/meta_order_status',
-                array(
-                    'code' => $item->getStatus(),
-                    'label' => $item->getStatusLabel(),
-                    'createdAt' => $item->getCreatedAt()
-                )
-            );
+            if ($item->getStatus()) {
+                $this->_orderStatuses[] = Mage::getModel(
+                    'nosto_tagging/meta_order_status',
+                    array(
+                        'code' => $item->getStatus(),
+                        'label' => $item->getStatusLabel(),
+                        'createdAt' => $item->getCreatedAt()
+                    )
+                );
+            }
         }
 
         $this->_buyer = Mage::getModel(
