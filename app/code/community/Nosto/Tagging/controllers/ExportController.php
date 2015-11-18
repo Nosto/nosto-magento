@@ -54,10 +54,13 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
                 ->getCollection()
                 ->addFieldToFilter('store_id', Mage::app()->getStore()->getId())
                 ->setPageSize($pageSize)
-                ->setCurPage($currentPage);
+                ->setCurPage($currentPage)
+                ->setOrder('created_at', Varien_Data_Collection::SORT_ORDER_DESC);
+
             if ($currentPage > $orders->getLastPageNumber()) {
                 $orders = array();
             }
+
             /** @var Nosto_Tagging_Model_Export_Collection_Order $collection */
             $collection = Mage::getModel('nosto_tagging/export_collection_order');
             foreach ($orders as $order) {
@@ -105,6 +108,7 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
                 $products = array();
             }
             $collection = new NostoExportProductCollection();
+
             foreach ($products as $product) {
                 /** @var Mage_Catalog_Model_Product $product */
                 /** @var Nosto_Tagging_Model_Meta_Product $meta */
@@ -115,6 +119,7 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
                     $collection[] = $meta;
                 }
             }
+
             $this->export($collection);
         }
     }
@@ -127,10 +132,10 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
     protected function export(NostoExportCollectionInterface $collection)
     {
         $account = Mage::helper('nosto_tagging/account')->find();
+
         if ($account !== null) {
             $cipherText = NostoExporter::export($account, $collection);
             echo $cipherText;
         }
-        die();
     }
 }
