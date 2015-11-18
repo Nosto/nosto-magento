@@ -35,6 +35,7 @@
 $order = $this->getLastOrder();
 $helper = Mage::helper('nosto_tagging');
 $priceHelper = Mage::helper('nosto_tagging/price');
+$store = Mage::app()->getStore();
 ?>
 
 <?php if ($order->getPurchasedItems() !== array()): ?>
@@ -66,8 +67,8 @@ $priceHelper = Mage::helper('nosto_tagging/price');
             <span class="product_id"><?php echo (int)$item->getProductId(); ?></span>
             <span class="quantity"><?php echo (int)$item->getQuantity(); ?></span>
             <span class="name"><?php echo $helper->escapeHtml($item->getName()); ?></span>
-            <span class="unit_price"><?php echo $priceHelper->getFormattedPrice($item->getUnitPrice()); ?></span>
-            <span class="price_currency_code"><?php echo strtoupper($item->getCurrencyCode()); ?></span>
+            <span class="unit_price"><?php echo $priceHelper->getFormattedPrice($priceHelper->convertToDefaultCurrency($item->getUnitPrice(), $store)); ?></span>
+            <span class="price_currency_code"><?php echo strtoupper($store->getDefaultCurrency()->getCode()); ?></span>
         </div>
         <?php endforeach; ?>
     </div>

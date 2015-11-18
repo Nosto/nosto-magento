@@ -33,11 +33,11 @@
  * @var $nostoPriceHelper   Nosto_Tagging_Helper_Price
  */
 $items = $this->getItems();
-$currency = Mage::app()->getStore()->getCurrentCurrencyCode();
+$store = Mage::app()->getStore();
+$currency = $store->getCurrentCurrencyCode();
 $nostoHelper = Mage::helper('nosto_tagging');
 $nostoPriceHelper = Mage::helper('nosto_tagging/price');
 ?>
-
 <!-- Nosto Cart Tagging -->
 <div class="nosto_cart" style="display:none">
     <?php foreach ($items as $item): ?>
@@ -45,8 +45,8 @@ $nostoPriceHelper = Mage::helper('nosto_tagging/price');
         <span class="product_id"><?php echo (int)$this->getProductId($item); ?></span>
         <span class="quantity"><?php echo (int)$item->getQty(); ?></span>
         <span class="name"><?php echo $nostoHelper->escapeHtml($this->getProductName($item)); ?></span>
-        <span class="unit_price"><?php echo $nostoPriceHelper->getFormattedPrice($item->getPriceInclTax()); ?></span>
-        <span class="price_currency_code"><?php echo strtoupper($currency); ?></span>
+        <span class="unit_price"><?php echo $nostoPriceHelper->getFormattedPrice($nostoPriceHelper->convertToDefaultCurrency($item->getPriceInclTax(), $store)); ?></span>
+        <span class="price_currency_code"><?php echo strtoupper($store->getDefaultCurrency()->getCode()); ?></span>
     </div>
     <?php endforeach; ?>
 </div>

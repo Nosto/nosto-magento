@@ -163,27 +163,25 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
      */
     public function loadData(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store = null)
     {
+
         if (is_null($store)) {
             $store = Mage::app()->getStore();
         }
 
-        /** @var Nosto_Tagging_Helper_Price $priceHelper */
         $priceHelper = Mage::helper('nosto_tagging/price');
-
         $this->_url = $this->buildUrl($product, $store);
         $this->_productId = $product->getId();
         $this->_name = $product->getName();
         $this->_imageUrl = $this->buildImageUrl($product, $store);
-        $this->_price = $priceHelper->getProductFinalPriceInclTax($product);
-        $this->_listPrice = $priceHelper->getProductPriceInclTax($product);
-        $this->_currencyCode = $store->getCurrentCurrencyCode();
+        $this->_price = $priceHelper->convertToDefaultCurrency($priceHelper->getProductFinalPriceInclTax($product), $store);
+        $this->_listPrice = $priceHelper->convertToDefaultCurrency($priceHelper->getProductPriceInclTax($product), $store);
+        $this->_currencyCode = $store->getDefaultCurrency()->getCode();
         $this->_availability = $product->isAvailable()
             ? self::PRODUCT_IN_STOCK
             : self::PRODUCT_OUT_OF_STOCK;
         $this->_categories = $this->buildCategories($product);
 
         // Optional properties.
-
         if ($product->hasData('short_description')) {
             $this->_shortDescription = $product->getData('short_description');
         }

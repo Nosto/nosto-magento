@@ -143,7 +143,14 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
         }
 
         if ($this->includeSpecialItems) {
+
+            $priceHelper = Mage::helper('nosto_tagging/price');
+            $store = $order->getStore();
+            $defaultCurrencyCode = $store->getDefaultCurrency()->getCode();
+
             if (($discount = $order->getDiscountAmount()) > 0) {
+
+                $convertedDiscountPrice = $priceHelper->convertToDefaultCurrency($discount, $store);
                 /** @var Nosto_Tagging_Model_Meta_Order_Item $orderItem */
                 $this->_items[] = Mage::getModel(
                     'nosto_tagging/meta_order_item',
@@ -151,7 +158,7 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
                         'productId' => -1,
                         'quantity' => 1,
                         'name' => 'Discount',
-                        'unitPrice' => $discount,
+                        'unitPrice' => $priceHelper->getFormattedPrice($convertedDiscountPrice),
                         'currencyCode' => $order->getOrderCurrencyCode()
                     )
                 );
@@ -159,14 +166,15 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
 
             if (($shippingInclTax = $order->getShippingInclTax()) > 0) {
                 /** @var Nosto_Tagging_Model_Meta_Order_Item $orderItem */
+                $convertedShippingPrice = $priceHelper->convertToDefaultCurrency($shippingInclTax, $store);
                 $this->_items[] = Mage::getModel(
                     'nosto_tagging/meta_order_item',
                     array(
                         'productId' => -1,
                         'quantity' => 1,
                         'name' => 'Shipping and handling',
-                        'unitPrice' => $shippingInclTax,
-                        'currencyCode' => $order->getOrderCurrencyCode()
+                        'unitPrice' => $convertedShippingPrice,
+                        'currencyCode' => $defaultCurrencyCode
                     )
                 );
             }
@@ -183,14 +191,19 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
      */
     protected function buildItem(Mage_Sales_Model_Order_Item $item, Mage_Sales_Model_Order $order)
     {
+        $priceHelper = Mage::helper('nosto_tagging/price');
+        $store = $order->getStore();
+        $convertedPrice = $priceHelper->convertToDefaultCurrency($item->getPriceInclTax(), $store);
+        $defaultCurrencyCode = $store->getDefaultCurrency()->getCode();
+
         return Mage::getModel(
             'nosto_tagging/meta_order_item',
             array(
                 'productId' => (int)$this->buildItemProductId($item),
                 'quantity' => (int)$item->getQtyOrdered(),
                 'name' => $this->buildItemName($item),
-                'unitPrice' => $item->getPriceInclTax(),
-                'currencyCode' => $order->getOrderCurrencyCode()
+                'unitPrice' => $priceHelper->getFormattedPrice($convertedPrice),
+                'currencyCode' => $defaultCurrencyCode
             )
         );
     }

@@ -34,19 +34,23 @@
  * @var $dateHelper  Nosto_Tagging_Helper_Date
  */
 $product = $this->getMetaProduct();
+$store = $this->getProduct()->getStore();
 $helper = Mage::helper('nosto_tagging');
 $priceHelper = Mage::helper('nosto_tagging/price');
 $dateHelper = Mage::helper('nosto_tagging/date');
-?>
+$defaultCurrencyCode = $store->getDefaultCurrency()->getCode();
+$convertedListPrice = $priceHelper->convertToDefaultCurrency($product->getListPrice(), $store);
+$convertedPrice = $priceHelper->convertToDefaultCurrency($product->getPrice(), $store);
 
+?>
 <!-- Nosto Product Tagging -->
 <div class="nosto_product" style="display:none">
     <span class="url"><?php echo $product->getUrl(); ?></span>
     <span class="product_id"><?php echo $product->getProductId(); ?></span>
     <span class="name"><?php echo $helper->escapeHtml($product->getName()); ?></span>
     <span class="image_url"><?php echo $product->getImageUrl(); ?></span>
-    <span class="price"><?php echo $priceHelper->getFormattedPrice($product->getPrice()); ?></span>
-    <span class="price_currency_code"><?php echo $product->getCurrencyCode(); ?></span>
+    <span class="price"><?php echo $priceHelper->getFormattedPrice($convertedPrice); ?></span>
+    <span class="price_currency_code"><?php echo $defaultCurrencyCode; ?></span>
     <span class="availability"><?php echo $product->getAvailability(); ?></span>
     <?php foreach ($product->getCategories() as $category): ?>
         <span class="category"><?php echo $helper->escapeHtml($category); ?></span>
@@ -55,7 +59,7 @@ $dateHelper = Mage::helper('nosto_tagging/date');
         <span class="description"><?php echo $helper->escapeHtml($product->getFullDescription()); ?></span>
     <?php endif; ?>
     <?php if ($product->getListPrice()): ?>
-        <span class="list_price"><?php echo $priceHelper->getFormattedPrice($product->getListPrice()); ?></span>
+        <span class="list_price"><?php echo $priceHelper->getFormattedPrice($convertedListPrice); ?></span>
     <?php endif; ?>
     <?php if ($product->getBrand()): ?>
         <span class="brand"><?php echo $helper->escapeHtml($product->getBrand()); ?></span>
