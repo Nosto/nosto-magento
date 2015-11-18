@@ -68,6 +68,7 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
                 $meta->loadData($order);
                 $collection[] = $meta;
             }
+
             $this->export($collection);
         }
     }
