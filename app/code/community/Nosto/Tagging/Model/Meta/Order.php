@@ -190,12 +190,29 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
         try {
             $nostoCurrencyCode = new NostoCurrencyCode($store->getDefaultCurrencyCode());
         } catch (NostoInvalidArgumentException $e) {
+            Mage::log(
+                sprintf(
+                    'No default display or invalid currency code (%s) found for store %s',
+                    $store->getDefaultCurrencyCode(),
+                    $store->getId()
+                ),
+                Zend_Log::WARN,
+                'nostotagging.log'
+            );
             $nostoCurrencyCode = new NostoCurrencyCode('XXX'); // fallback to no currency
         }
 
         try {
             $nostoPrice = new NostoPrice($priceHelper->convertToDefaultCurrency($item->getPriceInclTax(), $store));
         } catch (NostoInvalidArgumentException $e) {
+            Mage::log(
+                sprintf(
+                    'No default price found for item %s in store %s',
+                    $item->getId(),
+                    $store->getId()
+                ),
+                'nostotagging.log'
+            );
             $nostoPrice = new NostoPrice(0);
         }
 

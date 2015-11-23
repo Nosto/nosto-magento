@@ -71,18 +71,11 @@ abstract class Nosto_Tagging_Model_Meta_LineItem extends Mage_Core_Model_Abstrac
      */
     public function __construct(array $args)
     {
-        if (!($args['unitPrice'] instanceof NostoPrice)) {
-            throw new InvalidArgumentException(sprintf('%s.unitPrice must be an instance of NostoPrice.', __CLASS__));
-        }
-        if (!($args['currency'] instanceof NostoCurrencyCode)) {
-            throw new InvalidArgumentException(sprintf('%s.currency must be an instance of NostoCurrencyCode.', __CLASS__));
-        }
-
-        $this->_productId = isset($args['productId']) ? $args['productId'] : false;
-        $this->_quantity = isset($args['quantity']) ? $args['quantity'] : false;
-        $this->_name = isset($args['name']) ? $args['name'] : false;
-        $this->_unitPrice = isset($args['unitPrice']) ? $args['unitPrice'] : false;
-        $this->_currency = isset($args['currency']) ? $args['currency'] : false;
+        $this->_productId = isset($args['productId']) ? $args['productId'] : '';
+        $this->_quantity = isset($args['quantity']) ? $args['quantity'] : '';
+        $this->_name = isset($args['name']) ? $args['name'] : '';
+        $this->_unitPrice = isset($args['unitPrice']) ? $args['unitPrice'] : '';
+        $this->_currency = isset($args['currency']) ? $args['currency'] : '';
     }
 
     /**

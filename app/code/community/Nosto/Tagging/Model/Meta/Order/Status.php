@@ -62,23 +62,9 @@ class Nosto_Tagging_Model_Meta_Order_Status extends Mage_Core_Model_Abstract imp
      */
     public function __construct(array $args)
     {
-        if (!isset($args['code']) || !is_string($args['code']) || empty($args['code'])) {
-            throw new InvalidArgumentException(sprintf('%s.code must be a non-empty string value.', __CLASS__));
-        }
-        if (isset($args['label'])) {
-			if (!is_string($args['label'])) {
-            	throw new InvalidArgumentException(sprintf('%s.label must be a string value.', __CLASS__));
-			}
-        }
-        if (isset($args['createdAt'])) {
-            if (!($args['createdAt'] instanceof NostoDate)) {
-                throw new InvalidArgumentException(sprintf('%s.createdAt must be an instance of NostoDate.', __CLASS__));
-            }
-        }
-
-        $this->_code = $args['code'];
-        $this->_label = !empty($args['label']) ? $args['label'] : $args['code'];
-		$this->_createdAt = isset($args['createdAt']) ? $args['createdAt'] : null;
+        $this->_code = !empty($args['code']) ? $args['code'] : '';
+        $this->_label = !empty($args['label']) ? $args['label'] : '';
+		$this->_createdAt = isset($args['createdAt']) ? $args['createdAt'] : '';
     }
 
     /**
