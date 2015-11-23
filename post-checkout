@@ -1,0 +1,10 @@
+#!/bin/bash
+
+echo "switch"
+PREVIOUS_HEAD=$1
+NEW_HEAD=$2
+BRANCH_SWITCH=$3
+
+if [ "$BRANCH_SWITCH" == "1" ]; then
+   `composer install --prefer-source`
+fi
