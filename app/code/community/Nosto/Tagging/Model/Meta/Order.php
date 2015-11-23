@@ -186,8 +186,35 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
     {
         $priceHelper = Mage::helper('nosto_tagging/price');
         $store = $order->getStore();
-        $convertedPrice = $priceHelper->convertToDefaultCurrency($item->getPriceInclTax(), $store);
-        $defaultCurrencyCode = $store->getDefaultCurrency()->getCode();
+
+        try {
+            $nostoCurrencyCode = new NostoCurrencyCode($store->getDefaultCurrencyCode());
+        } catch (NostoInvalidArgumentException $e) {
+            Mage::log(
+                sprintf(
+                    'No default display or invalid currency code (%s) found for store %s',
+                    $store->getDefaultCurrencyCode(),
+                    $store->getId()
+                ),
+                Zend_Log::WARN,
+                'nostotagging.log'
+            );
+            $nostoCurrencyCode = new NostoCurrencyCode('XXX'); // fallback to no currency
+        }
+
+        try {
+            $nostoPrice = new NostoPrice($priceHelper->convertToDefaultCurrency($item->getPriceInclTax(), $store));
+        } catch (NostoInvalidArgumentException $e) {
+            Mage::log(
+                sprintf(
+                    'No default price found for item %s in store %s',
+                    $item->getId(),
+                    $store->getId()
+                ),
+                'nostotagging.log'
+            );
+            $nostoPrice = new NostoPrice(0);
+        }
 
         return Mage::getModel(
             'nosto_tagging/meta_order_item',
@@ -195,8 +222,8 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
                 'productId' => (int)$this->buildItemProductId($item),
                 'quantity' => (int)$item->getQtyOrdered(),
                 'name' => $this->buildItemName($item),
-                'unitPrice' => new NostoPrice($convertedPrice),
-                'currency' => new NostoCurrencyCode($defaultCurrencyCode)
+                'unitPrice' => $nostoPrice,
+                'currency' => $nostoCurrencyCode
             )
         );
     }
