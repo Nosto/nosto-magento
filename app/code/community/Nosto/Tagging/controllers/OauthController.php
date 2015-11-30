@@ -83,7 +83,7 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
                 }
             } catch (NostoException $e) {
                 Mage::log(
-                    "\n" . $e->__toString(), Zend_Log::ERR, 'nostotagging.log'
+                    "\n" . $e->__toString(), Zend_Log::ERR, Nosto_Tagging_Model_Base::LOG_FILE_NAME
                 );
                 $params = array(
                     'message_type' => NostoMessage::TYPE_ERROR,
@@ -101,7 +101,7 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
             if (($desc = $request->getParam('error_description')) !== null) {
                 $logMsg .= ' - ' . $desc;
             }
-            Mage::log("\n" . $logMsg, Zend_Log::ERR, 'nostotagging.log');
+            Mage::log("\n" . $logMsg, Zend_Log::ERR, Nosto_Tagging_Model_Base::LOG_FILE_NAME);
             $this->_redirect(
                 'adminhtml/nosto/redirectProxy', array(
                     'message_type' => NostoMessage::TYPE_ERROR,
