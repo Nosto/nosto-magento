@@ -54,7 +54,9 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
                 ->getCollection()
                 ->addFieldToFilter('store_id', Mage::app()->getStore()->getId())
                 ->setPageSize($pageSize)
-                ->setCurPage($currentPage);
+                ->setCurPage($currentPage)
+                ->setOrder('created_at', Varien_Data_Collection::SORT_ORDER_DESC);
+
             if ($currentPage > $orders->getLastPageNumber()) {
                 $orders = array();
             }

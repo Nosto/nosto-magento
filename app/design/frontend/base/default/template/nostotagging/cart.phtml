@@ -36,8 +36,9 @@ $cart = $this->getCart();
 $helper = Mage::helper('nosto_tagging');
 $priceFormatter = Nosto::formatter('price');
 $priceFormat = new NostoPriceFormat(2, '.', '');
+$store = Mage::app()->getStore();
+$nostoPriceHelper = Mage::helper('nosto_tagging/price');
 ?>
-
 <!-- Nosto Cart Tagging -->
 <div class="nosto_cart" style="display:none">
     <?php foreach ($cart->getLineItems() as $item): ?>
@@ -45,8 +46,8 @@ $priceFormat = new NostoPriceFormat(2, '.', '');
         <span class="product_id"><?php echo $helper->escapeHtml($item->getProductId()); ?></span>
         <span class="quantity"><?php echo (int)$item->getQuantity(); ?></span>
         <span class="name"><?php echo $helper->escapeHtml($item->getName()); ?></span>
-        <span class="unit_price"><?php echo $priceFormatter->format($item->getUnitPrice(), $priceFormat); ?></span>
-        <span class="price_currency_code"><?php echo $item->getCurrency()->getCode(); ?></span>
+        <span class="unit_price"><?php echo $nostoPriceHelper->convertToDefaultCurrency($item->getUnitPrice()->getPrice(), $store); ?></span>
+        <span class="price_currency_code"><?php echo $store->getDefaultCurrency()->getCode(); ?></span>
     </div>
     <?php endforeach; ?>
 </div>
