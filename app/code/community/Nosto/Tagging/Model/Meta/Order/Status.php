@@ -58,27 +58,52 @@ class Nosto_Tagging_Model_Meta_Order_Status extends Mage_Core_Model_Abstract imp
      *
      * @param array $args the object data.
      *
-     * @throws InvalidArgumentException
      */
     public function __construct(array $args)
     {
-        if (!isset($args['code']) || !is_string($args['code']) || empty($args['code'])) {
-            throw new InvalidArgumentException(sprintf('%s.code must be a non-empty string value.', __CLASS__));
+        if (!isset($args['code']) || !is_string($args['code'])) {
+            Mage::log(
+                sprintf(
+                    '%s.code must be a non-empty string value',
+                    __CLASS__
+                ),
+                Zend_Log::WARN,
+                Nosto_Tagging_Model_Base::LOG_FILE_NAME
+            );
+            $args['code'] = '';
         }
-        if (isset($args['label'])) {
-			if (!is_string($args['label'])) {
-            	throw new InvalidArgumentException(sprintf('%s.label must be a string value.', __CLASS__));
-			}
+
+        if (!isset($args['label'])) {
+            Mage::log(
+                sprintf(
+                    '%s.label is not set',
+                    __CLASS__
+                ),
+                Zend_Log::WARN,
+                Nosto_Tagging_Model_Base::LOG_FILE_NAME
+            );
+            $args['label'] = $args['code'];
         }
+
         if (isset($args['createdAt'])) {
-            if (!is_string($args['createdAt']) || strtotime($args['createdAt']) === false) {
-                throw new InvalidArgumentException(sprintf('%s.createdAt must be a valid date.', __CLASS__));
+            if (empty($args['createdAt'])) {
+                Mage::log(
+                    sprintf(
+                        '%s.createdAt is not set',
+                        __CLASS__
+                    ),
+                    Zend_Log::WARN,
+                    Nosto_Tagging_Model_Base::LOG_FILE_NAME
+                );
+                $args['createdAt'] = '';
             }
+        } else {
+            $args['createdAt'] = '';
         }
 
         $this->_code = $args['code'];
-        $this->_label = !empty($args['label']) ? $args['label'] : $args['code'];
-		$this->_createdAt = isset($args['createdAt']) ? $args['createdAt'] : null;
+        $this->_label = $args['label'];
+        $this->_createdAt = $args['createdAt'];
     }
 
     /**

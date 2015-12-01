@@ -57,30 +57,46 @@ class Nosto_Tagging_Model_Meta_Order_Buyer extends Mage_Core_Model_Abstract impl
      * Sets up this Value Object.
      *
      * @param array $args the object data.
-     *
-     * @throws InvalidArgumentException
      */
     public function __construct(array $args)
     {
-        if (isset($args['firstName'])) {
-            if (!is_string($args['firstName'])) {
-                throw new InvalidArgumentException(sprintf('%s.firstName must be a string value.', __CLASS__));
-            }
+        if (!isset($args['firstName']) || !is_string($args['firstName'])) {
+            Mage::log(
+                sprintf(
+                    '%s.firstName must be a string value',
+                    __CLASS__
+                ),
+                Zend_Log::WARN,
+                Nosto_Tagging_Model_Base::LOG_FILE_NAME
+            );
+            $args['firstName'] = '';
         }
-        if (isset($args['lastName'])) {
-            if (!is_string($args['lastName'])) {
-                throw new InvalidArgumentException(sprintf('%s.lastName must be a string value.', __CLASS__));
-            }
+        if (!isset($args['lastName']) || !is_string($args['lastName'])) {
+            Mage::log(
+                sprintf(
+                    '%s.lastName must be a string value',
+                    __CLASS__
+                ),
+                Zend_Log::WARN,
+                Nosto_Tagging_Model_Base::LOG_FILE_NAME
+            );
+            $args['lastName'] = '';
         }
-        if (isset($args['email'])) {
-            if (!is_string($args['email'])) {
-                throw new InvalidArgumentException(sprintf('%s.email must be a string value.', __CLASS__));
-            }
+        if (!isset($args['email']) || !is_string($args['email'])) {
+            Mage::log(
+                sprintf(
+                    '%s.email must be a string value',
+                    __CLASS__
+                ),
+                Zend_Log::WARN,
+                Nosto_Tagging_Model_Base::LOG_FILE_NAME
+            );
+            $args['email'] = '';
         }
 
-        $this->_firstName = !empty($args['firstName']) ? $args['firstName'] : null;
-        $this->_lastName = !empty($args['lastName']) ? $args['lastName'] : null;
-        $this->_email = !empty($args['email']) ? $args['email'] : null;
+        $this->_firstName = $args['firstName'];
+        $this->_lastName = $args['lastName'];
+        $this->_email = $args['email'];
     }
 
     /**

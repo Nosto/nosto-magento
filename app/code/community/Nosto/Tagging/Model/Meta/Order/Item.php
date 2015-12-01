@@ -68,25 +68,63 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
      * Sets up this Value Object.
      *
      * @param array $args the object data.
-     *
-     * @throws InvalidArgumentException
      */
     public function __construct(array $args)
     {
         if (!isset($args['productId']) || !is_int($args['productId'])) {
-            throw new InvalidArgumentException(sprintf('%s.productId must be a integer value.', __CLASS__));
+            Mage::log(
+                sprintf(
+                    '%s.productId must be a integer value',
+                    __CLASS__
+                ),
+                Zend_Log::WARN,
+                Nosto_Tagging_Model_Base::LOG_FILE_NAME
+            );
+            $args['productId'] = '';
         }
         if (!isset($args['quantity']) || !is_int($args['quantity']) || !($args['quantity'] > 0)) {
-            throw new InvalidArgumentException(sprintf('%s.quantity must be a integer value above zero.', __CLASS__));
+            Mage::log(
+                sprintf(
+                    '%s.quantity must be a integer value, got %s.',
+                    __CLASS__
+                ),
+                Zend_Log::WARN,
+                Nosto_Tagging_Model_Base::LOG_FILE_NAME
+            );
+            $args['quantity'] = '';
         }
         if (!isset($args['name']) || !is_string($args['name']) || empty($args['name'])) {
-            throw new InvalidArgumentException(sprintf('%s.name must be a non-empty string value.', __CLASS__));
+            Mage::log(
+                sprintf(
+                    '%s.name must be a non-empty string value',
+                    __CLASS__
+                ),
+                Zend_Log::WARN,
+                Nosto_Tagging_Model_Base::LOG_FILE_NAME
+            );
+            $args['name'] = '';
         }
         if (!isset($args['unitPrice']) || !is_numeric($args['unitPrice'])) {
-            throw new InvalidArgumentException(sprintf('%s.unitPrice must be a numeric value.', __CLASS__));
+            Mage::log(
+                sprintf(
+                    '%s.unitPrice must be a numeric value',
+                    __CLASS__
+                ),
+                Zend_Log::WARN,
+                Nosto_Tagging_Model_Base::LOG_FILE_NAME
+            );
+            $args['unitPrice'] = '';
         }
         if (!isset($args['currencyCode']) || !is_string($args['currencyCode']) || empty($args['currencyCode'])) {
-            throw new InvalidArgumentException(sprintf('%s.currencyCode must be a non-empty string value.', __CLASS__));
+            Mage::log(
+                sprintf(
+                    '%s.currencyCode must be a numeric value',
+                    __CLASS__
+                ),
+                Zend_Log::WARN,
+                Nosto_Tagging_Model_Base::LOG_FILE_NAME
+            );
+            $args['currencyCode'] = '';
         }
 
         $this->_productId = $args['productId'];
