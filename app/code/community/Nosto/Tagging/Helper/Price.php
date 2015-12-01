@@ -122,6 +122,10 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
      */
     public function convertToDefaultCurrency($price, Mage_Core_Model_Store $store)
     {
-        return Mage::helper('directory')->currencyConvert($price, $store->getBaseCurrency()->getCode(), $store->getDefaultCurrency()->getCode());
+        return Mage::helper('directory')->currencyConvert(
+            $price,
+            $store->getBaseCurrency()->getCode(),
+            $store->getDefaultCurrency()->getCode()
+        );
     }
 }

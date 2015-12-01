@@ -154,16 +154,18 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         $this->_productId = $product->getId();
         $this->_name = $product->getName();
         $this->_imageUrl = $this->buildImageUrl($product, $store);
-        $price = $priceHelper->getProductFinalPriceInclTax($product);
+
+        $price = $priceHelper->convertToDefaultCurrency($priceHelper->getProductFinalPriceInclTax($product), $store);
         $this->_price = new NostoPrice($price);
-        $listPrice = $priceHelper->getProductPriceInclTax($product);
+        $listPrice = $priceHelper->convertToDefaultCurrency($priceHelper->getProductPriceInclTax($product), $store);
         $this->_listPrice = new NostoPrice($listPrice);
-        $this->_currency = new NostoCurrencyCode($store->getBaseCurrencyCode());
+        $this->_currency = new NostoCurrencyCode($store->getDefaultCurrencyCode());
         $this->_availability = new NostoProductAvailability(
             $product->isAvailable()
                 ? NostoProductAvailability::IN_STOCK
                 : NostoProductAvailability::OUT_OF_STOCK
         );
+
         $this->_categories = $this->buildCategories($product);
 
         // Optional properties.
