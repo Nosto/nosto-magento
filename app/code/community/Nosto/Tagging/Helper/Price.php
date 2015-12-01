@@ -127,4 +127,30 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
 
         return $price;
     }
+
+    /**
+     * @param float $price
+     * @param Mage_Core_Model_Store $store
+     * @return float
+     */
+    public function convertToDefaultCurrency($price, Mage_Core_Model_Store $store)
+    {
+        if (!is_numeric($price)) {
+            Mage::log(
+                sprintf(
+                    'price must be a numeric value in %s, got %s.',
+                    __CLASS__,
+                    $price
+                ),
+                Zend_Log::WARN,
+                Nosto_Tagging_Model_Base::LOG_FILE_NAME
+            );
+            $price = 0;
+        }
+        return Mage::helper('directory')->currencyConvert(
+            $price,
+            $store->getBaseCurrency()->getCode(),
+            $store->getDefaultCurrency()->getCode()
+        );
+    }
 }
