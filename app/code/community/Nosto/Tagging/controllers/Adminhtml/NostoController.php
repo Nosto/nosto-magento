@@ -213,7 +213,9 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                     );
                 }
             } catch (NostoException $e) {
-                Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
+                Mage::log(
+                    "\n" . $e->__toString(), Zend_Log::ERR, Nosto_Tagging_Model_Base::LOG_FILE_NAME
+                );
             }
         }
 

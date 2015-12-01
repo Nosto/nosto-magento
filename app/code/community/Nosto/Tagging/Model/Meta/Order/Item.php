@@ -36,9 +36,9 @@
  */
 class Nosto_Tagging_Model_Meta_Order_Item extends Nosto_Tagging_Model_Meta_LineItem implements NostoOrderItemInterface
 {
-	/**
-	 * @inheritdoc
-	 */
+    /**
+     * @inheritdoc
+     */
     protected function _construct()
     {
         $this->_init('nosto_tagging/meta_order_item');

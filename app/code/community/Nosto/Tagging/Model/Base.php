@@ -34,6 +34,12 @@
  */
 class Nosto_Tagging_Model_Base extends Mage_Core_Model_Abstract
 {
+
+    /**
+     * Log file for plugin related messages.
+     */
+    const LOG_FILE_NAME = 'nostotagging.log';
+
     /**
      * Returns a protected/private property value by invoking it's public getter.
      *

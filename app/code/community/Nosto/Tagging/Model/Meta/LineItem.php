@@ -72,19 +72,61 @@ abstract class Nosto_Tagging_Model_Meta_LineItem extends Mage_Core_Model_Abstrac
     public function __construct(array $args)
     {
         if (!isset($args['productId']) || !is_int($args['productId'])) {
-            throw new InvalidArgumentException(sprintf('%s.productId must be a integer value.', __CLASS__));
+            Mage::log(
+                sprintf(
+                    '%s.productId must be a integer value, got %s.',
+                    __CLASS__,
+                    $args['productId']
+                ),
+                Zend_Log::WARN,
+                Nosto_Tagging_Model_Base::LOG_FILE_NAME
+            );
         }
         if (!isset($args['quantity']) || !is_int($args['quantity']) || !($args['quantity'] > 0)) {
-            throw new InvalidArgumentException(sprintf('%s.quantity must be a integer value above zero.', __CLASS__));
+            Mage::log(
+                sprintf(
+                    '%s.quantity must be a integer value, got %s.',
+                    __CLASS__,
+                    $args['quantity']
+                ),
+                Zend_Log::WARN,
+                Nosto_Tagging_Model_Base::LOG_FILE_NAME
+            );
         }
         if (!isset($args['name']) || !is_string($args['name']) || empty($args['name'])) {
-            throw new InvalidArgumentException(sprintf('%s.name must be a non-empty string value.', __CLASS__));
+            Mage::log(
+                sprintf(
+                    '%s.name must be a non-empty string value, got %s.',
+                    __CLASS__,
+                    $args['name']
+                ),
+                Zend_Log::WARN,
+                Nosto_Tagging_Model_Base::LOG_FILE_NAME
+            );
         }
+
         if (!($args['unitPrice'] instanceof NostoPrice)) {
-            throw new InvalidArgumentException(sprintf('%s.unitPrice must be an instance of NostoPrice.', __CLASS__));
+            Mage::log(
+                sprintf(
+                    '%s.unitPrice must be an instance of NostoPrice, got %s',
+                    __CLASS__,
+                    get_class($args['unitPrice'])
+                ),
+                Zend_Log::WARN,
+                Nosto_Tagging_Model_Base::LOG_FILE_NAME
+            );
         }
         if (!($args['currency'] instanceof NostoCurrencyCode)) {
-            throw new InvalidArgumentException(sprintf('%s.currency must be an instance of NostoCurrencyCode.', __CLASS__));
+            Mage::log(
+                sprintf(
+                    '%s.currencyCode must be an instance of NostoCurrencyCode, got %s.',
+                    __CLASS__,
+                    get_class($args['currencyCode'])
+                ),
+                Zend_Log::WARN,
+                Nosto_Tagging_Model_Base::LOG_FILE_NAME
+            );
+
         }
 
         $this->_productId = $args['productId'];
