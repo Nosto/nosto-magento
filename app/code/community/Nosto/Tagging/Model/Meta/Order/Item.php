@@ -74,7 +74,7 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
         if (!isset($args['productId']) || !is_int($args['productId'])) {
             Mage::log(
                 sprintf(
-                    '%s.productId must be a integer value',
+                    '%s.productId must be an integer value',
                     __CLASS__
                 ),
                 Zend_Log::WARN,
@@ -85,7 +85,7 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
         if (!isset($args['quantity']) || !is_int($args['quantity']) || !($args['quantity'] > 0)) {
             Mage::log(
                 sprintf(
-                    '%s.quantity must be a integer value, got %s.',
+                    '%s.quantity must be an integer value',
                     __CLASS__
                 ),
                 Zend_Log::WARN,
