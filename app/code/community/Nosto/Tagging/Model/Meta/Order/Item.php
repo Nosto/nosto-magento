@@ -74,64 +74,64 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
         if (!isset($args['productId']) || !is_int($args['productId'])) {
             Mage::log(
                 sprintf(
-                    '%s.productId must be a integer value, got %s.',
-                    __CLASS__,
-                    $args['productId']
+                    '%s.productId must be a integer value',
+                    __CLASS__
                 ),
                 Zend_Log::WARN,
                 Nosto_Tagging_Model_Base::LOG_FILE_NAME
             );
+            $args['productId'] = '';
         }
         if (!isset($args['quantity']) || !is_int($args['quantity']) || !($args['quantity'] > 0)) {
             Mage::log(
                 sprintf(
                     '%s.quantity must be a integer value, got %s.',
-                    __CLASS__,
-                    $args['quantity']
+                    __CLASS__
                 ),
                 Zend_Log::WARN,
                 Nosto_Tagging_Model_Base::LOG_FILE_NAME
             );
+            $args['quantity'] = '';
         }
         if (!isset($args['name']) || !is_string($args['name']) || empty($args['name'])) {
             Mage::log(
                 sprintf(
-                    '%s.name must be a non-empty string value, got %s.',
-                    __CLASS__,
-                    $args['name']
+                    '%s.name must be a non-empty string value',
+                    __CLASS__
                 ),
                 Zend_Log::WARN,
                 Nosto_Tagging_Model_Base::LOG_FILE_NAME
             );
+            $args['name'] = '';
         }
         if (!isset($args['unitPrice']) || !is_numeric($args['unitPrice'])) {
             Mage::log(
                 sprintf(
-                    '%s.unitPrice must be a numeric value, got %s',
-                    __CLASS__,
-                    $args['unitPrice']
+                    '%s.unitPrice must be a numeric value',
+                    __CLASS__
                 ),
                 Zend_Log::WARN,
                 Nosto_Tagging_Model_Base::LOG_FILE_NAME
             );
+            $args['unitPrice'] = '';
         }
         if (!isset($args['currencyCode']) || !is_string($args['currencyCode']) || empty($args['currencyCode'])) {
             Mage::log(
                 sprintf(
-                    '%s.currencyCode must be a numeric value, got %s.',
-                    __CLASS__,
-                    $args['currencyCode']
+                    '%s.currencyCode must be a numeric value',
+                    __CLASS__
                 ),
                 Zend_Log::WARN,
                 Nosto_Tagging_Model_Base::LOG_FILE_NAME
             );
+            $args['currencyCode'] = '';
         }
 
-        $this->_productId = !empty($args['productId']) ? $args['productId'] : '';
-        $this->_quantity = !empty($args['quantity']) ? $args['quantity'] : '';
-        $this->_name = !empty($args['name']) ? $args['name'] : '';
-        $this->_unitPrice = !empty($args['unitPrice']) ? $args['unitPrice'] : '';
-        $this->_currencyCode = !empty($args['currencyCode']) ? $args['currencyCode'] : '';
+        $this->_productId = $args['productId'];
+        $this->_quantity = $args['quantity'];
+        $this->_name = $args['name'];
+        $this->_unitPrice = $args['unitPrice'];
+        $this->_currencyCode = $args['currencyCode'];
     }
 
     /**

@@ -64,18 +64,46 @@ class Nosto_Tagging_Model_Meta_Order_Status extends Mage_Core_Model_Abstract imp
         if (!isset($args['code']) || !is_string($args['code'])) {
             Mage::log(
                 sprintf(
-                    '%s.Code must be a non-empty string value, got %s',
-                    __CLASS__,
-                    $args['code']
+                    '%s.code must be a non-empty string value',
+                    __CLASS__
                 ),
                 Zend_Log::WARN,
                 Nosto_Tagging_Model_Base::LOG_FILE_NAME
             );
+            $args['code'] = '';
         }
 
-        $this->_code = !empty($args['code']) ? $args['code'] : '';
-        $this->_label = !empty($args['label']) ? $args['label'] : $this->_code;
-        $this->_createdAt = isset($args['createdAt']) ? $args['createdAt'] : '';
+        if (!isset($args['label'])) {
+            Mage::log(
+                sprintf(
+                    '%s.label is not set',
+                    __CLASS__
+                ),
+                Zend_Log::WARN,
+                Nosto_Tagging_Model_Base::LOG_FILE_NAME
+            );
+            $args['label'] = $args['code'];
+        }
+
+        if (isset($args['createdAt'])) {
+            if (empty($args['createdAt'])) {
+                Mage::log(
+                    sprintf(
+                        '%s.createdAt is not set',
+                        __CLASS__
+                    ),
+                    Zend_Log::WARN,
+                    Nosto_Tagging_Model_Base::LOG_FILE_NAME
+                );
+                $args['createdAt'] = '';
+            }
+        } else {
+            $args['createdAt'] = '';
+        }
+
+        $this->_code = $args['code'];
+        $this->_label = $args['label'];
+        $this->_createdAt = $args['createdAt'];
     }
 
     /**
