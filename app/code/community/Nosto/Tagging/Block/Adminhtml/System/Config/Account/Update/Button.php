@@ -18,37 +18,47 @@
  * versions in the future. If you wish to customize Magento for your
  * needs please refer to http://www.magentocommerce.com for more information.
  *
- * @category  Nosto
- * @package   Nosto_Tagging
+ * @category  design
+ * @package   adminhtml_default_default
  * @author    Nosto Solutions Ltd <magento@nosto.com>
  * @copyright Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-require_once Mage::getBaseDir('lib') . '/nosto/php-sdk/src/config.inc.php';
-
 /**
- * Helper class for OAuth2 related tasks.
+ * Nosto "update account" button block.
+ *
+ * Adds a button to update the Nosto account to the system config page.
  *
  * @category Nosto
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Helper_Oauth extends Mage_Core_Helper_Abstract
+class Nosto_Tagging_Block_Adminhtml_System_Config_Account_Update_Button extends Nosto_Tagging_Block_Adminhtml_System_Config_Ajax_Button
 {
     /**
-     * Returns the meta data model needed for using the OAuth2 client included
-     * in the Nosto SDk.
-     *
-     * @param Mage_Core_Model_Store $store the store to get the oauth meta data for..
-     *
-     * @return Nosto_Tagging_Model_Meta_Oauth the meta data instance.
+     * @inheritdoc
      */
-    public function getMetaData(Mage_Core_Model_Store $store)
+    public function getButtonId()
     {
-        /** @var Nosto_Tagging_Model_Meta_Oauth $meta */
-        $meta = Mage::getModel('nosto_tagging/meta_oauth');
-        $meta->loadData($store);
-        return $meta;
+        return 'nostotagging_update_account_button';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getButtonUrl()
+    {
+        /** @var Mage_Adminhtml_Helper_Data $helper */
+        $helper = Mage::helper('adminhtml');
+        return $helper->getUrl('adminhtml/nosto/ajaxUpdateAccount', $this->getScopeParams());
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getButtonOnClick()
+    {
+        return 'updateAccount';
     }
 }

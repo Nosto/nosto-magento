@@ -57,7 +57,7 @@ class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
     protected function _toHtml()
     {
         if (!Mage::helper('nosto_tagging')->isModuleEnabled()
-            || !Mage::helper('nosto_tagging/account')->existsAndIsConnected()
+            || !Mage::helper('nosto_tagging/account')->exists()
         ) {
             return '';
         }
@@ -75,7 +75,11 @@ class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
         if ($this->_product === null) {
             /** @var Nosto_Tagging_Model_Meta_Product $model */
             $model = Mage::getModel('nosto_tagging/meta_product');
-            $model->loadData($this->getProduct());
+            try {
+                $model->loadData($this->getProduct());
+            } catch (NostoException $e) {
+                Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
+            }
             $this->_product = $model;
         }
         return $this->_product;
@@ -95,5 +99,20 @@ class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
         }
 
         return $this->_currentCategory;
+    }
+
+    /**
+     * Checks if the product price variations should be included in the tagging.
+     *
+     * This is determined by the "multi-currency method" system setting that's
+     * configured for the extension in the backend.
+     *
+     * @return bool if the product variations should be used.
+     */
+    public function inclPriceVariations()
+    {
+        /** @var Nosto_Tagging_Helper_Data $helper */
+        $helper = Mage::helper('nosto_tagging');
+        return $helper->isMultiCurrencyMethodPriceVariation();
     }
 }

@@ -32,6 +32,18 @@
             <title>Nosto</title>
             <sort_order>500</sort_order>
             <action>adminhtml/nosto/index</action>
+            <children>
+                <account>
+                    <title>Account Settings</title>
+                    <sort_order>100</sort_order>
+                    <action>adminhtml/nosto/index</action>
+                </account>
+                <advanced translate="title" module="catalog">
+                    <title>Advanced Settings</title>
+                    <sort_order>200</sort_order>
+                    <action>adminhtml/system_config/edit/section/nosto_tagging</action>
+                </advanced>
+            </children>
         </nosto>
     </menu>
     <acl>
@@ -49,9 +61,19 @@
                             </config>
                         </children>
                     </system>
-                    <nosto>
-                        <title translate="title">Nosto</title>
+                    <nosto translate="title">
+                        <title>Nosto</title>
                         <sort_order>500</sort_order>
+                        <children>
+                            <account translate="title">
+                                <title>Account Settings</title>
+                                <sort_order>100</sort_order>
+                            </account>
+                            <advanced translate="title">
+                                <title>Advanced Settings</title>
+                                <sort_order>200</sort_order>
+                            </advanced>
+                        </children>
                     </nosto>
                 </children>
             </admin>

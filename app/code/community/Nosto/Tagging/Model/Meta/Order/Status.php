@@ -26,7 +26,7 @@
  */
 
 /**
- * Meta data class which holds information about the order status.
+ * Data Transfer object representing the order status.
  * This is used during the order confirmation API request and the order history
  * export.
  *
@@ -47,7 +47,7 @@ class Nosto_Tagging_Model_Meta_Order_Status extends Mage_Core_Model_Abstract imp
     protected $_label;
 
     /**
-     * @var string the order status created at date.
+     * @var NostoDate|null the order status created at date.
      */
     protected $_createdAt;
 
@@ -86,7 +86,7 @@ class Nosto_Tagging_Model_Meta_Order_Status extends Mage_Core_Model_Abstract imp
         }
 
         if (isset($args['createdAt'])) {
-            if (empty($args['createdAt'])) {
+            if ($args['createdAt'] instanceof NostoDate === false) {
                 Mage::log(
                     sprintf(
                         '%s.createdAt is not set',
@@ -135,9 +135,9 @@ class Nosto_Tagging_Model_Meta_Order_Status extends Mage_Core_Model_Abstract imp
     }
 
     /**
-     * Returns the status created date.
+     * Returns the date this order status was created.
      *
-     * @return string the created date or null if not set.
+     * @return NostoDate|null the date or null if not set.
      */
     public function getCreatedAt()
     {

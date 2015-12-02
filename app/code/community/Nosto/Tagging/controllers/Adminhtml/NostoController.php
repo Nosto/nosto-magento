@@ -25,7 +25,7 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-require_once Mage::getBaseDir('lib') . '/nosto/php-sdk/src/config.inc.php';
+require_once Mage::getBaseDir('lib') . '/nosto/php-sdk/autoload.php';
 
 /**
  * Nosto admin controller.
@@ -104,9 +104,11 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
 
         $store = $this->getSelectedStore();
         if ($this->getRequest()->isPost() && $store !== null) {
-            $client = new NostoOAuthClient(
-                Mage::helper('nosto_tagging/oauth')->getMetaData($store)
-            );
+            /** @var Nosto_Tagging_Model_Meta_Oauth $meta */
+            $meta = Mage::getModel('nosto_tagging/meta_oauth');
+            $meta->loadData($store);
+            $client = new NostoOAuthClient($meta);
+
             $responseBody = array(
                 'success' => true,
                 'redirect_url' => $client->getAuthorizationUrl(),
@@ -133,6 +135,49 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
     }
 
     /**
+     * Redirects user to the Nosto OAuth 2 authorization server to fetch missing
+     * scopes (API tokens) for an account.
+     */
+    public function syncAccountAction()
+    {
+        $this->getResponse()->setHeader('Content-type', 'application/json');
+
+        /** @var Nosto_Tagging_Helper_Account $accountHelper */
+        $accountHelper = Mage::helper('nosto_tagging/account');
+
+        $store = $this->getSelectedStore();
+        $account = !is_null($store) ? $accountHelper->find($store) : null;
+
+        if ($this->getRequest()->isPost() && !is_null($store) && !is_null($account)) {
+            /** @var Nosto_Tagging_Model_Meta_Oauth $meta */
+            $meta = Mage::getModel('nosto_tagging/meta_oauth');
+            $meta->loadData($store, $account);
+            $client = new NostoOAuthClient($meta);
+
+            $responseBody = array(
+                'success' => true,
+                'redirect_url' => $client->getAuthorizationUrl(),
+            );
+        }
+
+        if (!isset($responseBody)) {
+            $responseBody = array(
+                'success' => false,
+                'redirect_url' => $accountHelper->getIframeUrl(
+                        $store,
+                        $account,
+                        array(
+                            'message_type' => NostoMessage::TYPE_ERROR,
+                            'message_code' => NostoMessage::CODE_ACCOUNT_CONNECT,
+                        )
+                    )
+            );
+        }
+
+        $this->getResponse()->setBody(json_encode($responseBody));
+    }
+
+    /**
      * Creates a new Nosto account for the current scope using the Nosto API.
      */
     public function createAccountAction()
@@ -150,8 +195,11 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                 if (Zend_Validate::is($email, 'EmailAddress')) {
                     $meta->getOwner()->setEmail($email);
                 }
-                $account = NostoAccount::create($meta);
+                $service = new NostoServiceAccount();
+                $account = $service->create($meta);
                 if ($accountHelper->save($account, $store)) {
+                    $accountHelper
+                        ->updateCurrencyExchangeRates($account, $store);
                     $responseBody = array(
                         'success' => true,
                         'redirect_url' => $accountHelper->getIframeUrl(
@@ -227,6 +275,125 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                         'message_code' => NostoMessage::CODE_ACCOUNT_DELETE,
                     )
                 )
+            );
+        }
+
+        $this->getResponse()->setBody(json_encode($responseBody));
+    }
+
+    /**
+     * Ajax action for updating the currency exchange rates.
+     *
+     * Used from the extension system configuration page.
+     * Checks if any stores support multi currency before trying to update the
+     * exchange rate for each store/account.
+     */
+    public function ajaxUpdateExchangeRatesAction()
+    {
+        $this->getResponse()->setHeader('Content-type', 'application/json');
+        $responseBody = array('success' => true, 'data' => array());
+
+        /** @var Nosto_Tagging_Helper_Data $helper */
+        $helper = Mage::helper('nosto_tagging');
+
+        /** @var Nosto_Tagging_Helper_Account $accountHelper */
+        $accountHelper = Mage::helper('nosto_tagging/account');
+
+        /** @var Mage_Core_Model_Store[] $stores */
+        $storeId = $this->getRequest()->getParam('store');
+        if (!empty($storeId)) {
+            $stores = array(Mage::app()->getStore($storeId));
+        } else {
+            $stores = Mage::app()->getStores();
+        }
+
+        $countStores = count($stores);
+        $countStoresWithoutMultiCurrency = 0;
+        foreach ($stores as $store) {
+            if (!$helper->getStoreHasMultiCurrency($store)) {
+                $countStoresWithoutMultiCurrency++;
+                continue;
+            }
+            $account = $accountHelper->find($store);
+            if (is_null($account)) {
+                continue;
+            }
+            if ($accountHelper->updateCurrencyExchangeRates($account, $store)) {
+                $responseBody['data'][] = array(
+                    'type' => 'success',
+                    'message' => $helper->__(sprintf("The exchange rates have been updated for the %s store.", $store->getName()))
+                );
+            } else {
+                $responseBody['data'][] = array(
+                    'type' => 'error',
+                    'message' => $helper->__(sprintf("There was an error updating the exchange rates for the %s store.", $store->getName()))
+                );
+            }
+        }
+
+        if ($countStores === $countStoresWithoutMultiCurrency) {
+            $responseBody['data'][] = array(
+                'type' => 'error',
+                'message' => $helper->__("Failed to find any stores in the current scope with other currencies than the base currency configured.")
+            );
+        } elseif (empty($responseBody['data'])) {
+            $responseBody['data'][] = array(
+                'type' => 'error',
+                'message' => $helper->__("Nosto has not been installed in any of the stores in the current scope. Please make sure you have installed Nosto to at least one of your stores in the scope.")
+            );
+        }
+
+        $this->getResponse()->setBody(json_encode($responseBody));
+    }
+
+    /**
+     * Ajax action for updating a Nosto account.
+     *
+     * Used from the extension system configuration page.
+     * Checks the scope of the update on a store/website/global level.
+     */
+    public function ajaxUpdateAccountAction()
+    {
+        $this->getResponse()->setHeader('Content-type', 'application/json');
+        $responseBody = array('success' => true, 'data' => array());
+
+        /** @var Mage_Core_Model_Store[] $stores */
+        $storeId = $this->getRequest()->getParam('store');
+        if (!empty($storeId)) {
+            $stores = array(Mage::app()->getStore($storeId));
+        } else {
+            $stores = Mage::app()->getStores();
+        }
+
+        /** @var Nosto_Tagging_Helper_Data $helper */
+        $helper = Mage::helper('nosto_tagging');
+
+        /** @var Nosto_Tagging_Helper_Account $accountHelper */
+        $accountHelper = Mage::helper('nosto_tagging/account');
+
+        foreach ($stores as $store) {
+            $account = $accountHelper->find($store);
+            if (is_null($account)) {
+                continue;
+            }
+
+            if ($accountHelper->updateAccount($account, $store)) {
+                $responseBody['data'][] = array(
+                    'type' => 'success',
+                    'message' => $helper->__(sprintf("The account has been updated for the %s store.", $store->getName()))
+                );
+            } else {
+                $responseBody['data'][] = array(
+                    'type' => 'error',
+                    'message' => $helper->__(sprintf("There was an error updating the account for the %s store.", $store->getName()))
+                );
+            }
+        }
+
+        if (empty($responseBody['data'])) {
+            $responseBody['data'][] = array(
+                'type' => 'error',
+                'message' => $helper->__("Nosto has not been installed in any of the stores in the current scope. Please make sure you have installed Nosto to at least one of your stores in the scope.")
             );
         }
 

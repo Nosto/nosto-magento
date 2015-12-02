@@ -25,7 +25,7 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-require_once Mage::getBaseDir('lib') . '/nosto/php-sdk/src/config.inc.php';
+require_once Mage::getBaseDir('lib') . '/nosto/php-sdk/autoload.php';
 
 /**
  * Event observer model.
@@ -85,10 +85,9 @@ class Nosto_Tagging_Model_Observer
                 /** @var NostoAccount $account */
                 $account = Mage::helper('nosto_tagging/account')
                     ->find($store);
-                if ($account === null || !$account->isConnectedToNosto()) {
+                if (is_null($account)) {
                     continue;
                 }
-
                 // Load the product model for this particular store view.
                 $product = Mage::getModel('catalog/product')
                     ->setStoreId($store->getId())
@@ -102,19 +101,13 @@ class Nosto_Tagging_Model_Observer
 
                 /** @var Nosto_Tagging_Model_Meta_Product $model */
                 $model = Mage::getModel('nosto_tagging/meta_product');
-                $model->loadData($product, $store);
-
-                // Only send product update if we have all required
-                // data for the product model.
-                $validator = new NostoValidator($model);
-                if ($validator->validate()) {
-                    try {
-                        $op = new NostoOperationProduct($account);
-                        $op->addProduct($model);
-                        $op->upsert();
-                    } catch (NostoException $e) {
-                        Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
-                    }
+                try {
+                    $model->loadData($product, $store);
+                    $service = new NostoServiceProduct($account);
+                    $service->addProduct($model);
+                    $service->upsert();
+                } catch (NostoException $e) {
+                    Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
                 }
             }
         }
@@ -142,8 +135,7 @@ class Nosto_Tagging_Model_Observer
                 /** @var NostoAccount $account */
                 $account = Mage::helper('nosto_tagging/account')
                     ->find($store);
-
-                if ($account === null || !$account->isConnectedToNosto()) {
+                if (is_null($account)) {
                     continue;
                 }
 
@@ -152,9 +144,9 @@ class Nosto_Tagging_Model_Observer
                 $model->setProductId($product->getId());
 
                 try {
-                    $op = new NostoOperationProduct($account);
-                    $op->addProduct($model);
-                    $op->delete();
+                    $service = new NostoServiceProduct($account);
+                    $service->addProduct($model);
+                    $service->delete();
                 } catch (NostoException $e) {
                     Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
                 }
@@ -165,7 +157,8 @@ class Nosto_Tagging_Model_Observer
     }
 
     /**
-     * Sends an order confirmation API request to Nosto if the order is completed.
+     * Sends an order confirmation API request to Nosto if the order is
+     * completed.
      *
      * Event 'sales_order_save_commit_after'.
      *
@@ -187,16 +180,55 @@ class Nosto_Tagging_Model_Observer
                     ->find($mageOrder->getStore());
                 $customerId = Mage::helper('nosto_tagging/customer')
                     ->getNostoId($mageOrder);
-                if ($account !== null && $account->isConnectedToNosto()) {
-                    /** @var Nosto_Tagging_Model_Service_Order $service */
-                    $service = Mage::getModel('nosto_tagging/service_order');
-                    $service->confirm($order, $account, $customerId);
+                if (!is_null($account)) {
+                    $service = new NostoServiceOrder($account);
+					$service->confirm($order, $customerId);
                 }
             } catch (NostoException $e) {
-                Mage::log("\n" . $e->__toString(), Zend_Log::ERR, 'nostotagging.log');
+                Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
             }
         }
 
         return $this;
+    }
+
+    /**
+     * Cron job for syncing currency exchange rates to Nosto.
+     * Only stores that have the scheduled update enabled, have more currencies
+     * than the default one defined and has a Nosto account are synced.
+     *
+     * @throws Mage_Cron_Exception
+     */
+    public function scheduledCurrencyExchangeRateUpdate()
+    {
+        /** @var Nosto_Tagging_Helper_Data $helper */
+        $helper = Mage::helper('nosto_tagging');
+        if ($helper->isModuleEnabled()) {
+            /** @var Nosto_Tagging_Helper_Account $accountHelper */
+            $accountHelper = Mage::helper('nosto_tagging/account');
+            $error = false;
+            foreach (Mage::app()->getStores() as $store) {
+                /** @var Mage_Core_Model_Store $store */
+                if (!$helper->isScheduledCurrencyExchangeRateUpdateEnabled($store)) {
+                    continue;
+                }
+                if (!$helper->getStoreHasMultiCurrency($store)) {
+                    continue;
+                }
+                $account = $accountHelper->find($store);
+                if (is_null($account)) {
+                    continue;
+                }
+                if (!$accountHelper->updateCurrencyExchangeRates($account, $store)) {
+                    $error = true;
+                }
+            }
+            if ($error) {
+                throw Mage::exception(
+                    'Mage_Cron',
+                    'There was an error updating the exchange rates. More info in "var/log/nostotagging.log".'
+                );
+            }
+        }
     }
 }

@@ -26,7 +26,7 @@
  */
 
 /**
- * Meta data class which holds information about a product.
+ * Data Transfer object representing a product.
  * This is used during the order confirmation API request and the product
  * history export.
  *
@@ -34,18 +34,8 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implements NostoProductInterface, NostoValidatableInterface
+class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implements NostoProductInterface
 {
-    /**
-     * Product "in stock" tagging string.
-     */
-    const PRODUCT_IN_STOCK = 'InStock';
-
-    /**
-     * Product "out of stock" tagging string.
-     */
-    const PRODUCT_OUT_OF_STOCK = 'OutOfStock';
-
     /**
      * Product "can be directly added to cart" tag string.
      */
@@ -72,22 +62,27 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     protected $_imageUrl;
 
     /**
-     * @var string the product price including possible discounts and taxes.
+     * @var NostoPrice the product price including possible discounts and taxes.
      */
     protected $_price;
 
     /**
-     * @var string the product list price without discounts but incl taxes.
+     * @var NostoPrice the product list price without discounts but incl taxes.
      */
     protected $_listPrice;
 
     /**
-     * @var string the currency code (ISO 4217) the product is sold in.
+     * @var NostoCurrencyCode the currency code the product is sold in.
      */
-    protected $_currencyCode;
+    protected $_currency;
 
     /**
-     * @var string the availability of the product, i.e. is in stock or not.
+     * @var NostoPriceVariation the price variation currently in use.
+     */
+    protected $_priceVariation;
+
+    /**
+     * @var NostoProductAvailability the availability of the product.
      */
     protected $_availability;
 
@@ -121,9 +116,14 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     protected $_brand;
 
     /**
-     * @var string the product publication date in the shop.
+     * @var NostoDate the product publication date in the shop.
      */
     protected $_datePublished;
+
+    /**
+     * @var Nosto_Tagging_Model_Meta_Product_Price_Variation[] the product price variations.
+     */
+    protected $_priceVariations = array();
 
     /**
      * @inheritdoc
@@ -134,29 +134,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     }
 
     /**
-     * @inheritdoc
-     */
-    public function getValidationRules()
-    {
-        return array(
-            array(
-                array(
-                    '_url',
-                    '_productId',
-                    '_name',
-                    '_imageUrl',
-                    '_price',
-                    '_listPrice',
-                    '_currencyCode',
-                    '_availability'
-                ),
-                'required'
-            )
-        );
-    }
-
-    /**
-     * Loads the product info from a Magento product model.
+     * Loads the Data Transfer object.
      *
      * @param Mage_Catalog_Model_Product $product the product model.
      * @param Mage_Core_Model_Store|null $store the store to get the product data for.
@@ -167,6 +145,8 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
             $store = Mage::app()->getStore();
         }
 
+        /** @var Nosto_Tagging_Helper_Data $helper */
+        $helper = Mage::helper('nosto_tagging');
         /** @var Nosto_Tagging_Helper_Price $priceHelper */
         $priceHelper = Mage::helper('nosto_tagging/price');
 
@@ -174,12 +154,18 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         $this->_productId = $product->getId();
         $this->_name = $product->getName();
         $this->_imageUrl = $this->buildImageUrl($product, $store);
-        $this->_price = $priceHelper->convertToDefaultCurrency($priceHelper->getProductFinalPriceInclTax($product), $store);
-        $this->_listPrice = $priceHelper->convertToDefaultCurrency($priceHelper->getProductPriceInclTax($product), $store);
-        $this->_currencyCode = $store->getDefaultCurrency()->getCode();
-        $this->_availability = $product->isAvailable()
-            ? self::PRODUCT_IN_STOCK
-            : self::PRODUCT_OUT_OF_STOCK;
+
+        $price = $priceHelper->convertToDefaultCurrency($priceHelper->getProductFinalPriceInclTax($product), $store);
+        $this->_price = new NostoPrice($price);
+        $listPrice = $priceHelper->convertToDefaultCurrency($priceHelper->getProductPriceInclTax($product), $store);
+        $this->_listPrice = new NostoPrice($listPrice);
+        $this->_currency = new NostoCurrencyCode($store->getDefaultCurrencyCode());
+        $this->_availability = new NostoProductAvailability(
+            $product->isAvailable()
+                ? NostoProductAvailability::IN_STOCK
+                : NostoProductAvailability::OUT_OF_STOCK
+        );
+
         $this->_categories = $this->buildCategories($product);
 
         // Optional properties.
@@ -197,8 +183,52 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
             $this->_tags['tag1'] = $tags;
         }
         if ($product->hasData('created_at')) {
-            $this->_datePublished = $product->getData('created_at');
+            if (($timestamp = strtotime($product->getData('created_at')))) {
+                $this->_datePublished = new NostoDate($timestamp);
+            }
         }
+
+        if ($helper->getStoreHasMultiCurrency($store)) {
+            $this->_priceVariation = new NostoPriceVariation($store->getBaseCurrencyCode());
+            if ($helper->isMultiCurrencyMethodPriceVariation($store)) {
+                $this->_priceVariations = $this->buildPriceVariations($product, $store);
+            }
+        }
+    }
+
+    /**
+     * Build the product price variations.
+     *
+     * These are the different prices for the product's supported currencies.
+     * Only used when the multi currency method is set to 'priceVariation'.
+     *
+     * @param Mage_Catalog_Model_Product $product the product model.
+     * @param Mage_Core_Model_Store      $store the store model.
+     *
+     * @return array
+     */
+    protected function buildPriceVariations(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
+    {
+        $variations = array();
+        $currencyCodes = $store->getAvailableCurrencyCodes(true);
+        foreach ($currencyCodes as $currencyCode) {
+            // Skip base currency.
+            if ($currencyCode === $store->getBaseCurrencyCode()) {
+                continue;
+            }
+            try {
+                /** @var Nosto_Tagging_Model_Meta_Product_Price_Variation $variation */
+                $variation = Mage::getModel('nosto_tagging/meta_product_price_variation');
+                $variation->loadData($product, $store, new NostoCurrencyCode($currencyCode));
+                $variations[] = $variation;
+            } catch (Exception $e) {
+                // The price variation cannot be obtained if there are no
+                // exchange rates defined for the currency and Magento will
+                // throw and exception. Just ignore this and continue.
+                continue;
+            }
+        }
+        return $variations;
     }
 
     /**
@@ -393,9 +423,19 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     }
 
     /**
+     * Returns the absolute url to one of the product image thumbnails in the shop frontend.
+     *
+     * @return string the url.
+     */
+    public function getThumbUrl()
+    {
+        return null;
+    }
+
+    /**
      * Returns the price of the product including possible discounts and taxes.
      *
-     * @return float the price.
+     * @return NostoPrice the price.
      */
     public function getPrice()
     {
@@ -405,7 +445,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     /**
      * Returns the list price of the product without discounts but incl taxes.
      *
-     * @return float the price.
+     * @return NostoPrice the price.
      */
     public function getListPrice()
     {
@@ -415,17 +455,29 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     /**
      * Returns the currency code (ISO 4217) the product is sold in.
      *
-     * @return string the currency ISO code.
+     * @return NostoCurrencyCode the currency ISO code.
      */
-    public function getCurrencyCode()
+    public function getCurrency()
     {
-        return $this->_currencyCode;
+        return $this->_currency;
+    }
+
+    /**
+     * Returns the ID of the price variation that is currently in use.
+     *
+     * @return string the price variation ID.
+     */
+    public function getPriceVariationId()
+    {
+        return !is_null($this->_priceVariation)
+            ? $this->_priceVariation->getId()
+            : null;
     }
 
     /**
      * Returns the availability of the product, i.e. if it is in stock or not.
      *
-     * @return string the availability, either "InStock" or "OutOfStock".
+     * @return NostoProductAvailability the availability
      */
     public function getAvailability()
     {
@@ -485,11 +537,21 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     /**
      * Returns the product publication date in the shop.
      *
-     * @return string the date.
+     * @return NostoDate the date.
      */
     public function getDatePublished()
     {
         return $this->_datePublished;
+    }
+
+    /**
+     * Returns the product price variations if any exist.
+     *
+     * @return NostoProductPriceVariationInterface[] the price variations.
+     */
+    public function getPriceVariations()
+    {
+        return $this->_priceVariations;
     }
 
     /**

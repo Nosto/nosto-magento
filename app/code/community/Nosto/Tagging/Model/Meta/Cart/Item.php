@@ -26,23 +26,20 @@
  */
 
 /**
- * Helper class for common date operations.
+ * Value Object representing a cart item.
+ * This is used in the cart tagging.
  *
  * @category Nosto
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Helper_Date extends Mage_Core_Helper_Abstract
+class Nosto_Tagging_Model_Meta_Cart_Item extends Nosto_Tagging_Model_Meta_LineItem
 {
     /**
-     * Formats date into Nosto format, i.e. Y-m-d.
-     *
-     * @param string $date the date to format.
-     *
-     * @return string the formatted date.
+     * @inheritdoc
      */
-    public function getFormattedDate($date)
+    protected function _construct()
     {
-        return date('Y-m-d', strtotime($date));
+        $this->_init('nosto_tagging/meta_cart_item');
     }
 }

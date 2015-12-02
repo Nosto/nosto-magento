@@ -35,18 +35,6 @@
 class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
 {
     /**
-     * Formats price into Nosto format, e.g. 1000.99.
-     *
-     * @param string|int|float $price the price to format.
-     *
-     * @return string
-     */
-    public function getFormattedPrice($price)
-    {
-        return number_format($price, 2, '.', '');
-    }
-
-    /**
      * Gets the unit price for a product model including taxes.
      *
      * @param Mage_Catalog_Model_Product $product the product model.
@@ -92,20 +80,19 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
 
             case Mage_Catalog_Model_Product_Type::TYPE_GROUPED:
                 // Get the grouped product "starting at" price.
+                /** @var Mage_Catalog_Model_Config $config */
+                $config = Mage::getSingleton('catalog/config');
                 /** @var $tmpProduct Mage_Catalog_Model_Product */
                 $tmpProduct = Mage::getModel('catalog/product')
                     ->getCollection()
-                    ->addAttributeToSelect(
-                        Mage::getSingleton('catalog/config')
-                            ->getProductAttributes()
-                    )
+                    ->addAttributeToSelect($config->getProductAttributes())
                     ->addAttributeToFilter('entity_id', $product->getId())
-                    ->setPage(1, 1)
                     ->addMinimalPrice()
                     ->addTaxPercents()
-                    ->load()
+                    ->setPage(1, 1)
                     ->getFirstItem();
-                if ($tmpProduct) {
+
+                if (!$tmpProduct->isEmpty()) {
                     $price = $tmpProduct->getMinimalPrice();
                     if ($inclTax) {
                         $price = Mage::helper('tax')
@@ -147,6 +134,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
             );
             $price = 0;
         }
+        
         return Mage::helper('directory')->currencyConvert(
             $price,
             $store->getBaseCurrency()->getCode(),

@@ -25,7 +25,7 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-require_once Mage::getBaseDir('lib') . '/nosto/php-sdk/src/config.inc.php';
+require_once Mage::getBaseDir('lib') . '/nosto/php-sdk/autoload.php';
 
 /**
  * History data export controller.
@@ -58,15 +58,19 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
             if ($currentPage > $orders->getLastPageNumber()) {
                 $orders = array();
             }
-            /** @var Nosto_Tagging_Model_Export_Collection_Order $collection */
-            $collection = Mage::getModel('nosto_tagging/export_collection_order');
+
+            $collection = new NostoExportCollectionOrder();
             foreach ($orders as $order) {
                 /** @var Nosto_Tagging_Model_Meta_Order $meta */
                 $meta = Mage::getModel('nosto_tagging/meta_order');
                 // We don't need special items like shipping cost and discounts.
                 $meta->includeSpecialItems = false;
-                $meta->loadData($order);
-                $collection[] = $meta;
+                try {
+                    $meta->loadData($order);
+                    $collection[] = $meta;
+                } catch (NostoException $e) {
+                    Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
+                }
             }
             $this->export($collection);
         }
@@ -103,15 +107,16 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
             if ($currentPage > $products->getLastPageNumber()) {
                 $products = array();
             }
-            $collection = new NostoExportProductCollection();
+            $collection = new NostoExportCollectionProduct();
             foreach ($products as $product) {
                 /** @var Mage_Catalog_Model_Product $product */
                 /** @var Nosto_Tagging_Model_Meta_Product $meta */
                 $meta = Mage::getModel('nosto_tagging/meta_product');
-                $meta->loadData($product);
-                $validator = new NostoValidator($meta);
-                if ($validator->validate()) {
+                try {
+                    $meta->loadData($product);
                     $collection[] = $meta;
+                } catch (NostoException $e) {
+                    Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
                 }
             }
             $this->export($collection);
@@ -128,8 +133,7 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
         $account = Mage::helper('nosto_tagging/account')->find();
         if ($account !== null) {
             $cipherText = NostoExporter::export($account, $collection);
-            echo $cipherText;
+            $this->getResponse()->setBody($cipherText);
         }
-        die();
     }
 }

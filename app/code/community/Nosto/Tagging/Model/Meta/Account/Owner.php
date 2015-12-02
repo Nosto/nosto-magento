@@ -33,7 +33,7 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Account_Owner extends Mage_Core_Model_Abstract implements NostoAccountMetaDataOwnerInterface
+class Nosto_Tagging_Model_Meta_Account_Owner extends Mage_Core_Model_Abstract implements NostoAccountMetaOwnerInterface
 {
     /**
      * @var string the account owner first name.
@@ -61,15 +61,13 @@ class Nosto_Tagging_Model_Meta_Account_Owner extends Mage_Core_Model_Abstract im
     /**
      * Loads the meta data for the given store.
      *
-     * @param Mage_Core_Model_Store $store the store view to load the data for.
+     * @param Mage_Admin_Model_User $owner the user model.
      */
-    public function loadData(Mage_Core_Model_Store $store)
+    public function loadData(Mage_Admin_Model_User $owner)
     {
-        /** @var Mage_Admin_Model_User $user */
-        $user = Mage::getSingleton('admin/session')->getUser();
-        $this->_firstName = $user->getFirstname();
-        $this->_lastName = $user->getLastname();
-        $this->_email = $user->getEmail();
+        $this->_firstName = $owner->getFirstname();
+        $this->_lastName = $owner->getLastname();
+        $this->_email = $owner->getEmail();
     }
 
     /**

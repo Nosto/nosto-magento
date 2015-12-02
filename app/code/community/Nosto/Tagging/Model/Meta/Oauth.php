@@ -32,7 +32,7 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements NostoOAuthClientMetaDataInterface
+class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements NostoOauthClientMetaInterface
 {
     /**
      * @var string the url where the oauth2 server should redirect after
@@ -41,9 +41,15 @@ class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements
     protected $_redirectUrl;
 
     /**
-     * @var string the language ISO code for localization on oauth2 server.
+     * @var NostoLanguageCode the 2-letter ISO code (ISO 639-1) for localization
+     * on oauth2 server.
      */
-    protected $_languageIsoCode;
+    protected $_language;
+
+    /**
+     * @var NostoAccount account if OAuth is to sync details.
+     */
+    protected $_account;
 
     /**
      * @inheritdoc
@@ -57,8 +63,9 @@ class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements
      * Loads the meta data for the given store.
      *
      * @param Mage_Core_Model_Store $store the store view to load the data for.
+     * @param NostoAccount|null $account account if OAuth is to sync details.
      */
-    public function loadData(Mage_Core_Model_Store $store)
+    public function loadData(Mage_Core_Model_Store $store, NostoAccount $account = null)
     {
         $this->_redirectUrl = Mage::getUrl(
             'nosto/oauth',
@@ -67,9 +74,13 @@ class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements
                 '_store_to_url' => true
             )
         );
-        $this->_languageIsoCode = substr(
-            Mage::app()->getLocale()->getLocaleCode(), 0, 2
+        $this->_language = new NostoLanguageCode(
+            substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2)
         );
+
+        if (!is_null($account)) {
+            $this->_account = $account;
+        }
     }
 
     /**
@@ -124,10 +135,20 @@ class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements
      * The 2-letter ISO code (ISO 639-1) for the language the OAuth2 server
      * uses for UI localization.
      *
-     * @return string the ISO code.
+     * @return NostoLanguageCode the language code.
      */
-    public function getLanguageIsoCode()
+    public function getLanguage()
     {
-        return $this->_languageIsoCode;
+        return $this->_language;
+    }
+
+    /**
+     * The Nosto account if we are to sync account details from Nosto.
+     *
+     * @return NostoAccount|null the account.
+     */
+    public function getAccount()
+    {
+        return $this->_account;
     }
 }

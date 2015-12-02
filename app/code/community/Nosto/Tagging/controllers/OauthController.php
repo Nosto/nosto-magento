@@ -25,7 +25,7 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-require_once Mage::getBaseDir('lib') . '/nosto/php-sdk/src/config.inc.php';
+require_once Mage::getBaseDir('lib') . '/nosto/php-sdk/autoload.php';
 
 /**
  * OAuth2 controller.
@@ -65,13 +65,30 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
 
         $request = $this->getRequest();
         $store = Mage::app()->getStore();
-        if (($code = $request->getParam('code')) !== null) {
+        if (($authCode = $request->getParam('code')) !== null) {
+            /** @var Nosto_Tagging_Helper_Account $accountHelper */
+            $accountHelper = Mage::helper('nosto_tagging/account');
             try {
-                $account = NostoAccount::syncFromNosto(
-                    Mage::helper('nosto_tagging/oauth')->getMetaData($store),
-                    $code
-                );
-                if (Mage::helper('nosto_tagging/account')->save($account, $store)) {
+                $oldAccount = $accountHelper->find($store);
+
+                /** @var Nosto_Tagging_Model_Meta_Oauth $meta */
+                $meta = Mage::getModel('nosto_tagging/meta_oauth');
+                $meta->loadData($store, $oldAccount);
+
+                $service = new NostoServiceAccount();
+                $newAccount = $service->sync($meta, $authCode);
+
+                // If we are updating an existing account, double check that we
+                // got the same account back from Nosto.
+                if (!is_null($oldAccount) && !$newAccount->equals($oldAccount)) {
+                    throw new NostoException('Failed to sync account details, account mismatch.');
+                }
+
+                if ($accountHelper->save($newAccount, $store)) {
+                    $accountHelper
+                        ->updateCurrencyExchangeRates($newAccount, $store);
+                    $accountHelper
+                        ->updateAccount($newAccount, $store);
                     $params = array(
                         'message_type' => NostoMessage::TYPE_SUCCESS,
                         'message_code' => NostoMessage::CODE_ACCOUNT_CONNECT,
@@ -79,7 +96,7 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
                         '_store' => Mage_Core_Model_App::ADMIN_STORE_ID,
                     );
                 } else {
-                    throw new NostoException('Failed to connect account');
+                    throw new NostoException('Failed to save account.');
                 }
             } catch (NostoException $e) {
                 Mage::log(

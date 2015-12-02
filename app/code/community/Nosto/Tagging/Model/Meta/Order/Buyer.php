@@ -26,7 +26,7 @@
  */
 
 /**
- * Meta data class which holds information about the buyer of an order.
+ * Data Transfer object representing the buyer of an order.
  * This is used during the order confirmation API request and the order history
  * export.
  *

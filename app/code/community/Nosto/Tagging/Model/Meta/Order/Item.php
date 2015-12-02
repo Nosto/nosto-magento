@@ -26,7 +26,7 @@
  */
 
 /**
- * Meta data class which holds information about an item included in an order.
+ * Value Object representing an item included in an order.
  * This is used during the order confirmation API request and the order history
  * export.
  *
@@ -34,162 +34,13 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract implements NostoOrderPurchasedItemInterface
+class Nosto_Tagging_Model_Meta_Order_Item extends Nosto_Tagging_Model_Meta_LineItem implements NostoOrderItemInterface
 {
-    /**
-     * @var string|int the unique identifier of the purchased item.
-     * If this item is for discounts or shipping cost, the id can be 0.
-     */
-    protected $_productId;
-
-    /**
-     * @var int the quantity of the item included in the order.
-     */
-    protected $_quantity;
-
-    /**
-     * @var string the name of the item included in the order.
-     */
-    protected $_name;
-
-    /**
-     * @var float The unit price of the item included in the order.
-     */
-    protected $_unitPrice;
-
-    /**
-     * @var string the 3-letter ISO code (ISO 4217) for the item currency.
-     */
-    protected $_currencyCode;
-
-    /**
-     * Constructor.
-     *
-     * Sets up this Value Object.
-     *
-     * @param array $args the object data.
-     */
-    public function __construct(array $args)
-    {
-        if (!isset($args['productId']) || !is_int($args['productId'])) {
-            Mage::log(
-                sprintf(
-                    '%s.productId must be an integer value',
-                    __CLASS__
-                ),
-                Zend_Log::WARN,
-                Nosto_Tagging_Model_Base::LOG_FILE_NAME
-            );
-            $args['productId'] = '';
-        }
-        if (!isset($args['quantity']) || !is_int($args['quantity']) || !($args['quantity'] > 0)) {
-            Mage::log(
-                sprintf(
-                    '%s.quantity must be an integer value',
-                    __CLASS__
-                ),
-                Zend_Log::WARN,
-                Nosto_Tagging_Model_Base::LOG_FILE_NAME
-            );
-            $args['quantity'] = '';
-        }
-        if (!isset($args['name']) || !is_string($args['name']) || empty($args['name'])) {
-            Mage::log(
-                sprintf(
-                    '%s.name must be a non-empty string value',
-                    __CLASS__
-                ),
-                Zend_Log::WARN,
-                Nosto_Tagging_Model_Base::LOG_FILE_NAME
-            );
-            $args['name'] = '';
-        }
-        if (!isset($args['unitPrice']) || !is_numeric($args['unitPrice'])) {
-            Mage::log(
-                sprintf(
-                    '%s.unitPrice must be a numeric value',
-                    __CLASS__
-                ),
-                Zend_Log::WARN,
-                Nosto_Tagging_Model_Base::LOG_FILE_NAME
-            );
-            $args['unitPrice'] = '';
-        }
-        if (!isset($args['currencyCode']) || !is_string($args['currencyCode']) || empty($args['currencyCode'])) {
-            Mage::log(
-                sprintf(
-                    '%s.currencyCode must be a numeric value',
-                    __CLASS__
-                ),
-                Zend_Log::WARN,
-                Nosto_Tagging_Model_Base::LOG_FILE_NAME
-            );
-            $args['currencyCode'] = '';
-        }
-
-        $this->_productId = $args['productId'];
-        $this->_quantity = $args['quantity'];
-        $this->_name = $args['name'];
-        $this->_unitPrice = $args['unitPrice'];
-        $this->_currencyCode = $args['currencyCode'];
-    }
-
     /**
      * @inheritdoc
      */
     protected function _construct()
     {
         $this->_init('nosto_tagging/meta_order_item');
-    }
-
-    /**
-     * The unique identifier of the purchased item.
-     * If this item is for discounts or shipping cost, the id can be 0.
-     *
-     * @return string|int
-     */
-    public function getProductId()
-    {
-        return $this->_productId;
-    }
-
-    /**
-     * The quantity of the item included in the order.
-     *
-     * @return int the quantity.
-     */
-    public function getQuantity()
-    {
-        return $this->_quantity;
-    }
-
-    /**
-     * The name of the item included in the order.
-     *
-     * @return string the name.
-     */
-    public function getName()
-    {
-        return $this->_name;
-    }
-
-    /**
-     * The unit price of the item included in the order.
-     *
-     * @return float the unit price.
-     */
-    public function getUnitPrice()
-    {
-        return $this->_unitPrice;
-    }
-
-    /**
-     * The 3-letter ISO code (ISO 4217) for the item currency.
-     *
-     * @return string the currency ISO code.
-     */
-    public function getCurrencyCode()
-    {
-        return $this->_currencyCode;
     }
 }
