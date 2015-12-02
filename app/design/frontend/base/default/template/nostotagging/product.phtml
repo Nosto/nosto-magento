@@ -39,6 +39,8 @@ $priceFormatter = Nosto::formatter('price');
 $dateFormatter = Nosto::formatter('date');
 $priceFormat = new NostoPriceFormat(2, '.', '');
 $dateFormat = new NostoDateFormat(NostoDateFormat::YMD);
+$store = Mage::app()->getStore();
+$priceHelper = Mage::helper('nosto_tagging/price');
 ?>
 
 <!-- Nosto Product Tagging -->
@@ -77,8 +79,8 @@ $dateFormat = new NostoDateFormat(NostoDateFormat::YMD);
         <span class="date_published"><?php echo $dateFormatter->format($product->getDatePublished(), $dateFormat); ?></span>
     <?php endif; ?>
     <?php if ($helper->getStoreHasMultiCurrency()): ?>
-        <span class="variation_id"><?php echo $helper->escapeHtml($product->getPriceVariationId()); ?></span>
         <?php if ($this->inclPriceVariations() && count($product->getPriceVariations()) > 0): ?>
+            <span class="variation_id"><?php echo $helper->escapeHtml($product->getPriceVariationId()); ?></span>
             <?php foreach ($product->getPriceVariations() as $variation): ?>
                 <div class="variation">
                     <span class="variation_id"><?php echo $helper->escapeHtml($variation->getId()->getId()); ?></span>
