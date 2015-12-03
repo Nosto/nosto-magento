@@ -57,7 +57,7 @@ $dateFormat = new NostoDateFormat(NostoDateFormat::YMD);
         <span class="availability"><?php echo $helper->escapeHtml($product->getAvailability()->getAvailability()); ?></span>
     <?php endif; ?>
     <?php foreach ($product->getCategories() as $category): ?>
-        <span class="category"><?php echo $helper->escapeHtml($category); ?></span>
+        <span class="category"><?php echo $helper->escapeHtml($category->getPath()); ?></span>
     <?php endforeach; ?>
     <?php if ($product->getDescription()): ?>
         <span class="description"><?php echo $helper->escapeHtml($product->getDescription()); ?></span>

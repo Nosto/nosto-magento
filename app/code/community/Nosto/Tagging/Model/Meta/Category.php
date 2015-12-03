@@ -21,26 +21,26 @@
  * @category  Nosto
  * @package   Nosto_Tagging
  * @author    Nosto Solutions Ltd <magento@nosto.com>
- * @copyright Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
+ * @copyright Copyright (c) 2013-2016 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
 /**
- * Value Object representing an item included in an order.
- * This is used during the order confirmation API request and the order history
- * export.
+ * Value Object representing a line item.
+ * This is used in the cart & order meta models.
  *
  * @category Nosto
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Order_Item extends Nosto_Tagging_Model_Meta_LineItem implements NostoOrderItemInterface
+class Nosto_Tagging_Model_Meta_Category extends NostoCategory
 {
     /**
      * @inheritdoc
      */
     protected function _construct()
     {
-        $this->_init('nosto_tagging/meta_order_item');
+        $this->_init('nosto_tagging/meta_category');
     }
 }
+

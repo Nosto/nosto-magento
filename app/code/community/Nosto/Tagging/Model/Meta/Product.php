@@ -101,6 +101,11 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     protected $_categories = array();
 
     /**
+     * @var string the product short description.
+     */
+    protected $_shortDescription;
+
+    /**
      * @var string the product description.
      */
     protected $_description;
@@ -121,9 +126,9 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     protected $_variationId;
 
     /**
-     * @var Nosto_Tagging_Model_Meta_Product_Variation[] the product variations.
+     * @var Nosto_Tagging_Model_Meta_Product_Price_Variation[] the product variations.
      */
-    protected $_variations = array();
+    protected $_priceVariations = array();
 
     /**
      * @inheritdoc
@@ -154,11 +159,11 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         $this->setProductId($product->getId());
         $this->setName($product->getName());
         $this->setImageUrl($this->buildImageUrl($product, $store));
-        $price = $priceHelper->getProductFinalPriceInclTax($product);
+        $price = $priceHelper->convertToDefaultCurrency($priceHelper->getProductFinalPriceInclTax($product), $store);
         $this->setPrice(new NostoPrice($price));
-        $listPrice = $priceHelper->getProductPriceInclTax($product);
+        $listPrice = $priceHelper->convertToDefaultCurrency($priceHelper->getProductPriceInclTax($product), $store);
         $this->setListPrice(new NostoPrice($listPrice));
-        $this->setCurrency(new NostoCurrencyCode($store->getBaseCurrencyCode()));
+        $this->setCurrency(new NostoCurrencyCode($store->getDefaultCurrencyCode()));
         $this->setAvailability(new NostoProductAvailability(
             $product->isAvailable()
                 ? NostoProductAvailability::IN_STOCK
@@ -192,16 +197,16 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
             }
         }
 
-        if ($helper->getStoreHasMultiCurrency($store)) {
-            $this->setVariationId($store->getBaseCurrencyCode());
+        if ($helper->getStoreHasMultiCurrency($store) && $helper->isMultiCurrencyMethodPriceVariation()) {
+            $this->setPriceVariationId($store->getBaseCurrencyCode());
             if ($helper->isMultiCurrencyMethodPriceVariation($store)) {
-                $this->setVariations($this->buildVariations($product, $store));
+                $this->setPriceVariations($this->buildPriceVariations($product, $store));
             }
         }
     }
 
     /**
-     * Build the product variations.
+     * Build the product price variations.
      *
      * These are the different prices for the product's supported currencies.
      * Only used when the multi currency method is set to 'priceVariation'.
@@ -211,12 +216,9 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
      *
      * @return array
      */
-    protected function buildVariations(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
+    protected function buildPriceVariations(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
         $variations = array();
-
-        /** @var Nosto_Tagging_Helper_Price $priceHelper */
-        $priceHelper = Mage::helper('nosto_tagging/price');
         $currencyCodes = $store->getAvailableCurrencyCodes(true);
         foreach ($currencyCodes as $currencyCode) {
             // Skip base currency.
@@ -224,30 +226,17 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
                 continue;
             }
             try {
-                /** @var Nosto_Tagging_Model_Meta_Product_Variation $variation */
-                $variation = Mage::getModel('nosto_tagging/meta_product_variation');
-
-                $variation->setVariationId($currencyCode);
-                $variation->setAvailability($this->_availability);
-                $variation->setCurrency(new NostoCurrencyCode($currencyCode));
-
-                $price = $priceHelper->getProductFinalPriceInclTax($product);
-                $price = $store->getBaseCurrency()->convert($price, $currencyCode);
-                $variation->setPrice(new NostoPrice($price));
-
-                $listPrice = $priceHelper->getProductPriceInclTax($product);
-                $listPrice = $store->getBaseCurrency()->convert($listPrice, $currencyCode);
-                $variation->setListPrice(new NostoPrice($listPrice));
-
+                /** @var Nosto_Tagging_Model_Meta_Product_Price_Variation $variation */
+                $variation = Mage::getModel('nosto_tagging/meta_product_price_variation');
+                $variation->loadData($product, $store, new NostoCurrencyCode($currencyCode));
                 $variations[] = $variation;
             } catch (Exception $e) {
-                // The variation cannot be obtained if there are no
+                // The price variation cannot be obtained if there are no
                 // exchange rates defined for the currency and Magento will
                 // throw and exception. Just ignore this and continue.
                 continue;
             }
         }
-
         return $variations;
     }
 
@@ -373,7 +362,13 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         foreach ($categoryCollection as $category) {
             $categoryString = $helper->buildCategoryString($category);
             if (!empty($categoryString)) {
-                $data[] = $categoryString;
+                $category = Mage::getModel('nosto_tagging/meta_category');
+                try {
+                    $category->setPath($categoryString);
+                } catch (NostoInvalidArgumentException $e) {
+                    $category->setPath('');
+                }
+                $data[] = $category;
             }
         }
 
@@ -495,7 +490,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     /**
      * Returns the categories the product is located in.
      *
-     * @return array list of category strings, e.g. array("/shoes/winter").
+     * @return array list of Nosto_Tagging_Meta_Category objects.
      */
     public function getCategories()
     {
@@ -547,9 +542,19 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
      *
      * @return string the variation ID.
      */
-    public function getVariationId()
+    public function getPriceVariationId()
     {
         return $this->_variationId;
+    }
+
+    /**
+     * Returns the ID of the variation that is currently in use. Backwards compatibiity with the SDK
+     *
+     * @return $this->getPriceVariationId().
+     */
+    public function getVariationId()
+    {
+        return $this->getPriceVariationId();
     }
 
     /**
@@ -557,9 +562,29 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
      *
      * @return NostoProductVariationInterface[] the variations.
      */
+    public function getPriceVariations()
+    {
+        return $this->_priceVariations;
+    }
+
+    /**
+     * Returns the product variations if any exist. Backwards compatibility with the SDK.
+     *
+     * @return $this->getPriceVariations()
+     */
     public function getVariations()
     {
-        return $this->_variations;
+        return $this->getPriceVariations();
+    }
+
+    /**
+     * Returns the product description.
+     *
+     * @return string the description.
+     */
+    public function getShortDescription()
+    {
+        return $this->_shortDescription;
     }
 
     /**
@@ -571,10 +596,6 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
      */
     public function setUrl($url)
     {
-        if (!NostoUri::check($url)) {
-            throw new NostoInvalidArgumentException(sprintf('%s.url must be an absolute URL using either the http or https protocol.', __CLASS__));
-        }
-
         $this->_url = $url;
     }
 
@@ -603,10 +624,6 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
      */
     public function setImageUrl($imageUrl)
     {
-        if (!NostoUri::check($imageUrl)) {
-            throw new NostoInvalidArgumentException(sprintf('%s.imageUrl must be an absolute URL using either the http or https protocol.', __CLASS__));
-        }
-
         $this->_imageUrl = $imageUrl;
     }
 
@@ -619,10 +636,6 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
      */
     public function setThumbUrl($thumbUrl)
     {
-        if (!NostoUri::check($thumbUrl)) {
-            throw new NostoInvalidArgumentException(sprintf('%s.thumbUrl must be an absolute URL using either the http or https protocol.', __CLASS__));
-        }
-
         $this->_thumbUrl = $thumbUrl;
     }
 
@@ -782,12 +795,8 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
      *
      * @throws NostoInvalidArgumentException
      */
-    public function addCategory($category)
+    public function addCategory(Nosto_Tagging_Model_Meta_Category $category)
     {
-        if (!is_string($category) || empty($category)) {
-            throw new NostoInvalidArgumentException(sprintf('%s.categories must be an array of non-empty string values.', __CLASS__));
-        }
-
         $this->_categories[] = $category;
     }
 
@@ -838,7 +847,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
      *
      * @param string|int $variationId the variation ID.
      */
-    public function setVariationId($variationId)
+    public function setPriceVariationId($variationId)
     {
         $this->_variationId = $variationId;
     }
@@ -846,11 +855,11 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     /**
      * Sets the variations that exist for this product.
      *
-     * @param Nosto_Tagging_Model_Meta_Product_Variation[] $variations the variations.
+     * @param Nosto_Tagging_Model_Meta_Product_Price_Variation[] $variations the variations.
      */
-    public function setVariations(array $variations)
+    public function setPriceVariations(array $variations)
     {
-        $this->_variations = array();
+        $this->_priceVariations = array();
         foreach ($variations as $variation) {
             $this->addVariation($variation);
         }
@@ -859,10 +868,39 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     /**
      * Adds a variation for this product.
      *
-     * @param Nosto_Tagging_Model_Meta_Product_Variation $variation the variation.
+     * @param Nosto_Tagging_Model_Meta_Product_Price_Variation $variation the variation.
      */
-    public function addVariation(Nosto_Tagging_Model_Meta_Product_Variation $variation)
+    public function addVariation(Nosto_Tagging_Model_Meta_Product_Price_Variation $variation)
     {
-        $this->_variations[] = $variation;
+        $this->_priceVariations[] = $variation;
     }
+
+    /**
+     * Sets the short description for this product.
+     *
+     * @param $shortDescription
+     */
+    public function setShortDescription($shortDescription)
+    {
+        $this->_shortDescription = $shortDescription;
+    }
+
+    /**
+     * Returns the full product description,
+     * i.e. both the "short" and "normal" descriptions concatenated.
+     *
+     * @return string the full descriptions.
+     */
+    public function getFullDescription()
+    {
+        $descriptions = array();
+        if (!empty($this->_shortDescription)) {
+            $descriptions[] = $this->_shortDescription;
+        }
+        if (!empty($this->_description)) {
+            $descriptions[] = $this->_description;
+        }
+        return implode(' ', $descriptions);
+    }
+
 }
