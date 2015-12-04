@@ -76,7 +76,7 @@ $dateFormat = new NostoDateFormat(NostoDateFormat::YMD);
     <?php if ($product->getDatePublished()): ?>
         <span class="date_published"><?php echo $dateFormatter->format($product->getDatePublished(), $dateFormat); ?></span>
     <?php endif; ?>
-    <?php if ($this->inclPriceVariations() && count($product->getPriceVariations()) > 0): ?>
+    <?php if ($helper->isMultiCurrencyMethodPriceVariation() && count($product->getPriceVariations()) > 0): ?>
         <span class="variation_id"><?php echo $helper->escapeHtml($product->getPriceVariationId()); ?></span>
         <?php foreach ($product->getPriceVariations() as $variation): ?>
             <div class="variation">

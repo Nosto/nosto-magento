@@ -106,7 +106,7 @@ class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
      *
      * This is determined by the "multi-currency method" system setting that's
      * configured for the extension in the backend.
-     *
+     * @deprecated Use directly $helper->isMultiCurrencyMethodPriceVariation()
      * @return bool if the product variations should be used.
      */
     public function inclPriceVariations()
