@@ -61,15 +61,18 @@ class Nosto_Tagging_Model_Meta_Cart extends Mage_Core_Model_Abstract
         }
 
         foreach ($quoteItems as $item) {
+
             /** @var Nosto_Tagging_Model_Meta_Cart_Item $model */
+            $nostoCurrency = new NostoCurrencyCode($item->getQuote()->getQuoteCurrencyCode());
+            $nostoPrice = new NostoPrice($item->getConvertedPrice());
             $this->_lineItems[] = Mage::getModel(
                 'nosto_tagging/meta_cart_item',
                 array(
                     'productId' => (int)$this->buildProductId($item),
                     'quantity' => (int)$item->getQty(),
                     'name' => $this->buildProductName($item),
-                    'unitPrice' => new NostoPrice($item->getBasePriceInclTax()),
-                    'currency' => new NostoCurrencyCode($store->getBaseCurrencyCode()),
+                    'unitPrice' => $nostoPrice,
+                    'currency' => $nostoCurrency,
                 )
             );
         }
