@@ -149,17 +149,16 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         $helper = Mage::helper('nosto_tagging');
         /** @var Nosto_Tagging_Helper_Price $priceHelper */
         $priceHelper = Mage::helper('nosto_tagging/price');
-
+        $defaultCurrencyCode = $store->getDefaultCurrencyCode();
         $this->_url = $this->buildUrl($product, $store);
         $this->_productId = $product->getId();
         $this->_name = $product->getName();
         $this->_imageUrl = $this->buildImageUrl($product, $store);
-
         $price = $priceHelper->convertToDefaultCurrency($priceHelper->getProductFinalPriceInclTax($product), $store);
         $this->_price = new NostoPrice($price);
         $listPrice = $priceHelper->convertToDefaultCurrency($priceHelper->getProductPriceInclTax($product), $store);
         $this->_listPrice = new NostoPrice($listPrice);
-        $this->_currency = new NostoCurrencyCode($store->getDefaultCurrencyCode());
+        $this->_currency = new NostoCurrencyCode($defaultCurrencyCode);
         $this->_availability = new NostoProductAvailability(
             $product->isAvailable()
                 ? NostoProductAvailability::IN_STOCK
@@ -188,8 +187,8 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
             }
         }
 
-        if ($helper->getStoreHasMultiCurrency($store)) {
-            $this->_priceVariation = new NostoPriceVariation($store->getBaseCurrencyCode());
+        if ($helper->isMultiCurrencyMethodPriceVariation($store)) {
+            $this->_priceVariation = new NostoPriceVariation($defaultCurrencyCode);
             if ($helper->isMultiCurrencyMethodPriceVariation($store)) {
                 $this->_priceVariations = $this->buildPriceVariations($product, $store);
             }
@@ -213,7 +212,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         $currencyCodes = $store->getAvailableCurrencyCodes(true);
         foreach ($currencyCodes as $currencyCode) {
             // Skip base currency.
-            if ($currencyCode === $store->getBaseCurrencyCode()) {
+            if ($currencyCode === $store->getDefaultCurrencyCode()) {
                 continue;
             }
             try {

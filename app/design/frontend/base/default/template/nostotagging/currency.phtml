@@ -36,12 +36,9 @@ $store = Mage::app()->getStore();
 $currencyCode = $store->getCurrentCurrencyCode();
 
 ?>
-<?php if ($helper->getStoreHasMultiCurrency()): ?>
 <!-- Nosto Price Variation Tagging -->
-    <?php if ($helper->isMultiCurrencyMethodPriceVariation($store)): ?>
-<div class="nosto_variation" style="display:none"><?php echo $helper->escapeHtml($currencyCode); ?></div>
-    <?php else: ?>
-<div class="nosto_price_variation" style="display:none"><?php echo $helper->escapeHtml($currencyCode); ?></div>
-    <?php endif; ?>
-
+<?php if ($helper->isMultiCurrencyMethodPriceVariation($store)): ?>
+    <div class="nosto_variation" style="display:none"><?php echo $helper->escapeHtml($currencyCode); ?></div>
+<?php elseif ($helper->getStoreHasMultiCurrency()): ?>
+    <div class="nosto_price_variation" style="display:none"><?php echo $helper->escapeHtml($currencyCode); ?></div>
 <?php endif; ?>
