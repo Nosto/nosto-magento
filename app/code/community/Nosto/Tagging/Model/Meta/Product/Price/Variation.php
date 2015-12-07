@@ -80,9 +80,9 @@ class Nosto_Tagging_Model_Meta_Product_Price_Variation extends Nosto_Tagging_Mod
         $currency = Mage::getModel('directory/currency')
             ->load($currencyCode->getCode());
         /** @var Nosto_Tagging_Helper_Price $priceHelper */
-        $priceHelper = Mage::helper('nosto_tagging/price');
 
-        $this->_id = new NostoPriceVariation($currencyCode->getCode());
+        $priceHelper = Mage::helper('nosto_tagging/price');
+        $this->_id = $currencyCode->getCode();
         $this->_currency = $currencyCode;
         $price = $priceHelper->getProductFinalPriceInclTax($product);
         $price = $store->getBaseCurrency()->convert($price, $currency);

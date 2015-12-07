@@ -193,4 +193,16 @@ abstract class Nosto_Tagging_Model_Meta_LineItem extends Mage_Core_Model_Abstrac
     {
         return $this->_currency;
     }
+
+    /**
+     * The unique identifier for the item.
+     *
+     * @return $this->getProductId()
+     */
+    public function getItemId()
+    {
+        return $this->getProductId();
+    }
+
+
 }

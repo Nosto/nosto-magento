@@ -80,7 +80,7 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
     protected $_orderStatus;
 
     /**
-     * @var Nosto_Tagging_Model_Meta_Order_Status[] list of order status history.
+     * @var array Nosto_Tagging_Model_Meta_Order_Status[] list of order status history.
      */
     protected $_orderStatuses = array();
 
@@ -102,7 +102,8 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
         $this->_orderNumber = $order->getId();
         $this->_externalOrderRef = $order->getRealOrderId();
         $this->_createdDate = new NostoDate(strtotime($order->getCreatedAt()));
-        $this->_paymentProvider = $order->getPayment()->getMethod();
+        $this->_paymentProvider = new NostoOrderPaymentProvider();
+        $this->_paymentProvider->setName($order->getPayment()->getMethod());
 
         if ($order->getStatus()) {
             $this->_orderStatus = Mage::getModel(
@@ -144,27 +145,31 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
 
         if ($this->includeSpecialItems) {
             if (($discount = $order->getBaseDiscountAmount()) > 0) {
+                $nostoPrice = new NostoPrice($discount);
+                $nostoCurrencyCode = new NostoCurrencyCode($order->getBaseCurrencyCode());
                 $this->_items[] = Mage::getModel(
                     'nosto_tagging/meta_order_item',
                     array(
                         'productId' => -1,
                         'quantity' => 1,
                         'name' => 'Discount',
-                        'unitPrice' => new NostoPrice($discount),
-                        'currency' => new NostoCurrencyCode($order->getBaseCurrencyCode())
+                        'unitPrice' => $nostoPrice,
+                        'currency' => $nostoCurrencyCode
                     )
                 );
             }
 
             if (($shippingInclTax = $order->getBaseShippingInclTax()) > 0) {
+                $nostoPrice = new NostoPrice($shippingInclTax);
+                $nostoCurrencyCode = new NostoCurrencyCode($order->getBaseCurrencyCode());
                 $this->_items[] = Mage::getModel(
                     'nosto_tagging/meta_order_item',
                     array(
                         'productId' => -1,
                         'quantity' => 1,
                         'name' => 'Shipping and handling',
-                        'unitPrice' => new NostoPrice($shippingInclTax),
-                        'currency' => new NostoCurrencyCode($order->getBaseCurrencyCode())
+                        'unitPrice' => $nostoPrice,
+                        'currency' =>$nostoCurrencyCode
                     )
                 );
             }
@@ -181,14 +186,17 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
      */
     protected function buildItem(Mage_Sales_Model_Order_Item $item, Mage_Sales_Model_Order $order)
     {
+        $itemPrice = new NostoPrice($item->getPriceInclTax());
+        $orderCurrencyCode = new NostoCurrencyCode($item->getOrder()->getOrderCurrencyCode());
+
         return Mage::getModel(
             'nosto_tagging/meta_order_item',
             array(
                 'productId' => (int)$this->buildItemProductId($item),
                 'quantity' => (int)$item->getQtyOrdered(),
                 'name' => $this->buildItemName($item),
-                'unitPrice' => new NostoPrice($item->getPriceInclTax()),
-                'currency' => new NostoCurrencyCode($order->getBaseCurrencyCode())
+                'unitPrice' => $itemPrice,
+                'currency' => $orderCurrencyCode
             )
         );
     }
@@ -511,6 +519,56 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
      * @return NostoOrderStatusInterface[] the status models.
      */
     public function getOrderStatuses()
+    {
+        return $this->_orderStatuses;
+    }
+
+    /**
+     * Returns an external order reference number. Backwards compatibility with SDK
+     *
+     * @return $this->getExternalOrderRef()
+     */
+    public function getExternalRef()
+    {
+        return $this->getExternalOrderRef();
+    }
+
+    /**
+     * The buyer info of the user who placed the order. Backward compatibility with SDK
+     *
+     * @return $this->getBuyerInfo().
+     */
+    public function getBuyer()
+    {
+        return $this->getBuyerInfo();
+    }
+
+    /**
+     * Items in this order.
+     *
+     * @return array an array if Nosto_Tagging_Model_Meta_Order_Item objects
+     */
+    public function getItems()
+    {
+        return $this->_items;
+    }
+
+    /**
+     * The status of the order
+     *
+     * @return Nosto_Tagging_Model_Meta_Order_Status
+     */
+    public function getStatus()
+    {
+        return $this->_orderStatus;
+    }
+
+    /**
+     * Status change history of the ordrer
+     *
+     * @return array A list of Nosto_Tagging_Model_Meta_Order_Status objects
+     */
+    public function getHistoryStatuses()
     {
         return $this->_orderStatuses;
     }
