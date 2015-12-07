@@ -36,7 +36,7 @@
 class Nosto_Tagging_Model_Meta_Product_Price_Variation extends Nosto_Tagging_Model_Base implements NostoProductPriceVariationInterface
 {
     /**
-     * @var NostoPriceVariation the price variation ID, e.g. the currency code.
+     * @var int|string the price variation ID, e.g. the currency code.
      */
     protected $_id;
 
@@ -79,30 +79,43 @@ class Nosto_Tagging_Model_Meta_Product_Price_Variation extends Nosto_Tagging_Mod
     {
         $currency = Mage::getModel('directory/currency')
             ->load($currencyCode->getCode());
-        /** @var Nosto_Tagging_Helper_Price $priceHelper */
 
+        /** @var Nosto_Tagging_Helper_Price $priceHelper */
         $priceHelper = Mage::helper('nosto_tagging/price');
-        $this->_id = $currencyCode->getCode();
-        $this->_currency = $currencyCode;
+        $this->setVariationId($currencyCode->getCode());
+        $this->setCurrency($currencyCode);
         $price = $priceHelper->getProductFinalPriceInclTax($product);
         $price = $store->getBaseCurrency()->convert($price, $currency);
-        $this->_price = new NostoPrice($price);
+        $nostoPrice = new NostoPrice($price);
+        $this->setPrice($nostoPrice);
         $listPrice = $priceHelper->getProductPriceInclTax($product);
         $listPrice = $store->getBaseCurrency()->convert($listPrice, $currency);
-        $this->_listPrice = new NostoPrice($listPrice);
-        $this->_availability = new NostoProductAvailability(
+        $nostoListPrice = new NostoPrice($listPrice);
+        $this->setListPrice($nostoListPrice);
+        $nostoAvailability = new NostoProductAvailability(
             $product->isAvailable()
                 ? NostoProductAvailability::IN_STOCK
                 : NostoProductAvailability::OUT_OF_STOCK
         );
+        $this->setAvailability($nostoAvailability);
     }
 
     /**
      * Returns the price variation ID.
      *
-     * @return NostoPriceVariation the variation ID.
+     * @return int|string the variation ID.
      */
     public function getId()
+    {
+        return $this->getVariationId();
+    }
+
+    /**
+     * Returns the price variation ID.
+     *
+     * @return int|string the variation ID.
+     */
+    public function getVariationId()
     {
         return $this->_id;
     }
@@ -145,5 +158,52 @@ class Nosto_Tagging_Model_Meta_Product_Price_Variation extends Nosto_Tagging_Mod
     public function getAvailability()
     {
         return $this->_availability;
+    }
+
+
+    /**
+     * Sets the availability for the price variation
+     *
+     * @param NostoProductAvailability $availability
+     */
+    public function setAvailability(NostoProductAvailability $availability)
+    {
+        $this->_availability = $availability;
+    }
+
+    /**
+     * Sets the currency code for the variation
+     *
+     * @param NostoCurrencyCode $currency
+     */
+    public function setCurrency(NostoCurrencyCode $currency)
+    {
+        $this->_currency = $currency;
+    }
+
+    /**
+     * Sets the id of the variation
+     *
+     * @param int|string $id
+     */
+    public function setVariationId($id)
+    {
+        $this->_id = $id;
+    }
+
+    /**
+     * @param NostoPrice $listPrice
+     */
+    public function setListPrice(NostoPrice $listPrice)
+    {
+        $this->_listPrice = $listPrice;
+    }
+
+    /**
+     * @param NostoPrice $price
+     */
+    public function setPrice(NostoPrice $price)
+    {
+        $this->_price = $price;
     }
 }

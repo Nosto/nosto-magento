@@ -80,12 +80,35 @@ $dateFormat = new NostoDateFormat(NostoDateFormat::YMD);
     <?php if ($helper->isMultiCurrencyMethodPriceVariation($store) && count($product->getPriceVariations()) > 0): ?>
         <span class="variation_id"><?php echo $helper->escapeHtml($product->getPriceVariationId()); ?></span>
         <?php foreach ($product->getPriceVariations() as $variation): ?>
+            <?php
+                if ($variation->getAvailability() instanceof NostoProductAvailability) {
+                    $availability = $variation->getAvailability()->getAvailability();
+                } else {
+                    $availability = '';
+                }
+
+                if ($variation->getPrice() instanceof NostoPrice) {
+                    $price = $priceFormatter->format($variation->getPrice(), $priceFormat);
+                } else {
+                    $price = '';
+                }
+                if ($variation->getListPrice() instanceof NostoPrice) {
+                    $listPrice = $priceFormatter->format($variation->getListPrice(), $priceFormat);
+                } else {
+                    $listPrice = '';
+                }
+                if ($variation->getCurrency() instanceof NostoCurrencyCode) {
+                    $currencyCode = $variation->getCurrency()->getCode();
+                } else {
+                    $currencyCode = '';
+                }
+            ?>
             <div class="variation">
-                <span class="variation_id"><?php echo $helper->escapeHtml($variation->getId()); ?></span>
-                <span class="price_currency_code"><?php echo $helper->escapeHtml($variation->getCurrency()->getCode()); ?></span>
-                <span class="price"><?php echo $priceFormatter->format($variation->getPrice(), $priceFormat); ?></span>
-                <span class="list_price"><?php echo $priceFormatter->format($variation->getListPrice(), $priceFormat); ?></span>
-                <span class="availability"><?php echo $helper->escapeHtml($variation->getAvailability()->getAvailability()); ?></span>
+                <span class="variation_id"><?php echo $helper->escapeHtml($variation->getVariationId()); ?></span>
+                <span class="price_currency_code"><?php echo $helper->escapeHtml($currencyCode); ?></span>
+                <span class="price"><?php echo $price ?></span>
+                <span class="list_price"><?php echo $listPrice ?></span>
+                <span class="availability"><?php echo $helper->escapeHtml($availability); ?></span>
             </div>
         <?php endforeach; ?>
     <?php endif; ?>
