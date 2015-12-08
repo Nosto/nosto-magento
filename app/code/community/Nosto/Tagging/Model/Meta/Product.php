@@ -26,7 +26,7 @@
  */
 
 /**
- * Data Transfer object representing a product.
+ * Data Transfer object representing a primitive product.
  * This is used during the order confirmation API request and the product
  * history export.
  *
@@ -34,8 +34,11 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implements NostoProductInterface
+class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base
 {
+
+    // todo: convert this model to deal with primitive values only.
+
     /**
      * Product "can be directly added to cart" tag string.
      */
@@ -552,21 +555,5 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         return $this->_priceVariations;
     }
 
-    /**
-     * Returns the full product description,
-     * i.e. both the "short" and "normal" descriptions concatenated.
-     *
-     * @return string the full descriptions.
-     */
-    public function getFullDescription()
-    {
-        $descriptions = array();
-        if (!empty($this->_shortDescription)) {
-            $descriptions[] = $this->_shortDescription;
-        }
-        if (!empty($this->_description)) {
-            $descriptions[] = $this->_description;
-        }
-        return implode(' ', $descriptions);
-    }
+    // todo: add setters for all properties.
 }

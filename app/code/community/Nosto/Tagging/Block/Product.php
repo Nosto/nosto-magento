@@ -36,7 +36,7 @@
 class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
 {
     /**
-     * @var Nosto_Tagging_Model_Meta_Product runtime cache for the product meta.
+     * @var Nosto_Tagging_Model_Meta_Product_Typed runtime cache for the product meta.
      */
     protected $_product;
 
@@ -68,7 +68,7 @@ class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
     /**
      * Returns the product meta data to tag.
      *
-     * @return Nosto_Tagging_Model_Meta_Product the meta data.
+     * @return Nosto_Tagging_Model_Meta_Product_Typed the meta data.
      */
     public function getMetaProduct()
     {
@@ -80,7 +80,9 @@ class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
             } catch (NostoException $e) {
                 Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
             }
-            $this->_product = $model;
+            /** @var Nosto_Tagging_Helper_Product_Converter $converter */
+            $converter = Mage::helper('nosto_tagging/product_converter');
+            $this->_product = $converter->convertToTypedObject($model);
         }
         return $this->_product;
     }
