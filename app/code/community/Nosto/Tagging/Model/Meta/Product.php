@@ -26,7 +26,7 @@
  */
 
 /**
- * Data Transfer object representing a product.
+ * Data Transfer object representing a primitive product.
  * This is used during the order confirmation API request and the product
  * history export.
  *
@@ -34,8 +34,11 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implements NostoProductInterface
+class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base
 {
+
+    // todo: convert this model to deal with primitive values only.
+
     /**
      * Product "can be directly added to cart" tag string.
      */
@@ -159,15 +162,15 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         $this->setName($product->getName());
         $this->setImageUrl($this->buildImageUrl($product, $store));
         $price = $priceHelper->convertToDefaultCurrency($priceHelper->getProductFinalPriceInclTax($product), $store);
-        $this->setPrice(new NostoPrice($price));
+        $this->setPrice($price);
         $listPrice = $priceHelper->convertToDefaultCurrency($priceHelper->getProductPriceInclTax($product), $store);
-        $this->setListPrice(new NostoPrice($listPrice));
-        $this->setCurrency(new NostoCurrencyCode($store->getDefaultCurrencyCode()));
-        $this->setAvailability(new NostoProductAvailability(
+        $this->setListPrice($listPrice);
+        $this->setCurrency($store->getDefaultCurrencyCode());
+        $this->setAvailability(
             $product->isAvailable()
                 ? NostoProductAvailability::IN_STOCK
                 : NostoProductAvailability::OUT_OF_STOCK
-        ));
+        );
         $this->setCategories($this->buildCategories($product));
 
         // Optional properties.
@@ -361,13 +364,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         foreach ($categoryCollection as $category) {
             $categoryString = $helper->buildCategoryString($category);
             if (!empty($categoryString)) {
-                $category = Mage::getModel('nosto_tagging/meta_category');
-                try {
-                    $category->setPath($categoryString);
-                } catch (NostoInvalidArgumentException $e) {
-                    $category->setPath('');
-                }
-                $data[] = $category;
+                $data[] = $categoryString;
             }
         }
 
@@ -607,10 +604,6 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
      */
     public function setName($name)
     {
-        if (!is_string($name) || empty($name)) {
-            throw new NostoInvalidArgumentException(sprintf('%s.name must be a non-empty string value.', __CLASS__));
-        }
-
         $this->_name = $name;
     }
 
@@ -619,7 +612,6 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
      *
      * @param string $imageUrl the image url.
      *
-     * @throws NostoInvalidArgumentException
      */
     public function setImageUrl($imageUrl)
     {
@@ -631,7 +623,6 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
      *
      * @param string $thumbUrl the thumbnail url.
      *
-     * @throws NostoInvalidArgumentException
      */
     public function setThumbUrl($thumbUrl)
     {
@@ -641,9 +632,9 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     /**
      * Sets the price of the product including possible discounts and taxes.
      *
-     * @param NostoPrice $price the price.
+     * @param float $price the price.
      */
-    public function setPrice(NostoPrice $price)
+    public function setPrice($price)
     {
         $this->_price = $price;
     }
@@ -651,9 +642,9 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     /**
      * Sets the list price of the product without discounts but incl taxes.
      *
-     * @param NostoPrice $listPrice the list price.
+     * @param float $listPrice the list price.
      */
-    public function setListPrice(NostoPrice $listPrice)
+    public function setListPrice($listPrice)
     {
         $this->_listPrice = $listPrice;
     }
@@ -661,9 +652,9 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     /**
      * Sets the currency code (ISO 4217) for the product.
      *
-     * @param NostoCurrencyCode $currencyCode the product price currency.
+     * @param string $currencyCode the product price currency.
      */
-    public function setCurrency(NostoCurrencyCode $currencyCode)
+    public function setCurrency($currencyCode)
     {
         $this->_currency = $currencyCode;
     }
@@ -672,9 +663,9 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
      * Sets the availability of the product,
      * i.e. if it is in stock or not.
      *
-     * @param NostoProductAvailability $availability the availability.
+     * @param string $availability InStock / OutOfStock
      */
-    public function setAvailability(NostoProductAvailability $availability)
+    public function setAvailability($availability)
     {
         $this->_availability = $availability;
     }
@@ -684,14 +675,10 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
      *
      * @param array $tags the tags.
      *
-     * @throws NostoInvalidArgumentException
      */
     public function setTag1(array $tags)
     {
-        $this->_tags['tag1'] = array();
-        foreach ($tags as $tag) {
-            $this->addTag1($tag);
-        }
+        $this->_tags['tag1'] = $tags;
     }
 
     /**
@@ -699,14 +686,9 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
      *
      * @param string $tag the tag to add.
      *
-     * @throws NostoInvalidArgumentException
      */
     public function addTag1($tag)
     {
-        if (!is_string($tag) || empty($tag)) {
-            throw new NostoInvalidArgumentException(sprintf('%s.tag1 must be an array of non-empty string values.', __CLASS__));
-        }
-
         $this->_tags['tag1'][] = $tag;
     }
 
@@ -715,14 +697,10 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
      *
      * @param array $tags the tags.
      *
-     * @throws NostoInvalidArgumentException
      */
     public function setTag2(array $tags)
     {
-        $this->_tags['tag2'] = array();
-        foreach ($tags as $tag) {
-            $this->addTag2($tag);
-        }
+        $this->_tags['tag2'] = $tags;
     }
 
     /**
@@ -734,10 +712,6 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
      */
     public function addTag2($tag)
     {
-        if (!is_string($tag) || empty($tag)) {
-            throw new NostoInvalidArgumentException(sprintf('%s.tag2 must be an array of non-empty string values.', __CLASS__));
-        }
-
         $this->_tags['tag2'][] = $tag;
     }
 
@@ -750,10 +724,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
      */
     public function setTag3(array $tags)
     {
-        $this->_tags['tag3'] = array();
-        foreach ($tags as $tag) {
-            $this->addTag3($tag);
-        }
+        $this->_tags['tag3'] = $tags;
     }
 
     /**
@@ -765,10 +736,6 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
      */
     public function addTag3($tag)
     {
-        if (!is_string($tag) || empty($tag)) {
-            throw new NostoInvalidArgumentException(sprintf('%s.tag3 must be an array of non-empty string values.', __CLASS__));
-        }
-
         $this->_tags['tag3'][] = $tag;
     }
 
@@ -777,14 +744,10 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
      *
      * @param array $categories the categories.
      *
-     * @throws NostoInvalidArgumentException
      */
     public function setCategories(array $categories)
     {
-        $this->_categories = array();
-        foreach ($categories as $category) {
-            $this->addCategory($category);
-        }
+        $this->_categories = $categories;
     }
 
     /**
@@ -792,9 +755,8 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
      *
      * @param string $category the category to add.
      *
-     * @throws NostoInvalidArgumentException
      */
-    public function addCategory(Nosto_Tagging_Model_Meta_Category $category)
+    public function addCategory($category)
     {
         $this->_categories[] = $category;
     }
@@ -804,14 +766,9 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
      *
      * @param string $description the description.
      *
-     * @throws NostoInvalidArgumentException
      */
     public function setDescription($description)
     {
-        if (!is_string($description) || empty($description)) {
-            throw new NostoInvalidArgumentException(sprintf('%s.description must be a non-empty string value.', __CLASS__));
-        }
-
         $this->_description = $description;
     }
 
@@ -820,23 +777,18 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
      *
      * @param string $brand the brand name.
      *
-     * @throws NostoInvalidArgumentException
      */
     public function setBrand($brand)
     {
-        if (!is_string($brand) || empty($brand)) {
-            throw new NostoInvalidArgumentException(sprintf('%s.brand must be a non-empty string value.', __CLASS__));
-        }
-
         $this->_brand = $brand;
     }
 
     /**
      * Sets the product publication date in the shop.
      *
-     * @param NostoDate $datePublished the published date.
+     * @param string $datePublished the published date.
      */
-    public function setDatePublished(NostoDate $datePublished)
+    public function setDatePublished($datePublished)
     {
         $this->_datePublished = $datePublished;
     }
@@ -901,5 +853,4 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         }
         return implode(' ', $descriptions);
     }
-
 }

@@ -141,4 +141,17 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
             $store->getDefaultCurrency()->getCode()
         );
     }
+
+    /**
+     * Formats price into Nosto format, e.g. 1000.99.
+     *
+     * @param string|int|float $price the price to format.
+     *
+     * @return string
+     */
+    public function getFormattedPrice($price)
+    {
+        return number_format($price, 2, '.', '');
+    }
+
 }

@@ -107,6 +107,8 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
             if ($currentPage > $products->getLastPageNumber()) {
                 $products = array();
             }
+            /** @var Nosto_Tagging_Helper_Product_Converter $converter */
+            $converter = Mage::helper('nosto_tagging/product_converter');
             $collection = new NostoExportCollectionProduct();
             foreach ($products as $product) {
                 /** @var Mage_Catalog_Model_Product $product */
@@ -114,7 +116,7 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
                 $meta = Mage::getModel('nosto_tagging/meta_product');
                 try {
                     $meta->loadData($product);
-                    $collection[] = $meta;
+                    $collection[] = $converter->convertToTypedObject($meta);
                 } catch (NostoException $e) {
                     Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
                 }

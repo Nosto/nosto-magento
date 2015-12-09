@@ -160,9 +160,8 @@ class Nosto_Tagging_Model_Meta_Product_Price_Variation extends Nosto_Tagging_Mod
         return $this->_availability;
     }
 
-
     /**
-     * Sets the availability for the price variation
+     * Sets the availability for the price variation.
      *
      * @param NostoProductAvailability $availability
      */
@@ -172,7 +171,7 @@ class Nosto_Tagging_Model_Meta_Product_Price_Variation extends Nosto_Tagging_Mod
     }
 
     /**
-     * Sets the currency code for the variation
+     * Sets the currency code (ISO 4217) for the variation.
      *
      * @param NostoCurrencyCode $currency
      */
@@ -192,6 +191,8 @@ class Nosto_Tagging_Model_Meta_Product_Price_Variation extends Nosto_Tagging_Mod
     }
 
     /**
+     * Sets the price for the variation
+     *
      * @param NostoPrice $listPrice
      */
     public function setListPrice(NostoPrice $listPrice)
@@ -200,10 +201,75 @@ class Nosto_Tagging_Model_Meta_Product_Price_Variation extends Nosto_Tagging_Mod
     }
 
     /**
+     * Sets the list price for the variation
+     *
      * @param NostoPrice $price
      */
     public function setPrice(NostoPrice $price)
     {
         $this->_price = $price;
+    }
+
+    /**
+     * Returns the formatted price of the product
+     *
+     * @param NostoPriceFormat $priceFormat
+     * @return string
+     */
+    public function getFormattedPrice(NostoPriceFormat $priceFormat)
+    {
+        if ($this->_price instanceof NostoPrice) {
+            $priceFormatter = Nosto::formatter('price');
+            return $priceFormatter->format($this->_price, $priceFormat);
+        }
+
+        return '';
+    }
+
+    /**
+     * Returns the formatted list price of the product
+     *
+     * @param NostoPriceFormat $priceFormat
+     * @return string
+     */
+    public function getFormattedListPrice(NostoPriceFormat $priceFormat)
+    {
+        if ($this->_listPrice instanceof NostoPrice) {
+            $priceFormatter = Nosto::formatter('price');
+
+            return $priceFormatter->format($this->_listPrice, $priceFormat);
+        }
+
+        return '';
+    }
+
+    /**
+     * Returns the currency code (ISO 4217) of the variation is sold in.
+     *
+     * @return string the currency ISO code.
+     */
+    public function getCurrencyCode()
+    {
+        if ($this->_currency instanceof NostoCurrencyCode) {
+
+            return $this->_currency->getCode();
+        }
+
+        return '';
+    }
+
+    /**
+     * Returns the availability of the price variation, i.e. if it is in stock or not.
+     *
+     * @return string InStock/OutOfStock.
+     */
+    public function getAvailabilityString()
+    {
+        if ($this->_availability instanceof NostoProductAvailability) {
+
+            return $this->_availability->getAvailability();
+        }
+
+        return '';
     }
 }

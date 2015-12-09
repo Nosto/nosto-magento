@@ -35,7 +35,6 @@
 $order = $this->getLastOrder();
 $helper = Mage::helper('nosto_tagging');
 $priceFormatter = Nosto::formatter('price');
-$priceFormat = new NostoPriceFormat(2, '.', '');
 ?>
 
 <?php if ($order->getPurchasedItems() !== array()): ?>
@@ -67,7 +66,7 @@ $priceFormat = new NostoPriceFormat(2, '.', '');
             <span class="product_id"><?php echo $helper->escapeHtml($item->getProductId()); ?></span>
             <span class="quantity"><?php echo (int)$item->getQuantity(); ?></span>
             <span class="name"><?php echo $helper->escapeHtml($item->getName()); ?></span>
-            <span class="unit_price"><?php echo $priceFormatter->format($item->getUnitPrice(), $priceFormat); ?></span>
+            <span class="unit_price"><?php echo $priceFormatter->format($item->getUnitPrice()); ?></span>
             <span class="price_currency_code"><?php echo $item->getCurrency()->getCode(); ?></span>
         </div>
         <?php endforeach; ?>
