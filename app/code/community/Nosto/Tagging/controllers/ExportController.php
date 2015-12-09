@@ -69,7 +69,7 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
                     $meta->loadData($order);
                     $collection[] = $meta;
                 } catch (NostoException $e) {
-                    Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
+                    Mage::log("\n" . $e, Zend_Log::ERR, Nosto_Tagging_Model_Base::LOG_FILE_NAME);
                 }
             }
             $this->export($collection);
@@ -116,9 +116,10 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
                 $meta = Mage::getModel('nosto_tagging/meta_product');
                 try {
                     $meta->loadData($product);
-                    $collection[] = $converter->convertToTypedObject($meta);
+                    $convertedMeta = $converter->convertToTypedObject($meta);
+                    $collection[] = $convertedMeta;
                 } catch (NostoException $e) {
-                    Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
+                    Mage::log("\n" . $e, Zend_Log::ERR, Nosto_Tagging_Model_Base::LOG_FILE_NAME);
                 }
             }
             $this->export($collection);

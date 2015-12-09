@@ -57,6 +57,11 @@ class Nosto_Tagging_Model_Meta_Product_Typed extends Nosto_Tagging_Model_Base im
     protected $_imageUrl;
 
     /**
+     * @var string the absolute url the one of the product thumbnails in frontend.
+     */
+    protected $_thumbUrl;
+
+    /**
      * @var NostoPrice the product price including possible discounts and taxes.
      */
     protected $_price;
@@ -70,11 +75,6 @@ class Nosto_Tagging_Model_Meta_Product_Typed extends Nosto_Tagging_Model_Base im
      * @var NostoCurrencyCode the currency code the product is sold in.
      */
     protected $_currency;
-
-    /**
-     * @var NostoPriceVariation the price variation currently in use.
-     */
-    protected $_priceVariation;
 
     /**
      * @var NostoProductAvailability the availability of the product.
@@ -121,6 +121,11 @@ class Nosto_Tagging_Model_Meta_Product_Typed extends Nosto_Tagging_Model_Base im
     protected $_priceVariations = array();
 
     /**
+     * @var string|int the variation currently in use.
+     */
+    protected $_variationId;
+
+    /**
      * @inheritdoc
      */
     protected function _construct()
@@ -129,6 +134,9 @@ class Nosto_Tagging_Model_Meta_Product_Typed extends Nosto_Tagging_Model_Base im
     }
 
     /**
+     * Sets the availability of the product,
+     * i.e. if it is in stock or not.
+     *
      * @param NostoProductAvailability $availability
      */
     public function setAvailability($availability)
@@ -137,6 +145,8 @@ class Nosto_Tagging_Model_Meta_Product_Typed extends Nosto_Tagging_Model_Base im
     }
 
     /**
+     * Sets the product brand name.
+     *
      * @param string $brand
      */
     public function setBrand($brand)
@@ -145,6 +155,8 @@ class Nosto_Tagging_Model_Meta_Product_Typed extends Nosto_Tagging_Model_Base im
     }
 
     /**
+     * Sets the categories for the product.
+     *
      * @param array $categories
      */
     public function setCategories($categories)
@@ -153,6 +165,18 @@ class Nosto_Tagging_Model_Meta_Product_Typed extends Nosto_Tagging_Model_Base im
     }
 
     /**
+     * Adds a category to the product
+     *
+     * @param NostoCategory $category
+     */
+    public function addCategory(NostoCategory $category)
+    {
+        $this->_categories[] = $category;
+    }
+
+    /**
+     * Sets the currency code for the product.
+     *
      * @param NostoCurrencyCode $currency
      */
     public function setCurrency($currency)
@@ -161,6 +185,8 @@ class Nosto_Tagging_Model_Meta_Product_Typed extends Nosto_Tagging_Model_Base im
     }
 
     /**
+     * Sets the product publication date in the shop.
+     *
      * @param NostoDate $datePublished
      */
     public function setDatePublished($datePublished)
@@ -169,6 +195,8 @@ class Nosto_Tagging_Model_Meta_Product_Typed extends Nosto_Tagging_Model_Base im
     }
 
     /**
+     * Sets the product description.
+     *
      * @param string $description
      */
     public function setDescription($description)
@@ -177,6 +205,8 @@ class Nosto_Tagging_Model_Meta_Product_Typed extends Nosto_Tagging_Model_Base im
     }
 
     /**
+     * Sets the absolute url the one of the product images in the shop.
+     *
      * @param string $imageUrl
      */
     public function setImageUrl($imageUrl)
@@ -185,6 +215,18 @@ class Nosto_Tagging_Model_Meta_Product_Typed extends Nosto_Tagging_Model_Base im
     }
 
     /**
+     * Sets the absolute url the one of the product thumbnails in the shop.
+     *
+     * @param string $thumbUrl
+     */
+    public function setThumbUrl($thumbUrl)
+    {
+        $this->_thumbUrl = $thumbUrl;
+    }
+
+    /**
+     * Sets the list price of the product without discounts but incl taxes.
+     *
      * @param NostoPrice $listPrice
      */
     public function setListPrice($listPrice)
@@ -193,6 +235,8 @@ class Nosto_Tagging_Model_Meta_Product_Typed extends Nosto_Tagging_Model_Base im
     }
 
     /**
+     * Sets the name of the product.
+     *
      * @param string $name
      */
     public function setName($name)
@@ -201,6 +245,8 @@ class Nosto_Tagging_Model_Meta_Product_Typed extends Nosto_Tagging_Model_Base im
     }
 
     /**
+     * Sets the price of the product including possible discounts and taxes.
+     *
      * @param NostoPrice $price
      */
     public function setPrice($price)
@@ -209,14 +255,8 @@ class Nosto_Tagging_Model_Meta_Product_Typed extends Nosto_Tagging_Model_Base im
     }
 
     /**
-     * @param NostoPriceVariation $priceVariation
-     */
-    public function setPriceVariation($priceVariation)
-    {
-        $this->_priceVariation = $priceVariation;
-    }
-
-    /**
+     * Sets the price variations that exist for this product.
+     *
      * @param Nosto_Tagging_Model_Meta_Product_Price_Variation[] $priceVariations
      */
     public function setPriceVariations($priceVariations)
@@ -225,6 +265,8 @@ class Nosto_Tagging_Model_Meta_Product_Typed extends Nosto_Tagging_Model_Base im
     }
 
     /**
+     * Sets the short description for this product.
+     *
      * @param string $shortDescription
      */
     public function setShortDescription($shortDescription)
@@ -232,15 +274,73 @@ class Nosto_Tagging_Model_Meta_Product_Typed extends Nosto_Tagging_Model_Base im
         $this->_shortDescription = $shortDescription;
     }
 
+
     /**
-     * @param array $tags
+     * Sets all tags to the `tag1` field.
+     *
+     * @param array $tags the tags.
+     *
      */
-    public function setTags($tags)
+    public function setTag1(array $tags)
     {
-        $this->_tags = $tags;
+        $this->_tags['tag1'] = $tags;
     }
 
     /**
+     * Adds a new tag to the `tag1` field.
+     *
+     * @param string $tag the tag to add.
+     *
+     */
+    public function addTag1($tag)
+    {
+        $this->_tags['tag1'][] = $tag;
+    }
+
+    /**
+     * Sets all tags to the `tag2` field.
+     *
+     * @param array $tags the tags.
+     *
+     */
+    public function setTag2(array $tags)
+    {
+        $this->_tags['tag2'] = $tags;
+    }
+
+    /**
+     * Adds a new tag to the `tag2` field.
+     *
+     * @param string $tag the tag to add.
+     */
+    public function addTag2($tag)
+    {
+        $this->_tags['tag2'][] = $tag;
+    }
+
+    /**
+     * Sets all the tags to the `tag3` field.
+     *
+     * @param array $tags the tags.
+     */
+    public function setTag3(array $tags)
+    {
+        $this->_tags['tag3'] = $tags;
+    }
+
+    /**
+     * Adds a new tag to the `tag3` field.
+     *
+     * @param string $tag the tag to add.
+     */
+    public function addTag3($tag)
+    {
+        $this->_tags['tag3'][] = $tag;
+    }
+
+    /**
+     * Sets the absolute url to the product page of the product in the shop.
+     *
      * @param string $url
      */
     public function setUrl($url)
@@ -305,7 +405,7 @@ class Nosto_Tagging_Model_Meta_Product_Typed extends Nosto_Tagging_Model_Base im
      */
     public function getThumbUrl()
     {
-        return null;
+        return $this->_thumbUrl;
     }
 
     /**
@@ -345,9 +445,7 @@ class Nosto_Tagging_Model_Meta_Product_Typed extends Nosto_Tagging_Model_Base im
      */
     public function getPriceVariationId()
     {
-        return !is_null($this->_priceVariation)
-            ? $this->_priceVariation->getId()
-            : null;
+        return $this->_variationId;
     }
 
     /**
@@ -467,4 +565,15 @@ class Nosto_Tagging_Model_Meta_Product_Typed extends Nosto_Tagging_Model_Base im
     {
         return $this->getPriceVariations();
     }
+
+    /**
+     * Sets the tags for a product
+     *
+     * @param array $tags
+     */
+    public function setTags($tags)
+    {
+        $this->_tags = $tags;
+    }
+
 }

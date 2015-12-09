@@ -113,7 +113,7 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
             $service->delete($account);
         } catch (NostoException $e) {
             // Failures are logged but not shown to the user.
-            Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
+            Mage::log("\n" . $e, Zend_Log::ERR, Nosto_Tagging_Model_Base::LOG_FILE_NAME);
         }
 
         return true;
@@ -231,7 +231,7 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
             $service = new NostoServiceCurrencyExchangeRate($account);
             return $service->update($collection);
         } catch (NostoException $e) {
-            Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
+            Mage::log("\n" . $e, Zend_Log::ERR, Nosto_Tagging_Model_Base::LOG_FILE_NAME);
         }
 
         return false;
@@ -255,7 +255,7 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
             $service = new NostoServiceAccount();
             return $service->update($account, $this->getMetaData($store));
         } catch (NostoException $e) {
-            Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
+            Mage::log("\n" . $e, Zend_Log::ERR, Nosto_Tagging_Model_Base::LOG_FILE_NAME);
         }
 
         return false;

@@ -110,7 +110,7 @@ class Nosto_Tagging_Model_Observer
                     $service->addProduct($converter->convertToTypedObject($model));
                     $service->upsert();
                 } catch (NostoException $e) {
-                    Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
+                    Mage::log("\n" . $e, Zend_Log::ERR, Nosto_Tagging_Model_Base::LOG_FILE_NAME);
                 }
             }
         }
@@ -150,11 +150,10 @@ class Nosto_Tagging_Model_Observer
 
                 try {
                     $service = new NostoServiceProduct($account);
-                    // todo: the conversion here is only for the "productId", so make sure the converter can handle null values for anything else.
                     $service->addProduct($converter->convertToTypedObject($model));
                     $service->delete();
                 } catch (NostoException $e) {
-                    Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
+                    Mage::log("\n" . $e, Zend_Log::ERR, Nosto_Tagging_Model_Base::LOG_FILE_NAME);
                 }
             }
         }
@@ -191,7 +190,7 @@ class Nosto_Tagging_Model_Observer
 					$service->confirm($order, $customerId);
                 }
             } catch (NostoException $e) {
-                Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
+                Mage::log("\n" . $e, Zend_Log::ERR, Nosto_Tagging_Model_Base::LOG_FILE_NAME);
             }
         }
 

@@ -119,7 +119,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base
     protected $_brand;
 
     /**
-     * @var NostoDate the product publication date in the shop.
+     * @var string the product publication date in the shop.
      */
     protected $_datePublished;
 
@@ -194,9 +194,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base
         }
 
         if ($product->hasData('created_at')) {
-            if (($timestamp = strtotime($product->getData('created_at')))) {
-                $this->setDatePublished(new NostoDate($timestamp));
-            }
+            $this->setDatePublished($product->getData('created_at'));
         }
 
         if ($helper->isMultiCurrencyMethodPriceVariation($store)) {
@@ -587,8 +585,6 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base
      * Sets the absolute url to the product page of the product in the shop.
      *
      * @param string $url the URL.
-     *
-     * @throws NostoInvalidArgumentException
      */
     public function setUrl($url)
     {
@@ -599,8 +595,6 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base
      * Sets the name of the product.
      *
      * @param string $name the name.
-     *
-     * @throws NostoInvalidArgumentException
      */
     public function setName($name)
     {
@@ -622,7 +616,6 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base
      * Sets the absolute url the one of the product thumbnails in the shop.
      *
      * @param string $thumbUrl the thumbnail url.
-     *
      */
     public function setThumbUrl($thumbUrl)
     {
@@ -671,7 +664,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base
     }
 
     /**
-     * Sets all the tags to the `tag1` field.
+     * Sets all tags to the `tag1` field.
      *
      * @param array $tags the tags.
      *
@@ -693,7 +686,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base
     }
 
     /**
-     * Sets all the tags to the `tag2` field.
+     * Sets all tags to the `tag2` field.
      *
      * @param array $tags the tags.
      *
@@ -707,8 +700,6 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base
      * Adds a new tag to the `tag2` field.
      *
      * @param string $tag the tag to add.
-     *
-     * @throws NostoInvalidArgumentException
      */
     public function addTag2($tag)
     {
@@ -719,8 +710,6 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base
      * Sets all the tags to the `tag3` field.
      *
      * @param array $tags the tags.
-     *
-     * @throws NostoInvalidArgumentException
      */
     public function setTag3(array $tags)
     {
@@ -731,8 +720,6 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base
      * Adds a new tag to the `tag3` field.
      *
      * @param string $tag the tag to add.
-     *
-     * @throws NostoInvalidArgumentException
      */
     public function addTag3($tag)
     {
@@ -852,5 +839,15 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base
             $descriptions[] = $this->_description;
         }
         return implode(' ', $descriptions);
+    }
+
+    /**
+     * Sets the tags for a product
+     *
+     * @param array $tags
+     */
+    public function setTags($tags)
+    {
+        $this->_tags = $tags;
     }
 }

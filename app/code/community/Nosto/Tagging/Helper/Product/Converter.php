@@ -41,6 +41,8 @@
 class Nosto_Tagging_Helper_Product_Converter extends Mage_Core_Helper_Abstract
 {
     /**
+     * Converts Nosto_Tagging_Model_Meta_Product into strongly typed Nosto_Tagging_Model_Meta_Product_Typed object
+     *
      * @param Nosto_Tagging_Model_Meta_Product $product
      *
      * @return Nosto_Tagging_Model_Meta_Product_Typed
@@ -54,17 +56,34 @@ class Nosto_Tagging_Helper_Product_Converter extends Mage_Core_Helper_Abstract
         $object->setProductId($product->getProductId());
         $object->setName($product->getName());
         $object->setImageUrl($product->getImageUrl());
-        $object->setPrice(new NostoPrice($product->getPrice()));
-        $object->setListPrice(new NostoPrice($product->getListPrice()));
-        $object->setCurrency(new NostoCurrencyCode($product->getCurrency()));
-        $object->setAvailability($product->getAvailability());
-        $object->setCategories($product->getCategories());
+        if ($product->getPrice()) {
+            $object->setPrice(new NostoPrice($product->getPrice()));
+        }
+        if ($product->getListPrice()) {
+            $object->setListPrice(new NostoPrice($product->getListPrice()));
+        }
+        if ($product->getCurrency()) {
+            $object->setCurrency(new NostoCurrencyCode($product->getCurrency()));
+        }
+        if ($product->getAvailability()) {
+            $object->setAvailability(new NostoProductAvailability($product->getAvailability()));
+        }
+        foreach ($product->getCategories() as $categoryString) {
+            $category = new NostoCategory($categoryString);
+            $object->addCategory($category);
+        }
+        $object->setThumbUrl($product->getThumbUrl());
         $object->setShortDescription($product->getShortDescription());
         $object->setDescription($product->getDescription());
         $object->setBrand($product->getBrand());
         $object->setTags($product->getTags());
-        $object->setDatePublished(new NostoDate($product->getDatePublished()));
-
+        if ($product->getDatePublished()) {
+            $object->setDatePublished(new NostoDate(strtotime($product->getDatePublished())));
+        }
+        if (!empty($product->getVariations())) {
+            $object->setPriceVariations($product->getPriceVariations());
+        }
+        $object->setVariationId($product->getVariationId());
         // todo: new fields like price variations etc??
         // in order to be customizable by merchant they need to be added to the `Nosto_Tagging_Model_Meta_Product` also.
 
@@ -72,6 +91,8 @@ class Nosto_Tagging_Helper_Product_Converter extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Converts typed Nosto_Tagging_Model_Meta_Product_Typed into Nosto_Tagging_Model_Meta_Product that uses only scalar attributes
+     *
      * @param Nosto_Tagging_Model_Meta_Product_Typed $product
      *
      * @return Nosto_Tagging_Model_Meta_Product
@@ -80,7 +101,8 @@ class Nosto_Tagging_Helper_Product_Converter extends Mage_Core_Helper_Abstract
     {
         $object = new Nosto_Tagging_Model_Meta_Product();
 
-        // todo: fill $object with primitive values.
+
+        // todo: fill $object with typed values.
         $object->setUrl($product->getUrl());
         $object->setProductId($product->getProductId());
         $object->setName($product->getName());
@@ -89,16 +111,21 @@ class Nosto_Tagging_Helper_Product_Converter extends Mage_Core_Helper_Abstract
         $object->setListPrice($product->getListPrice()->getPrice());
         $object->setCurrency($product->getCurrency()->getCode());
         $object->setAvailability($product->getAvailability()->getAvailability());
-        $object->setCategories($product->getCategories());
+        foreach ($product->getCategories() as $category) {
+            $object->addCategory($category->getPath());
+        }
+        $object->setThumbUrl($product->getThumbUrl());
         $object->setShortDescription($product->getShortDescription());
         $object->setDescription($product->getDescription());
         $object->setBrand($product->getBrand());
         $object->setTags($product->getTags());
-        $object->setDatePublished(date('Y-m-d', $product->getDatePublished()->getTimestamp()));
-
+        $object->setDatePublished(date(NostoDateFormat::YMD,$product->getDatePublished()->getTimestamp()));
+        if (!empty($product->getVariations())) {
+            $object->setPriceVariations($product->getPriceVariations());
+        }
+        $object->setVariationId($product->getVariationId());
         // todo: new fields like price variations etc??
         // in order to be customizable by merchant they need to be added to the `Nosto_Tagging_Model_Meta_Product` also.
-
         return $object;
     }
 }

@@ -91,6 +91,11 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     protected $_useCurrencyExchangeRates = false;
 
     /**
+     * @var bool if the store is set to use multi variants for currencies or pricing
+     */
+    private $_useMultiVariants = false;
+
+    /**
      * @var string the API token used to identify an account creation.
      */
     protected $_signUpApiToken = 'YBDKYwSqTCzSsU8Bwbg4im2pkHMcgTy9cCX7vevjJwON1UISJIwXOLMM0a8nZY7h';
@@ -145,18 +150,24 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
         $billing->loadData($store);
         $this->_billing = $billing;
 
-        $currencyCodes = $store->getAvailableCurrencyCodes(true);
-        if (is_array($currencyCodes) && count($currencyCodes) > 0) {
-            /** @var Nosto_Tagging_Helper_Currency $currencyHelper */
-            $currencyHelper = Mage::helper('nosto_tagging/currency');
-            foreach ($currencyCodes as $currencyCode) {
-                $this->_currencies[$currencyCode] = $currencyHelper
-                    ->getCurrencyObject($storeLocale, $currencyCode);
-            }
-            if (count($currencyCodes) > 1) {
-                $this->_defaultPriceVariationId = $store->getBaseCurrencyCode();
-                $this->_useCurrencyExchangeRates = $helper
-                    ->isMultiCurrencyMethodExchangeRate($store);
+        if ($helper->isMultiCurrencyMethodPriceVariation($store)) {
+            $this->_useMultiVariants = true;
+            $this->_useCurrencyExchangeRates = false;
+            $this->_defaultPriceVariationId
+                = $store->getBaseCurrencyCode();
+        } else {
+            $currencyCodes = $store->getAvailableCurrencyCodes(true);
+            if (is_array($currencyCodes) && count($currencyCodes) > 0) {
+                /** @var Nosto_Tagging_Helper_Currency $currencyHelper */
+                $currencyHelper = Mage::helper('nosto_tagging/currency');
+                foreach ($currencyCodes as $currencyCode) {
+                    $this->_currencies[$currencyCode] = $currencyHelper
+                        ->getCurrencyObject($storeLocale, $currencyCode);
+                }
+                if (count($currencyCodes) > 1) {
+                    $this->_useCurrencyExchangeRates = $helper
+                        ->isMultiCurrencyMethodExchangeRate($store);
+                }
             }
         }
     }
@@ -294,6 +305,20 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     {
         return $this->_useCurrencyExchangeRates;
     }
+
+    /**
+     * Returns if the multi variant approach should be used for handling
+     * multiple currencies or in pricing. Please note that only tells if the
+     * setting is active. This will not take acconut whether there are variants
+     * configured or not.
+     *
+     * @return boolean if multi variants are used
+     */
+    public function getUseMultiVariants()
+    {
+        return $this->_useMultiVariants;
+    }
+
 
     /**
      * The API token used to identify an account creation.
