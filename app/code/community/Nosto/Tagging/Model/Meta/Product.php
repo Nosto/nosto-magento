@@ -484,7 +484,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base
     /**
      * Returns the categories the product is located in.
      *
-     * @return array list of Nosto_Tagging_Meta_Category objects.
+     * @return array list of NostoCategory objects.
      */
     public function getCategories()
     {
