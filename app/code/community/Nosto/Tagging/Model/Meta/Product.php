@@ -37,8 +37,6 @@
 class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base
 {
 
-    // todo: convert this model to deal with primitive values only.
-
     /**
      * Product "can be directly added to cart" tag string.
      */

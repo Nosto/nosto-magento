@@ -50,8 +50,6 @@ class Nosto_Tagging_Helper_Product_Converter extends Mage_Core_Helper_Abstract
     public function convertToTypedObject(Nosto_Tagging_Model_Meta_Product $product)
     {
         $object = new Nosto_Tagging_Model_Meta_Product_Typed();
-
-        // todo: fill $object with typed values.
         $object->setUrl($product->getUrl());
         $object->setProductId($product->getProductId());
         $object->setName($product->getName());
@@ -84,8 +82,6 @@ class Nosto_Tagging_Helper_Product_Converter extends Mage_Core_Helper_Abstract
             $object->setPriceVariations($product->getPriceVariations());
         }
         $object->setVariationId($product->getVariationId());
-        // todo: new fields like price variations etc??
-        // in order to be customizable by merchant they need to be added to the `Nosto_Tagging_Model_Meta_Product` also.
 
         return $object;
     }
@@ -100,9 +96,6 @@ class Nosto_Tagging_Helper_Product_Converter extends Mage_Core_Helper_Abstract
     public function convertToPrimitiveObject(Nosto_Tagging_Model_Meta_Product_Typed $product)
     {
         $object = new Nosto_Tagging_Model_Meta_Product();
-
-
-        // todo: fill $object with typed values.
         $object->setUrl($product->getUrl());
         $object->setProductId($product->getProductId());
         $object->setName($product->getName());
@@ -124,8 +117,7 @@ class Nosto_Tagging_Helper_Product_Converter extends Mage_Core_Helper_Abstract
             $object->setPriceVariations($product->getPriceVariations());
         }
         $object->setVariationId($product->getVariationId());
-        // todo: new fields like price variations etc??
-        // in order to be customizable by merchant they need to be added to the `Nosto_Tagging_Model_Meta_Product` also.
+
         return $object;
     }
 }
