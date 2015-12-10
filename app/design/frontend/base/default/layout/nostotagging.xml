@@ -275,4 +275,31 @@
             </block>
         </reference>
     </catalogsearch_result_index>
+
+    <!-- 404 Not found page -->
+    <cms_index_noroute>
+        <reference name="content">
+            <block type="nosto_tagging/element" name="nosto.page.notfound1" after="-"
+                   template="nostotagging/element.phtml">
+                <action method="setData">
+                    <name>div_id</name>
+                    <value>notfound-nosto-1</value>
+                </action>
+            </block>
+            <block type="nosto_tagging/element" name="nosto.page.notfound2" after="-"
+                   template="nostotagging/element.phtml">
+                <action method="setData">
+                    <name>div_id</name>
+                    <value>notfound-nosto-2</value>
+                </action>
+            </block>
+            <block type="nosto_tagging/element" name="nosto.page.notfound3" after="-"
+                   template="nostotagging/element.phtml">
+                <action method="setData">
+                    <name>div_id</name>
+                    <value>notfound-nosto-3</value>
+                </action>
+            </block>
+        </reference>
+    </cms_index_noroute>
 </layout>
