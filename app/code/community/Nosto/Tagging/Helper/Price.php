@@ -154,4 +154,53 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         return number_format($price, 2, '.', '');
     }
 
+    /**
+     * If the store uses multiple currencies the prices are converted into
+     * base currency. Otherwise the given price is returned.
+     *
+     * @param float                 $basePrice The price of a product in base currency
+     * @param string                $currentCurrencyCode
+     * @param Mage_Core_Model_Store $store
+     * @return float
+     */
+    public function getTaggingPrice($basePrice, $currentCurrencyCode, Mage_Core_Model_Store $store)
+    {
+        $helper = Mage::helper('nosto_tagging');
+        if (
+            $helper->isMultiCurrencyMethodPriceVariation($store)
+            || $helper->isMultiCurrencyMethodExchangeRate($store)
+        )
+        {
+            $taggingPrice = $basePrice;
+        } else {
+            if ($currentCurrencyCode === $store->getBaseCurrencyCode()) {
+                $taggingPrice = $basePrice;
+            } else {
+                $taggingPrice = Mage::helper('directory')->currencyConvert(
+                    $basePrice,
+                    $store->getBaseCurrencyCode(),
+                    $currentCurrencyCode
+                );
+            }
+        }
+
+        return $taggingPrice;
+    }
+
+    public function getTaggingCurrencyCode($currentCurrencyCode, Mage_Core_Model_Store $store)
+    {
+        $helper = Mage::helper('nosto_tagging');
+
+        if (
+            $helper->isMultiCurrencyMethodPriceVariation($store)
+            || $helper->isMultiCurrencyMethodExchangeRate($store)
+        )
+        {
+            $taggingCurrencyCode = $store->getBaseCurrencyCode();
+        } else {
+            $taggingCurrencyCode = $currentCurrencyCode;
+        }
+
+        return $taggingCurrencyCode;
+    }
 }
