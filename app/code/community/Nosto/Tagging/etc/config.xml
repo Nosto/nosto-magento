@@ -157,6 +157,9 @@
         <nosto_tagging>
             <image_options>
                 <image_version>image</image_version>
+                <image_cached>image</image_cached>
+                <image_cached_width>200</image_cached_width>
+                <image_cached_height></image_cached_height>
             </image_options>
         </nosto_tagging>
     </default>
