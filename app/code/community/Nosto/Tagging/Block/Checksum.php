@@ -27,7 +27,7 @@
 
 /**
  * Nosto checksum block.
- * Adds meta-data to the HTML document for unifying a visitor.
+ * Adds meta-data to the HTML document for identifying the visitor.
  *
  * @category Nosto
  * @package  Nosto_Tagging
