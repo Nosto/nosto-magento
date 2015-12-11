@@ -236,4 +236,47 @@ class Nosto_Tagging_Model_Observer
             }
         }
     }
+
+    public function afterAccountUpdate(Varien_Event_Observer $observer)
+    {
+        /** @var Nosto_Tagging_Helper_Data $helper */
+        $helper = Mage::helper('nosto_tagging');
+        $observerData = $observer->getData();
+        if ($helper->isModuleEnabled() && !empty($observerData['store_ids'])) {
+            /** @var Nosto_Tagging_Helper_Account $accountHelper */
+            $accountHelper = Mage::helper('nosto_tagging/account');
+            foreach ($observerData['store_ids'] as $storeId) {
+                $store = Mage::app()->getStore($storeId);
+                if ($store instanceof Mage_Core_Model_Store === false) {
+                    Mage::log(
+                        sprintf(
+                            'Could not find store for id #%d in class %s',
+                            $storeId,
+                            __CLASS__
+                        ),
+                        Zend_Log::WARN,
+                        Nosto_Tagging_Model_Base::LOG_FILE_NAME
+                    );
+                    continue;
+                }
+                $account = $accountHelper->find($store);
+                if ($account instanceof NostoAccount === false) {
+                    continue;
+                }
+
+                if (!$accountHelper->updateAccount($account, $store)) {
+                    Mage::log(
+                        sprintf(
+                            'Failed sync account #%s for store #%s in class %s',
+                            $account->getName(),
+                            $store->getName(),
+                            __CLASS__
+                        ),
+                        Zend_Log::WARN,
+                        Nosto_Tagging_Model_Base::LOG_FILE_NAME
+                    );
+                }
+            }
+        }
+    }
 }
