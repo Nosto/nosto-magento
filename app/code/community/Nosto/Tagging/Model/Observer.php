@@ -237,12 +237,27 @@ class Nosto_Tagging_Model_Observer
         }
     }
 
+    /**
+     * Updates Nosto account settings via API to Nosto.
+     *
+     * Event 'nosto_account_settings_after_save'.
+     *
+     * store_ids to be updated must be passed in observers data attribute as an array ['store_ids' => [1,2,...n]]
+     *
+     * @param Varien_Event_Observer $observer
+     *
+     * @return Nosto_Tagging_Model_Observer
+     */
     public function afterAccountUpdate(Varien_Event_Observer $observer)
     {
         /** @var Nosto_Tagging_Helper_Data $helper */
         $helper = Mage::helper('nosto_tagging');
         $observerData = $observer->getData();
-        if ($helper->isModuleEnabled() && !empty($observerData['store_ids'])) {
+        if (
+            $helper->isModuleEnabled()
+            && !empty($observerData['store_ids'])
+            && is_array($observerData['store_ids'])
+        ) {
             /** @var Nosto_Tagging_Helper_Account $accountHelper */
             $accountHelper = Mage::helper('nosto_tagging/account');
             foreach ($observerData['store_ids'] as $storeId) {
@@ -278,5 +293,7 @@ class Nosto_Tagging_Model_Observer
                 }
             }
         }
+
+        return $this;
     }
 }

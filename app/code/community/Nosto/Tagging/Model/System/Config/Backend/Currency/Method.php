@@ -26,8 +26,8 @@
  */
 
 /**
- * Extension system setting backend model for saving the scheduled currency
- * exchange rate frequency, e.g. turns the setting into valid cron syntax.
+ * Extension system setting backend model for saving / syncronizing
+ * Nosto account settings to Nosto via API
  *
  * @category Nosto
  * @package  Nosto_Tagging
