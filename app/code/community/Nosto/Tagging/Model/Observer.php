@@ -238,47 +238,28 @@ class Nosto_Tagging_Model_Observer
     }
 
     /**
-     * Updates Nosto account settings via API to Nosto.
+     * Updates / synchronizes Nosto account settings via API to Nosto
+     * for each store that has Nosto account.
      *
-     * Event 'nosto_account_settings_after_save'.
-     *
-     * store_ids to be updated must be passed in observers data attribute as an array ['store_ids' => [1,2,...n]]
+     * Event 'admin_system_config_changed_section_nosto_tagging'.
      *
      * @param Varien_Event_Observer $observer
      *
      * @return Nosto_Tagging_Model_Observer
      */
-    public function afterAccountUpdate(Varien_Event_Observer $observer)
+    public function syncNostoAccount(Varien_Event_Observer $observer)
     {
         /** @var Nosto_Tagging_Helper_Data $helper */
         $helper = Mage::helper('nosto_tagging');
         $observerData = $observer->getData();
-        if (
-            $helper->isModuleEnabled()
-            && !empty($observerData['store_ids'])
-            && is_array($observerData['store_ids'])
-        ) {
+        if ($helper->isModuleEnabled()) {
             /** @var Nosto_Tagging_Helper_Account $accountHelper */
             $accountHelper = Mage::helper('nosto_tagging/account');
-            foreach ($observerData['store_ids'] as $storeId) {
-                $store = Mage::app()->getStore($storeId);
-                if ($store instanceof Mage_Core_Model_Store === false) {
-                    Mage::log(
-                        sprintf(
-                            'Could not find store for id #%d in class %s',
-                            $storeId,
-                            __CLASS__
-                        ),
-                        Zend_Log::WARN,
-                        Nosto_Tagging_Model_Base::LOG_FILE_NAME
-                    );
-                    continue;
-                }
+            foreach (Mage::app()->getStores() as $store) {
                 $account = $accountHelper->find($store);
                 if ($account instanceof NostoAccount === false) {
                     continue;
                 }
-
                 if (!$accountHelper->updateAccount($account, $store)) {
                     Mage::log(
                         sprintf(
