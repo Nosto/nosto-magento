@@ -475,7 +475,7 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
      * The payment provider used for placing the order, formatted according to
      * "[provider name] [provider version]".
      *
-     * @return string the payment provider.
+     * @return NostoPaymentProvider the payment provider.
      */
     public function getPaymentProvider()
     {

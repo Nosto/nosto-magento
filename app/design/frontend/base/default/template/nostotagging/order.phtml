@@ -46,7 +46,9 @@ $priceFormatter = Nosto::formatter('price');
         <span class="order_status_code"><?php echo $helper->escapeHtml($order->getOrderStatus()->getCode()); ?></span>
         <span class="order_status_label"><?php echo $helper->escapeHtml($order->getOrderStatus()->getLabel()); ?></span>
     <?php endif; ?>
-    <span class="payment_provider"><?php echo $helper->escapeHtml($order->getPaymentProvider()->getProvider()); ?></span>
+    <?php if ($order->getPaymentProvider()): ?>
+        <span class="payment_provider"><?php echo $helper->escapeHtml($order->getPaymentProvider()->getProvider()); ?></span>
+    <?php endif; ?>
     <div class="buyer">
         <?php if ($order->getBuyerInfo()): ?>
             <?php if ($order->getBuyerInfo()->getFirstName()): ?>
