@@ -80,7 +80,6 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
         if (Mage::helper('nosto_tagging')->isModuleEnabled()) {
             $pageSize = (int)$this->getRequest()->getParam('limit', 100);
             $currentOffset = (int)$this->getRequest()->getParam('offset', 0);
-            $ids = $this->getRequest()->getParam('id');
             $currentPage = ($currentOffset / $pageSize) + 1;
             /** @var Mage_Sales_Model_Resource_Order_Collection $orders */
             $orders = Mage::getModel('sales/order')->getCollection();
