@@ -79,7 +79,7 @@
                             <label>Currency Formats</label>
                             <comment>Preview of the current currency formats extracted from Magento. These can be synced to Nosto by clicking the "Update Now" button above. Syncing is only needed if the formats have changed in Magento since Nosto was installed.</comment>
                             <frontend_type>text</frontend_type>
-                            <frontend_model>nosto_tagging/adminhtml_system_config_account_currency_formats</frontend_model>
+                            <frontend_model>nosto_tagging/adminhtml_system_config_currency_formats</frontend_model>
                             <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
@@ -130,7 +130,7 @@
                             <label>Update Exchange Rates</label>
                             <comment>Push exchange rates to Nosto</comment>
                             <frontend_type>button</frontend_type>
-                            <frontend_model>nosto_tagging/adminhtml_system_config_multi_currency_exchange_rate_button</frontend_model>
+                            <frontend_model>nosto_tagging/adminhtml_system_config_updateExchangeRateButton</frontend_model>
                             <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
