@@ -62,6 +62,11 @@
         <reference name="after_body_start">
             <block type="core/template" name="nosto.currency" template="nostotagging/currency.phtml"/>
         </reference>
+
+        <!-- Tag visitor checksum -->
+        <reference name="after_body_start">
+            <block type="nosto_tagging/checksum" name="nosto.checksum" template="nostotagging/checksum.phtml"/>
+        </reference>
     </default>
 
     <!-- Tag category -->
@@ -280,4 +285,51 @@
             </block>
         </reference>
     </catalogsearch_result_index>
+
+    <!-- 404 Not found page -->
+    <cms_index_noroute>
+        <reference name="content">
+            <block type="nosto_tagging/element" name="nosto.page.notfound1" after="-"
+                   template="nostotagging/element.phtml">
+                <action method="setData">
+                    <name>div_id</name>
+                    <value>notfound-nosto-1</value>
+                </action>
+            </block>
+            <block type="nosto_tagging/element" name="nosto.page.notfound2" after="nosto.page.notfound1"
+                   template="nostotagging/element.phtml">
+                <action method="setData">
+                    <name>div_id</name>
+                    <value>notfound-nosto-2</value>
+                </action>
+            </block>
+            <block type="nosto_tagging/element" name="nosto.page.notfound3" after="nosto.page.notfound2"
+                   template="nostotagging/element.phtml">
+                <action method="setData">
+                    <name>div_id</name>
+                    <value>notfound-nosto-3</value>
+                </action>
+            </block>
+        </reference>
+    </cms_index_noroute>
+
+    <!-- Order confirmation page -->
+    <checkout_onepage_success>
+        <reference name="content">
+            <block type="nosto_tagging/element" name="nosto.page.orderconfirmation1" after="-"
+                   template="nostotagging/element.phtml">
+                <action method="setData">
+                    <name>div_id</name>
+                    <value>thankyou-nosto-1</value>
+                </action>
+            </block>
+            <block type="nosto_tagging/element" name="nosto.page.orderconfirmation2" after="nosto.page.orderconfirmation1"
+                   template="nostotagging/element.phtml">
+                <action method="setData">
+                    <name>div_id</name>
+                    <value>thankyou-nosto-2</value>
+                </action>
+            </block>
+        </reference>
+    </checkout_onepage_success>
 </layout>

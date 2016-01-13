@@ -39,15 +39,25 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      */
     const XML_PATH_INSTALLATION_ID = 'nosto_tagging/installation/id';
 
-	/**
-	 * Path to store config script direct include setting.
-	 */
-	const XML_PATH_DIRECT_INCLUDE = 'nosto_tagging/general/direct_include';
+    /**
+     * Path to store config script direct include setting.
+     */
+    const XML_PATH_DIRECT_INCLUDE = 'nosto_tagging/general/direct_include';
 
     /**
      * Path to store config product image version setting.
      */
     const XML_PATH_IMAGE_VERSION = 'nosto_tagging/image_options/image_version';
+
+    /**
+     * The name of the cookie where Nosto ID can be found.
+     */
+    const COOKIE_NAME = '2c_cId';
+
+    /**
+     * Algorithm used for visitor id
+     */
+    const VISITOR_HASH_ALGO = 'sha256';
 
     /**
      * Path to store config multi currency method setting.
@@ -232,15 +242,25 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         return (bool)Mage::getStoreConfig(self::XML_PATH_SCHEDULED_CURRENCY_EXCHANGE_RATE_UPDATE_ENABLED, $store);
     }
 
-	/**
-	 * Return if we should use the nosto script direct include.
-	 *
-	 * @param Mage_Core_Model_Store|null $store the store model or null.
-	 *
-	 * @return bool
-	 */
-	public function getUseScriptDirectInclude($store = null)
-	{
-		return (bool)Mage::getStoreConfig(self::XML_PATH_DIRECT_INCLUDE, $store);
-	}
+    /**
+     * Return if we should use the nosto script direct include.
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     *
+     * @return bool
+     */
+    public function getUseScriptDirectInclude($store = null)
+    {
+        return (bool)Mage::getStoreConfig(self::XML_PATH_DIRECT_INCLUDE, $store);
+    }
+
+    /**
+     * Return the Nosto cookie value
+     *
+     * @return string
+     */
+    public function getCookieId()
+    {
+        return Mage::getModel('core/cookie')->get(self::COOKIE_NAME);
+    }
 }

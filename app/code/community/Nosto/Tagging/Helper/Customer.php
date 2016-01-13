@@ -35,11 +35,6 @@
 class Nosto_Tagging_Helper_Customer extends Mage_Core_Helper_Abstract
 {
     /**
-     * @var string the name of the cookie where the Nosto ID can be found.
-     */
-    const COOKIE_NAME = '2c_cId';
-
-    /**
      * Gets the Nosto ID for an order model.
      * The Nosto ID represents the customer who placed to the order on Nosto's
      * side.
@@ -70,7 +65,7 @@ class Nosto_Tagging_Helper_Customer extends Mage_Core_Helper_Abstract
         $quoteId = ($cart->getQuote() !== null)
             ? $cart->getQuote()->getId()
             : false;
-        $nostoId = $cookie->get(self::COOKIE_NAME);
+        $nostoId = $cookie->get(Nosto_Tagging_Helper_Data::COOKIE_NAME);
         if (!empty($quoteId) && !empty($nostoId)) {
             /** @var Nosto_Tagging_Model_Customer $customer */
             $customer = Mage::getModel('nosto_tagging/customer')

@@ -26,29 +26,44 @@
  */
 
 /**
- * Product collection that extends the Magento catalog product collection.
- * Used to disable flat collections in product exports to Nosto.
+ * Nosto checksum block.
+ * Adds meta-data to the HTML document for identifying the visitor.
  *
  * @category Nosto
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Resource_Product_Collection extends Mage_Catalog_Model_Resource_Product_Collection
+class Nosto_Tagging_Block_Checksum extends Mage_Core_Block_Template
 {
     /**
-     * @inheritdoc
+     * Render HTML placeholder element for visitor's checksum.
+     *
+     * @return string
      */
-    public function isEnabledFlat()
+    protected function _toHtml()
     {
-        // Never use the flat collection.
-        return false;
+        if (!Mage::helper('nosto_tagging')->isModuleEnabled()
+            || !Mage::helper('nosto_tagging/account')->exists()
+        ) {
+            return '';
+        }
+        return parent::_toHtml();
     }
 
     /**
-     * Returns the name of model(s) in collection
+     * Return the checksum of visitor's cookie. If no cookie is found
+     * empty string will be returned.
+     *
      * @return string
      */
-    public function getModelName() {
-        return "nosto_tagging/product";
+    public function getChecksum()
+    {
+        $nostoHelper = Mage::helper('nosto_tagging');
+        $cookieId = $nostoHelper->getCookieId();
+        $checksum = '';
+        if ($cookieId) {
+            $checksum = hash(Nosto_Tagging_Helper_Data::VISITOR_HASH_ALGO, $cookieId);
+        }
+        return $checksum;
     }
 }
