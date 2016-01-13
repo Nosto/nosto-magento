@@ -272,6 +272,18 @@ class Nosto_Tagging_Model_Observer
                         Nosto_Tagging_Model_Base::LOG_FILE_NAME
                     );
                 }
+                if (!$accountHelper->updateCurrencyExchangeRates($account, $store)) {
+                    Mage::log(
+                        sprintf(
+                            'Failed sync currency rates #%s for store #%s in class %s',
+                            $account->getName(),
+                            $store->getName(),
+                            __CLASS__
+                        ),
+                        Zend_Log::WARN,
+                        Nosto_Tagging_Model_Base::LOG_FILE_NAME
+                    );
+                }
             }
         }
 
