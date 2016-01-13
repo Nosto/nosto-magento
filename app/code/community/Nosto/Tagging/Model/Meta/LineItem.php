@@ -66,8 +66,6 @@ abstract class Nosto_Tagging_Model_Meta_LineItem extends Mage_Core_Model_Abstrac
      * Sets up this Value Object.
      *
      * @param array $args the object data.
-     *
-     * @throws InvalidArgumentException
      */
     public function __construct(array $args)
     {
