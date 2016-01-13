@@ -164,8 +164,6 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
      */
     protected function export(NostoExportCollectionInterface $collection)
     {
-        header('content-type: application/json');
-        die($collection->getJson());
         $account = Mage::helper('nosto_tagging/account')->find();
         if ($account !== null) {
             $cipherText = NostoExporter::export($account, $collection);
