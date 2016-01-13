@@ -208,6 +208,9 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
             $store = Mage::app()->getStore();
         }
         $currencyCodes = $store->getAvailableCurrencyCodes(true);
+        if (count($currencyCodes) < 2) {
+            return false;
+        }
         $baseCurrencyCode = $store->getBaseCurrencyCode();
         foreach ($currencyCodes as $currencyCode) {
             if ($currencyCode !== $baseCurrencyCode) {
