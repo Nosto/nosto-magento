@@ -72,7 +72,7 @@
                             <frontend_model>nosto_tagging/adminhtml_system_config_account_currency_formats</frontend_model>
                             <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
+                            <show_in_website>0</show_in_website>
                             <show_in_store>1</show_in_store>
                         </currency_formats>
                     </fields>
@@ -113,7 +113,7 @@
                             <source_model>nosto_tagging/system_config_source_multi_currency_method</source_model>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
-                            <show_in_website>0</show_in_website>
+                            <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </method>
                     </fields>
