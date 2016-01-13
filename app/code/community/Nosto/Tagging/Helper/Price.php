@@ -168,7 +168,10 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         $helper = Mage::helper('nosto_tagging');
         if (
             $helper->isMultiCurrencyMethodPriceVariation($store)
-            || $helper->isMultiCurrencyMethodExchangeRate($store)
+            || (
+                $helper->isMultiCurrencyMethodExchangeRate($store)
+                && $helper->getStoreHasMultiCurrency($store)
+            )
         )
         {
             $taggingPrice = $basePrice;
@@ -193,7 +196,10 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
 
         if (
             $helper->isMultiCurrencyMethodPriceVariation($store)
-            || $helper->isMultiCurrencyMethodExchangeRate($store)
+            || (
+                $helper->isMultiCurrencyMethodExchangeRate($store)
+                && $helper->getStoreHasMultiCurrency($store)
+            )
         )
         {
             $taggingCurrencyCode = $store->getBaseCurrencyCode();
