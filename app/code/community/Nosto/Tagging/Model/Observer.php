@@ -236,4 +236,45 @@ class Nosto_Tagging_Model_Observer
             }
         }
     }
+
+    /**
+     * Updates / synchronizes Nosto account settings via API to Nosto
+     * for each store that has Nosto account.
+     *
+     * Event 'admin_system_config_changed_section_nosto_tagging'.
+     *
+     * @param Varien_Event_Observer $observer
+     *
+     * @return Nosto_Tagging_Model_Observer
+     */
+    public function syncNostoAccount(Varien_Event_Observer $observer)
+    {
+        /** @var Nosto_Tagging_Helper_Data $helper */
+        $helper = Mage::helper('nosto_tagging');
+        $observerData = $observer->getData();
+        if ($helper->isModuleEnabled()) {
+            /** @var Nosto_Tagging_Helper_Account $accountHelper */
+            $accountHelper = Mage::helper('nosto_tagging/account');
+            foreach (Mage::app()->getStores() as $store) {
+                $account = $accountHelper->find($store);
+                if ($account instanceof NostoAccount === false) {
+                    continue;
+                }
+                if (!$accountHelper->updateAccount($account, $store)) {
+                    Mage::log(
+                        sprintf(
+                            'Failed sync account #%s for store #%s in class %s',
+                            $account->getName(),
+                            $store->getName(),
+                            __CLASS__
+                        ),
+                        Zend_Log::WARN,
+                        Nosto_Tagging_Model_Base::LOG_FILE_NAME
+                    );
+                }
+            }
+        }
+
+        return $this;
+    }
 }
