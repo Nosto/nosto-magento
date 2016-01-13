@@ -155,15 +155,16 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base
         $helper = Mage::helper('nosto_tagging');
         /** @var Nosto_Tagging_Helper_Price $priceHelper */
         $priceHelper = Mage::helper('nosto_tagging/price');
+        $currentCurrencyCode = $store->getCurrentCurrencyCode();
         $this->setUrl($this->buildUrl($product, $store));
         $this->setProductId($product->getId());
         $this->setName($product->getName());
         $this->setImageUrl($this->buildImageUrl($product, $store));
-        $price = $priceHelper->convertToDefaultCurrency($priceHelper->getProductFinalPriceInclTax($product), $store);
+        $price = $priceHelper->getTaggingPrice($priceHelper->getProductFinalPriceInclTax($product), $currentCurrencyCode, $store);
         $this->setPrice($price);
-        $listPrice = $priceHelper->convertToDefaultCurrency($priceHelper->getProductPriceInclTax($product), $store);
+        $listPrice = $priceHelper->getTaggingPrice($priceHelper->getProductPriceInclTax($product), $currentCurrencyCode, $store);
         $this->setListPrice($listPrice);
-        $this->setCurrency($store->getDefaultCurrencyCode());
+        $this->setCurrency($priceHelper->getTaggingCurrencyCode($currentCurrencyCode, $store));
         $this->setAvailability(
             $product->isAvailable()
                 ? NostoProductAvailability::IN_STOCK
@@ -196,7 +197,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base
         }
 
         if ($helper->isMultiCurrencyMethodPriceVariation($store)) {
-            $this->setPriceVariationId($store->getDefaultCurrencyCode());
+            $this->setPriceVariationId($store->getBaseCurrencyCode());
             if ($helper->isMultiCurrencyMethodPriceVariation($store)) {
                 $this->setPriceVariations($this->buildPriceVariations($product, $store));
             }
@@ -220,13 +221,14 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base
         $currencyCodes = $store->getAvailableCurrencyCodes(true);
         foreach ($currencyCodes as $currencyCode) {
             // Skip base currency.
-            if ($currencyCode === $store->getDefaultCurrencyCode()) {
+            if ($currencyCode === $store->getBaseCurrencyCode()) {
                 continue;
             }
             try {
                 /** @var Nosto_Tagging_Model_Meta_Product_Price_Variation $variation */
                 $variation = Mage::getModel('nosto_tagging/meta_product_price_variation');
-                $variation->loadData($product, $store, new NostoCurrencyCode($currencyCode));
+                $nostoCurrencyCode = new NostoCurrencyCode($currencyCode);
+                $variation->loadData($product, $store, $nostoCurrencyCode);
                 $variations[] = $variation;
             } catch (Exception $e) {
                 // The price variation cannot be obtained if there are no
