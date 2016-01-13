@@ -40,6 +40,8 @@ $priceFormatter = Nosto::formatter('price');
 $dateFormatter = Nosto::formatter('date');
 $priceFormat = new NostoPriceFormat(2, '.', '');
 $dateFormat = new NostoDateFormat(NostoDateFormat::YMD);
+$priceHelper = Mage::helper('nosto_tagging/price');
+$dateHelper = Mage::helper('nosto_tagging/date');
 ?>
 
 <!-- Nosto Product Tagging -->
@@ -49,22 +51,22 @@ $dateFormat = new NostoDateFormat(NostoDateFormat::YMD);
     <span class="name"><?php echo $helper->escapeHtml($product->getName()); ?></span>
     <span class="image_url"><?php echo $product->getImageUrl(); ?></span>
     <?php if ($product->getPrice()): ?>
-        <span class="price"><?php echo $priceFormatter->format($product->getPrice(), $priceFormat); ?></span>
+        <span class="price"><?php echo $priceHelper->getFormattedPrice($product->getPrice()); ?></span>
     <?php endif; ?>
     <?php if ($product->getCurrency()): ?>
-        <span class="price_currency_code"><?php echo $helper->escapeHtml($product->getCurrency()->getCode()); ?></span>
+        <span class="price_currency_code"><?php echo $helper->escapeHtml($product->getCurrency()); ?></span>
     <?php endif; ?>
     <?php if ($product->getAvailability()): ?>
-        <span class="availability"><?php echo $helper->escapeHtml($product->getAvailability()->getAvailability()); ?></span>
+        <span class="availability"><?php echo $helper->escapeHtml($product->getAvailability()); ?></span>
     <?php endif; ?>
-    <?php foreach ($product->getCategories() as $category): ?>
-        <span class="category"><?php echo $helper->escapeHtml($category); ?></span>
+    <?php foreach ($product->getCategories() as $categoryString): ?>
+        <span class="category"><?php echo $helper->escapeHtml($categoryString); ?></span>
     <?php endforeach; ?>
-    <?php if ($product->getFullDescription()): ?>
-        <span class="description"><?php echo $helper->escapeHtml($product->getFullDescription()); ?></span>
+    <?php if ($product->getDescription()): ?>
+        <span class="description"><?php echo $helper->escapeHtml($product->getDescription()); ?></span>
     <?php endif; ?>
     <?php if ($product->getListPrice()): ?>
-        <span class="list_price"><?php echo $priceFormatter->format($product->getListPrice(), $priceFormat); ?></span>
+        <span class="list_price"><?php echo $priceHelper->getFormattedPrice($product->getPrice()); ?></span>
     <?php endif; ?>
     <?php if ($product->getBrand()): ?>
         <span class="brand"><?php echo $helper->escapeHtml($product->getBrand()); ?></span>
@@ -75,17 +77,35 @@ $dateFormat = new NostoDateFormat(NostoDateFormat::YMD);
         <?php endforeach; ?>
     <?php endforeach; ?>
     <?php if ($product->getDatePublished()): ?>
-        <span class="date_published"><?php echo $dateFormatter->format($product->getDatePublished(), $dateFormat); ?></span>
+        <span class="date_published"><?php echo $dateHelper->getFormattedDate($product->getDatePublished()); ?></span>
     <?php endif; ?>
     <?php if ($helper->isMultiCurrencyMethodPriceVariation($store) && count($product->getPriceVariations()) > 0): ?>
         <span class="variation_id"><?php echo $helper->escapeHtml($product->getPriceVariationId()); ?></span>
         <?php foreach ($product->getPriceVariations() as $variation): ?>
+            <?php
+                if ($variation->getAvailability() instanceof NostoProductAvailability) {
+                    $availability = $variation->getAvailability()->getAvailability();
+                } else {
+                    $availability = '';
+                }
+
+                if ($variation->getPrice() instanceof NostoPrice) {
+                    $price = $priceFormatter->format($variation->getPrice(), $priceFormat);
+                } else {
+                    $price = '';
+                }
+                if ($variation->getListPrice() instanceof NostoPrice) {
+                    $listPrice = $priceFormatter->format($variation->getListPrice(), $priceFormat);
+                } else {
+                    $listPrice = '';
+                }
+            ?>
             <div class="variation">
-                <span class="variation_id"><?php echo $helper->escapeHtml($variation->getId()->getId()); ?></span>
-                <span class="price_currency_code"><?php echo $helper->escapeHtml($variation->getCurrency()->getCode()); ?></span>
-                <span class="price"><?php echo $priceFormatter->format($variation->getPrice(), $priceFormat); ?></span>
-                <span class="list_price"><?php echo $priceFormatter->format($variation->getListPrice(), $priceFormat); ?></span>
-                <span class="availability"><?php echo $helper->escapeHtml($variation->getAvailability()->getAvailability()); ?></span>
+                <span class="variation_id"><?php echo $helper->escapeHtml($variation->getVariationId()); ?></span>
+                <span class="price_currency_code"><?php echo $helper->escapeHtml($variation->getCurrencyCode()); ?></span>
+                <span class="price"><?php echo $variation->getFormattedPrice($priceFormat); ?></span>
+                <span class="list_price"><?php echo $variation->getFormattedListPrice($priceFormat); ?></span>
+                <span class="availability"><?php echo $helper->escapeHtml($variation->getAvailabilityString()); ?></span>
             </div>
         <?php endforeach; ?>
     <?php endif; ?>

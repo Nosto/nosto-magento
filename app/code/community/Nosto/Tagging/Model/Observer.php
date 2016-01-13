@@ -75,6 +75,8 @@ class Nosto_Tagging_Model_Observer
         if (Mage::helper('nosto_tagging')->isModuleEnabled()) {
             /** @var Mage_Catalog_Model_Product $product */
             $product = $observer->getEvent()->getProduct();
+            /** @var Nosto_Tagging_Helper_Product_Converter $converter */
+            $converter = Mage::helper('nosto_tagging/product_converter');
             // Always "upsert" the product for all stores it is available in.
             // This is done to avoid data inconsistencies as even if a product
             // is edited for only one store, the updated data can reflect in
@@ -101,13 +103,14 @@ class Nosto_Tagging_Model_Observer
 
                 /** @var Nosto_Tagging_Model_Meta_Product $model */
                 $model = Mage::getModel('nosto_tagging/meta_product');
+
                 try {
                     $model->loadData($product, $store);
                     $service = new NostoServiceProduct($account);
-                    $service->addProduct($model);
+                    $service->addProduct($converter->convertToTypedObject($model));
                     $service->upsert();
                 } catch (NostoException $e) {
-                    Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
+                    Mage::log("\n" . $e, Zend_Log::ERR, Nosto_Tagging_Model_Base::LOG_FILE_NAME);
                 }
             }
         }
@@ -128,6 +131,8 @@ class Nosto_Tagging_Model_Observer
         if (Mage::helper('nosto_tagging')->isModuleEnabled()) {
             /** @var Mage_Catalog_Model_Product $product */
             $product = $observer->getEvent()->getProduct();
+            /** @var Nosto_Tagging_Helper_Product_Converter $converter */
+            $converter = Mage::helper('nosto_tagging/product_converter');
             // Products are always deleted from all store views, regardless of
             // the store view scope switcher on the product edit page.
             /** @var Mage_Core_Model_Store $store */
@@ -145,10 +150,10 @@ class Nosto_Tagging_Model_Observer
 
                 try {
                     $service = new NostoServiceProduct($account);
-                    $service->addProduct($model);
+                    $service->addProduct($converter->convertToTypedObject($model));
                     $service->delete();
                 } catch (NostoException $e) {
-                    Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
+                    Mage::log("\n" . $e, Zend_Log::ERR, Nosto_Tagging_Model_Base::LOG_FILE_NAME);
                 }
             }
         }
@@ -185,7 +190,7 @@ class Nosto_Tagging_Model_Observer
 					$service->confirm($order, $customerId);
                 }
             } catch (NostoException $e) {
-                Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
+                Mage::log("\n" . $e, Zend_Log::ERR, Nosto_Tagging_Model_Base::LOG_FILE_NAME);
             }
         }
 
