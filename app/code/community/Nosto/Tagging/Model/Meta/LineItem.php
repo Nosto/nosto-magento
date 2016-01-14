@@ -79,6 +79,7 @@ abstract class Nosto_Tagging_Model_Meta_LineItem extends Mage_Core_Model_Abstrac
                 Zend_Log::WARN,
                 Nosto_Tagging_Model_Base::LOG_FILE_NAME
             );
+            $args['productId'] = "";
         }
         if (!isset($args['quantity']) || !is_int($args['quantity']) || !($args['quantity'] > 0)) {
             Mage::log(
@@ -90,6 +91,7 @@ abstract class Nosto_Tagging_Model_Meta_LineItem extends Mage_Core_Model_Abstrac
                 Zend_Log::WARN,
                 Nosto_Tagging_Model_Base::LOG_FILE_NAME
             );
+            $args['quantity'] = "";
         }
         if (!isset($args['name']) || !is_string($args['name']) || empty($args['name'])) {
             Mage::log(
@@ -101,6 +103,7 @@ abstract class Nosto_Tagging_Model_Meta_LineItem extends Mage_Core_Model_Abstrac
                 Zend_Log::WARN,
                 Nosto_Tagging_Model_Base::LOG_FILE_NAME
             );
+            $args['name'] = "";
         }
 
         if (!($args['unitPrice'] instanceof NostoPrice)) {
@@ -113,18 +116,19 @@ abstract class Nosto_Tagging_Model_Meta_LineItem extends Mage_Core_Model_Abstrac
                 Zend_Log::WARN,
                 Nosto_Tagging_Model_Base::LOG_FILE_NAME
             );
+            $args['unitPrice'] = "";
         }
         if (!($args['currency'] instanceof NostoCurrencyCode)) {
             Mage::log(
                 sprintf(
                     '%s.currencyCode must be an instance of NostoCurrencyCode, got %s.',
                     __CLASS__,
-                    get_class($args['currencyCode'])
+                    get_class($args['currency'])
                 ),
                 Zend_Log::WARN,
                 Nosto_Tagging_Model_Base::LOG_FILE_NAME
             );
-
+            $args['currency'] = "";
         }
 
         $this->_productId = $args['productId'];
@@ -201,6 +205,4 @@ abstract class Nosto_Tagging_Model_Meta_LineItem extends Mage_Core_Model_Abstrac
     {
         return $this->getProductId();
     }
-
-
 }

@@ -54,20 +54,32 @@ class Nosto_Tagging_Helper_Product_Converter extends Mage_Core_Helper_Abstract
         $object->setProductId($product->getProductId());
         $object->setName($product->getName());
         $object->setImageUrl($product->getImageUrl());
-        if ($product->getPrice()) {
+        try {
             $object->setPrice(new NostoPrice($product->getPrice()));
+        } catch (NostoInvalidArgumentException $E) {
+            // Omit invalid data
         }
-        if ($product->getListPrice()) {
+        try {
             $object->setListPrice(new NostoPrice($product->getListPrice()));
+        } catch (NostoInvalidArgumentException $E) {
+            // Omit invalid data
         }
-        if ($product->getCurrency()) {
+        try {
             $object->setCurrency(new NostoCurrencyCode($product->getCurrency()));
+        } catch (NostoInvalidArgumentException $E) {
+            // Omit invalid data
         }
-        if ($product->getAvailability()) {
+        try {
             $object->setAvailability(new NostoProductAvailability($product->getAvailability()));
+        } catch (NostoInvalidArgumentException $E) {
+            // Omit invalid data
         }
         foreach ($product->getCategories() as $categoryString) {
-            $category = new NostoCategory($categoryString);
+            if (is_string($categoryString)) {
+                $category = new NostoCategory($categoryString);
+            } elseif ($categoryString instanceof NostoCategoryInterface) {
+                $category = $categoryString;
+            }
             $object->addCategory($category);
         }
         $object->setThumbUrl($product->getThumbUrl());
@@ -75,8 +87,10 @@ class Nosto_Tagging_Helper_Product_Converter extends Mage_Core_Helper_Abstract
         $object->setDescription($product->getDescription());
         $object->setBrand($product->getBrand());
         $object->setTags($product->getTags());
-        if ($product->getDatePublished()) {
+        try {
             $object->setDatePublished(new NostoDate(strtotime($product->getDatePublished())));
+        } catch (NostoInvalidArgumentException $E) {
+            // Omit invalid data
         }
         if (!empty($product->getVariations())) {
             $object->setPriceVariations($product->getPriceVariations());
@@ -100,19 +114,43 @@ class Nosto_Tagging_Helper_Product_Converter extends Mage_Core_Helper_Abstract
         $object->setProductId($product->getProductId());
         $object->setName($product->getName());
         $object->setImageUrl($product->getImageUrl());
-        $object->setPrice($product->getPrice()->getPrice());
-        $object->setListPrice($product->getListPrice()->getPrice());
-        $object->setCurrency($product->getCurrency()->getCode());
-        $object->setAvailability($product->getAvailability()->getAvailability());
+        if ($product->getPrice() instanceof NostoPrice) {
+            $object->setPrice($product->getPrice()->getPrice());
+        } elseif (is_int($product->getPrice())) {
+            $object->setPrice($product->getPrice());
+        }
+        if ($product->getListPrice() instanceof NostoPrice) {
+            $object->setListPrice($product->getListPrice()->getPrice());
+        } elseif (is_numeric($product->getListPrice())) {
+            $object->setListPrice($product->getListPrice());
+        }
+        if ($product->getCurrency() instanceof NostoCurrency) {
+            $object->setCurrency($product->getCurrency()->getCode());
+        } elseif (is_numeric($product->getCurrency())) {
+            $object->setCurrency($product->getCurrency());
+        }
+        if ($product->getAvailability() instanceof NostoProductAvailability) {
+            $object->setAvailability($product->getAvailability()->getAvailability());
+        } elseif (is_string($product->getAvailability())) {
+            $object->setAvailability($product->getAvailability());
+        }
         foreach ($product->getCategories() as $category) {
-            $object->addCategory($category->getPath());
+            if ($category instanceof NostoCategoryInterface) {
+                $object->addCategory($category->getPath());
+            } elseif (is_string($category) || is_integer($category)) {
+                $object->addCategory($category);
+            }
         }
         $object->setThumbUrl($product->getThumbUrl());
         $object->setShortDescription($product->getShortDescription());
         $object->setDescription($product->getDescription());
         $object->setBrand($product->getBrand());
         $object->setTags($product->getTags());
-        $object->setDatePublished(date(NostoDateFormat::YMD,$product->getDatePublished()->getTimestamp()));
+        if ($product->getDatePublished() instanceof NostoDate) {
+            $object->setDatePublished(
+                date(NostoDateFormat::YMD,$product->getDatePublished()->getTimestamp())
+            );
+        }
         if (!empty($product->getVariations())) {
             $object->setPriceVariations($product->getPriceVariations());
         }
