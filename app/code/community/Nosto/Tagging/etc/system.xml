@@ -69,7 +69,7 @@
                             <label>Currency Formats</label>
                             <comment>Preview of the current currency formats extracted from Magento.</comment>
                             <frontend_type>text</frontend_type>
-                            <frontend_model>nosto_tagging/adminhtml_system_config_account_currency_formats</frontend_model>
+                            <frontend_model>nosto_tagging/adminhtml_system_config_currency_formats</frontend_model>
                             <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>

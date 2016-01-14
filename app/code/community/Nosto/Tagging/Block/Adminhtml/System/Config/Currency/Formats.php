@@ -33,7 +33,7 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Block_Adminhtml_System_Config_Account_Currency_Formats extends Mage_Adminhtml_Block_System_Config_Form_Field
+class Nosto_Tagging_Block_Adminhtml_System_Config_Currency_Formats extends Mage_Adminhtml_Block_System_Config_Form_Field
 {
     /**
      * @inheritdoc
@@ -41,7 +41,7 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Account_Currency_Formats exten
     protected function _construct()
     {
         parent::_construct();
-        $this->setTemplate('nostotagging/system/config/account/currency/formats.phtml');
+        $this->setTemplate('nostotagging/system/config/currency/formats.phtml');
     }
 
     /**

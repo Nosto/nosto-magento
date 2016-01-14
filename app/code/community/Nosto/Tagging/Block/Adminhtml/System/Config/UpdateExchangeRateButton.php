@@ -35,7 +35,7 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Block_Adminhtml_System_Config_Multi_Currency_Exchange_Rate_Button extends Nosto_Tagging_Block_Adminhtml_System_Config_Ajax_Button
+class Nosto_Tagging_Block_Adminhtml_System_Config_UpdateExchangeRateButton extends Nosto_Tagging_Block_Adminhtml_System_Config_Ajax_Button
 {
     /**
      * @inheritdoc
