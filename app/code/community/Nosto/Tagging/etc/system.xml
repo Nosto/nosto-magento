@@ -126,16 +126,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </method>
-                        <update_exchange_rates translate="label">
-                            <label>Update Exchange Rates</label>
-                            <comment>Push exchange rates to Nosto</comment>
-                            <frontend_type>button</frontend_type>
-                            <frontend_model>nosto_tagging/adminhtml_system_config_updateExchangeRateButton</frontend_model>
-                            <sort_order>20</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </update_exchange_rates>
                     </fields>
                 </multi_currency>
                 <scheduled_currency_exchange_rate_update translate="label">
