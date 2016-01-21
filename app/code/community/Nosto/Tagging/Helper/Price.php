@@ -59,6 +59,19 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Get the final price for an ordered item including taxes as discounts.
+     *
+     * @param Mage_Sales_Model_Order_Item $item the item model.
+     *
+     * @return float
+     */
+    public function getItemFinalPriceInclTax(Mage_Sales_Model_Order_Item $item)
+    {
+        $price = $item->getBaseRowTotal() + $item->getBaseTaxAmount() + $item->getBaseHiddenTaxAmount() - $item->getBaseDiscountAmount();
+        return $price;
+    }
+
+    /**
      * Get unit/final price for a product model.
      *
      * @param Mage_Catalog_Model_Product $product    the product model.

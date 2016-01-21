@@ -185,16 +185,18 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
      */
     protected function buildItem(Mage_Sales_Model_Order_Item $item, Mage_Sales_Model_Order $order)
     {
-        $itemPrice = new NostoPrice($item->getPriceInclTax());
+        /* @var Nosto_Tagging_Helper_Price */
+        $nostoPriceHelper = Mage::helper('nosto_tagging/price');
+        $itemPrice = $nostoPriceHelper->getItemFinalPriceInclTax($item);
+        $itemNostoPrice = new NostoPrice($itemPrice);
         $orderCurrencyCode = new NostoCurrencyCode($item->getOrder()->getOrderCurrencyCode());
-
         return Mage::getModel(
             'nosto_tagging/meta_order_item',
             array(
                 'productId' => (int)$this->buildItemProductId($item),
                 'quantity' => (int)$item->getQtyOrdered(),
                 'name' => $this->buildItemName($item),
-                'unitPrice' => $itemPrice,
+                'unitPrice' => $itemNostoPrice,
                 'currency' => $orderCurrencyCode
             )
         );
