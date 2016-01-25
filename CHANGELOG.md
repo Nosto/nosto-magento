@@ -2,10 +2,23 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased][unreleased]
+## [3.0.0-RC2]
+### Added
+- Support for using price variations
+- Retouch of Nosto advanced settings view
+- Update multi-currency method to Nosto when changed
+- Tagging for 404 pages and order confirmation page
+- Tag for visitor checksum 
+- Loosen up the data validation
+- Support for coupon discounts on product level 
+
+### Fixed
+- Use base currency in tagging if multiple currencies are used in a store level
+
+## [3.0.0-RC1]
 ### Added
 - Multi-currency + exchange rate support
-- Account synchronisation support
+- Account settings synchronisation support
 
 ## [2.6.7]
 ### Fixed
