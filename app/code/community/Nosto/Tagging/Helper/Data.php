@@ -263,4 +263,19 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     {
         return Mage::getModel('core/cookie')->get(self::COOKIE_NAME);
     }
+
+    /**
+     * Return the Nosto visitor checksum
+     *
+     * @return string
+     */
+    public function getVisitorChecksum()
+    {
+        $cookieId = $this->getCookieId();
+        $checksum = '';
+        if ($cookieId) {
+            $checksum = hash(self::VISITOR_HASH_ALGO, $cookieId);
+        }
+        return $checksum;
+    }
 }

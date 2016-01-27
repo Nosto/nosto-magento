@@ -48,4 +48,5 @@ $priceFormatter = Nosto::formatter('price');
         <span class="price_currency_code"><?php echo $item->getCurrency()->getCode(); ?></span>
     </div>
     <?php endforeach; ?>
+    <div class="nosto_checksum"><?php echo $helper->escapeHtml($helper->getVisitorChecksum()); ?></div>
 </div>

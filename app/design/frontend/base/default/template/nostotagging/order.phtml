@@ -73,5 +73,6 @@ $priceFormatter = Nosto::formatter('price');
         </div>
         <?php endforeach; ?>
     </div>
+    <div class="nosto_checksum"><?php echo $helper->escapeHtml($helper->getVisitorChecksum()); ?></div>
 </div>
 <?php endif; ?>
