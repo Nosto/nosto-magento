@@ -16,6 +16,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Tag products always in base currency if multiple currencies are used
 - Change product observers to listen the "save after commit" event
 - Enhance product and order exports
+- Add search term tagging
 
 ### Fixed
 - Use base currency in tagging if multiple currencies are used in a store level
