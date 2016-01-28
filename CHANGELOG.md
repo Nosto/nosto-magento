@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Tag for visitor checksum 
 - Loosen up the data validation
 - Support for coupon discounts on product level 
+- Add search term tagging
 
 ### Fixed
 - Use base currency in tagging if multiple currencies are used in a store level
