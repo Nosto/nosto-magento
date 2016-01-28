@@ -59,7 +59,6 @@ class Nosto_Tagging_Block_Searchterm extends Mage_Core_Block_Template
      */
     public function getSearchTerm()
     {
-        $term = $this->helper('catalogsearch')->getQueryText();
-        return $term;
+        return $this->helper('catalogsearch')->getQueryText();
     }
 }
