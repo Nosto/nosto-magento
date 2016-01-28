@@ -60,7 +60,7 @@
 
         <!-- Tag currency variation -->
         <reference name="after_body_start">
-            <block type="core/template" name="nosto.currency" template="nostotagging/currency.phtml"/>
+            <block type="nosto_tagging/variation" name="nosto.variation" template="nostotagging/variation.phtml"/>
         </reference>
     </default>
 
