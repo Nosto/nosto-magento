@@ -86,11 +86,6 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     protected $_defaultPriceVariationId;
 
     /**
-     * @var bool if the store uses exchange rates to manage multiple currencies.
-     */
-    protected $_useCurrencyExchangeRates = false;
-
-    /**
      * @var bool if the store is set to use multi variants for currencies or pricing
      */
     private $_useMultiVariants = false;
@@ -152,7 +147,6 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
 
         if ($helper->isMultiCurrencyMethodPriceVariation($store)) {
             $this->_useMultiVariants = true;
-            $this->_useCurrencyExchangeRates = false;
             $this->_defaultPriceVariationId
                 = $store->getBaseCurrencyCode();
         } else {
@@ -163,10 +157,6 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
                 foreach ($currencyCodes as $currencyCode) {
                     $this->_currencies[$currencyCode] = $currencyHelper
                         ->getCurrencyObject($storeLocale, $currencyCode);
-                }
-                if (count($currencyCodes) > 1) {
-                    $this->_useCurrencyExchangeRates = $helper
-                        ->isMultiCurrencyMethodExchangeRate($store);
                 }
             }
         }
@@ -291,19 +281,6 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     public function getDefaultPriceVariationId()
     {
         return $this->_defaultPriceVariationId;
-    }
-
-    /**
-     * Returns if exchange rates are used to handle multi-currency setups.
-     * It is also possible to handle multi-currency setups using variation
-     * tagging on the product pages, i.e. in addition to the product base price,
-     * you also tag all price variations.
-     *
-     * @return bool if the rates are used.
-     */
-    public function getUseCurrencyExchangeRates()
-    {
-        return $this->_useCurrencyExchangeRates;
     }
 
     /**
