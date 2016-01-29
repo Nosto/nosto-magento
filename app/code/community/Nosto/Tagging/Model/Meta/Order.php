@@ -143,7 +143,7 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
         }
 
         if ($this->includeSpecialItems) {
-            if (($discount = $order->getBaseDiscountAmount()) > 0) {
+            if (($discount = $order->getBaseDiscountAmount()) < 0) {
                 $nostoPrice = new NostoPrice($discount);
                 $nostoCurrencyCode = new NostoCurrencyCode($order->getBaseCurrencyCode());
                 $this->_items[] = Mage::getModel(

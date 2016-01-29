@@ -77,7 +77,7 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
                 /** @var Nosto_Tagging_Model_Meta_Order $meta */
                 $meta = Mage::getModel('nosto_tagging/meta_order');
                 // We don't need special items like shipping cost and discounts.
-                $meta->includeSpecialItems = false;
+                $meta->includeSpecialItems = true;
                 try {
                     $meta->loadData($order);
                     $collection[] = $meta;
