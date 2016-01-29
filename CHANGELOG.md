@@ -6,11 +6,16 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Support for using price variations
 - Retouch of Nosto advanced settings view
-- Update multi-currency method to Nosto when changed
+- Update multi-currency method and currency rates to Nosto when changed
 - Tagging for 404 pages and order confirmation page
 - Tag for visitor checksum 
 - Loosen up the data validation
 - Support for coupon discounts on product level 
+- Possibility to override variant block
+- Fix the issue with long file paths in Magento packacking
+- Tag products always in base currency if multiple currencies are used
+- Change product observers to listen the "save after commit" event
+- Enhance product and order exports
 - Add search term tagging
 
 ### Fixed
