@@ -186,7 +186,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Checks if either multiple currencies or prive variants
+     * Checks if either exchange rates or price variants
      * are used in store.
      *
      *
