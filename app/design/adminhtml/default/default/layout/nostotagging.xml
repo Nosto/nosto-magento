@@ -31,7 +31,7 @@
     <adminhtml_nosto_index>
         <!-- Add JavaScript file -->
         <reference name="head">
-            <action method="addJs"><script>nosto/iframeResizer.min.js</script></action>
+            <action method="addJs"><script>nosto/iframeresizer.min.js</script></action>
             <action method="addJs"><script>nosto/iframeHandler.min.js</script></action>
         </reference>
          <!--Set active menu item-->
