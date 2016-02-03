@@ -35,7 +35,8 @@
 class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
 {
     /**
-     * Gets the unit price for a product model including taxes.
+     * Gets the unit price in base currency for a product model including
+     * taxes.
      *
      * @param Mage_Catalog_Model_Product $product the product model.
      *
@@ -47,7 +48,8 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Get the final price for a product model including taxes.
+     * Get the final price in base currency for a product model including
+     * taxes.
      *
      * @param Mage_Catalog_Model_Product $product the product model.
      *
@@ -59,7 +61,8 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Get the final price for an ordered item including taxes as discounts.
+     * Get the final price in base currency for an ordered item including
+     * taxes as discounts.
      *
      * @param Mage_Sales_Model_Order_Item $item the item model.
      *
@@ -72,7 +75,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Get unit/final price for a product model.
+     * Get unit/final price in base currency for a product model.
      *
      * @param Mage_Catalog_Model_Product $product    the product model.
      * @param bool                       $finalPrice if final price.
@@ -141,8 +144,8 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * If the store uses multiple currencies the prices are converted into
-     * base currency. Otherwise the given price is returned.
+     * If the store uses multiple currencies the prices are converted from base
+     * currency into given currency. Otherwise the given price is returned.
      *
      * @param float                 $basePrice The price of a product in base currency
      * @param string                $currentCurrencyCode
@@ -154,10 +157,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         $helper = Mage::helper('nosto_tagging');
         if (
             $helper->isMultiCurrencyMethodPriceVariation($store)
-            || (
-                $helper->isMultiCurrencyMethodExchangeRate($store)
-                && $helper->getStoreHasMultiCurrency($store)
-            )
+            || $helper->isMultiCurrencyMethodExchangeRate($store)
         )
         {
             $taggingPrice = $basePrice;
@@ -182,10 +182,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
 
         if (
             $helper->isMultiCurrencyMethodPriceVariation($store)
-            || (
-                $helper->isMultiCurrencyMethodExchangeRate($store)
-                && $helper->getStoreHasMultiCurrency($store)
-            )
+            || $helper->isMultiCurrencyMethodExchangeRate($store)
         )
         {
             $taggingCurrencyCode = $store->getBaseCurrencyCode();

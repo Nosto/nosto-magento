@@ -48,6 +48,10 @@ class Nosto_Tagging_Model_System_Config_Source_Multi_Currency_Method
     {
         return array(
             array(
+                'value' => Nosto_Tagging_Helper_Data::MULTI_CURRENCY_DISABLED,
+                'label' => 'Disabled',
+            ),
+            array(
                 'value' => Nosto_Tagging_Helper_Data::MULTI_CURRENCY_METHOD_EXCHANGE_RATE,
                 'label' => 'Exchange Rate',
             ),

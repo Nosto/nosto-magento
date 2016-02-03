@@ -214,12 +214,14 @@ class Nosto_Tagging_Model_Observer
             $error = false;
             foreach (Mage::app()->getStores() as $store) {
                 /** @var Mage_Core_Model_Store $store */
-                if (!$helper->isScheduledCurrencyExchangeRateUpdateEnabled($store)) {
+                if (
+                    $helper->multiCurrencyDisabled($store)
+                    || !$helper->isScheduledCurrencyExchangeRateUpdateEnabled($store)
+                    || !$helper->isMultiCurrencyMethodExchangeRate($store)
+                ) {
                     continue;
                 }
-                if (!$helper->getStoreHasMultiCurrency($store)) {
-                    continue;
-                }
+
                 $account = $accountHelper->find($store);
                 if (is_null($account)) {
                     continue;

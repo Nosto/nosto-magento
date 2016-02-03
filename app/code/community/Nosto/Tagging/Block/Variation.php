@@ -76,11 +76,8 @@ class Nosto_Tagging_Block_Variation extends Mage_Core_Block_Template
     {
         $helper = Mage::helper('nosto_tagging');
         $store = Mage::app()->getStore();
-        if ($helper->isMultiCurrencyMethodPriceVariation($store)) {
-            return true;
-        } else {
-            return false;
-        }
+
+        return $helper->isMultiCurrencyMethodPriceVariation($store);
     }
 
     /**
@@ -92,10 +89,7 @@ class Nosto_Tagging_Block_Variation extends Mage_Core_Block_Template
     {
         $helper = Mage::helper('nosto_tagging');
         $store = Mage::app()->getStore();
-        if ($helper->getStoreHasMultiCurrency($store)) {
-            return true;
-        } else {
-            return false;
-        }
+
+        return $helper->isMultiCurrencyMethodExchangeRate($store);
     }
 }
