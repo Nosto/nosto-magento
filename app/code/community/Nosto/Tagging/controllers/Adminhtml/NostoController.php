@@ -105,7 +105,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         $store = $this->getSelectedStore();
         if ($this->getRequest()->isPost() && $store !== null) {
             /** @var Nosto_Tagging_Model_Meta_Oauth $meta */
-            $meta = Mage::getModel('nosto_tagging/meta_oauth');
+            $meta = new Nosto_Tagging_Model_Meta_Oauth();
             $meta->loadData($store);
             $client = new NostoOAuthClient($meta);
 
@@ -143,14 +143,14 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         $this->getResponse()->setHeader('Content-type', 'application/json');
 
         /** @var Nosto_Tagging_Helper_Account $accountHelper */
-        $accountHelper = Mage::helper('nosto_tagging/account');
+        $accountHelper = new Nosto_Tagging_Model_Meta_Oauth();
 
         $store = $this->getSelectedStore();
         $account = !is_null($store) ? $accountHelper->find($store) : null;
 
         if ($this->getRequest()->isPost() && !is_null($store) && !is_null($account)) {
             /** @var Nosto_Tagging_Model_Meta_Oauth $meta */
-            $meta = Mage::getModel('nosto_tagging/meta_oauth');
+            $meta = new Nosto_Tagging_Model_Meta_Oauth();
             $meta->loadData($store, $account);
             $client = new NostoOAuthClient($meta);
 
@@ -310,7 +310,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         $countStores = count($stores);
         $countStoresWithoutMultiCurrency = 0;
         foreach ($stores as $store) {
-            if (!$helper->getStoreHasMultiCurrency($store)) {
+            if (!$helper->isMultiCurrencyMethodExchangeRate($store)) {
                 $countStoresWithoutMultiCurrency++;
                 continue;
             }

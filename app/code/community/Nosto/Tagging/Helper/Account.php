@@ -172,7 +172,7 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
     public function getMetaData(Mage_Core_Model_Store $store)
     {
         /** @var Nosto_Tagging_Model_Meta_Account $meta */
-        $meta = Mage::getModel('nosto_tagging/meta_account');
+        $meta = new Nosto_Tagging_Model_Meta_Account();
         $meta->loadData($store);
         return $meta;
     }
@@ -191,7 +191,7 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
     public function getIframeUrl(Mage_Core_Model_Store $store, NostoAccount $account = null, array $params = array())
     {
         /** @var Nosto_Tagging_Model_Meta_Account_Sso $sso */
-        $sso = Mage::getModel('nosto_tagging/meta_account_sso');
+        $sso = new Nosto_Tagging_Model_Meta_Account_Sso();
         $sso->loadData();
         /** @var Nosto_Tagging_Model_Meta_Account_Iframe $iframe */
         $iframe = Mage::getModel('nosto_tagging/meta_account_iframe');
@@ -216,7 +216,16 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
     {
         /** @var Nosto_Tagging_Helper_Data $helper */
         $helper = Mage::helper('nosto_tagging');
-        if (!$helper->getStoreHasMultiCurrency($store)) {
+        if (!$helper->isMultiCurrencyMethodExchangeRate($store)) {
+            Mage::log(
+                sprintf(
+                    'Currency update called without exchange method enabled for account %s',
+                    $account->getName()
+                ),
+                Zend_Log::DEBUG,
+                Nosto_Tagging_Model_Base::LOG_FILE_NAME
+            );
+
             return false;
         }
 

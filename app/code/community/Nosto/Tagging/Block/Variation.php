@@ -68,22 +68,6 @@ class Nosto_Tagging_Block_Variation extends Mage_Core_Block_Template
     }
 
     /**
-     * Tells if the price variations are in use or not
-     *
-     * @return string
-     */
-    public function useVariations()
-    {
-        $helper = Mage::helper('nosto_tagging');
-        $store = Mage::app()->getStore();
-        if ($helper->isMultiCurrencyMethodPriceVariation($store)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
      * Tells if store uses multiple currencies
      *
      * @return string
@@ -92,10 +76,7 @@ class Nosto_Tagging_Block_Variation extends Mage_Core_Block_Template
     {
         $helper = Mage::helper('nosto_tagging');
         $store = Mage::app()->getStore();
-        if ($helper->getStoreHasMultiCurrency($store)) {
-            return true;
-        } else {
-            return false;
-        }
+
+        return $helper->isMultiCurrencyMethodExchangeRate($store);
     }
 }

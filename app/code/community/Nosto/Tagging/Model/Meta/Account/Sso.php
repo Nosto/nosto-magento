@@ -32,36 +32,8 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Account_Sso extends Mage_Core_Model_Abstract implements NostoAccountMetaSingleSignOnInterface
+class Nosto_Tagging_Model_Meta_Account_Sso extends NostoSso
 {
-    /**
-     * @var string the name of the platform.
-     */
-    protected $_platform = 'magento';
-
-    /**
-     * @var string the admin user first name.
-     */
-    protected $_firstName;
-
-    /**
-     * @var string the admin user last name.
-     */
-    protected $_lastName;
-
-    /**
-     * @var string the admin user email address.
-     */
-    protected $_email;
-
-    /**
-     * @inheritdoc
-     */
-    protected function _construct()
-    {
-        $this->_init('nosto_tagging/meta_account_sso');
-    }
-
     /**
      * Loads the meta data.
      */
@@ -74,46 +46,5 @@ class Nosto_Tagging_Model_Meta_Account_Sso extends Mage_Core_Model_Abstract impl
             $this->_lastName = $user->getLastname();
             $this->_email = $user->getEmail();
         }
-    }
-
-    /**
-     * The name of the platform.
-     * A list of valid platform names is issued by Nosto.
-     *
-     * @return string the platform name.
-     */
-    public function getPlatform()
-    {
-        return $this->_platform;
-    }
-
-    /**
-     * The first name of the user who is doing the SSO.
-     *
-     * @return string the first name.
-     */
-    public function getFirstName()
-    {
-        return $this->_firstName;
-    }
-
-    /**
-     * The last name of the user who is doing the SSO.
-     *
-     * @return string the last name.
-     */
-    public function getLastName()
-    {
-        return $this->_lastName;
-    }
-
-    /**
-     * The email address of the user who doing the SSO.
-     *
-     * @return string the email address.
-     */
-    public function getEmail()
-    {
-        return $this->_email;
     }
 }

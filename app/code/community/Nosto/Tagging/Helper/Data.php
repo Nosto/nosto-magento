@@ -80,6 +80,11 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const MULTI_CURRENCY_METHOD_PRICE_VARIATION = 'priceVariation';
 
     /**
+     * No multi currency
+     */
+    const MULTI_CURRENCY_DISABLED = 'disabled';
+
+    /**
      * Escape quotes inside html attributes.
      *
      * @param string $data the data to escape.
@@ -173,7 +178,26 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getMultiCurrencyMethod($store = null)
     {
+        if ($store instanceof Mage_Core_Model_Store === false) {
+            $store = Mage::app()->getStore();
+        }
+
         return Mage::getStoreConfig(self::XML_PATH_MULTI_CURRENCY_METHOD, $store);
+    }
+
+    /**
+     * Checks if either exchange rates or price variants
+     * are used in store.
+     *
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     *
+     * @return bool
+     */
+    public function multiCurrencyDisabled($store = null)
+    {
+        $method = $this->getMultiCurrencyMethod($store);
+        return ($method === self::MULTI_CURRENCY_DISABLED);
     }
 
     /**
@@ -203,31 +227,6 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     {
         $method = $this->getMultiCurrencyMethod($store);
         return ($method === self::MULTI_CURRENCY_METHOD_PRICE_VARIATION);
-    }
-
-    /**
-     * Checks if the store has any other currency configured than the base one.
-     *
-     * @param Mage_Core_Model_Store|null $store the store model or null.
-     *
-     * @return bool
-     */
-    public function getStoreHasMultiCurrency($store = null)
-    {
-        if (is_null($store)) {
-            $store = Mage::app()->getStore();
-        }
-        $currencyCodes = $store->getAvailableCurrencyCodes(true);
-        if (count($currencyCodes) < 2) {
-            return false;
-        }
-        $baseCurrencyCode = $store->getBaseCurrencyCode();
-        foreach ($currencyCodes as $currencyCode) {
-            if ($currencyCode !== $baseCurrencyCode) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**

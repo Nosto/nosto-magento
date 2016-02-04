@@ -191,12 +191,10 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base
         if (($tags = $this->buildTags($product, $store)) !== array()) {
             $this->setTag1($tags);
         }
-
         if ($product->hasData('created_at')) {
             $this->setDatePublished($product->getData('created_at'));
         }
-
-        if ($helper->isMultiCurrencyMethodPriceVariation($store)) {
+        if (!$helper->multiCurrencyDisabled($store)) {
             $this->setPriceVariationId($store->getBaseCurrencyCode());
             if ($helper->isMultiCurrencyMethodPriceVariation($store)) {
                 $this->setPriceVariations($this->buildPriceVariations($product, $store));

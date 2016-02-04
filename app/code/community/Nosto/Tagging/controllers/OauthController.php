@@ -72,7 +72,7 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
                 $oldAccount = $accountHelper->find($store);
 
                 /** @var Nosto_Tagging_Model_Meta_Oauth $meta */
-                $meta = Mage::getModel('nosto_tagging/meta_oauth');
+                $meta = new Nosto_Tagging_Model_Meta_Oauth();
                 $meta->loadData($store, $oldAccount);
 
                 $service = new NostoServiceAccount();
