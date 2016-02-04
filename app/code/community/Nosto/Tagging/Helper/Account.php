@@ -217,6 +217,15 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
         /** @var Nosto_Tagging_Helper_Data $helper */
         $helper = Mage::helper('nosto_tagging');
         if (!$helper->isMultiCurrencyMethodExchangeRate($store)) {
+            Mage::log(
+                sprintf(
+                    'Currency update called without exchange method enabled for account %s',
+                    $account->getName()
+                ),
+                Zend_Log::DEBUG,
+                Nosto_Tagging_Model_Base::LOG_FILE_NAME
+            );
+
             return false;
         }
 

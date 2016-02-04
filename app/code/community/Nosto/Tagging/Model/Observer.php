@@ -214,14 +214,14 @@ class Nosto_Tagging_Model_Observer
             $error = false;
             foreach (Mage::app()->getStores() as $store) {
                 /** @var Mage_Core_Model_Store $store */
-                if (
-                    $helper->multiCurrencyDisabled($store)
-                    || !$helper->isScheduledCurrencyExchangeRateUpdateEnabled($store)
-                    || !$helper->isMultiCurrencyMethodExchangeRate($store)
-                ) {
+                if (!$helper->isScheduledCurrencyExchangeRateUpdateEnabled($store)) {
+                    Mage::log(
+                        'Currency cron update called without the cron being enabled',
+                        Zend_Log::DEBUG,
+                        Nosto_Tagging_Model_Base::LOG_FILE_NAME
+                    );
                     continue;
                 }
-
                 $account = $accountHelper->find($store);
                 if (is_null($account)) {
                     continue;
@@ -274,17 +274,23 @@ class Nosto_Tagging_Model_Observer
                         Nosto_Tagging_Model_Base::LOG_FILE_NAME
                     );
                 }
-                if (!$accountHelper->updateCurrencyExchangeRates($account, $store)) {
-                    Mage::log(
-                        sprintf(
-                            'Failed sync currency rates #%s for store #%s in class %s',
-                            $account->getName(),
-                            $store->getName(),
-                            __CLASS__
-                        ),
-                        Zend_Log::WARN,
-                        Nosto_Tagging_Model_Base::LOG_FILE_NAME
-                    );
+
+                if ($account->getUseCurrencyExchangeRates()) {
+                    if (!$accountHelper->updateCurrencyExchangeRates(
+                        $account, $store
+                    )
+                    ) {
+                        Mage::log(
+                            sprintf(
+                                'Failed sync currency rates #%s for store #%s in class %s',
+                                $account->getName(),
+                                $store->getName(),
+                                __CLASS__
+                            ),
+                            Zend_Log::WARN,
+                            Nosto_Tagging_Model_Base::LOG_FILE_NAME
+                        );
+                    }
                 }
             }
         }

@@ -154,23 +154,15 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
      */
     public function getTaggingPrice($basePrice, $currentCurrencyCode, Mage_Core_Model_Store $store)
     {
+        /* @var Nosto_Tagging_Helper_Data $helper */
         $helper = Mage::helper('nosto_tagging');
-        if (
-            $helper->isMultiCurrencyMethodPriceVariation($store)
-            || $helper->isMultiCurrencyMethodExchangeRate($store)
-        )
-        {
-            $taggingPrice = $basePrice;
-        } else {
-            if ($currentCurrencyCode === $store->getBaseCurrencyCode()) {
-                $taggingPrice = $basePrice;
-            } else {
-                $taggingPrice = Mage::helper('directory')->currencyConvert(
-                    $basePrice,
-                    $store->getBaseCurrencyCode(),
-                    $currentCurrencyCode
-                );
-            }
+        $taggingPrice = $basePrice;
+        if ($helper->multiCurrencyDisabled($store) && $currentCurrencyCode !== $store->getBaseCurrencyCode()) {
+            $taggingPrice = Mage::helper('directory')->currencyConvert(
+                $basePrice,
+                $store->getBaseCurrencyCode(),
+                $currentCurrencyCode
+            );
         }
 
         return $taggingPrice;
@@ -178,16 +170,12 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
 
     public function getTaggingCurrencyCode($currentCurrencyCode, Mage_Core_Model_Store $store)
     {
+        /* @var Nosto_Tagging_Helper_Data $helper */
         $helper = Mage::helper('nosto_tagging');
-
-        if (
-            $helper->isMultiCurrencyMethodPriceVariation($store)
-            || $helper->isMultiCurrencyMethodExchangeRate($store)
-        )
-        {
-            $taggingCurrencyCode = $store->getBaseCurrencyCode();
-        } else {
+        if ($helper->multiCurrencyDisabled()) {
             $taggingCurrencyCode = $currentCurrencyCode;
+        } else {
+            $taggingCurrencyCode = $store->getBaseCurrencyCode();
         }
 
         return $taggingCurrencyCode;

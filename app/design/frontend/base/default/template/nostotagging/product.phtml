@@ -81,7 +81,7 @@ $dateHelper = Mage::helper('nosto_tagging/date');
     <?php endif; ?>
     <?php if (!$helper->multiCurrencyDisabled()): ?>
         <span class="variation_id"><?php echo $helper->escapeHtml($product->getPriceVariationId()); ?></span>
-        <?php if ($helper->isMultiCurrencyMethodPriceVariation($store) && count($product->getPriceVariations()) > 0): ?>
+        <?php if ($helper->isMultiCurrencyMethodPriceVariation($store)): ?>
             <?php foreach ($product->getPriceVariations() as $variation): ?>
                 <?php
                 if ($variation->getAvailability() instanceof NostoProductAvailability) {
