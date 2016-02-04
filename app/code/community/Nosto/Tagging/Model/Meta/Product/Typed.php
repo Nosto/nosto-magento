@@ -439,16 +439,6 @@ class Nosto_Tagging_Model_Meta_Product_Typed extends Nosto_Tagging_Model_Base im
     }
 
     /**
-     * Returns the ID of the price variation that is currently in use.
-     *
-     * @return string the price variation ID.
-     */
-    public function getPriceVariationId()
-    {
-        return $this->_variationId;
-    }
-
-    /**
      * Returns the availability of the product, i.e. if it is in stock or not.
      *
      * @return NostoProductAvailability the availability
@@ -549,11 +539,11 @@ class Nosto_Tagging_Model_Meta_Product_Typed extends Nosto_Tagging_Model_Base im
     /**
      * Returns the ID of the variation that is currently in use. Backwards compatibiity with the SDK
      *
-     * @return $this->getPriceVariationId().
+     * @return $this->_variationId
      */
     public function getVariationId()
     {
-        return $this->getPriceVariationId();
+        return $this->_variationId;
     }
 
     /**
@@ -574,6 +564,16 @@ class Nosto_Tagging_Model_Meta_Product_Typed extends Nosto_Tagging_Model_Base im
     public function setTags($tags)
     {
         $this->_tags = $tags;
+    }
+
+    /**
+     * Sets the variation the current product prices are displayed in.
+     *
+     * @param string|int $variationId the variation ID.
+     */
+    public function setVariationId($variationId)
+    {
+        $this->_variationId = $variationId;
     }
 
 }

@@ -195,7 +195,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base
             $this->setDatePublished($product->getData('created_at'));
         }
         if (!$helper->multiCurrencyDisabled($store)) {
-            $this->setPriceVariationId($store->getBaseCurrencyCode());
+            $this->setVariationId($store->getBaseCurrencyCode());
             if ($helper->isMultiCurrencyMethodPriceVariation($store)) {
                 $this->setPriceVariations($this->buildPriceVariations($product, $store));
             }
@@ -783,7 +783,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base
      *
      * @param string|int $variationId the variation ID.
      */
-    public function setPriceVariationId($variationId)
+    public function setVariationId($variationId)
     {
         $this->_variationId = $variationId;
     }
