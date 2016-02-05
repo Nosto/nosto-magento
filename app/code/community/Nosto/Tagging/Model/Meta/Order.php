@@ -151,7 +151,7 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
                     array(
                         'productId' => -1,
                         'quantity' => 1,
-                        'name' => 'Discount',
+                        'name' => $this->buildDiscountRuleDescription($order),
                         'unitPrice' => $nostoPrice,
                         'currency' => $nostoCurrencyCode
                     )
@@ -173,6 +173,33 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
                 );
             }
         }
+    }
+
+    protected function buildDiscountRuleDescription(Mage_Sales_Model_Order $order)
+    {
+        try {
+            $appliedRules = array();
+            foreach ($order->getAllVisibleItems() as $item) {
+                if (empty($item->getAppliedRuleIds())) {
+                    continue;
+                }
+                $ruleIds = explode(',', $item->getAppliedRuleIds());
+                foreach ($ruleIds as $ruleId) {
+                    $rule = Mage::getModel('salesrule/rule')->load($ruleId);
+                    $appliedRules[$ruleId] = $rule->getName();
+                }
+            }
+            if (count($appliedRules) == 0) {
+                $appliedRules[] = 'unknown rule';
+            }
+            $discountTxt = sprintf(
+                'Discount (%s)', implode(', ', $appliedRules)
+            );
+        } catch(\Exception $e) {
+            $discountTxt = 'Discount (error)';
+        }
+
+        return $discountTxt;
     }
 
     /**
