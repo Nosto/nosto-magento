@@ -143,7 +143,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         $this->getResponse()->setHeader('Content-type', 'application/json');
 
         /** @var Nosto_Tagging_Helper_Account $accountHelper */
-        $accountHelper = new Nosto_Tagging_Model_Meta_Oauth();
+        $accountHelper = Mage::helper('nosto_tagging/account');
 
         $store = $this->getSelectedStore();
         $account = !is_null($store) ? $accountHelper->find($store) : null;

@@ -52,9 +52,9 @@ class Nosto_Tagging_Model_Meta_Oauth extends NostoOauth
         $this->_language = new NostoLanguageCode(
             substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2)
         );
-
         if (!is_null($account)) {
             $this->_account = $account;
         }
+        $this->setScopes(NostoApiToken::getApiTokenNames());
     }
 }
