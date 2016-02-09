@@ -171,7 +171,7 @@
                 <image_version>image</image_version>
             </image_options>
             <multi_currency>
-                <method>exchangeRate</method>
+                <method>disabled</method>
             </multi_currency>
         </nosto_tagging>
     </default>
