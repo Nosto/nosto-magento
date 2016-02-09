@@ -275,7 +275,7 @@ class Nosto_Tagging_Model_Observer
                     );
                 }
 
-                if ($account->getUseCurrencyExchangeRates()) {
+                if ($helper->isMultiCurrencyMethodExchangeRate($store)) {
                     if (!$accountHelper->updateCurrencyExchangeRates(
                         $account, $store
                     )

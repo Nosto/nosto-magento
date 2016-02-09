@@ -133,8 +133,7 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
         }
         $accountName = $store->getConfig(self::XML_PATH_ACCOUNT);
         if (!empty($accountName)) {
-            $account = new Nosto_Tagging_Model_Meta_Account($accountName);
-            $account->loadData($store);
+            $account = new NostoAccount($accountName);
             $tokens = json_decode(
                 $store->getConfig(self::XML_PATH_TOKENS), true
             );
