@@ -58,10 +58,6 @@
             <block type="nosto_tagging/customer" name="nosto.customer" template="nostotagging/customer.phtml"/>
         </reference>
 
-        <!-- Tag visitor checksum -->
-        <reference name="after_body_start">
-            <block type="nosto_tagging/checksum" name="nosto.checksum" template="nostotagging/checksum.phtml"/>
-        </reference>
     </default>
 
     <!-- Tag category -->
