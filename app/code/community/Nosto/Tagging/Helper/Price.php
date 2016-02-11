@@ -153,4 +153,18 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
             $store->getDefaultCurrency()->getCode()
         );
     }
+
+    /**
+     * Get the final price in base currency for an ordered item including
+     * taxes as discounts.
+     *
+     * @param Mage_Sales_Model_Order_Item $item the item model.
+     *
+     * @return float
+     */
+    public function getItemFinalPriceInclTax(Mage_Sales_Model_Order_Item $item)
+    {
+        $price = $item->getBaseRowTotal() + $item->getBaseTaxAmount() + $item->getBaseHiddenTaxAmount() - $item->getBaseDiscountAmount();
+        return $price;
+    }
 }
