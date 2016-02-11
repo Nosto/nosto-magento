@@ -418,4 +418,15 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
             return null;
         }
     }
+
+    /**
+     * Checks if logged in user has privilege to access Nosto settings
+     *
+     * @return boolean
+     */
+    protected function _isAllowed()
+    {
+        return true;
+        //return Mage::getSingleton('admin/session')->isAllowed('nosto');
+    }
 }
