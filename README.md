@@ -135,6 +135,12 @@ Open Software License ("OSL") v3.0
 
 ## Changelog
 
+### 2.6.8
+* Tagging for 404 pages and order confirmation page
+* Loosen up the data validation
+* Support for coupon discounts on product level 
+* Fix tagging currency for product
+
 ### 2.6.7
 * Ignore order status in tagging and API calls if they are not set properly
 * Ignore empty string values for order buyer information in tagging and API calls
