@@ -140,6 +140,7 @@ Open Software License ("OSL") v3.0
 * Loosen up the data validation
 * Support for coupon discounts on product level 
 * Fix tagging currency for product
+* Fix ACL handling after SUPEE-6285
 
 ### 2.6.7
 * Ignore order status in tagging and API calls if they are not set properly
