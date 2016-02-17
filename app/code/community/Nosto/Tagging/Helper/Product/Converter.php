@@ -92,8 +92,9 @@ class Nosto_Tagging_Helper_Product_Converter extends Mage_Core_Helper_Abstract
         } catch (NostoInvalidArgumentException $E) {
             // Omit invalid data
         }
-        if (!empty($product->getVariations())) {
-            $object->setPriceVariations($product->getPriceVariations());
+        $variations = $product->getPriceVariations();
+        if (!empty($variations)) {
+            $object->setPriceVariations($variations);
         }
         $object->setVariationId($product->getVariationId());
 
@@ -151,8 +152,9 @@ class Nosto_Tagging_Helper_Product_Converter extends Mage_Core_Helper_Abstract
                 date(NostoDateFormat::YMD,$product->getDatePublished()->getTimestamp())
             );
         }
-        if (!empty($product->getVariations())) {
-            $object->setPriceVariations($product->getPriceVariations());
+        $variations = $product->getPriceVariations();
+        if (!empty($variations)) {
+            $object->setPriceVariations($variations);
         }
         $object->setVariationId($product->getVariationId());
 

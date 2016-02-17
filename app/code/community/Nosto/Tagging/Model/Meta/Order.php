@@ -180,7 +180,8 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
         try {
             $appliedRules = array();
             foreach ($order->getAllVisibleItems() as $item) {
-                if (empty($item->getAppliedRuleIds())) {
+                $itemAppliedRules = $item->getAppliedRuleIds();
+                if (empty($itemAppliedRules)) {
                     continue;
                 }
                 $ruleIds = explode(',', $item->getAppliedRuleIds());
