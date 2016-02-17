@@ -1,2 +1,6 @@
 vendor
+lib
 node_modules
+.idea
+*.tgz
+
