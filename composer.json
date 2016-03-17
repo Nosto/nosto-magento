@@ -4,11 +4,21 @@
     "license": "OSL v3.0",
     "repositories": [
         {
-            "type": "vcs",
-            "url": "https://github.com/Nosto/php-sdk.git"
+          "type": "vcs",
+          "url": "https://github.com/Nosto/php-sdk.git"
+        },
+        {
+          "type": "vcs",
+          "url": "https://github.com/mridang/magazine.git"
         }
     ],
     "require": {
         "nosto/php-sdk": "1.13.0"
+    },
+    "require-dev": {
+        "mridang/magazine": "dev-master"
+    },
+    "config": {
+        "vendor-dir": "lib"
     }
 }

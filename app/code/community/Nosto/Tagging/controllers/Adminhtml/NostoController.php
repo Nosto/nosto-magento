@@ -100,7 +100,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
      */
     public function connectAccountAction()
     {
-        $this->getResponse()->setHeader('Content-type', 'application/json');
+        $this->getResponse()->setHeader('Content-type', 'application/json', true);
 
         $store = $this->getSelectedStore();
         if ($this->getRequest()->isPost() && $store !== null) {
@@ -137,7 +137,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
      */
     public function createAccountAction()
     {
-        $this->getResponse()->setHeader('Content-type', 'application/json');
+        $this->getResponse()->setHeader('Content-type', 'application/json', true);
 
         /** @var Nosto_Tagging_Helper_Account $accountHelper */
         $accountHelper = Mage::helper('nosto_tagging/account');
@@ -193,7 +193,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
      */
     public function removeAccountAction()
     {
-        $this->getResponse()->setHeader('Content-type', 'application/json');
+        $this->getResponse()->setHeader('Content-type', 'application/json', true);
 
         /** @var Nosto_Tagging_Helper_Account $accountHelper */
         $accountHelper = Mage::helper('nosto_tagging/account');

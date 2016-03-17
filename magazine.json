@@ -1,0 +1,66 @@
+{
+  "name": "Nosto_Tagging",
+  "version": {
+    "release": "2.6.9"
+  },
+  "stability": {
+    "release": "stable"
+  },
+  "license": {
+    "_content": "OSL",
+    "attribs": {
+      "uri": "http://opensource.org/licenses/osl-3.0.php"
+    }
+  },
+  "channel": "community",
+  "summary": "Personalization for Magento",
+  "description": "Increase your conversion rate and average order value by delivering your customers personalized product recommendations throughout their shopping journey.",
+  "notes": "- Fix resolving the payment provider&#xD;- Fix duplicate content-type header in admin controller&#xD;",
+  "developer": {
+    "name": "Nosto",
+    "user": "nosto",
+    "email": "magento@nosto.com"
+  },
+  "date": "2016-03-17",
+  "time": "15:13:05",
+  "dependencies": {
+    "required": {
+      "php": {
+        "min": "5.2.0",
+        "max": "6.0.0"
+      }
+    }
+  },
+  "include": {
+    "magelocal": [] ,
+    "magecommunity": [
+      "app/code/community/Nosto/Tagging/*"
+    ],
+    "magecore": [],
+    "magedesign": [
+      "app/design/*"
+    ],
+    "mageetc": [
+      "app/etc/modules/Nosto_Tagging.xml"
+    ],
+    "magelib": [
+      "lib/nosto/php-sdk/src/*"
+    ],
+    "magelocale": [],
+    "magemedia": [],
+    "mageskin": [],
+    "mageweb": [],
+    "magetest": [],
+    "mage": [
+      "js/nosto/*min.js"
+    ]
+  },
+  "exclude": [
+    "vendor",
+    "*.json",
+    "*.lock",
+    "*.tar",
+    ".DS_Store",
+    ".git"
+  ]
+}

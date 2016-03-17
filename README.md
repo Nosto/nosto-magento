@@ -135,6 +135,10 @@ Open Software License ("OSL") v3.0
 
 ## Changelog
 
+### 2.6.9
+* Fix resolving the payment provider
+* Fix duplicate content-type header in admin controller
+
 ### 2.6.8
 * Tagging for 404 pages and order confirmation page
 * Loosen up the data validation
