@@ -136,7 +136,7 @@ Open Software License ("OSL") v3.0
 ## Changelog
 
 ### 2.6.10
-* Fix unit price calculation with quantity more than one
+* Bug fixes
 
 ### 2.6.9
 * Fix resolving the payment provider

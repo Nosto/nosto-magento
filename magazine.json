@@ -15,7 +15,7 @@
   "channel": "community",
   "summary": "Personalization for Magento",
   "description": "Increase your conversion rate and average order value by delivering your customers personalized product recommendations throughout their shopping journey.",
-  "notes": "- Fix unit price calculation with quantity more than one",
+  "notes": "- Bug fixes",
   "developer": {
     "name": "Nosto",
     "user": "nosto",
