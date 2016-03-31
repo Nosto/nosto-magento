@@ -135,6 +135,9 @@ Open Software License ("OSL") v3.0
 
 ## Changelog
 
+### 2.6.10
+* Fix unit price calculation with quantity more than one
+
 ### 2.6.9
 * Fix resolving the payment provider
 * Fix duplicate content-type header in admin controller
