@@ -1,68 +1,8 @@
 {
-  "name": "Nosto_Tagging",
-  "version": {
-    "release": "3.0.0-RC2"
-  },
-  "stability": {
-    "release": "stable"
-  },
-  "license": {
-    "_content": "OSL",
-    "attribs": {
-      "uri": "http://opensource.org/licenses/osl-3.0.php"
-    }
-  },
-  "channel": "community",
-  "summary": "Personalization for Magento",
-  "description": "Increase your conversion rate and average order value by delivering your customers personalized product recommendations throughout their shopping journey.",
-  "notes": "Foobar for Magento",
-  "developer": {
-      "name": "Nosto",
-      "user": "nosto",
-      "email": "magento@nosto.com"
-   },
-  "date": "2015-01-22",
-  "time": "21:13:05",
-  "dependencies": {
-    "required": {
-      "php": {
-        "min": "5.2.0",
-        "max": "7.0.0"
-      }
-    }
-  },
-  "include": {
-    "magelocal": [] ,
-    "magecommunity": [
-      "app/code/community/Nosto/Tagging/*"
-    ],
-    "magecore": [],
-    "magedesign": [
-      "app/design/*"
-    ],
-    "mageetc": [
-      "app/etc/modules/Nosto_Tagging.xml"
-    ],
-    "magelib": [
-      "lib/nosto/php-sdk/src/*",
-      "lib/nosto/php-sdk/lib/*",
-      "lib/nosto/php-sdk/autoload.php"
-    ],
-    "magelocale": [],
-    "magemedia": [],
-    "mageskin": [],
-    "mageweb": [],
-    "magetest": [],
-    "mage": [
-      "js/nosto/*min.js"
-    ]
-  },
-  "exclude": [
-    "vendor",
-    "*.json",
-    "*.lock",
-    "*.tar",
-    ".DS_Store",
-    ".git"
-  ]
+  "name": "nosto-magento-extension",
+  "version": "0.1.0",
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-contrib-uglify": "~0.8.0"
+  }
 }
