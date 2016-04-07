@@ -262,18 +262,6 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Return if we should use the nosto script direct include.
-     *
-     * @param Mage_Core_Model_Store|null $store the store model or null.
-     *
-     * @return bool
-     */
-    public function getUseScriptDirectInclude($store = null)
-    {
-        return (bool)Mage::getStoreConfig(self::XML_PATH_DIRECT_INCLUDE, $store);
-    }
-
-    /**
      * Returns product updates should be sent via API to Nosto
      *
      * @return boolean
@@ -283,5 +271,4 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         $useApi = (bool)Mage::getStoreConfig(self::XML_PATH_USE_PRODUCT_API, $store);
         return $useApi;
     }
-
 }
