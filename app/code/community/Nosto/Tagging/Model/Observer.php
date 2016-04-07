@@ -122,6 +122,10 @@ class Nosto_Tagging_Model_Observer
      * Event handler for the "catalog_product_delete_after" event.
      * Sends a product delete API call to Nosto.
      *
+     * This method does not obey the product update API setting.
+     * Merchants do not mass delete products often and if they do
+     * Nosto should know about that.
+     *
      * @param Varien_Event_Observer $observer the event observer.
      *
      * @return Nosto_Tagging_Model_Observer
