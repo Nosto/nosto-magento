@@ -1,67 +1,67 @@
 {
-  name: "Nosto_Tagging",
-  version: {
-    release: "3.0.0-rc2"
+  "name": "Nosto_Tagging",
+  "version": {
+    "release": "3.0.0-RC3"
   },
-  stability: {
-    release: "stable"
+  "stability": {
+    "release": "stable"
   },
-  license: {
-    _content: "OSL",
-    attribs: {
-      uri: "http://opensource.org/licenses/osl-3.0.php"
+  "license": {
+    "_content": "OSL",
+    "attribs": {
+      "uri": "http://opensource.org/licenses/osl-3.0.php"
     }
   },
-  channel: "community",
-  summary: "Personalization for Magento",
-  description: "Increase your conversion rate and average order value by delivering your customers personalized product recommendations throughout their shopping journey.",
-  notes: "- Bug fixes",
-  developer: {
-    name: "Nosto",
-    user: "nosto",
-    email: "magento@nosto.com"
+  "channel": "community",
+  "summary": "Personalization for Magento",
+  "description": "Increase your conversion rate and average order value by delivering your customers personalized product recommendations throughout their shopping journey.",
+  "notes": "- Possibility to disable product update API&#xD;- Upsert products regardless of the visibility&#xD;- Bug fixes&#xD;",
+  "developer": {
+    "name": "Nosto",
+    "user": "nosto",
+    "email": "magento@nosto.com"
   },
-  date: "2016-04-07",
-  time: "07:13:05",
-  dependencies: {
-    required: {
-      php: {
-        min: "5.2.0",
-        max: "6.0.0"
+  "date": "2016-04-08",
+  "time": "07:13:05",
+  "dependencies": {
+    "required": {
+      "php": {
+        "min": "5.2.0",
+        "max": "6.0.0"
       },
-      package: {
-        name: "Mage_Core_Modules",
-        min: "1.6.0.0",
-        max: "1.9.2.4",
-        channel: "community"
+      "package": {
+        "name": "Mage_Core_Modules",
+        "min": "1.6.0.0",
+        "max": "1.9.2.4",
+        "channel": "community"
       }
     }
   },
-  include: {
-    magelocal: [ ],
-    magecommunity: [
+  "include": {
+    "magelocal": [] ,
+    "magecommunity": [
       "app/code/community/Nosto/Tagging/*"
     ],
-    magecore: [ ],
-    magedesign: [
+    "magecore": [],
+    "magedesign": [
       "app/design/*"
     ],
-    mageetc: [
+    "mageetc": [
       "app/etc/modules/Nosto_Tagging.xml"
     ],
-    magelib: [
+    "magelib": [
       "lib/nosto/php-sdk/src/*"
     ],
-    magelocale: [ ],
-    magemedia: [ ],
-    mageskin: [ ],
-    mageweb: [ ],
-    magetest: [ ],
-    mage: [
+    "magelocale": [],
+    "magemedia": [],
+    "mageskin": [],
+    "mageweb": [],
+    "magetest": [],
+    "mage": [
       "js/nosto/*min.js"
     ]
   },
-  exclude: [
+  "exclude": [
     "vendor",
     "*.json",
     "*.lock",
