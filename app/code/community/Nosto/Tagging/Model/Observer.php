@@ -72,7 +72,9 @@ class Nosto_Tagging_Model_Observer
      */
     public function sendProductUpdate(Varien_Event_Observer $observer)
     {
-        if (Mage::helper('nosto_tagging')->isModuleEnabled()) {
+        /* @var $nostoHelper Nosto_Tagging_Helper_Data */
+        $nostoHelper = Mage::helper('nosto_tagging');
+        if ($nostoHelper->isModuleEnabled()) {
             /** @var Mage_Catalog_Model_Product $product */
             $product = $observer->getEvent()->getProduct();
             /** @var Nosto_Tagging_Helper_Product_Converter $converter */
@@ -87,7 +89,8 @@ class Nosto_Tagging_Model_Observer
                 /** @var NostoAccount $account */
                 $account = Mage::helper('nosto_tagging/account')
                     ->find($store);
-                if (is_null($account)) {
+
+                if (is_null($account) || !$nostoHelper->getUseProductApi($store)) {
                     continue;
                 }
                 // Load the product model for this particular store view.

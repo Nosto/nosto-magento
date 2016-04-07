@@ -165,7 +165,8 @@
     <default>
         <nosto_tagging>
             <general>
-                <direct_include>0</direct_include>
+                <direct_include>1</direct_include>
+                <use_product_api>1</use_product_api>
             </general>
             <image_options>
                 <image_version>image</image_version>
