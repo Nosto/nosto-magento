@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "69437fd731161779a39c2042e541f35a",
+    "hash": "76c82e13261cc362c44173d31d95f7bf",
     "content-hash": "5f3596520bbf58ae4f3783b7b95e0626",
     "packages": [
         {
@@ -45,12 +45,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/mridang/magazine.git",
-                "reference": "6420cfab0584568fb7a471b849ecc6209f07bea6"
+                "reference": "2e60e7a57ee6d9ab805414aaa6a108721c8424db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mridang/magazine/zipball/6420cfab0584568fb7a471b849ecc6209f07bea6",
-                "reference": "6420cfab0584568fb7a471b849ecc6209f07bea6",
+                "url": "https://api.github.com/repos/mridang/magazine/zipball/2e60e7a57ee6d9ab805414aaa6a108721c8424db",
+                "reference": "2e60e7a57ee6d9ab805414aaa6a108721c8424db",
                 "shasum": ""
             },
             "require": {
@@ -90,20 +90,20 @@
                 "issues": "https://github.com/mridang/magazine/issues",
                 "source": "https://github.com/mridang/magazine/tree/master"
             },
-            "time": "2016-02-17 12:21:22"
+            "time": "2016-03-18 16:24:35"
         },
         {
             "name": "symfony/console",
-            "version": "v3.0.2",
+            "version": "v3.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "5a02eaadaa285e2bb727eb6bbdfb8201fcd971b0"
+                "reference": "6b1175135bc2a74c08a28d89761272de8beed8cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/5a02eaadaa285e2bb727eb6bbdfb8201fcd971b0",
-                "reference": "5a02eaadaa285e2bb727eb6bbdfb8201fcd971b0",
+                "url": "https://api.github.com/repos/symfony/console/zipball/6b1175135bc2a74c08a28d89761272de8beed8cd",
+                "reference": "6b1175135bc2a74c08a28d89761272de8beed8cd",
                 "shasum": ""
             },
             "require": {
@@ -150,11 +150,11 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2016-02-02 13:44:19"
+            "time": "2016-03-16 17:00:50"
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.1.0",
+            "version": "v1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",

@@ -50,6 +50,11 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_IMAGE_VERSION = 'nosto_tagging/image_options/image_version';
 
     /**
+     * Path to store config for using the product API or not.
+     */
+    const XML_PATH_USE_PRODUCT_API = 'nosto_tagging/general/use_product_api';
+
+    /**
      * The name of the cookie where Nosto ID can be found.
      */
     const COOKIE_NAME = '2c_cId';
@@ -83,6 +88,21 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      * No multi currency
      */
     const MULTI_CURRENCY_DISABLED = 'disabled';
+
+    /**
+     * Magento default scope
+     */
+    const MAGENTO_SCOPE_DEFAULT = 'default';
+
+    /**
+     * Magento websites scope
+     */
+    const MAGENTO_SCOPE_WEBSITES = 'websites';
+
+    /**
+     * Magento store scope
+     */
+    const MAGENTO_SCOPE_STORES   = 'stores';
 
     /**
      * Escape quotes inside html attributes.
@@ -252,4 +272,16 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     {
         return (bool)Mage::getStoreConfig(self::XML_PATH_DIRECT_INCLUDE, $store);
     }
+
+    /**
+     * Returns product updates should be sent via API to Nosto
+     *
+     * @return boolean
+     */
+    public function getUseProductApi($store = null)
+    {
+        $useApi = (bool)Mage::getStoreConfig(self::XML_PATH_USE_PRODUCT_API, $store);
+        return $useApi;
+    }
+
 }

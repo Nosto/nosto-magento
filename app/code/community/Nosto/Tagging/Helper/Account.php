@@ -67,16 +67,33 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
         /** @var Mage_Core_Model_Config $config */
         $config = Mage::getModel('core/config');
         $config->saveConfig(
-            self::XML_PATH_ACCOUNT, $account->getName(), 'stores', $store->getId()
+            self::XML_PATH_ACCOUNT,
+            $account->getName(),
+            Nosto_Tagging_Helper_Data::MAGENTO_SCOPE_STORES,
+            $store->getId()
         );
         $tokens = array();
         foreach ($account->getTokens() as $token) {
             $tokens[$token->getName()] = $token->getValue();
         }
         $config->saveConfig(
-            self::XML_PATH_TOKENS, json_encode($tokens), 'stores',
+            self::XML_PATH_TOKENS,
+            json_encode($tokens),
+            Nosto_Tagging_Helper_Data::MAGENTO_SCOPE_STORES,
             $store->getId()
         );
+
+        //Enable API upserts by default when new account is added
+        // or account is reconnected
+        if (!$nostoHelper->getUseProductApi($store)) {
+            $config->saveConfig(
+                Nosto_Tagging_Helper_Data::XML_PATH_USE_PRODUCT_API,
+                true,
+                Nosto_Tagging_Helper_Data::MAGENTO_SCOPE_STORES,
+                $store->getId()
+            );
+        }
+
         Mage::app()->getCacheInstance()->cleanType('config');
         return true;
     }
@@ -100,10 +117,16 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
         /** @var Mage_Core_Model_Config $config */
         $config = Mage::getModel('core/config');
         $config->saveConfig(
-            self::XML_PATH_ACCOUNT, null, 'stores', $store->getId()
+            self::XML_PATH_ACCOUNT,
+            null,
+            Nosto_Tagging_Helper_Data::MAGENTO_SCOPE_STORES,
+            $store->getId()
         );
         $config->saveConfig(
-            self::XML_PATH_TOKENS, null, 'stores', $store->getId()
+            self::XML_PATH_TOKENS,
+            null,
+            Nosto_Tagging_Helper_Data::MAGENTO_SCOPE_STORES,
+            $store->getId()
         );
         Mage::app()->getCacheInstance()->cleanType('config');
 
