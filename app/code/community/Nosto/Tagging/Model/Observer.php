@@ -96,9 +96,6 @@ class Nosto_Tagging_Model_Observer
                 if (is_null($product)) {
                     continue;
                 }
-                if (!$product->isVisibleInSiteVisibility()) {
-                    continue;
-                }
 
                 /** @var Nosto_Tagging_Model_Meta_Product $model */
                 $model = Mage::getModel('nosto_tagging/meta_product');
