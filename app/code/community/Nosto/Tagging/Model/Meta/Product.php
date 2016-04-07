@@ -47,6 +47,11 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     const PRODUCT_OUT_OF_STOCK = 'OutOfStock';
 
     /**
+     * Product "invisible " tagging string.
+     */
+    const PRODUCT_INVISIBLE = 'Invisible';
+
+    /**
      * Product "can be directly added to cart" tag string.
      */
     const PRODUCT_ADD_TO_CART = 'add-to-cart';
@@ -177,9 +182,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         $this->_price = $priceHelper->convertToDefaultCurrency($priceHelper->getProductFinalPriceInclTax($product), $store);
         $this->_listPrice = $priceHelper->convertToDefaultCurrency($priceHelper->getProductPriceInclTax($product), $store);
         $this->_currencyCode = $store->getDefaultCurrency()->getCode();
-        $this->_availability = $product->isAvailable()
-            ? self::PRODUCT_IN_STOCK
-            : self::PRODUCT_OUT_OF_STOCK;
+        $this->_availability = $this->buildAvailability($product);
         $this->_categories = $this->buildCategories($product);
 
         // Optional properties.
@@ -200,6 +203,26 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
             $this->_datePublished = $product->getData('created_at');
         }
     }
+
+    /**
+     * Builds the availability for the product.
+     *
+     * @param Mage_Catalog_Model_Product $product the product model.
+     *
+     * @return string
+     */
+    protected function buildAvailability(Mage_Catalog_Model_Product $product)
+    {
+        $availability = self::PRODUCT_OUT_OF_STOCK;
+        if(!$product->isVisibleInSiteVisibility()) {
+            $availability = self::PRODUCT_INVISIBLE;
+        } elseif ($product->isAvailable()) {
+            $availability = self::PRODUCT_IN_STOCK;
+        }
+
+        return $availability;
+    }
+
 
     /**
      * Builds the "tag1" tags.
