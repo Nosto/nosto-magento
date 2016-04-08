@@ -1,7 +1,7 @@
 {
   "name": "Nosto_Tagging",
   "version": {
-    "release": "3.0.0-RC3"
+    "release": "3.0.0-rc3"
   },
   "stability": {
     "release": "stable"
@@ -15,14 +15,14 @@
   "channel": "community",
   "summary": "Personalization for Magento",
   "description": "Increase your conversion rate and average order value by delivering your customers personalized product recommendations throughout their shopping journey.",
-  "notes": "- Possibility to disable product update API&#xD;- Upsert products regardless of the visibility&#xD;- Bug fixes&#xD;",
+  "notes": "- Possibility to disable product update API&#xD;- Upsert products regardless of the visibility&#xD;- Bug fixes",
   "developer": {
     "name": "Nosto",
     "user": "nosto",
     "email": "magento@nosto.com"
   },
   "date": "2016-04-08",
-  "time": "07:13:05",
+  "time": "12:13:05",
   "dependencies": {
     "required": {
       "php": {
@@ -50,6 +50,8 @@
       "app/etc/modules/Nosto_Tagging.xml"
     ],
     "magelib": [
+      "lib/nosto/php-sdk/autoload.php",
+      "lib/nosto/php-sdk/lib/*",
       "lib/nosto/php-sdk/src/*"
     ],
     "magelocale": [],

@@ -2,7 +2,20 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [3.0.0-RC2]
+## [3.0.0-rc3]
+### Added
+- Add possibility to disable product updates to Nosto
+- Update products to Nosto regardless of the product visibility
+- Bump php-sdk version
+
+### Removed
+- Remove setting for javascript include style (using direct always)
+
+### Fixed
+- Fix duplicate header error in ajax calls (nginx)
+- Improve payment provider handing in order
+
+## [3.0.0-rc2]
 ### Added
 - Support for using price variations
 - Retouch of Nosto advanced settings view
@@ -21,10 +34,24 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Use base currency in tagging if multiple currencies are used in a store level
 
-## [3.0.0-RC1]
+## [3.0.0-rc1]
 ### Added
 - Multi-currency + exchange rate support
 - Account settings synchronisation support
+
+## [2.6.10]
+- Bug fixes
+
+## [2.6.9]
+- Fix resolving the payment provider
+- Fix duplicate content-type header in admin controller
+
+## [2.6.8]
+- Tagging for 404 pages and order confirmation page
+- Loosen up the data validation
+- Support for coupon discounts on product level 
+- Fix tagging currency for product
+- Fix ACL handling after SUPEE-6285
 
 ## [2.6.7]
 ### Fixed
@@ -226,7 +253,14 @@ Catalog Category" option was enabled
 ### Added
 - Initial release
 
-[unreleased]: https://github.com/nosto/nosto-magento-extension/compare/2.6.7...develop
+[3.0.0-rc3]: https://github.com/nosto/nosto-magento-extension/compare/3.0.0-rc2...3.0.0-rc3
+[3.0.0-rc2]: https://github.com/nosto/nosto-magento-extension/compare/3.0.0-1rc...3.0.0-rc2
+[3.0.0-rc1]: https://github.com/Nosto/nosto-magento-extension/releases/tag/3.0.0-1rc
+
+[unreleased]: https://github.com/nosto/nosto-magento-extension/compare/2.6.10...master
+[2.6.10]: https://github.com/nosto/nosto-magento-extension/compare/2.6.9...2.6.10
+[2.6.9]: https://github.com/nosto/nosto-magento-extension/compare/2.6.8...2.6.9
+[2.6.8]: https://github.com/nosto/nosto-magento-extension/compare/2.6.7...2.6.8
 [2.6.7]: https://github.com/nosto/nosto-magento-extension/compare/2.6.6...2.6.7
 [2.6.6]: https://github.com/nosto/nosto-magento-extension/compare/2.6.5...2.6.6
 [2.6.5]: https://github.com/nosto/nosto-magento-extension/compare/2.6.4...2.6.5
@@ -263,3 +297,4 @@ Catalog Category" option was enabled
 [1.0.3]: https://github.com/nosto/nosto-magento-extension/compare/1.0.2...1.0.3
 [1.0.2]: https://github.com/nosto/nosto-magento-extension/compare/1.0.1...1.0.2
 [1.0.1]: https://github.com/nosto/nosto-magento-extension/compare/1.0.0...1.0.1
+
