@@ -85,6 +85,8 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
 
         //Enable API upserts by default when new account is added
         // or account is reconnected
+        /* @var $nostoHelper Nosto_Tagging_Helper_Data */
+        $nostoHelper = Mage::helper('nosto_tagging');
         if (!$nostoHelper->getUseProductApi($store)) {
             $config->saveConfig(
                 Nosto_Tagging_Helper_Data::XML_PATH_USE_PRODUCT_API,

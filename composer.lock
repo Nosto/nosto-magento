@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "76c82e13261cc362c44173d31d95f7bf",
-    "content-hash": "5f3596520bbf58ae4f3783b7b95e0626",
+    "hash": "33f1995a382add10c0c7f726c56c32fc",
+    "content-hash": "46a6a3b440c3dad0169e917fb760d1d1",
     "packages": [
         {
             "name": "nosto/php-sdk",
-            "version": "2.4.1",
+            "version": "2.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Nosto/php-sdk.git",
-                "reference": "813ae14c2a70d7ed6ed5ba8260feda558b6d1963"
+                "reference": "49a52c1c0c7db5c75e16ff4929141c32ddd29e03"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Nosto/php-sdk/zipball/813ae14c2a70d7ed6ed5ba8260feda558b6d1963",
-                "reference": "813ae14c2a70d7ed6ed5ba8260feda558b6d1963",
+                "url": "https://api.github.com/repos/Nosto/php-sdk/zipball/49a52c1c0c7db5c75e16ff4929141c32ddd29e03",
+                "reference": "49a52c1c0c7db5c75e16ff4929141c32ddd29e03",
                 "shasum": ""
             },
             "require-dev": {
@@ -27,15 +27,47 @@
                 "codeception/specify": "0.4.1"
             },
             "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/",
+                    "src/Account",
+                    "src/Account/Meta",
+                    "src/Api",
+                    "src/Cart",
+                    "src/Country",
+                    "src/Currency",
+                    "src/Currency/Exchange",
+                    "src/Currency/Exchange/Rate",
+                    "src/Date",
+                    "src/Export",
+                    "src/Export/Collection",
+                    "src/Formatter",
+                    "src/Helper",
+                    "src/Http",
+                    "src/Http/Request",
+                    "src/Http/Request/Adapter",
+                    "src/Language",
+                    "src/Oauth",
+                    "src/Order",
+                    "src/Price",
+                    "src/Product",
+                    "src/Service",
+                    "lib/phpseclib/Crypt",
+                    "lib/phpseclib/Math"
+                ],
+                "files": [
+                    "bootstrap.php"
+                ]
+            },
             "license": [
                 "BSD-3-Clause"
             ],
             "description": "PHP SDK for developing Nosto modules for e-commerce platforms",
             "support": {
-                "source": "https://github.com/Nosto/php-sdk/tree/2.4.1",
+                "source": "https://github.com/Nosto/php-sdk/tree/2.4.3",
                 "issues": "https://github.com/Nosto/php-sdk/issues"
             },
-            "time": "2016-02-10 13:44:03"
+            "time": "2016-04-08 10:04:49"
         }
     ],
     "packages-dev": [
