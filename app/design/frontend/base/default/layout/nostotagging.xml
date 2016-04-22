@@ -274,6 +274,9 @@
                     <value>nosto-page-search2</value>
                 </action>
             </block>
+            <block type="nosto_tagging/searchterm" name="nosto.page.searchterm1" after="nosto.page.search2"
+                   template="nostotagging/searchterm.phtml">
+            </block>
         </reference>
     </catalogsearch_result_index>
 
