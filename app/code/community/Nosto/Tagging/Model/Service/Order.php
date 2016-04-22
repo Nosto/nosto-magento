@@ -99,7 +99,7 @@ class Nosto_Tagging_Model_Service_Order
         foreach ($order->getPurchasedItems() as $item) {
             $data['purchased_items'][] = array(
                 'product_id' => $item->getProductId(),
-                'quantity' => (int)$item->getQuantity(),
+                'quantity' => $item->getQuantity(),
                 'name' => $item->getName(),
                 'unit_price' => Nosto::helper('price')->format($item->getUnitPrice()),
                 'price_currency_code' => strtoupper($item->getCurrencyCode()),
