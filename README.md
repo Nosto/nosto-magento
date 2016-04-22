@@ -135,6 +135,9 @@ Open Software License ("OSL") v3.0
 
 ## Changelog
 
+### 2.6.12
+* Restore the type casting to quantity
+
 ### 2.6.11
 * Hide hidden categories from tagging
 * Remove type casting from templates

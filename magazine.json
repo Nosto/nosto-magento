@@ -1,7 +1,7 @@
 {
   "name": "Nosto_Tagging",
   "version": {
-    "release": "2.6.11"
+    "release": "2.6.12"
   },
   "stability": {
     "release": "stable"
@@ -15,7 +15,7 @@
   "channel": "community",
   "summary": "Personalization for Magento",
   "description": "Increase your conversion rate and average order value by delivering your customers personalized product recommendations throughout their shopping journey.",
-  "notes": "- Remove type casting from templates&#xD;- Add search term tagging",
+  "notes": "- Restore the type casting to quantity",
   "developer": {
     "name": "Nosto",
     "user": "nosto",

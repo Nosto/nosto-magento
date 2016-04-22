@@ -54,7 +54,7 @@ class Nosto_Tagging_Model_Export_Collection_Order extends NostoOrderCollection i
             foreach ($item->getPurchasedItems() as $orderItem) {
                 $data['purchased_items'][] = array(
                     'product_id' => $orderItem->getProductId(),
-                    'quantity' => $orderItem->getQuantity(),
+                    'quantity' => (int)$orderItem->getQuantity(),
                     'name' => $orderItem->getName(),
                     'unit_price' => Nosto::helper('price')->format($orderItem->getUnitPrice()),
                     'price_currency_code' => strtoupper($orderItem->getCurrencyCode()),
