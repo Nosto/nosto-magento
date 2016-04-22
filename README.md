@@ -135,6 +135,11 @@ Open Software License ("OSL") v3.0
 
 ## Changelog
 
+### 2.6.11
+* Remove type casting from templates
+* Loosen up data validation for order items
+* Add search term tagging
+
 ### 2.6.10
 * Bug fixes
 
