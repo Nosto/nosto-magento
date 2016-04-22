@@ -86,6 +86,8 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
             foreach ($ids as $id) {
                 if (isset($categories[$id]) && $categories[$id]->getName()) {
                     $data[] = $categories[$id]->getName();
+                } else {
+                    break;
                 }
             }
         }

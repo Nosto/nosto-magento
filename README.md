@@ -136,9 +136,11 @@ Open Software License ("OSL") v3.0
 ## Changelog
 
 ### 2.6.11
+* Hide hidden categories from tagging
 * Remove type casting from templates
 * Loosen up data validation for order items
 * Add search term tagging
+* Update products to Nosto regardless of the product visibility
 
 ### 2.6.10
 * Bug fixes

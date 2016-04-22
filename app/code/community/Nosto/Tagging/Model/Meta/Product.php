@@ -349,8 +349,8 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
                 $data[] = $categoryString;
             }
         }
-
-        return $data;
+        
+        return array_unique($data);
     }
 
     /**
