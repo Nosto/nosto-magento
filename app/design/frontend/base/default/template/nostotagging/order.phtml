@@ -63,8 +63,8 @@ $priceHelper = Mage::helper('nosto_tagging/price');
     <div class="purchased_items">
         <?php foreach ($order->getPurchasedItems() as $item): ?>
         <div class="line_item">
-            <span class="product_id"><?php echo (int)$item->getProductId(); ?></span>
-            <span class="quantity"><?php echo (int)$item->getQuantity(); ?></span>
+            <span class="product_id"><?php echo $item->getProductId(); ?></span>
+            <span class="quantity"><?php echo $item->getQuantity(); ?></span>
             <span class="name"><?php echo $helper->escapeHtml($item->getName()); ?></span>
             <span class="unit_price"><?php echo $priceHelper->getFormattedPrice($item->getUnitPrice()); ?></span>
             <span class="price_currency_code"><?php echo strtoupper($item->getCurrencyCode()); ?></span>
