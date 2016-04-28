@@ -132,4 +132,28 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     {
         return Mage::getStoreConfig(self::XML_PATH_IMAGE_VERSION, $store);
     }
+
+    /**
+     * Return the Nosto cookie value
+     *
+     * @return string
+     */
+    public function getCookieId()
+    {
+        return Mage::getModel('core/cookie')->get(self::COOKIE_NAME);
+    }
+
+    /**
+     * Return the checksum for visitor
+     *
+     * @return string
+     */
+    public function getVisitorChecksum()
+    {
+        $coo = $this->getCookieId();
+        if ($coo) {
+            return hash(self::VISITOR_HASH_ALGO, $coo);
+        }
+        return null;
+    }
 }

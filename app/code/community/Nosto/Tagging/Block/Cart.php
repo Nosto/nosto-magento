@@ -181,4 +181,15 @@ class Nosto_Tagging_Block_Cart extends Mage_Checkout_Block_Cart_Abstract
 
         return $name;
     }
+
+    /*
+     * Returns the visitor's Nosto Id
+     */
+    public function getVisitorChecksum()
+    {
+        /* @var $helper Nosto_Tagging_Helper_Data */
+        $helper = Mage::helper('nosto_tagging');
+
+        return $helper->getVisitorChecksum();
+    }
 }

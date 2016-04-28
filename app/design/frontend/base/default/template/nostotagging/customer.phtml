@@ -36,7 +36,7 @@ $nostoHelper = Mage::helper('nosto_tagging');
 ?>
 
 <!-- Nosto Customer Tagging -->
-<div class="nosto_customer" style="display:none">
+<div class="nosto_customer" data-2ccid="<?php echo $this->getVisitorChecksum(); ?>" style="display:none">
     <span class="first_name"><?php echo $nostoHelper->escapeHtml($customer->getFirstname()); ?></span>
     <span class="last_name"><?php echo $nostoHelper->escapeHtml($customer->getLastname()); ?></span>
     <span class="email"><?php echo $nostoHelper->escapeHtml($customer->getEmail()); ?></span>
