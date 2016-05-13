@@ -165,10 +165,22 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
     public function getItemFinalPriceInclTax(Mage_Sales_Model_Order_Item $item)
     {
         $quantity = (double)$item->getQtyOrdered();
-        $price = $item->getBaseRowTotal() + $item->getBaseTaxAmount() + $item->getBaseHiddenTaxAmount() - $item->getBaseDiscountAmount();
-        if ($quantity > 1) {
-            $price = round($price/$quantity, 2);
+        $basePrice = $item->getBaseRowTotal() + $item->getBaseTaxAmount() + $item->getBaseHiddenTaxAmount() - $item->getBaseDiscountAmount();
+        $orderCurrencyCode = $item->getOrder()->getOrderCurrencyCode();
+        $baseCurrencyCode = $item->getOrder()->getBaseCurrencyCode();
+        if ($orderCurrencyCode != $baseCurrencyCode) {
+            $priceInOrderCurrency = Mage::helper('directory')->currencyConvert(
+                $basePrice,
+                $baseCurrencyCode,
+                $orderCurrencyCode
+            );
+        } else {
+            $priceInOrderCurrency = $basePrice;
         }
-        return $price;
+        if ($quantity > 1) {
+            $priceInOrderCurrency = round($priceInOrderCurrency/$quantity, 2);
+        }
+        
+        return $priceInOrderCurrency;
     }
 }
