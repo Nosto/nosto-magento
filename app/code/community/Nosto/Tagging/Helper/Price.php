@@ -178,7 +178,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
             $priceInOrderCurrency = $basePrice;
         }
         if ($quantity > 1) {
-            $basePrice = round($basePrice/$quantity, 2);
+            $priceInOrderCurrency = round($priceInOrderCurrency/$quantity, 2);
         }
         
         return $priceInOrderCurrency;
