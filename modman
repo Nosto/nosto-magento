@@ -8,5 +8,5 @@ app/etc/modules/*  app/etc/modules/
 app/locale/de_DE/Nosto_Tagging.csv app/locale/de_DE/Nosto_Tagging.csv
 app/locale/es_ES/Nosto_Tagging.csv app/locale/es_ES/Nosto_Tagging.csv
 app/locale/fr_FR/Nosto_Tagging.csv app/locale/fr_FR/Nosto_Tagging.csv
-vendor/nosto/*  lib/nosto/
-js/*  js/nosto/
+lib/nosto/*  lib/nosto/
+js/nosto/*  js/nosto/
