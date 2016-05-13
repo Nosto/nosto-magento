@@ -1,7 +1,7 @@
 {
   "name": "Nosto_Tagging",
   "version": {
-    "release": "2.6.12"
+    "release": "2.6.13"
   },
   "stability": {
     "release": "stable"
@@ -15,14 +15,14 @@
   "channel": "community",
   "summary": "Personalization for Magento",
   "description": "Increase your conversion rate and average order value by delivering your customers personalized product recommendations throughout their shopping journey.",
-  "notes": "- Restore the type casting to quantity",
+  "notes": "- Bug fixes",
   "developer": {
     "name": "Nosto",
     "user": "nosto",
     "email": "magento@nosto.com"
   },
-  "date": "2016-04-22",
-  "time": "08:48:05",
+  "date": "2016-05-13",
+  "time": "14:15:56",
   "dependencies": {
     "required": {
       "php": {

@@ -135,6 +135,10 @@ Open Software License ("OSL") v3.0
 
 ## Changelog
 
+### 2.6.13
+* Update modman settings
+* Bug fixes for multi currency handling
+
 ### 2.6.12
 * Restore the type casting to quantity
 
