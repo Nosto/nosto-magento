@@ -532,4 +532,14 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         }
         return implode(' ', $descriptions);
     }
+
+    /**
+     * Returns the product variation id.
+     *
+     * @return mixed|null
+     */
+    public function getVariationId()
+    {
+        return null;
+    }
 }

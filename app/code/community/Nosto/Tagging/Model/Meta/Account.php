@@ -244,4 +244,37 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
         // todo: implement partner code storage.
         return null;
     }
+
+    /**
+     * Returns a list of currency objects supported by the store the account is to be created for.
+     *
+     * @return NostoCurrency[] the currencies.
+     */
+    public function getCurrencies()
+    {
+        return null;
+    }
+
+    /**
+     * Returns if exchange rates should be used for handling
+     * multiple currencies. Please note that the method only tells if the
+     * setting is active. Method does not take account whether multiple
+     * currencies actually exist or are used.
+     *
+     * @return boolean if multi variants are used
+     */
+    public function getUseCurrencyExchangeRates()
+    {
+        return false;
+    }
+
+    /**
+     * Returns the default variation id
+     *
+     * @return string
+     */
+    public function getDefaultVariationId()
+    {
+        return null;
+    }
 }
