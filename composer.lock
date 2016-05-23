@@ -1,24 +1,23 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a1f86675a0b26f5a8d19a077956645b5",
-    "content-hash": "0bcdaf873d18ca5de9bed9ca20b335c9",
+    "hash": "c28d01e4b65f0ffb812a16d6f45e6057",
     "packages": [
         {
             "name": "nosto/php-sdk",
-            "version": "1.13.0",
+            "version": "dev-feature/sdk-version-headers",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Nosto/php-sdk.git",
-                "reference": "7d2b48807e8abf68da5b0f6f67f9286c074dee38"
+                "reference": "829767d9ac1f9a191877e852eaaaf562466a8e9a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Nosto/php-sdk/zipball/7d2b48807e8abf68da5b0f6f67f9286c074dee38",
-                "reference": "7d2b48807e8abf68da5b0f6f67f9286c074dee38",
+                "url": "https://api.github.com/repos/Nosto/php-sdk/zipball/829767d9ac1f9a191877e852eaaaf562466a8e9a",
+                "reference": "829767d9ac1f9a191877e852eaaaf562466a8e9a",
                 "shasum": ""
             },
             "require-dev": {
@@ -31,10 +30,10 @@
             ],
             "description": "PHP SDK for developing Nosto modules for e-commerce platforms",
             "support": {
-                "source": "https://github.com/Nosto/php-sdk/tree/1.13.0",
+                "source": "https://github.com/Nosto/php-sdk/tree/feature/sdk-version-headers",
                 "issues": "https://github.com/Nosto/php-sdk/issues"
             },
-            "time": "2015-07-28 12:17:40"
+            "time": "2016-05-23 09:35:45"
         }
     ],
     "packages-dev": [
@@ -44,12 +43,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/mridang/magazine.git",
-                "reference": "6420cfab0584568fb7a471b849ecc6209f07bea6"
+                "reference": "2e60e7a57ee6d9ab805414aaa6a108721c8424db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mridang/magazine/zipball/6420cfab0584568fb7a471b849ecc6209f07bea6",
-                "reference": "6420cfab0584568fb7a471b849ecc6209f07bea6",
+                "url": "https://api.github.com/repos/mridang/magazine/zipball/2e60e7a57ee6d9ab805414aaa6a108721c8424db",
+                "reference": "2e60e7a57ee6d9ab805414aaa6a108721c8424db",
                 "shasum": ""
             },
             "require": {
@@ -89,20 +88,20 @@
                 "issues": "https://github.com/mridang/magazine/issues",
                 "source": "https://github.com/mridang/magazine/tree/master"
             },
-            "time": "2016-02-17 12:21:22"
+            "time": "2016-03-18 16:24:35"
         },
         {
             "name": "symfony/console",
-            "version": "v3.0.3",
+            "version": "v3.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "2ed5e2706ce92313d120b8fe50d1063bcfd12e04"
+                "reference": "34a214710e0714b6efcf40ba3cd1e31373a97820"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/2ed5e2706ce92313d120b8fe50d1063bcfd12e04",
-                "reference": "2ed5e2706ce92313d120b8fe50d1063bcfd12e04",
+                "url": "https://api.github.com/repos/symfony/console/zipball/34a214710e0714b6efcf40ba3cd1e31373a97820",
+                "reference": "34a214710e0714b6efcf40ba3cd1e31373a97820",
                 "shasum": ""
             },
             "require": {
@@ -149,20 +148,20 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2016-02-28 16:24:34"
+            "time": "2016-04-28 09:48:42"
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.1.1",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "1289d16209491b584839022f29257ad859b8532d"
+                "reference": "dff51f72b0706335131b00a7f49606168c582594"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/1289d16209491b584839022f29257ad859b8532d",
-                "reference": "1289d16209491b584839022f29257ad859b8532d",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/dff51f72b0706335131b00a7f49606168c582594",
+                "reference": "dff51f72b0706335131b00a7f49606168c582594",
                 "shasum": ""
             },
             "require": {
@@ -174,7 +173,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.1-dev"
+                    "dev-master": "1.2-dev"
                 }
             },
             "autoload": {
@@ -208,12 +207,13 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-01-20 09:13:37"
+            "time": "2016-05-18 14:26:46"
         }
     ],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "nosto/php-sdk": 20,
         "mridang/magazine": 20
     },
     "prefer-stable": false,
