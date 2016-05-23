@@ -14,7 +14,7 @@
         }
     ],
     "require": {
-        "nosto/php-sdk": "dev-feature/sdk-version-headers"
+        "nosto/php-sdk": "1.15.0"
     },
     "require-dev": {
         "mridang/magazine": "dev-master"
