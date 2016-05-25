@@ -1,7 +1,7 @@
 {
   "name": "Nosto_Tagging",
   "version": {
-    "release": "2.6.14"
+    "release": "2.6.15-dev"
   },
   "stability": {
     "release": "stable"
