@@ -40,7 +40,7 @@ class Nosto_Tagging_Model_Feed extends Mage_AdminNotification_Model_Feed
      */
     public function getFeedUrl() {
         $version = (string)Mage::getConfig()->getNode('modules/Nosto_Tagging/version');
-        $this->_feedUrl = 'http://' . 'localhost:9000/hub/magento/feed.rss?version=' . $version;
+        $this->_feedUrl = 'https://my.nosto.com/hub/magento/feed.rss?version=' . $version;
         return $this->_feedUrl;
     }
 
