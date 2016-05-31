@@ -35,18 +35,42 @@
  */
 class Nosto_Tagging_Model_Feed extends Mage_AdminNotification_Model_Feed
 {
+    public static $feedUrl = 'https://my.nosto.com/hub/magento/feed.rss?version=';
+    private $nostoVersion;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->nostoVersion = (string)Mage::getConfig()->getNode('modules/Nosto_Tagging/version');
+    }
+
     /**
      * @inheritdoc
      */
     public function getFeedUrl() {
-        $version = (string)Mage::getConfig()->getNode('modules/Nosto_Tagging/version');
-        $this->_feedUrl = 'https://my.nosto.com/hub/magento/feed.rss?version=' . $version;
-        return $this->_feedUrl;
+        return self::$feedUrl . $this->nostoVersion;
     }
 
     public function observe() {
         /* @var Mage_AdminNotification_Model_Feed $model */
         $model  = Mage::getModel('nosto_tagging/feed');
         $model->checkUpdate();
+
+        $messages = Mage::getModel('adminnotification/inbox')->getCollection();
+        $messages->addFieldToFilter('url', array('like'=>'%github%'));
+
+        /* @var Nosto_Tagging_Helper_Url $urlHelper */
+        $urlHelper = Mage::helper('nosto_tagging/url');
+        /* @var Mage_AdminNotification_Model_Inbox $message */
+        foreach($messages as $message) {
+            $messageNostoVersion = $urlHelper->parseExtensionVersionFromUrl($message->getUrl());
+            if (
+                version_compare($messageNostoVersion, $this->nostoVersion, '<=')
+                && $message->getIsRead() !== true
+            ) {
+                $message->setIsRead(true);
+                $message->save();
+            }
+        }
     }
 }
