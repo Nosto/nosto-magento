@@ -1,23 +1,24 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4f8861384414fe8d543a2cf1950e0cd7",
+    "hash": "5ddede33f45cba43b8d9f392c01e249d",
+    "content-hash": "9933b1edf2369eef166251d1b993d580",
     "packages": [
         {
             "name": "nosto/php-sdk",
-            "version": "1.15.0",
+            "version": "1.15.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Nosto/php-sdk.git",
-                "reference": "2845aa0c02446e30e678c065be77931bb11043f0"
+                "reference": "19242ec1d9ffca92d94b87861ce960ba65d78323"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Nosto/php-sdk/zipball/2845aa0c02446e30e678c065be77931bb11043f0",
-                "reference": "2845aa0c02446e30e678c065be77931bb11043f0",
+                "url": "https://api.github.com/repos/Nosto/php-sdk/zipball/19242ec1d9ffca92d94b87861ce960ba65d78323",
+                "reference": "19242ec1d9ffca92d94b87861ce960ba65d78323",
                 "shasum": ""
             },
             "require-dev": {
@@ -30,10 +31,10 @@
             ],
             "description": "PHP SDK for developing Nosto modules for e-commerce platforms",
             "support": {
-                "source": "https://github.com/Nosto/php-sdk/tree/1.15.0",
+                "source": "https://github.com/Nosto/php-sdk/tree/1.15.5",
                 "issues": "https://github.com/Nosto/php-sdk/issues"
             },
-            "time": "2016-05-23 13:04:24"
+            "time": "2016-06-08 12:10:50"
         }
     ],
     "packages-dev": [
@@ -92,16 +93,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v3.0.6",
+            "version": "v3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "34a214710e0714b6efcf40ba3cd1e31373a97820"
+                "reference": "f62db5b8afec27073a4609b8c84b1f9936652259"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/34a214710e0714b6efcf40ba3cd1e31373a97820",
-                "reference": "34a214710e0714b6efcf40ba3cd1e31373a97820",
+                "url": "https://api.github.com/repos/symfony/console/zipball/f62db5b8afec27073a4609b8c84b1f9936652259",
+                "reference": "f62db5b8afec27073a4609b8c84b1f9936652259",
                 "shasum": ""
             },
             "require": {
@@ -121,7 +122,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.0-dev"
+                    "dev-master": "3.1-dev"
                 }
             },
             "autoload": {
@@ -148,7 +149,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2016-04-28 09:48:42"
+            "time": "2016-05-30 06:58:39"
         },
         {
             "name": "symfony/polyfill-mbstring",
