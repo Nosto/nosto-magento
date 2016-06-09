@@ -67,4 +67,16 @@ class Nosto_Tagging_Block_Order extends Mage_Checkout_Block_Success
         $meta->loadData($order);
         return $meta;
     }
+
+    /*
+     * Returns the visitor's Nosto Id
+     */
+    public function getVisitorChecksum()
+    {
+        /* @var $helper Nosto_Tagging_Helper_Data */
+        $helper = Mage::helper('nosto_tagging');
+
+        return $helper->getVisitorChecksum();
+    }
+
 }

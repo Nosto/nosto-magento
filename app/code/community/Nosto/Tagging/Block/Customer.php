@@ -52,4 +52,16 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
 
         return parent::_toHtml();
     }
+
+    /*
+     * Returns the visitor's Nosto Id
+     */
+    public function getVisitorChecksum()
+    {
+        /* @var $helper Nosto_Tagging_Helper_Data */
+        $helper = Mage::helper('nosto_tagging');
+
+        return $helper->getVisitorChecksum();
+    }
+
 }

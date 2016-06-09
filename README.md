@@ -137,7 +137,7 @@ Open Software License ("OSL") v3.0
 
 
 ### 2.6.14
-* Suport for SDK version headers
+* Support for SDK version headers
 
 ### 2.6.13
 * Update modman settings
