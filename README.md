@@ -136,6 +136,13 @@ Open Software License ("OSL") v3.0
 ## Changelog
 
 
+### 2.6.15
+* Add support for sending the account details & new platform UI
+* Add check if table `nosto_tagging_customer` already exists before creating it
+* Add visitor checksum tagging
+* Strip out _Main Website_ from the default account title
+* Disable tagging categories if there are hidden categories in the category path
+
 ### 2.6.14
 * Support for SDK version headers
 
