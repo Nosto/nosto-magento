@@ -100,11 +100,15 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
      */
     public function loadData(Mage_Core_Model_Store $store)
     {
-        $this->_title = $store->getWebsite()->getName()
+        /* @var Nosto_Tagging_Helper_Data $helper */
+        $helper = Mage::helper('nosto_tagging');
+        $this->_title = $helper->cleanUpAccountTitle(
+            $store->getWebsite()->getName()
             . ' - '
             . $store->getGroup()->getName()
             . ' - '
-            . $store->getName();
+            . $store->getName()
+        );
         $this->_name = substr(sha1(rand()), 0, 8);
         $this->_frontPageUrl = NostoHttpRequest::replaceQueryParamInUrl(
             '___store',

@@ -55,6 +55,15 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const VISITOR_HASH_ALGO = 'sha256';
 
     /**
+     * List of strings to remove from the default Nosto account title
+     *
+     * @var array
+     */
+    public static $removeFromTitle = array(
+        'Main Website - '
+    );
+
+    /**
      * @inheritdoc
      */
     public function quoteEscape($data, $addSlashes = false)
@@ -155,5 +164,16 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
             return hash(self::VISITOR_HASH_ALGO, $coo);
         }
         return null;
+    }
+
+    /**
+     * Return the checksum for visitor
+     *
+     * @return string
+     */
+    public function cleanUpAccountTitle($name)
+    {
+        $clean = str_replace(self::$removeFromTitle, '', $name);
+        return $clean;
     }
 }
