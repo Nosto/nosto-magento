@@ -21,7 +21,7 @@
  * @category  Nosto
  * @package   Nosto_Tagging
  * @author    Nosto Solutions Ltd <magento@nosto.com>
- * @copyright Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
+ * @copyright Copyright (c) 2013-2016 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -79,6 +79,11 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
      * @var string the API token used to identify an account creation.
      */
     protected $_signUpApiToken = 'YBDKYwSqTCzSsU8Bwbg4im2pkHMcgTy9cCX7vevjJwON1UISJIwXOLMM0a8nZY7h';
+
+    /**
+     * @var array|stdClass account details
+     */
+    protected $_details;
 
     /**
      * @inheritdoc
@@ -276,5 +281,25 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     public function getDefaultVariationId()
     {
         return null;
+    }
+
+    /**
+     * Set details
+     *
+     * @param array|stdClass $details
+     */
+    public function setDetails($details)
+    {
+        $this->_details = $details;
+    }
+
+    /**
+     * Get the details
+     *
+     * @return array|stdClass
+     */
+    public function getDetails()
+    {
+        return $this->_details;
     }
 }
