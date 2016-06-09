@@ -49,8 +49,12 @@
 
         switch (data.type) {
             case TYPE_NEW_ACCOUNT:
+                var post_data = {email: data.params.email};
+                if (data.params.details) {
+                    post_data.details = JSON.stringify(data.params.details);
+                }
                 xhr(settings.urls.createAccount, {
-                    data: {email: data.params.email},
+                    data: post_data,
                     success: function (response) {
                         if (response.success && response.redirect_url) {
                             $iframe.src = response.redirect_url;

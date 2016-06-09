@@ -146,9 +146,13 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         if ($this->getRequest()->isPost() && $store !== null) {
             try {
                 $email = $this->getRequest()->getPost('email');
+                $details = $this->getRequest()->getPost('details');
                 $meta = $accountHelper->getMetaData($store);
                 if (Zend_Validate::is($email, 'EmailAddress')) {
                     $meta->getOwner()->setEmail($email);
+                }
+                if (!empty($details)) {
+                   $meta->setDetails(json_decode($details));
                 }
                 $account = NostoAccount::create($meta);
                 if ($accountHelper->save($account, $store)) {
