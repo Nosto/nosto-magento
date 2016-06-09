@@ -37,47 +37,49 @@
 $installer = $this;
 $installer->startSetup();
 
-$table = $installer
-    ->getConnection()
-    ->newTable($installer->getTable('nosto_tagging/customer'))
-    ->addColumn(
-        'customer_id', Varien_Db_Ddl_Table::TYPE_INTEGER, 10, array(
-            'unsigned' => true,
-            'nullable' => false,
-            'primary' => true,
-            'identity' => true
+if (!$installer->getConnection()->isTableExists($installer->getTable('nosto_tagging/customer'))) {
+    $table = $installer
+        ->getConnection()
+        ->newTable($installer->getTable('nosto_tagging/customer'))
+        ->addColumn(
+            'customer_id', Varien_Db_Ddl_Table::TYPE_INTEGER, 10, array(
+                'unsigned' => true,
+                'nullable' => false,
+                'primary' => true,
+                'identity' => true
+            )
         )
-    )
-    ->addColumn(
-        'quote_id', Varien_Db_Ddl_Table::TYPE_INTEGER, 10, array(
-            'unsigned' => true,
-            'nullable' => false
+        ->addColumn(
+            'quote_id', Varien_Db_Ddl_Table::TYPE_INTEGER, 10, array(
+                'unsigned' => true,
+                'nullable' => false
+            )
         )
-    )
-    ->addColumn(
-        'nosto_id', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
-            'nullable' => false
+        ->addColumn(
+            'nosto_id', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
+                'nullable' => false
+            )
         )
-    )
-    ->addColumn(
-        'created_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
-            'nullable' => false
+        ->addColumn(
+            'created_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
+                'nullable' => false
+            )
         )
-    )
-    ->addColumn(
-        'updated_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
-            'nullable' => true
+        ->addColumn(
+            'updated_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
+                'nullable' => true
+            )
         )
-    )
-    ->addIndex(
-        $installer->getIdxName(
-            'nosto_tagging/customer', array('quote_id', 'nosto_id'),
-            Varien_Db_Adapter_Interface::INDEX_TYPE_UNIQUE
-        ),
-        array('quote_id', 'nosto_id'), array(
-            'type' => Varien_Db_Adapter_Interface::INDEX_TYPE_UNIQUE
-        )
-    );
-$installer->getConnection()->createTable($table);
+        ->addIndex(
+            $installer->getIdxName(
+                'nosto_tagging/customer', array('quote_id', 'nosto_id'),
+                Varien_Db_Adapter_Interface::INDEX_TYPE_UNIQUE
+            ),
+            array('quote_id', 'nosto_id'), array(
+                'type' => Varien_Db_Adapter_Interface::INDEX_TYPE_UNIQUE
+            )
+        );
+    $installer->getConnection()->createTable($table);
+}
 
 $installer->endSetup();
