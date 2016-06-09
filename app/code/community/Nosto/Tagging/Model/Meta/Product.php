@@ -37,26 +37,6 @@
 class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implements NostoProductInterface, NostoValidatableInterface
 {
     /**
-     * Product "in stock" tagging string.
-     */
-    const PRODUCT_IN_STOCK = 'InStock';
-
-    /**
-     * Product "out of stock" tagging string.
-     */
-    const PRODUCT_OUT_OF_STOCK = 'OutOfStock';
-
-    /**
-     * Product "invisible " tagging string.
-     */
-    const PRODUCT_INVISIBLE = 'Invisible';
-
-    /**
-     * Product "can be directly added to cart" tag string.
-     */
-    const PRODUCT_ADD_TO_CART = 'add-to-cart';
-
-    /**
      * @var string the absolute url to the product page in the shop frontend.
      */
     protected $_url;
@@ -213,11 +193,11 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
      */
     protected function buildAvailability(Mage_Catalog_Model_Product $product)
     {
-        $availability = self::PRODUCT_OUT_OF_STOCK;
+        $availability = self::OUT_OF_STOCK;
         if(!$product->isVisibleInSiteVisibility()) {
-            $availability = self::PRODUCT_INVISIBLE;
+            $availability = self::INVISIBLE;
         } elseif ($product->isAvailable()) {
-            $availability = self::PRODUCT_IN_STOCK;
+            $availability = self::IN_STOCK;
         }
 
         return $availability;
@@ -259,7 +239,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         }
 
         if (!$product->canConfigure()) {
-            $tags[] = self::PRODUCT_ADD_TO_CART;
+            $tags[] = self::ADD_TO_CART;
         }
 
         return $tags;
