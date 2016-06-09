@@ -81,6 +81,11 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     protected $_signUpApiToken = 'YBDKYwSqTCzSsU8Bwbg4im2pkHMcgTy9cCX7vevjJwON1UISJIwXOLMM0a8nZY7h';
 
     /**
+     * @var array|stdClass account details
+     */
+    protected $_details;
+
+    /**
      * @inheritdoc
      */
     protected function _construct()
@@ -276,5 +281,25 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     public function getDefaultVariationId()
     {
         return null;
+    }
+
+    /**
+     * Set details
+     *
+     * @param array|stdClass $details
+     */
+    public function setDetails($details)
+    {
+        $this->_details = $details;
+    }
+
+    /**
+     * Get the details
+     *
+     * @return array|stdClass
+     */
+    public function getDetails()
+    {
+        return $this->_details;
     }
 }
