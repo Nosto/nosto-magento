@@ -36,6 +36,7 @@
 class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
 {
     const DEFAULT_IFRAME_ORIGIN_REGEXP = '(https:\/\/(.*)\.hub\.nosto\.com)|(https:\/\/my\.nosto\.com)';
+    const IFRAME_VERSION = 1;
 
     /**
      * @var string the iframe url if SSO to Nosto can be made.
@@ -77,6 +78,7 @@ class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
                 $session->setData('nosto_message', null);
             }
         }
+        $params['v'] = self::IFRAME_VERSION;
         $store = $this->getSelectedStore();
         $account = Mage::helper('nosto_tagging/account')->find($store);
         return $this->_iframeUrl = Mage::helper('nosto_tagging/account')
