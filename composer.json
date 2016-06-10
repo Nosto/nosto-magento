@@ -17,7 +17,8 @@
         "nosto/php-sdk": "1.15.5"
     },
     "require-dev": {
-        "mridang/magazine": "dev-master"
+        "mridang/magazine": "dev-master",
+        "phing/phing": "2.*"
     },
     "config": {
         "vendor-dir": "lib"
