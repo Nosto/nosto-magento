@@ -29,7 +29,7 @@
 <ruleset name="Magento">
     <description>Magento coding standard.</description>
     <rule ref="Ecg">
-
+        <exclude name="Ecg.Security.IncludeFile" />
     </rule>
     <exclude-pattern>*/lib/*</exclude-pattern>
     <exclude-pattern>*/build/*</exclude-pattern>
