@@ -2,12 +2,7 @@
     "name": "nosto/nosto-magento-extension",
     "description": "Nosto Magento extension",
     "license": "OSL v3.0",
-    "type":"magento-module",
     "repositories": [
-        {
-          "type": "vcs",
-          "url": "https://github.com/Nosto/php-sdk.git"
-        },
         {
           "type": "vcs",
           "url": "https://github.com/mridang/magazine.git"
