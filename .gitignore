@@ -4,4 +4,5 @@ node_modules
 build/*
 *.tgz
 lib
+build
 
