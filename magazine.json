@@ -1,7 +1,7 @@
 {
   "name": "Nosto_Tagging",
   "version": {
-    "release": "2.6.15-RC1"
+    "release": "2.6.15"
   },
   "stability": {
     "release": "stable"
@@ -15,14 +15,14 @@
   "channel": "community",
   "summary": "Personalization for Magento",
   "description": "Increase your conversion rate and average order value by delivering your customers personalized product recommendations throughout their shopping journey.",
-  "notes": "- Bug fixes",
+  "notes": "- Add support for sending the account details & new platform UI&#xD;- Add check if table `nosto_tagging_customer` already exists before creating it&#xD;- Add visitor checksum tagging&#xD;- Strip out _Main Website_ from the default account title&#xD;- Disable tagging categories if there are hidden categories in the category path",
   "developer": {
     "name": "Nosto",
     "user": "nosto",
     "email": "magento@nosto.com"
   },
-  "date": "2016-05-13",
-  "time": "14:15:56",
+  "date": "2016-06-16",
+  "time": "08:12:43",
   "dependencies": {
     "required": {
       "php": {
