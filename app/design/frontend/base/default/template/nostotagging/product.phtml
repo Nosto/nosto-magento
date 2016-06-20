@@ -68,6 +68,9 @@ $dateHelper = Mage::helper('nosto_tagging/date');
     <?php if ($product->getDatePublished()): ?>
         <span class="date_published"><?php echo $dateHelper->getFormattedDate($product->getDatePublished()); ?></span>
     <?php endif; ?>
+    <?php if (!$helper->multiCurrencyDisabled()): ?>
+        <span class="variation_id"><?php echo $helper->escapeHtml($product->getVariationId()); ?></span>
+    <?php endif; ?>
 </div>
 <?php if ($this->getCurrentCategory()): ?>
     <div class="nosto_category" style="display:none"><?php echo $helper->escapeHtml($this->getCurrentCategory()); ?></div>

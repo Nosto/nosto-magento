@@ -105,6 +105,20 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
         $config->saveConfig(
             self::XML_PATH_TOKENS, null, 'stores', $store->getId()
         );
+
+        //Enable API upserts by default when new account is added
+        // or account is reconnected
+        /* @var $nostoHelper Nosto_Tagging_Helper_Data */
+        $nostoHelper = Mage::helper('nosto_tagging');
+        if (!$nostoHelper->getUseProductApi($store)) {
+            $config->saveConfig(
+                Nosto_Tagging_Helper_Data::XML_PATH_USE_PRODUCT_API,
+                true,
+                'stores',
+                $store->getId()
+            );
+        }
+
         Mage::app()->getCacheInstance()->cleanType('config');
 
         try {
@@ -199,5 +213,71 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
         $meta = Mage::getModel('nosto_tagging/meta_account_iframe');
         $meta->loadData($store);
         return Nosto::helper('iframe')->getUrl($meta, $account, $params);
+    }
+
+    /**
+     * Sends a currency exchange rate update request to Nosto via the API.
+     *
+     * Checks if multi currency is enabled for the store before attempting to
+     * send the exchange rates.
+     *
+     * @param NostoAccount $account the account for which tp update the rates.
+     * @param Mage_Core_Model_Store $store the store which rates are to be updated.
+     *
+     * @return bool
+     */
+    public function updateCurrencyExchangeRates(NostoAccount $account, Mage_Core_Model_Store $store)
+    {
+        /** @var Nosto_Tagging_Helper_Data $helper */
+        $helper = Mage::helper('nosto_tagging');
+        if (!$helper->isMultiCurrencyMethodExchangeRate($store)) {
+            Mage::log(
+                sprintf(
+                    'Currency update called without exchange method enabled for account %s',
+                    $account->getName()
+                ),
+                Zend_Log::DEBUG,
+                Nosto_Tagging_Model_Base::LOG_FILE_NAME
+            );
+            return false;
+        }
+        $currencyCodes = $store->getAvailableCurrencyCodes(true);
+        $baseCurrencyCode = $store->getBaseCurrencyCode();
+
+        /** @var Nosto_Tagging_Helper_Currency $helper */
+        $helper = Mage::helper('nosto_tagging/currency');
+        try {
+            /** @var Nosto_Tagging_Model_Collection_Rates $collection */
+            $collection = $helper
+                ->getExchangeRateCollection($baseCurrencyCode, $currencyCodes);
+            $service = new NostoOperationExchangeRate($account, $collection);
+            return $service->update();
+        } catch (NostoException $e) {
+            Mage::log("\n" . $e, Zend_Log::ERR, Nosto_Tagging_Model_Base::LOG_FILE_NAME);
+        }
+        return false;
+    }
+
+    /**
+     * Sends a update account request to Nosto via the API.
+     *
+     * This is used to update the details of a Nosto account from the
+     * "Advanced Settings" page, as well as after an account has been
+     * successfully connected through OAuth.
+     *
+     * @param NostoAccount          $account the account to update.
+     * @param Mage_Core_Model_Store $store the store to which the account belongs.
+     *
+     * @return bool
+     */
+    public function updateAccount(NostoAccount $account, Mage_Core_Model_Store $store)
+    {
+        try {
+            $service = new NostoOperationAccount($account, $this->getMetaData($store));
+            return $service->update();
+        } catch (NostoException $e) {
+            Mage::log("\n" . $e, Zend_Log::ERR, Nosto_Tagging_Model_Base::LOG_FILE_NAME);
+        }
+        return false;
     }
 }

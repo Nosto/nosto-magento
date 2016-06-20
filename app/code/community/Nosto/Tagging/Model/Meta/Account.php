@@ -86,6 +86,16 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     protected $_details;
 
     /**
+     * @var bool the flag to use exchange rates or not
+     */
+    protected $_useCurrencyExchangeRates;
+
+    /**
+     * @var array The array of currencies
+     */
+    protected $_currencies = array();
+
+    /**
      * @inheritdoc
      */
     protected function _construct()
@@ -132,6 +142,19 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
         $billing = Mage::getModel('nosto_tagging/meta_account_billing');
         $billing->loadData($store);
         $this->_billing = $billing;
+
+        $this->_useCurrencyExchangeRates = !$helper->multiCurrencyDisabled($store);
+
+        $storeLocale = $store->getConfig('general/locale/code');
+        $currencyCodes = $store->getAvailableCurrencyCodes(true);
+        if (is_array($currencyCodes) && count($currencyCodes) > 0) {
+            /** @var Nosto_Tagging_Helper_Currency $currencyHelper */
+            $currencyHelper = Mage::helper('nosto_tagging/currency');
+            foreach ($currencyCodes as $currencyCode) {
+                $this->_currencies[$currencyCode] = $currencyHelper
+                    ->getCurrencyObject($storeLocale, $currencyCode);
+            }
+        }
     }
 
     /**
@@ -261,7 +284,7 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
      */
     public function getCurrencies()
     {
-        return null;
+        return $this->_currencies;
     }
 
     /**
@@ -274,7 +297,7 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
      */
     public function getUseCurrencyExchangeRates()
     {
-        return false;
+        return $this->_useCurrencyExchangeRates;
     }
 
     /**

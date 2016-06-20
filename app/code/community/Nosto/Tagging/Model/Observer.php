@@ -85,7 +85,11 @@ class Nosto_Tagging_Model_Observer
                 /** @var NostoAccount $account */
                 $account = Mage::helper('nosto_tagging/account')
                     ->find($store);
-                if ($account === null || !$account->isConnectedToNosto()) {
+
+                /* @var $nostoHelper Nosto_Tagging_Helper_Data */
+                $nostoHelper = Mage::helper('nosto_tagging');
+                if ($account === null || !$account->isConnectedToNosto()
+                    || !$nostoHelper->getUseProductApi($store)) {
                     continue;
                 }
 
@@ -137,8 +141,7 @@ class Nosto_Tagging_Model_Observer
             /** @var Mage_Core_Model_Store $store */
             foreach (Mage::app()->getStores() as $store) {
                 /** @var NostoAccount $account */
-                $account = Mage::helper('nosto_tagging/account')
-                    ->find($store);
+                $account = Mage::helper('nosto_tagging/account')->find($store);
 
                 if ($account === null || !$account->isConnectedToNosto()) {
                     continue;
@@ -175,6 +178,7 @@ class Nosto_Tagging_Model_Observer
         if (Mage::helper('nosto_tagging')->isModuleEnabled()) {
             try {
                 /** @var Mage_Sales_Model_Order $mageOrder */
+                /** @noinspection PhpUndefinedMethodInspection */
                 $mageOrder = $observer->getEvent()->getOrder();
                 /** @var Nosto_Tagging_Model_Meta_Order $order */
                 $order = Mage::getModel('nosto_tagging/meta_order');
@@ -194,6 +198,105 @@ class Nosto_Tagging_Model_Observer
             }
         }
 
+        return $this;
+    }
+
+    /**
+     * Cron job for syncing currency exchange rates to Nosto.
+     * Only stores that have the scheduled update enabled, have more currencies
+     * than the default one defined and has a Nosto account are synced.
+     *
+     * @throws Mage_Cron_Exception
+     */
+    public function scheduledCurrencyExchangeRateUpdate()
+    {
+        /** @var Nosto_Tagging_Helper_Data $helper */
+        $helper = Mage::helper('nosto_tagging');
+        if ($helper->isModuleEnabled()) {
+            /** @var Nosto_Tagging_Helper_Account $accountHelper */
+            $accountHelper = Mage::helper('nosto_tagging/account');
+            $error = false;
+            foreach (Mage::app()->getStores() as $store) {
+                /** @var Mage_Core_Model_Store $store */
+                if (!$helper->isScheduledCurrencyExchangeRateUpdateEnabled($store)) {
+                    Mage::log(
+                        'Currency cron update called without the cron being enabled',
+                        Zend_Log::DEBUG,
+                        Nosto_Tagging_Model_Base::LOG_FILE_NAME
+                    );
+                    continue;
+                }
+                $account = $accountHelper->find($store);
+                if (is_null($account)) {
+                    continue;
+                }
+                if (!$accountHelper->updateCurrencyExchangeRates($account, $store)) {
+                    $error = true;
+                }
+            }
+            if ($error) {
+                throw Mage::exception(
+                    'Mage_Cron',
+                    'There was an error updating the exchange rates. More info in "var/log/nostotagging.log".'
+                );
+            }
+        }
+    }
+
+    /**
+     * Updates / synchronizes Nosto account settings via API to Nosto
+     * for each store that has Nosto account.
+     *
+     * Event 'admin_system_config_changed_section_nosto_tagging'.
+     *
+     * @param Varien_Event_Observer $observer
+     *
+     * @return Nosto_Tagging_Model_Observer
+     */
+    public function syncNostoAccount(Varien_Event_Observer $observer)
+    {
+        /** @var Nosto_Tagging_Helper_Data $helper */
+        $helper = Mage::helper('nosto_tagging');
+        $observerData = $observer->getData();
+        if ($helper->isModuleEnabled()) {
+            /** @var Nosto_Tagging_Helper_Account $accountHelper */
+            $accountHelper = Mage::helper('nosto_tagging/account');
+            foreach (Mage::app()->getStores() as $store) {
+                $account = $accountHelper->find($store);
+                if ($account instanceof NostoAccount === false) {
+                    continue;
+                }
+                if (!$accountHelper->updateAccount($account, $store)) {
+                    Mage::log(
+                        sprintf(
+                            'Failed sync account #%s for store #%s in class %s',
+                            $account->getName(),
+                            $store->getName(),
+                            __CLASS__
+                        ),
+                        Zend_Log::WARN,
+                        Nosto_Tagging_Model_Base::LOG_FILE_NAME
+                    );
+                }
+                if ($helper->isMultiCurrencyMethodExchangeRate($store)) {
+                    if (!$accountHelper->updateCurrencyExchangeRates(
+                        $account, $store
+                    )
+                    ) {
+                        Mage::log(
+                            sprintf(
+                                'Failed sync currency rates #%s for store #%s in class %s',
+                                $account->getName(),
+                                $store->getName(),
+                                __CLASS__
+                            ),
+                            Zend_Log::WARN,
+                            Nosto_Tagging_Model_Base::LOG_FILE_NAME
+                        );
+                    }
+                }
+            }
+        }
         return $this;
     }
 }

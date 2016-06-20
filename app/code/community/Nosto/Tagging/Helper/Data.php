@@ -53,6 +53,30 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      * @var string the name of the cookie where the Nosto ID can be found.
      */
     const VISITOR_HASH_ALGO = 'sha256';
+    /**
+     * Path to store config multi currency method setting.
+     */
+    const XML_PATH_MULTI_CURRENCY_METHOD = 'nosto_tagging/multi_currency/method';
+    /**
+     * Path to store config scheduled currency exchange rate update enabled setting.
+     */
+    const XML_PATH_SCHEDULED_CURRENCY_EXCHANGE_RATE_UPDATE_ENABLED = 'nosto_tagging/scheduled_currency_exchange_rate_update/enabled';
+    /**
+     * Multi currency method option for currency exchange rates.
+     */
+    const MULTI_CURRENCY_METHOD_EXCHANGE_RATE = 'exchangeRate';
+    /**
+     * Multi currency method option for price variations in tagging.
+     */
+    const MULTI_CURRENCY_METHOD_PRICE_VARIATION = 'priceVariation';
+    /**
+     * No multi currency
+     */
+    const MULTI_CURRENCY_DISABLED = 'disabled';
+    /**
+     * Path to store config for using the product API or not.
+     */
+    const XML_PATH_USE_PRODUCT_API = 'nosto_tagging/general/use_product_api';
 
     /**
      * List of strings to remove from the default Nosto account title
@@ -150,6 +174,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getCookieId()
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return Mage::getModel('core/cookie')->get(self::COOKIE_NAME);
     }
 
@@ -176,5 +201,79 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     {
         $clean = str_replace(self::$removeFromTitle, '', $name);
         return $clean;
+    }
+
+    /**
+     * Return the multi currency method in use, i.e. "exchangeRate" or
+     * "priceVariation".
+     *
+     * If "exchangeRate", it means that the product prices in the recommendation
+     * is updated through the Exchange Rate API to Nosto.
+     *
+     * If "priceVariation", it means that the product price variations should be
+     * tagged along side the product.
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     *
+     * @return string
+     */
+    public function getMultiCurrencyMethod($store = null)
+    {
+        if ($store instanceof Mage_Core_Model_Store === false) {
+            $store = Mage::app()->getStore();
+        }
+        return Mage::getStoreConfig(self::XML_PATH_MULTI_CURRENCY_METHOD, $store);
+    }
+    /**
+     * Checks if either exchange rates or price variants
+     * are used in store.
+     *
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     *
+     * @return bool
+     */
+    public function multiCurrencyDisabled($store = null)
+    {
+        $method = $this->getMultiCurrencyMethod($store);
+        return ($method === self::MULTI_CURRENCY_DISABLED);
+    }
+    /**
+     * Checks if the multi currency method in use is the "exchangeRate", i.e.
+     * the product prices in the recommendation is updated through the Exchange
+     * Rate API to Nosto.
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     *
+     * @return bool
+     */
+    public function isMultiCurrencyMethodExchangeRate($store = null)
+    {
+        $method = $this->getMultiCurrencyMethod($store);
+        return ($method === self::MULTI_CURRENCY_METHOD_EXCHANGE_RATE);
+    }
+
+    /**
+     * Returns if the scheduled currency exchange rate update is enabled.
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     *
+     * @return bool
+     */
+    public function isScheduledCurrencyExchangeRateUpdateEnabled($store = null)
+    {
+        return (bool)Mage::getStoreConfig(self::XML_PATH_SCHEDULED_CURRENCY_EXCHANGE_RATE_UPDATE_ENABLED, $store);
+    }
+
+    /**
+     * Returns product updates should be sent via API to Nosto
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     * @return boolean
+     */
+    public function getUseProductApi($store = null)
+    {
+        $useApi = (bool)Mage::getStoreConfig(self::XML_PATH_USE_PRODUCT_API, $store);
+        return $useApi;
     }
 }
