@@ -102,7 +102,7 @@ class Nosto_Tagging_Helper_Currency extends Mage_Core_Helper_Abstract
      */
     public function getExchangeRateCollection($baseCurrencyCode, array $currencyCodes)
     {
-        $collection = new NostoExportProductCollection();
+        $collection = new Nosto_Tagging_Model_Collection_Rates();
         /** @var Mage_Directory_Model_Currency $currency */
         $currency = Mage::getModel('directory/currency');
         $rates = $currency->getCurrencyRates($baseCurrencyCode, $currencyCodes);
