@@ -96,6 +96,11 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     protected $_currencies = array();
 
     /**
+     * @var string The base currency of the store
+     */
+    protected $_defaultPriceVariationId;
+
+    /**
      * @inheritdoc
      */
     protected function _construct()
@@ -144,6 +149,11 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
         $this->_billing = $billing;
 
         $this->_useCurrencyExchangeRates = !$helper->multiCurrencyDisabled($store);
+        if (!$helper->multiCurrencyDisabled($store)) {
+            $this->_defaultPriceVariationId = $store->getBaseCurrencyCode();
+        } else {
+            $this->_defaultPriceVariationId = "";
+        }
 
         $storeLocale = $store->getConfig('general/locale/code');
         $currencyCodes = $store->getAvailableCurrencyCodes(true);
@@ -307,7 +317,7 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
      */
     public function getDefaultVariationId()
     {
-        return null;
+        return $this->_defaultPriceVariationId;
     }
 
     /**
