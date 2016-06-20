@@ -1,10 +1,11 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "64ab3b4f65b162953140daa3253e2af6",
+    "hash": "ee21cd04cabc2bc3dfb795859fc1e46c",
+    "content-hash": "289a828e8ef034d601d80dfc417d3a77",
     "packages": [
         {
             "name": "nosto/php-sdk",
@@ -25,11 +26,14 @@
                 "codeception/specify": "@stable"
             },
             "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
             "description": "PHP SDK for developing Nosto modules for e-commerce platforms",
+            "support": {
+                "source": "https://github.com/Nosto/php-sdk/tree/1.15.5",
+                "issues": "https://github.com/Nosto/php-sdk/issues"
+            },
             "time": "2016-06-08 12:10:50"
         }
     ],
