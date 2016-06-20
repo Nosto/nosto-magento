@@ -34,7 +34,7 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract implements NostoOrderItemInterface
+class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract implements NostoOrderPurchasedItemInterface
 {
     /**
      * @var string|int the unique identifier of the purchased item.
@@ -71,6 +71,7 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
      */
     public function __construct(array $args)
     {
+        parent::__construct();
         if (!isset($args['productId']) || empty($args['productId'])) {
             Mage::log(
                 sprintf(

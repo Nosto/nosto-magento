@@ -32,7 +32,7 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements NostoOauthClientMetaInterface
+class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements NostoOAuthClientMetaDataInterface
 {
     /**
      * @var string the url where the oauth2 server should redirect after

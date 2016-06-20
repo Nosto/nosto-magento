@@ -212,7 +212,9 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
         /** @var Nosto_Tagging_Model_Meta_Account_Iframe $meta */
         $meta = Mage::getModel('nosto_tagging/meta_account_iframe');
         $meta->loadData($store);
-        return Nosto::helper('iframe')->getUrl($meta, $account, $params);
+        /** @var NostoHelperIframe $helper */
+        $helper = Nosto::helper('iframe');
+        return $helper->getUrl($meta, $account, $params);
     }
 
     /**

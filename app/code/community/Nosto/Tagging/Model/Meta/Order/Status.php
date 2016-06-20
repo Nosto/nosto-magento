@@ -61,6 +61,7 @@ class Nosto_Tagging_Model_Meta_Order_Status extends Mage_Core_Model_Abstract imp
      */
     public function __construct(array $args)
     {
+        parent::__construct();
         if (!isset($args['code']) || !is_string($args['code'])) {
             Mage::log(
                 sprintf(

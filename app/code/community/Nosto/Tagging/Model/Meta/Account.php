@@ -247,7 +247,7 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     /**
      * Meta data model for the account owner who is creating the account.
      *
-     * @return NostoAccountMetaOwnerInterface the meta data model.
+     * @return NostoAccountMetaDataOwnerInterface the meta data model.
      */
     public function getOwner()
     {
@@ -257,7 +257,7 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     /**
      * Meta data model for the account billing details.
      *
-     * @return NostoAccountMetaBillingInterface the meta data model.
+     * @return NostoAccountMetaDataBillingDetailsInterface the meta data model.
      */
     public function getBillingDetails()
     {

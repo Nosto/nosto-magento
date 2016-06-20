@@ -181,6 +181,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
             $this->_description = $product->getData('description');
         }
         if ($product->hasData('manufacturer')) {
+            /** @noinspection PhpParamsInspection */
             $this->_brand = $product->getAttributeText('manufacturer');
         }
         if (($tags = $this->buildTags($product, $store)) !== array()) {
