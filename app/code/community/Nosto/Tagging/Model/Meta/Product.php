@@ -1,9 +1,9 @@
 <?php
 /**
  * Magento
- *
+ *  
  * NOTICE OF LICENSE
- *
+ *  
  * This source file is subject to the Open Software License (OSL 3.0)
  * that is bundled with this package in the file LICENSE.txt.
  * It is also available through the world-wide-web at this URL:
@@ -11,17 +11,17 @@
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
- *
+ *  
  * DISCLAIMER
- *
+ *  
  * Do not edit or add to this file if you wish to upgrade Magento to newer
  * versions in the future. If you wish to customize Magento for your
  * needs please refer to http://www.magentocommerce.com for more information.
- *
+ *  
  * @category  Nosto
  * @package   Nosto_Tagging
  * @author    Nosto Solutions Ltd <magento@nosto.com>
- * @copyright Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
+ * @copyright Copyright (c) 2013-2016 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -36,21 +36,6 @@
  */
 class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implements NostoProductInterface, NostoValidatableInterface
 {
-    /**
-     * Product "in stock" tagging string.
-     */
-    const PRODUCT_IN_STOCK = 'InStock';
-
-    /**
-     * Product "out of stock" tagging string.
-     */
-    const PRODUCT_OUT_OF_STOCK = 'OutOfStock';
-
-    /**
-     * Product "can be directly added to cart" tag string.
-     */
-    const PRODUCT_ADD_TO_CART = 'add-to-cart';
-
     /**
      * @var string the absolute url to the product page in the shop frontend.
      */
@@ -174,12 +159,10 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         $this->_productId = $product->getId();
         $this->_name = $product->getName();
         $this->_imageUrl = $this->buildImageUrl($product, $store);
-        $this->_price = $priceHelper->getProductFinalPriceInclTax($product);
-        $this->_listPrice = $priceHelper->getProductPriceInclTax($product);
-        $this->_currencyCode = $store->getCurrentCurrencyCode();
-        $this->_availability = $product->isAvailable()
-            ? self::PRODUCT_IN_STOCK
-            : self::PRODUCT_OUT_OF_STOCK;
+        $this->_price = $priceHelper->convertToDefaultCurrency($priceHelper->getProductFinalPriceInclTax($product), $store);
+        $this->_listPrice = $priceHelper->convertToDefaultCurrency($priceHelper->getProductPriceInclTax($product), $store);
+        $this->_currencyCode = $store->getDefaultCurrency()->getCode();
+        $this->_availability = $this->buildAvailability($product);
         $this->_categories = $this->buildCategories($product);
 
         // Optional properties.
@@ -200,6 +183,26 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
             $this->_datePublished = $product->getData('created_at');
         }
     }
+
+    /**
+     * Builds the availability for the product.
+     *
+     * @param Mage_Catalog_Model_Product $product the product model.
+     *
+     * @return string
+     */
+    protected function buildAvailability(Mage_Catalog_Model_Product $product)
+    {
+        $availability = self::OUT_OF_STOCK;
+        if(!$product->isVisibleInSiteVisibility()) {
+            $availability = self::INVISIBLE;
+        } elseif ($product->isAvailable()) {
+            $availability = self::IN_STOCK;
+        }
+
+        return $availability;
+    }
+
 
     /**
      * Builds the "tag1" tags.
@@ -236,7 +239,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         }
 
         if (!$product->canConfigure()) {
-            $tags[] = self::PRODUCT_ADD_TO_CART;
+            $tags[] = self::ADD_TO_CART;
         }
 
         return $tags;
@@ -326,8 +329,8 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
                 $data[] = $categoryString;
             }
         }
-
-        return $data;
+        
+        return array_unique($data);
     }
 
     /**
@@ -508,5 +511,15 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
             $descriptions[] = $this->_description;
         }
         return implode(' ', $descriptions);
+    }
+
+    /**
+     * Returns the product variation id.
+     *
+     * @return mixed|null
+     */
+    public function getVariationId()
+    {
+        return null;
     }
 }

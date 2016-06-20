@@ -135,6 +135,68 @@ Open Software License ("OSL") v3.0
 
 ## Changelog
 
+
+### 2.6.15
+* Add support for sending the account details & new platform UI
+* Add check if table `nosto_tagging_customer` already exists before creating it
+* Add visitor checksum tagging
+* Strip out _Main Website_ from the default account title
+* Disable tagging categories if there are hidden categories in the category path
+
+### 2.6.14
+* Support for SDK version headers
+
+### 2.6.13
+* Update modman settings
+* Bug fixes for multi currency handling
+
+### 2.6.12
+* Restore the type casting to quantity
+
+### 2.6.11
+* Hide hidden categories from tagging
+* Remove type casting from templates
+* Loosen up data validation for order items
+* Add search term tagging
+* Update products to Nosto regardless of the product visibility
+
+### 2.6.10
+* Bug fixes
+
+### 2.6.9
+* Fix resolving the payment provider
+* Fix duplicate content-type header in admin controller
+
+### 2.6.8
+* Tagging for 404 pages and order confirmation page
+* Loosen up the data validation
+* Support for coupon discounts on product level 
+* Fix tagging currency for product
+* Fix ACL handling after SUPEE-6285
+
+### 2.6.7
+* Ignore order status in tagging and API calls if they are not set properly
+* Ignore empty string values for order buyer information in tagging and API calls
+
+### 2.6.6
+* Fix account removal for self-signup accounts through the iframe
+* Fix uncaught "InvalidArgumentException" exception when order status is missing
+a label
+* Make order buyer info optional in tagging and API calls
+
+### 2.6.5
+* Add "external_order_ref" to order tagging and API requests in order to better
+track orders
+
+### 2.6.4
+* Fix redirect to admin store after OAuth is finished
+
+### 2.6.3
+* Fix tax price calculation for fixed priced bundle and grouped products
+
+### 2.6.2
+* Fix account owner email address assignment when creating new account
+
 ### 2.6.1
 * Re-package for Enterprise Edition release
 

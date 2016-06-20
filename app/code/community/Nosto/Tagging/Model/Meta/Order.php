@@ -1,9 +1,9 @@
 <?php
 /**
  * Magento
- *
+ *  
  * NOTICE OF LICENSE
- *
+ *  
  * This source file is subject to the Open Software License (OSL 3.0)
  * that is bundled with this package in the file LICENSE.txt.
  * It is also available through the world-wide-web at this URL:
@@ -11,17 +11,17 @@
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
- *
+ *  
  * DISCLAIMER
- *
+ *  
  * Do not edit or add to this file if you wish to upgrade Magento to newer
  * versions in the future. If you wish to customize Magento for your
  * needs please refer to http://www.magentocommerce.com for more information.
- *
+ *  
  * @category  Nosto
  * @package   Nosto_Tagging
  * @author    Nosto Solutions Ltd <magento@nosto.com>
- * @copyright Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
+ * @copyright Copyright (c) 2013-2016 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -46,6 +46,11 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
      * @var string|int the unique order number identifying the order.
      */
     protected $_orderNumber;
+
+    /**
+     * @var string the Magento order "real order ID" property.
+     */
+    protected $_externalOrderRef;
 
     /**
      * @var string the date when the order was placed.
@@ -75,6 +80,11 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
     protected $_orderStatus;
 
     /**
+     * @var Nosto_Tagging_Model_Meta_Order_Status[] list of order status history.
+     */
+    protected $_orderStatuses = array();
+
+    /**
      * @inheritdoc
      */
     protected function _construct()
@@ -90,50 +100,256 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
     public function loadData(Mage_Sales_Model_Order $order)
     {
         $this->_orderNumber = $order->getId();
+        $this->_externalOrderRef = $order->getRealOrderId();
         $this->_createdDate = $order->getCreatedAt();
-        $this->_paymentProvider = $order->getPayment()->getMethod();
+        $payment = $order->getPayment();
+        if (is_object($payment)) {
+            $this->_paymentProvider = $payment->getMethod();
+        }
+        if (empty($this->_paymentProvider)) {
+            $this->_paymentProvider = 'unknown';
+        }
 
-        /** @var Nosto_Tagging_Model_Meta_Order_Status $orderStatus */
-        $orderStatus = Mage::getModel('nosto_tagging/meta_order_status');
-        $orderStatus->loadData($order);
-        $this->_orderStatus = $orderStatus;
+        if ($order->getStatus()) {
+            $this->_orderStatus = Mage::getModel(
+                'nosto_tagging/meta_order_status',
+                array(
+                    'code' => $order->getStatus(),
+                    'label' => $order->getStatusLabel()
+                )
+            );
+        }
 
-        /** @var Nosto_Tagging_Model_Meta_Order_Buyer $orderBuyer */
-        $orderBuyer = Mage::getModel('nosto_tagging/meta_order_buyer');
-        $orderBuyer->loadData($order);
-        $this->_buyer = $orderBuyer;
+        foreach ($order->getAllStatusHistory() as $item) {
+            /** @var Mage_Sales_Model_Order_Status_History $item */
+            if ($item->getStatus()) {
+                $this->_orderStatuses[] = Mage::getModel(
+                    'nosto_tagging/meta_order_status',
+                    array(
+                        'code' => $item->getStatus(),
+                        'label' => $item->getStatusLabel(),
+                        'createdAt' => $item->getCreatedAt()
+                    )
+                );
+            }
+        }
 
-        /** @var $item Mage_Sales_Model_Order_Item */
+        $this->_buyer = Mage::getModel(
+            'nosto_tagging/meta_order_buyer',
+            array(
+                'firstName' => $order->getCustomerFirstname(),
+                'lastName' => $order->getCustomerLastname(),
+                'email' => $order->getCustomerEmail()
+            )
+        );
+
         foreach ($order->getAllVisibleItems() as $item) {
-            /** @var Nosto_Tagging_Model_Meta_Order_Item $orderItem */
-            $orderItem = Mage::getModel('nosto_tagging/meta_order_item');
-            $orderItem->loadData($item);
-            $this->_items[] = $orderItem;
+            /** @var $item Mage_Sales_Model_Order_Item */
+            $this->_items[] = $this->buildItem($item, $order);
         }
 
         if ($this->includeSpecialItems) {
-            if (($discount = $order->getDiscountAmount()) > 0) {
+            if (($discount = $order->getDiscountAmount()) < 0) {
                 /** @var Nosto_Tagging_Model_Meta_Order_Item $orderItem */
-                $orderItem = Mage::getModel('nosto_tagging/meta_order_item');
-                $orderItem->loadSpecialItemData(
-                    'Discount',
-                    $discount,
-                    $order->getOrderCurrencyCode()
+                $this->_items[] = Mage::getModel(
+                    'nosto_tagging/meta_order_item',
+                    array(
+                        'productId' => -1,
+                        'quantity' => 1,
+                        'name' => $this->buildDiscountRuleDescription($order),
+                        'unitPrice' => $discount,
+                        'currencyCode' => $order->getOrderCurrencyCode()
+                    )
                 );
-                $this->_items[] = $orderItem;
             }
 
             if (($shippingInclTax = $order->getShippingInclTax()) > 0) {
                 /** @var Nosto_Tagging_Model_Meta_Order_Item $orderItem */
-                $orderItem = Mage::getModel('nosto_tagging/meta_order_item');
-                $orderItem->loadSpecialItemData(
-                    'Shipping and handling',
-                    $shippingInclTax,
-                    $order->getOrderCurrencyCode()
+                $this->_items[] = Mage::getModel(
+                    'nosto_tagging/meta_order_item',
+                    array(
+                        'productId' => -1,
+                        'quantity' => 1,
+                        'name' => 'Shipping and handling',
+                        'unitPrice' => $shippingInclTax,
+                        'currencyCode' => $order->getOrderCurrencyCode()
+                    )
                 );
-                $this->_items[] = $orderItem;
             }
         }
+    }
+
+    /**
+     * Generates a textual description of the applied discount rules
+     *
+     * @param Mage_Sales_Model_Order $order
+     * @return string discount description
+     */
+    protected function buildDiscountRuleDescription(Mage_Sales_Model_Order $order)
+    {
+        try {
+            $appliedRules = array();
+            foreach ($order->getAllVisibleItems() as $item) {
+                $itemAppliedRules = $item->getAppliedRuleIds();
+                if (empty($itemAppliedRules)) {
+                    continue;
+                }
+                $ruleIds = explode(',', $item->getAppliedRuleIds());
+                foreach ($ruleIds as $ruleId) {
+                    $rule = Mage::getModel('salesrule/rule')->load($ruleId);
+                    $appliedRules[$ruleId] = $rule->getName();
+                }
+            }
+            if (count($appliedRules) == 0) {
+                $appliedRules[] = 'unknown rule';
+            }
+            $discountTxt = sprintf(
+                'Discount (%s)', implode(', ', $appliedRules)
+            );
+        } catch(\Exception $e) {
+            $discountTxt = 'Discount (error)';
+        }
+
+        return $discountTxt;
+    }
+
+    /**
+     * Builds a order items object form the Magento sales item.
+     *
+     * @param Mage_Sales_Model_Order_Item $item the sales item model.
+     * @param Mage_Sales_Model_Order $order the order model.
+     *
+     * @return Nosto_Tagging_Model_Meta_Order_Item the built item.
+     */
+    protected function buildItem(Mage_Sales_Model_Order_Item $item, Mage_Sales_Model_Order $order)
+    {
+        /* @var Nosto_Tagging_Helper_Price */
+        $nostoPriceHelper = Mage::helper('nosto_tagging/price');
+        return Mage::getModel(
+            'nosto_tagging/meta_order_item',
+            array(
+                'productId' => $this->buildItemProductId($item),
+                'quantity' => (int)$item->getQtyOrdered(),
+                'name' => $this->buildItemName($item),
+                'unitPrice' => $nostoPriceHelper->getItemFinalPriceInclTax($item),
+                'currencyCode' => $order->getOrderCurrencyCode()
+            )
+        );
+    }
+
+    /**
+     * Returns the product id for a quote item.
+     * Always try to find the "parent" product ID if the product is a child of
+     * another product type. We do this because it is the parent product that
+     * we tag on the product page, and the child does not always have it's own
+     * product page. This is important because it is the tagged info on the
+     * product page that is used to generate recommendations and email content.
+     *
+     * @param Mage_Sales_Model_Order_Item $item the sales item model.
+     *
+     * @return int
+     */
+    protected function buildItemProductId(Mage_Sales_Model_Order_Item $item)
+    {
+        $parent = $item->getProductOptionByCode('super_product_config');
+        if (isset($parent['product_id'])) {
+            return $parent['product_id'];
+        } elseif ($item->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_SIMPLE) {
+            /** @var Mage_Catalog_Model_Product_Type_Configurable $model */
+            $model = Mage::getModel('catalog/product_type_configurable');
+            $parentIds = $model->getParentIdsByChild($item->getProductId());
+            $attributes = $item->getBuyRequest()->getData('super_attribute');
+            // If the product has a configurable parent, we assume we should tag
+            // the parent. If there are many parent IDs, we are safer to tag the
+            // products own ID.
+            if (count($parentIds) === 1 && !empty($attributes)) {
+                return $parentIds[0];
+            }
+        }
+        return $item->getProductId();
+    }
+
+    /**
+     * Returns the name for a sales item.
+     * Configurable products will have their chosen options added to their name.
+     * Bundle products will have their chosen child product names added.
+     * Grouped products will have their parents name prepended.
+     * All others will have their own name only.
+     *
+     * @param Mage_Sales_Model_Order_Item $item the sales item model.
+     *
+     * @return string
+     */
+    protected function buildItemName(Mage_Sales_Model_Order_Item $item)
+    {
+        $name = $item->getName();
+        $optNames = array();
+
+        if ($item->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_SIMPLE) {
+            /** @var Mage_Catalog_Model_Product_Type_Configurable $model */
+            $model = Mage::getModel('catalog/product_type_configurable');
+            $parentIds = $model->getParentIdsByChild($item->getProductId());
+            // If the product has a configurable parent, we assume we should tag
+            // the parent. If there are many parent IDs, we are safer to tag the
+            // products own name alone.
+            if (count($parentIds) === 1) {
+                $attributes = $item->getBuyRequest()->getData('super_attribute');
+                if (is_array($attributes)) {
+                    foreach ($attributes as $id => $value) {
+                        /** @var Mage_Catalog_Model_Resource_Eav_Attribute $attribute */
+                        $attribute = Mage::getModel('catalog/resource_eav_attribute')
+                            ->load($id);
+                        $label = $attribute->getSource()->getOptionText($value);
+                        if (!empty($label)) {
+                            $optNames[] = $label;
+                        }
+                    }
+                }
+            }
+        } elseif ($item->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE) {
+            $opts = $item->getProductOptionByCode('attributes_info');
+            if (is_array($opts)) {
+                foreach ($opts as $opt) {
+                    if (isset($opt['value']) && is_string($opt['value'])) {
+                        $optNames[] = $opt['value'];
+                    }
+                }
+            }
+        } elseif ($item->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_BUNDLE) {
+            $opts = $item->getProductOptionByCode('bundle_options');
+            if (is_array($opts)) {
+                foreach ($opts as $opt) {
+                    if (isset($opt['value']) && is_array($opt['value'])) {
+                        foreach ($opt['value'] as $val) {
+                            $qty = '';
+                            if (isset($val['qty']) && is_int($val['qty'])) {
+                                $qty .= $val['qty'] . ' x ';
+                            }
+                            if (isset($val['title']) && is_string($val['title'])) {
+                                $optNames[] = $qty . $val['title'];
+                            }
+                        }
+                    }
+                }
+            }
+        } elseif ($item->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_GROUPED) {
+            $config = $item->getProductOptionByCode('super_product_config');
+            if (isset($config['product_id'])) {
+                /** @var Mage_Catalog_Model_Product $parent */
+                $parent = Mage::getModel('catalog/product')
+                    ->load($config['product_id']);
+                $parentName = $parent->getName();
+                if (!empty($parentName)) {
+                    $name = $parentName.' - '.$name;
+                }
+            }
+        }
+
+        if (!empty($optNames)) {
+            $name .= ' (' . implode(', ', $optNames) . ')';
+        }
+
+        return $name;
     }
 
     /**
@@ -144,6 +360,16 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
     public function getOrderNumber()
     {
         return $this->_orderNumber;
+    }
+
+    /**
+     * Returns the Magento order "real order ID" property.
+     *
+     * @return string the order ref.
+     */
+    public function getExternalOrderRef()
+    {
+        return $this->_externalOrderRef;
     }
 
     /**
@@ -195,5 +421,15 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
     public function getOrderStatus()
     {
         return $this->_orderStatus;
+    }
+
+    /**
+     * Returns a list of order status history items.
+     *
+     * @return Nosto_Tagging_Model_Meta_Order_Status[] the list.
+     */
+    public function getOrderStatuses()
+    {
+        return $this->_orderStatuses;
     }
 }

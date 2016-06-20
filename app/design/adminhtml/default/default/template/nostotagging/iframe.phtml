@@ -1,9 +1,9 @@
 <?php
 /**
  * Magento
- *
+ *  
  * NOTICE OF LICENSE
- *
+ *  
  * This source file is subject to the Open Software License (OSL 3.0)
  * that is bundled with this package in the file LICENSE.txt.
  * It is also available through the world-wide-web at this URL:
@@ -11,17 +11,17 @@
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
- *
+ *  
  * DISCLAIMER
- *
+ *  
  * Do not edit or add to this file if you wish to upgrade Magento to newer
  * versions in the future. If you wish to customize Magento for your
  * needs please refer to http://www.magentocommerce.com for more information.
- *
- * @category  design
- * @package   adminhtml_default_default
+ *  
+ * @category  Nosto
+ * @package   Nosto_Tagging
  * @author    Nosto Solutions Ltd <magento@nosto.com>
- * @copyright Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
+ * @copyright Copyright (c) 2013-2016 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 ?>
@@ -34,17 +34,50 @@ $params = array('store' => $this->getSelectedStore()->getId(), 'isAjax' => true)
 ?>
 <iframe id="nosto_iframe" src='<?php echo $this->getIframeUrl(); ?>' width='100%' frameborder='0' scrolling='no' style="min-height: 600px;"></iframe>
 <script type="text/javascript">
-    // Define the "Nosto" namespace if not already defined.
-    if (typeof Nosto === "undefined") {
-        var Nosto = {};
-    }
-    Nosto.settings = {
-        origin: "<?php echo $this->getIframeOrigin(); ?>",
-        urls: {
-            createAccount: "<?php echo $this->getUrl('*/*/createAccount', $params); ?>",
-            connectAccount: "<?php echo $this->getUrl('*/*/connectAccount', $params); ?>",
-            deleteAccount: "<?php echo $this->getUrl('*/*/removeAccount', $params); ?>"
-        },
-        xhrParams: {form_key: window.FORM_KEY}
-    };
+	document.observe("dom:loaded", function() {
+		// Init the iframe re-sizer.
+		iFrameResize({heightCalculationMethod : "bodyScroll"});
+
+		/**
+		 * Window.postMessage() event handler for catching messages from Nosto.
+		 *
+		 * Supported messages must come from [*.]nosto.com and be formatted
+		 * according to the following example:
+		 *
+		 * '[Nosto]{ "type": "the message action", "params": {} }'
+		 *
+		 * @param {Object} event
+		 */
+		function receiveMessage(event) {
+			var settings = {
+				iframeId: "nosto_iframe",
+				urls: {
+					createAccount: "<?php echo $this->getUrl('*/*/createAccount', $params); ?>",
+					connectAccount: "<?php echo $this->getUrl('*/*/connectAccount', $params); ?>",
+					deleteAccount: "<?php echo $this->getUrl('*/*/removeAccount', $params); ?>"
+				}
+			};
+
+			// Check the origin to prevent cross-site scripting.
+			var originRegexp = new RegExp("<?php echo $this->getIframeOrigin(); ?>");
+			if (!originRegexp.test(event.origin)) {
+				return;
+			}
+			// If the message does not start with "[Nosto]", then it is not for us.
+			if ((""+event.data).substr(0, 7) !== "[Nosto]") {
+				return;
+			}
+
+			// Pass the info on to a handler if the data seems sane.
+			var json = (""+event.data).substr(7);
+			var data = JSON.parse(json);
+			if (typeof data === "object" && data.type) {
+				Nosto.handlePostMessage(data, settings);
+			}
+		}
+
+		// Register event handler for window.postMessage() messages from Nosto.
+		window.addEventListener("message", receiveMessage, false);
+	});
+
 </script>

@@ -21,7 +21,7 @@
  * @category  Nosto
  * @package   Nosto_Tagging
  * @author    Nosto Solutions Ltd <magento@nosto.com>
- * @copyright Copyright (c) 2013-2015 Nosto Solutions Ltd (http://www.nosto.com)
+ * @copyright Copyright (c) 2013-2016 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -81,6 +81,11 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     protected $_signUpApiToken = 'YBDKYwSqTCzSsU8Bwbg4im2pkHMcgTy9cCX7vevjJwON1UISJIwXOLMM0a8nZY7h';
 
     /**
+     * @var array|stdClass account details
+     */
+    protected $_details;
+
+    /**
      * @inheritdoc
      */
     protected function _construct()
@@ -95,11 +100,15 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
      */
     public function loadData(Mage_Core_Model_Store $store)
     {
-        $this->_title = $store->getWebsite()->getName()
+        /* @var Nosto_Tagging_Helper_Data $helper */
+        $helper = Mage::helper('nosto_tagging');
+        $this->_title = $helper->cleanUpAccountTitle(
+            $store->getWebsite()->getName()
             . ' - '
             . $store->getGroup()->getName()
             . ' - '
-            . $store->getName();
+            . $store->getName()
+        );
         $this->_name = substr(sha1(rand()), 0, 8);
         $this->_frontPageUrl = NostoHttpRequest::replaceQueryParamInUrl(
             '___store',
@@ -243,5 +252,58 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     {
         // todo: implement partner code storage.
         return null;
+    }
+
+    /**
+     * Returns a list of currency objects supported by the store the account is to be created for.
+     *
+     * @return NostoCurrency[] the currencies.
+     */
+    public function getCurrencies()
+    {
+        return null;
+    }
+
+    /**
+     * Returns if exchange rates should be used for handling
+     * multiple currencies. Please note that the method only tells if the
+     * setting is active. Method does not take account whether multiple
+     * currencies actually exist or are used.
+     *
+     * @return boolean if multi variants are used
+     */
+    public function getUseCurrencyExchangeRates()
+    {
+        return false;
+    }
+
+    /**
+     * Returns the default variation id
+     *
+     * @return string
+     */
+    public function getDefaultVariationId()
+    {
+        return null;
+    }
+
+    /**
+     * Set details
+     *
+     * @param array|stdClass $details
+     */
+    public function setDetails($details)
+    {
+        $this->_details = $details;
+    }
+
+    /**
+     * Get the details
+     *
+     * @return array|stdClass
+     */
+    public function getDetails()
+    {
+        return $this->_details;
     }
 }
