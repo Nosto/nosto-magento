@@ -51,6 +51,7 @@
                 $("messages").update("<ul class=\"messages\">"+html+"</ul>");
             }
         };
+        //noinspection JSUnusedGlobalSymbols
         new Ajax.Request("<?php echo $this->getButtonUrl(); ?>", {
             method: "POST",
             onSuccess: function(transport) {

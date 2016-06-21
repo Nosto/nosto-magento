@@ -82,6 +82,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
             // If we are not under a store view, then redirect to the first
             // found one. Nosto is configured per store.
             foreach (Mage::app()->getWebsites() as $website) {
+                /** @var Mage_Core_Model_Website $website */
                 $storeId = $website->getDefaultGroup()->getDefaultStoreId();
                 if (!empty($storeId)) {
                     $this->_redirect('*/*/index', array('store' => $storeId));
@@ -103,8 +104,10 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
 
         $store = $this->getSelectedStore();
         if ($this->getRequest()->isPost() && $store !== null) {
+            /** @var Nosto_Tagging_Helper_Oauth $helper */
+            $helper = Mage::helper('nosto_tagging/oauth');
             $client = new NostoOAuthClient(
-                Mage::helper('nosto_tagging/oauth')->getMetaData($store)
+                $helper->getMetaData($store)
             );
             $responseBody = array(
                 'success' => true,
@@ -406,6 +409,8 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
      */
     protected function _isAllowed()
     {
-        return Mage::getSingleton('admin/session')->isAllowed('nosto');
+        /** @var Mage_Admin_Model_Session $session */
+        $session = Mage::getSingleton('admin/session');
+        return $session->isAllowed('nosto');
     }
 }

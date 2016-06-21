@@ -33,6 +33,8 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
+
+/** @noinspection PhpUndefinedClassInspection */
 class Nosto_Tagging_Model_Container_Customer extends Enterprise_PageCache_Model_Container_Customer
 {
     /**
@@ -43,6 +45,8 @@ class Nosto_Tagging_Model_Container_Customer extends Enterprise_PageCache_Model_
      */
     protected function _getIdentifier()
     {
+        /** @noinspection PhpUndefinedMethodInspection */
+        /** @noinspection PhpUndefinedClassInspection */
         return $this->_getCookieValue(
             Enterprise_PageCache_Model_Cookie::COOKIE_CUSTOMER, ''
         )
@@ -57,6 +61,8 @@ class Nosto_Tagging_Model_Container_Customer extends Enterprise_PageCache_Model_
      */
     protected function _getCacheId()
     {
+        /** @noinspection PhpUndefinedFieldInspection */
+        /** @noinspection PhpDeprecationInspection */
         return 'CONTAINER_NOSTO_TAGGING_CUSTOMER_'
         . md5(
             $this->_placeholder->getAttribute('cache_id')
@@ -69,13 +75,16 @@ class Nosto_Tagging_Model_Container_Customer extends Enterprise_PageCache_Model_
      */
     protected function _renderBlock()
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         $block = $this->_getPlaceHolderBlock();
+        /** @noinspection PhpUndefinedFieldInspection */
         Mage::dispatchEvent(
             'render_block', array(
                 'block' => $block,
                 'placeholder' => $this->_placeholder
             )
         );
+        /** @noinspection PhpUndefinedMethodInspection */
         return $block->toHtml();
     }
 }

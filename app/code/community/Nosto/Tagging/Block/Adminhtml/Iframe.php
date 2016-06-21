@@ -80,8 +80,10 @@ class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
         }
         $params['v'] = self::IFRAME_VERSION;
         $store = $this->getSelectedStore();
-        $account = Mage::helper('nosto_tagging/account')->find($store);
-        return $this->_iframeUrl = Mage::helper('nosto_tagging/account')
+        /** @var Nosto_Tagging_Helper_Account $helper */
+        $helper = Mage::helper('nosto_tagging/account');
+        $account = $helper->find($store);
+        return $this->_iframeUrl = $helper
             ->getIframeUrl($store, $account, $params);
     }
 

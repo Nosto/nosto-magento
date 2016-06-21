@@ -58,7 +58,8 @@ abstract class Nosto_Tagging_Block_Adminhtml_System_Config_Ajax_Button extends M
      */
     public function getButtonHtml()
     {
-        return $this->getLayout()
+        /** @var Mage_Adminhtml_Block_Abstract $block */
+        $block = $this->getLayout()
             ->createBlock('adminhtml/widget_button')
             ->setData(
                 array(
@@ -66,8 +67,9 @@ abstract class Nosto_Tagging_Block_Adminhtml_System_Config_Ajax_Button extends M
                     'label' => $this->getButtonLabel(),
                     'onclick' => 'javascript:Nosto.'.$this->getButtonOnClick().'(); return false;'
                 )
-            )
-            ->toHtml();
+            );
+        /** @noinspection PhpUndefinedFunctionInspection */
+        return $block-toHtml();
     }
 
     /**

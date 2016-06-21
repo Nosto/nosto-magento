@@ -41,7 +41,7 @@ $nostoPriceHelper = Mage::helper('nosto_tagging/price');
 <!-- Nosto Cart Tagging -->
 <div class="nosto_cart" style="display:none">
     <span class="hcid"><?php echo $this->getVisitorChecksum(); ?></span>
-    <?php foreach ($items as $item): ?>
+    <?php /** @var Mage_Sales_Model_Quote_Item $item */ foreach ($items as $item): ?>
     <div class="line_item">
         <span class="product_id"><?php echo $this->getProductId($item); ?></span>
         <span class="quantity"><?php echo $item->getQty(); ?></span>

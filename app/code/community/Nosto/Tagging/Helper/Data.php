@@ -196,7 +196,8 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Return the checksum for visitor
      *
-     * @return string
+     * @param string $name the title of the account
+     * @return string the cleaned title of the account
      */
     public function cleanUpAccountTitle($name)
     {
