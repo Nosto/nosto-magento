@@ -51,6 +51,33 @@ class Nosto_Tagging_Model_Feed extends Mage_AdminNotification_Model_Feed
         return self::$feedUrl . $this->nostoVersion;
     }
 
+    public function checkUpdate()
+    {
+        $feedData = array();
+
+        $feedXml = $this->getFeedData();
+
+        if ($feedXml && $feedXml->channel && $feedXml->channel->item) {
+            foreach ($feedXml->channel->item as $item) {
+                $feedData[] = array(
+                    'severity'      => 4,
+                    'date_added'    => $this->getDate((string)$item->pubDate),
+                    'title'         => (string)$item->title,
+                    'description'   => (string)$item->description,
+                    'url'           => (string)$item->link,
+                );
+            }
+
+            if ($feedData) {
+                Mage::getModel('adminnotification/inbox')->parse(array_reverse($feedData));
+            }
+
+        }
+        $this->setLastUpdate();
+
+        return $this;
+    }
+
     public function observe() {
         /* @var Mage_AdminNotification_Model_Feed $model */
         $model  = Mage::getModel('nosto_tagging/feed');
