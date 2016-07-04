@@ -142,7 +142,7 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
             if ($currentPage > $products->getLastPageNumber()) {
                 $products = array();
             }
-            $collection = new NostoExportCollectionProduct();
+            $collection = new NostoExportProductCollection();
             foreach ($products as $product) {
                 /** @var Mage_Catalog_Model_Product $product */
                 /** @var Nosto_Tagging_Model_Meta_Product $meta */
