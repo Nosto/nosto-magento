@@ -57,7 +57,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     /*
      * @var boolean the path for setting for product urls
      */
-    const XML_PATH_PRETTY_URL = 'nosto_tagging/url_options/pretty_product_url';
+    const XML_PATH_PRETTY_URL = 'nosto_tagging/pretty_url/in_use';
 
     /**
      * List of strings to remove from the default Nosto account title
@@ -149,7 +149,6 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Todo - implement XML settings & saving this
      * Return if virtual hosts / pretty urls should be used for products
      *
      * @param Mage_Core_Model_Store|null $store the store model or null.
@@ -158,8 +157,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getUsePrettyProductUrls($store = null)
     {
-        return true;
-//        return Mage::getStoreConfig(self::XML_PATH_IMAGE_VERSION, $store);
+         return Mage::getStoreConfig(self::XML_PATH_PRETTY_URL, $store);
     }
 
     /**

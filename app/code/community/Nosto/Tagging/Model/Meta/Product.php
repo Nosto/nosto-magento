@@ -267,7 +267,9 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         $helper = Mage::helper('nosto_tagging');
         $product_url = null;
         $product->unsetData('url');
-        if (!$helper->getUsePrettyProductUrls()) {
+        if ($helper->getUsePrettyProductUrls()) {
+            $product_url = $product->getProductUrl(false);
+        } else {
             $product_url = $product->getUrlInStore(
                 array(
                     '_nosid' => true,
@@ -275,8 +277,6 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
                     '_store' => $store->getCode(),
                 )
             );
-        } else {
-            $product_url = $product->getProductUrl(false);
         }
 
         return $product_url;
