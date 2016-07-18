@@ -33,7 +33,7 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implements NostoAccountMetaInterface
+class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implements NostoAccountMetaDataInterface
 {
     /**
      * @var string the store name.
@@ -110,11 +110,15 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
             . $store->getName()
         );
         $this->_name = substr(sha1(rand()), 0, 8);
-        $this->_frontPageUrl = NostoHttpRequest::replaceQueryParamInUrl(
-            '___store',
-            $store->getCode(),
-            $store->getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB)
-        );
+        if (!$helper->getUsePrettyProductUrls()) {
+            $this->_frontPageUrl = NostoHttpRequest::replaceQueryParamInUrl(
+                '___store',
+                $store->getCode(),
+                $store->getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB)
+            );
+        } else {
+            $this->_frontPageUrl = $store->getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB);
+        }
         $this->_currencyCode = $store->getBaseCurrencyCode();
         $this->_languageCode = substr(
             $store->getConfig('general/locale/code'), 0, 2
@@ -214,7 +218,7 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     /**
      * Meta data model for the account owner who is creating the account.
      *
-     * @return NostoAccountMetaOwnerInterface the meta data model.
+     * @return NostoAccountMetaDataOwnerInterface the meta data model.
      */
     public function getOwner()
     {
@@ -224,7 +228,7 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
     /**
      * Meta data model for the account billing details.
      *
-     * @return NostoAccountMetaBillingInterface the meta data model.
+     * @return NostoAccountMetaDataBillingDetailsInterface the meta data model.
      */
     public function getBillingDetails()
     {

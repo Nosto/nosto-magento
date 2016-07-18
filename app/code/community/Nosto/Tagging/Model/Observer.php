@@ -106,7 +106,7 @@ class Nosto_Tagging_Model_Observer
                 $validator = new NostoValidator($model);
                 if ($validator->validate()) {
                     try {
-                        $service = new NostoServiceProduct($account);
+                        $service = new NostoOperationProduct($account);
                         $service->addProduct($model);
                         $service->upsert();
                     } catch (NostoException $e) {
@@ -149,7 +149,7 @@ class Nosto_Tagging_Model_Observer
                 $model->setProductId($product->getId());
 
                 try {
-                    $service = new NostoServiceProduct($account);
+                    $service = new NostoOperationProduct($account);
                     $service->addProduct($model);
                     $service->delete();
                 } catch (NostoException $e) {
