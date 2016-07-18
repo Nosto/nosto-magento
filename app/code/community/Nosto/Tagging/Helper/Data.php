@@ -45,6 +45,11 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_IMAGE_VERSION = 'nosto_tagging/image_options/image_version';
 
     /**
+     * Path to store config for attributes to tag
+     */
+    const XML_PATH_CUSTOM_TAGS = 'nosto_tagging/custom_tags/list';
+
+    /**
      * @var string the name of the cookie where the Nosto ID can be found.
      */
     const COOKIE_NAME = '2c_cId';
@@ -74,7 +79,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     public function quoteEscape($data, $addSlashes = false)
     {
         if ($addSlashes === true) {
-            $data = addslashes($data);
+            $data = addslashes($data); //@codingStandardsIgnoreLine
         }
         return htmlspecialchars($data, ENT_QUOTES, null, false);
     }
@@ -193,5 +198,44 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     {
         $clean = str_replace(self::$removeFromTitle, '', $name);
         return $clean;
+    }
+    
+    public function getProductAttributeOptions()
+    {
+        $resourceModel = Mage::getResourceModel(
+            'catalog/product_attribute_collection'
+        );
+        $attributes = $resourceModel
+            ->addVisibleFilter()
+            ->addFieldToFilter(
+                'entity_type_id',
+                4
+            )
+            ->setOrder('frontend_label', Varien_Data_Collection::SORT_ORDER_ASC);
+        $attributeArray = array();
+
+        foreach($attributes as $attribute) {
+            $label = $attribute->getData('frontend_label');
+            $code = $attribute->getData('attribute_code');
+            $attributeArray[] = array(
+                'value' => $code,
+                'label' => sprintf('%s (%s)', $label, $code)
+            );
+        }
+
+        return $attributeArray;
+    }
+
+    /**
+     * Return the attributes to be tagged in Nosto tags
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     *
+     * @return array
+     */
+    public function getAttributesToTag($store = null)
+    {
+        $tags = Mage::getStoreConfig(self::XML_PATH_CUSTOM_TAGS, $store);
+        return explode(',', $tags);
     }
 }
