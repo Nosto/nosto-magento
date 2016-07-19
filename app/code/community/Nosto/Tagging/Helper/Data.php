@@ -90,6 +90,16 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     );
 
     /**
+     * List of attributes that cannot be added to tags due to buggy internal
+     * processing of attributes
+     *
+     * @var array
+     */
+    public static $notValidAttributesForTags = array(
+        'group_price', // Magento fails to get the value
+    );
+
+    /**
      * @inheritdoc
      */
     public function quoteEscape($data, $addSlashes = false)
@@ -239,8 +249,11 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
             )
         );
         foreach($attributes as $attribute) {
-            $label = $attribute->getData('frontend_label');
             $code = $attribute->getData('attribute_code');
+            if (in_array($code, self::$notValidAttributesForTags)) {
+                continue;
+            }
+            $label = $attribute->getData('frontend_label');
             $attributeArray[] = array(
                 'value' => $code,
                 'label' => sprintf('%s (%s)', $code, $label)

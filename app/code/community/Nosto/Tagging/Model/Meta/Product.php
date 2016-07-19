@@ -280,7 +280,8 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
                         if (!$attribute_value && is_scalar($attribute_data)) {
                             $attribute_value = $attribute_data;
                         }
-                        if (!empty($attribute_value) && $attribute_value !== " ") {
+                        $attribute_value = trim($attribute_value);
+                        if (!empty($attribute_value)) {
                             $frontend_label = $product_attribute->getFrontendLabel();
                             $this->_tags[$tag_id][] = sprintf(
                                 '%s:%s',
@@ -289,7 +290,15 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
                             );
                         }
                     } catch (Exception $e) {
-                        continue;
+                        Mage::log(
+                            sprintf(
+                                'Failed to add attribute %s to tags. Error message was: %s',
+                                $key,
+                                $e->getMessage()
+                            ),
+                            Zend_Log::WARN,
+                            Nosto_Tagging_Model_Base::LOG_FILE_NAME
+                        );
                     }
                 }
             }
