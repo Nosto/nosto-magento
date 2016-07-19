@@ -79,11 +79,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     /**
      * @var array the tags for the product.
      */
-    protected $_tags = array(
-        'tag1' => array(),
-        'tag2' => array(),
-        'tag3' => array(),
-    );
+    protected $_tags = array();
 
     /**
      * @var array the categories the product is located in.
@@ -140,6 +136,14 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         );
     }
 
+    public function __construct()
+    {
+        parent::__construct();
+        foreach (Nosto_Tagging_Helper_Data::$validTags as $validTag) {
+            $this->_tags[$validTag] = array();
+        }
+    }
+
     /**
      * Loads the product info from a Magento product model.
      *
@@ -179,12 +183,11 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         if (($tags = $this->buildTags($product, $store)) !== array()) {
             $this->_tags['tag1'] = $tags;
         }
-        if (($attribute_tags = $this->buildTagsFromAttributes($product, $store)) !== array()) {
-            $this->_tags['tag2'] = $attribute_tags;
-        }
         if ($product->hasData('created_at')) {
             $this->_datePublished = $product->getData('created_at');
         }
+
+        $this->amendAttributeTags($product, $store);
     }
 
     /**
@@ -250,49 +253,47 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     }
 
     /**
-     * Builds the "tag2" if product attributes are defined to be tagged.
+     * Amends the product attributes to tags array if attributes are defined
+     * and are present in product
      *
      * @param Mage_Catalog_Model_Product $product the product model.
      * @param Mage_Core_Model_Store      $store the store model.
      *
-     * @return array
      */
-    protected function buildTagsFromAttributes(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
+    protected function amendAttributeTags(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
-        $tags = array();
-
         $product_attributes = $product->getAttributes();
         /* @var Nosto_Tagging_Helper_Data $nosto_helper */
         $nosto_helper = Mage::helper("nosto_tagging");
-        $attributes_to_tag = $nosto_helper->getAttributesToTag();
-        if (empty($attributes_to_tag) || !is_array($attributes_to_tag)) {
-            return null;
-        }
 
-        /* @var  Mage_Catalog_Model_Resource_Eav_Attribute $product_attribute*/
-        foreach ($product_attributes as $key=>$product_attribute) {
-            if (in_array($key, $attributes_to_tag)) {
-                $attribute_data = $product->getData($key);
-                if (empty($attribute_data)) {
-                    continue;
-                }
-                try {
-                    $attribute_text = $product->getAttributeText($key);
-                    if (!empty($attribute_text) && $attribute_text !== " ") {
-                        $frontend_label = $product_attribute->getFrontendLabel();
-                        $tags[] = sprintf(
-                            '%s:%s',
-                            $frontend_label,
-                            $attribute_text
-                        );
+        foreach (Nosto_Tagging_Helper_Data::$validTags as $tag_id) {
+            $attributes_to_tag = $nosto_helper->getAttributesToTag($tag_id, $store->getId());
+            if (empty($attributes_to_tag) || !is_array($attributes_to_tag)) {
+                continue;
+            }
+            /* @var Mage_Catalog_Model_Resource_Eav_Attribute $product_attribute*/
+            foreach ($product_attributes as $key=>$product_attribute) {
+                if (in_array($key, $attributes_to_tag)) {
+                    try {
+                        $attribute_data = $product->getData($key);
+                        $attribute_value = $product->getAttributeText($key);
+                        if (!$attribute_value && is_scalar($attribute_data)) {
+                            $attribute_value = $attribute_data;
+                        }
+                        if (!empty($attribute_value) && $attribute_value !== " ") {
+                            $frontend_label = $product_attribute->getFrontendLabel();
+                            $this->_tags[$tag_id][] = sprintf(
+                                '%s:%s',
+                                $key,
+                                $attribute_value
+                            );
+                        }
+                    } catch (Exception $e) {
+                        continue;
                     }
-                } catch (Exception $e) {
-                    continue;
                 }
             }
         }
-
-        return $tags;
     }
 
     /**

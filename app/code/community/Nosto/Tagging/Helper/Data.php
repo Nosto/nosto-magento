@@ -45,9 +45,9 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_IMAGE_VERSION = 'nosto_tagging/image_options/image_version';
 
     /**
-     * Path to store config for attributes to tag
+     * Path to store config for attributes to tag 1
      */
-    const XML_PATH_CUSTOM_TAGS = 'nosto_tagging/custom_tags/list';
+    const XML_PATH_CUSTOM_TAGS = 'nosto_tagging/attribute_to_tag/';
 
     /**
      * @var string the name of the cookie where the Nosto ID can be found.
@@ -64,6 +64,11 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      */
     const XML_PATH_PRETTY_URL = 'nosto_tagging/pretty_url/in_use';
 
+    /*
+     * @var int the product attribute type id
+     */
+    const PRODUCT_TYPE_ATTRIBUTE_ID = 4;
+
     /**
      * List of strings to remove from the default Nosto account title
      *
@@ -71,6 +76,17 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public static $removeFromTitle = array(
         'Main Website - '
+    );
+
+    /**
+     * List of valid tag types
+     *
+     * @var array
+     */
+    public static $validTags = array(
+        'tag1',
+        'tag2',
+        'tag3'
     );
 
     /**
@@ -209,17 +225,26 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
             ->addVisibleFilter()
             ->addFieldToFilter(
                 'entity_type_id',
-                4
+                self::PRODUCT_TYPE_ATTRIBUTE_ID
             )
-            ->setOrder('frontend_label', Varien_Data_Collection::SORT_ORDER_ASC);
-        $attributeArray = array();
-
+            ->setOrder(
+                'attribute_code',
+                Varien_Data_Collection::SORT_ORDER_ASC
+            );
+        // Add single empty option as a first option. Otherwise multiselect
+        // cannot not be unset in Magento.
+        $attributeArray = array(
+            array(
+                'value' => 0,
+                'label' => 'None'
+            )
+        );
         foreach($attributes as $attribute) {
             $label = $attribute->getData('frontend_label');
             $code = $attribute->getData('attribute_code');
             $attributeArray[] = array(
                 'value' => $code,
-                'label' => sprintf('%s (%s)', $label, $code)
+                'label' => sprintf('%s (%s)', $code, $label)
             );
         }
 
@@ -229,13 +254,22 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Return the attributes to be tagged in Nosto tags
      *
+     * @param string $tag_id the name / identifier of the tag (e.g. tag1, tag2).
      * @param Mage_Core_Model_Store|null $store the store model or null.
+     *
+     * @throws NostoException
      *
      * @return array
      */
-    public function getAttributesToTag($store = null)
+    public function getAttributesToTag($tag_id, $store = null)
     {
-        $tags = Mage::getStoreConfig(self::XML_PATH_CUSTOM_TAGS, $store);
+        if (!in_array($tag_id, self::$validTags)) {
+            throw new NostoException(
+                sprintf('Invalid tag identifier %s', $tag_id)
+            );
+        }
+        $tag_path = self::XML_PATH_CUSTOM_TAGS . $tag_id;
+        $tags = Mage::getStoreConfig($tag_path, $store);
         return explode(',', $tags);
     }
 }
