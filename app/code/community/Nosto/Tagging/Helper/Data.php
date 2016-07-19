@@ -222,7 +222,6 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
             'catalog/product_attribute_collection'
         );
         $attributes = $resourceModel
-            ->addVisibleFilter()
             ->addFieldToFilter(
                 'entity_type_id',
                 self::PRODUCT_TYPE_ATTRIBUTE_ID
