@@ -45,6 +45,11 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_IMAGE_VERSION = 'nosto_tagging/image_options/image_version';
 
     /**
+     * Path to store config for attributes to tag 1
+     */
+    const XML_PATH_CUSTOM_TAGS = 'nosto_tagging/attribute_to_tag/';
+
+    /**
      * @var string the name of the cookie where the Nosto ID can be found.
      */
     const COOKIE_NAME = '2c_cId';
@@ -78,6 +83,16 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      */
     const XML_PATH_USE_PRODUCT_API = 'nosto_tagging/general/use_product_api';
 
+    /*
+     * @var boolean the path for setting for product urls
+     */
+    const XML_PATH_PRETTY_URL = 'nosto_tagging/pretty_url/in_use';
+
+    /*
+     * @var int the product attribute type id
+     */
+    const PRODUCT_TYPE_ATTRIBUTE_ID = 4;
+
     /**
      * List of strings to remove from the default Nosto account title
      *
@@ -88,12 +103,33 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     );
 
     /**
+     * List of valid tag types
+     *
+     * @var array
+     */
+    public static $validTags = array(
+        'tag1',
+        'tag2',
+        'tag3'
+    );
+
+    /**
+     * List of attributes that cannot be added to tags due to buggy internal
+     * processing of attributes
+     *
+     * @var array
+     */
+    public static $notValidAttributesForTags = array(
+        'group_price', // Magento fails to get the value
+    );
+
+    /**
      * @inheritdoc
      */
     public function quoteEscape($data, $addSlashes = false)
     {
         if ($addSlashes === true) {
-            $data = addslashes($data);
+            $data = addslashes($data); //@codingStandardsIgnoreLine
         }
         return htmlspecialchars($data, ENT_QUOTES, null, false);
     }
@@ -144,14 +180,16 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         $installationId = Mage::getStoreConfig(self::XML_PATH_INSTALLATION_ID);
         if (empty($installationId)) {
             // Running bin2hex() will make the ID string length 64 characters.
-            /** @noinspection PhpUndefinedClassInspection */
-            $installationId = bin2hex(phpseclib_Crypt_Random::string(32));
+            $installationId = bin2hex(NostoCryptRandom::getRandomString(32));
             /** @var Mage_Core_Model_Config $config */
             $config = Mage::getModel('core/config');
             $config->saveConfig(
                 self::XML_PATH_INSTALLATION_ID, $installationId, 'default', 0
             );
-            Mage::app()->getCacheInstance()->cleanType('config');
+
+            /** @var Nosto_Tagging_Helper_Cache $helper */
+            $helper = Mage::helper('nosto_tagging/cache');
+            $helper->flushConfigCache();
         }
         return $installationId;
     }
@@ -166,6 +204,18 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     public function getProductImageVersion($store = null)
     {
         return Mage::getStoreConfig(self::XML_PATH_IMAGE_VERSION, $store);
+    }
+
+    /**
+     * Return if virtual hosts / pretty urls should be used for products
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     *
+     * @return boolean
+     */
+    public function getUsePrettyProductUrls($store = null)
+    {
+         return Mage::getStoreConfig(self::XML_PATH_PRETTY_URL, $store);
     }
 
     /**
@@ -226,6 +276,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         }
         return Mage::getStoreConfig(self::XML_PATH_MULTI_CURRENCY_METHOD, $store);
     }
+
     /**
      * Checks if either exchange rates or price variants
      * are used in store.
@@ -240,6 +291,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         $method = $this->getMultiCurrencyMethod($store);
         return ($method === self::MULTI_CURRENCY_DISABLED);
     }
+
     /**
      * Checks if the multi currency method in use is the "exchangeRate", i.e.
      * the product prices in the recommendation is updated through the Exchange
@@ -277,5 +329,64 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     {
         $useApi = (bool)Mage::getStoreConfig(self::XML_PATH_USE_PRODUCT_API, $store);
         return $useApi;
+    }
+
+    public function getProductAttributeOptions()
+    {
+        $resourceModel = Mage::getResourceModel(
+            'catalog/product_attribute_collection'
+        );
+        $attributes = $resourceModel
+            ->addFieldToFilter(
+                'entity_type_id',
+                self::PRODUCT_TYPE_ATTRIBUTE_ID
+            )
+            ->setOrder(
+                'attribute_code',
+                Varien_Data_Collection::SORT_ORDER_ASC
+            );
+        // Add single empty option as a first option. Otherwise multiselect
+        // cannot not be unset in Magento.
+        $attributeArray = array(
+            array(
+                'value' => 0,
+                'label' => 'None'
+            )
+        );
+        foreach($attributes as $attribute) {
+            $code = $attribute->getData('attribute_code');
+            if (in_array($code, self::$notValidAttributesForTags)) {
+                continue;
+            }
+            $label = $attribute->getData('frontend_label');
+            $attributeArray[] = array(
+                'value' => $code,
+                'label' => sprintf('%s (%s)', $code, $label)
+            );
+        }
+
+        return $attributeArray;
+    }
+
+    /**
+     * Return the attributes to be tagged in Nosto tags
+     *
+     * @param string $tag_id the name / identifier of the tag (e.g. tag1, tag2).
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     *
+     * @throws NostoException
+     *
+     * @return array
+     */
+    public function getAttributesToTag($tag_id, $store = null)
+    {
+        if (!in_array($tag_id, self::$validTags)) {
+            throw new NostoException(
+                sprintf('Invalid tag identifier %s', $tag_id)
+            );
+        }
+        $tag_path = self::XML_PATH_CUSTOM_TAGS . $tag_id;
+        $tags = Mage::getStoreConfig($tag_path, $store);
+        return explode(',', $tags);
     }
 }
