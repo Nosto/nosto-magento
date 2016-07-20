@@ -77,7 +77,11 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
             self::XML_PATH_TOKENS, json_encode($tokens), 'stores',
             $store->getId()
         );
-        Mage::app()->getCacheInstance()->cleanType('config');
+
+        /** @var Nosto_Tagging_Helper_Cache $helper */
+        $helper = Mage::helper('nosto_tagging/cache');
+        $helper->flushCache();
+
         return true;
     }
 
@@ -105,7 +109,10 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
         $config->saveConfig(
             self::XML_PATH_TOKENS, null, 'stores', $store->getId()
         );
-        Mage::app()->getCacheInstance()->cleanType('config');
+
+        /** @var Nosto_Tagging_Helper_Cache $helper */
+        $helper = Mage::helper('nosto_tagging/cache');
+        $helper->flushCache();
 
         try {
             // Notify Nosto that the account was deleted.

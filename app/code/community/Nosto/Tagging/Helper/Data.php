@@ -162,7 +162,10 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
             $config->saveConfig(
                 self::XML_PATH_INSTALLATION_ID, $installationId, 'default', 0
             );
-            Mage::app()->getCacheInstance()->cleanType('config');
+
+            /** @var Nosto_Tagging_Helper_Cache $helper */
+            $helper = Mage::helper('nosto_tagging/cache');
+            $helper->flushConfigCache();
         }
         return $installationId;
     }
