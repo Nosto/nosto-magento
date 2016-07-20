@@ -51,4 +51,9 @@
             </block>
         </reference>
     </adminhtml_nosto_index>
+    <default>
+        <reference name="notifications">
+            <block type="nosto_tagging/adminhtml_notifications" name="nosto.notifications" template="nostotagging/notifications.phtml"/>
+        </reference>
+    </default>
 </config>
