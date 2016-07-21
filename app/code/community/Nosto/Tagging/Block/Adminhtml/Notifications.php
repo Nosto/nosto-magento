@@ -50,11 +50,11 @@ class Nosto_Tagging_Block_Adminhtml_Notifications extends Mage_Adminhtml_Block_T
         $dataHelper = Mage::helper('nosto_tagging/data');
         foreach (Mage::app()->getStores() as $store) {
             $account = $accountHelper->find($store);
-            if ($account !== null) {
-                if (!$account->isConnectedToNosto()
-                    && !$dataHelper->multiCurrencyDisabled($store)) {
-                        return false;
-                }
+            if ($account !== null
+                && $account->isConnectedToNosto()
+                && $account->hasMissingTokens()
+                && !$dataHelper->multiCurrencyDisabled($store)) {
+                    return false;
             }
         }
         return true;
@@ -85,11 +85,10 @@ class Nosto_Tagging_Block_Adminhtml_Notifications extends Mage_Adminhtml_Block_T
         $dataHelper = Mage::helper('nosto_tagging/data');
         foreach (Mage::app()->getStores() as $store) {
             $account = $accountHelper->find($store);
-            if ($account !== null) {
-                if (!$dataHelper->multiCurrencyDisabled($store)
-                    && !$dataHelper->isScheduledCurrencyExchangeRateUpdateEnabled($store)) {
+            if ($account !== null
+                && !$dataHelper->multiCurrencyDisabled($store)
+                && !$dataHelper->isScheduledCurrencyExchangeRateUpdateEnabled($store)) {
                     return false;
-                }
             }
         }
         return true;
