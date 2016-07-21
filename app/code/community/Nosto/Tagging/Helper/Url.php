@@ -122,9 +122,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
      */
     public function getPreviewUrlSearch(Mage_Core_Model_Store $store)
     {
-        $url = Mage::getUrl(
-            'catalogsearch/result', $this->getUrlOptions($store)
-        );
+        $url = Mage::getUrl('catalogsearch/result', $this->getUrlOptions($store));
         $url = NostoHttpRequest::replaceQueryParamInUrl('q', 'nosto', $url);
         return NostoHttpRequest::replaceQueryParamInUrl(
             'nostodebug', 'true', $url
@@ -163,7 +161,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
         );
     }
 
-    public function getUrlOptions(Mage_Core_Model_Store $store)
+    private function getUrlOptions(Mage_Core_Model_Store $store)
     {
         /* @var Nosto_Tagging_Helper_Data $nosto_helper */
         $nosto_helper = Mage::helper('nosto_tagging');
