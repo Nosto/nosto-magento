@@ -50,12 +50,14 @@ class Nosto_Tagging_Model_System_Config_Source_Image
         $collection = Mage::getResourceModel('catalog/product_attribute_collection');
         $collection->setEntityTypeFilter($entityTypeId);
         $collection->setFrontendInputTypeFilter('media_image');
+        /* @var $attribute Mage_Eav_Model_Entity_Attribute */
         foreach ($collection as $attribute) {
-            /* @var $attribute Mage_Eav_Model_Entity_Attribute */
-            $options[] = array(
-                'value' => $attribute->getAttributeCode(),
-                'label' => $attribute->getFrontend()->getLabel(),
-            );
+            if ($attribute instanceof Mage_Eav_Model_Entity_Attribute) {
+                $options[] = array(
+                    'value' => $attribute->getAttributeCode(),
+                    'label' => $attribute->getFrontend()->getLabel(),
+                );
+            }
         }
 
         return $options;
