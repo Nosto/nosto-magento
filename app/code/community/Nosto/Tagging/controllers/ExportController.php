@@ -126,7 +126,6 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
             $products = Mage::getModel('nosto_tagging/product')->getCollection();
             $this->applyIdFilters($products);
             $products->addStoreFilter(Mage::app()->getStore()->getId())
-                ->addAttributeToSelect('*')
                 ->addAttributeToFilter(
                     'status', array(
                         'eq' => Mage_Catalog_Model_Product_Status::STATUS_ENABLED
