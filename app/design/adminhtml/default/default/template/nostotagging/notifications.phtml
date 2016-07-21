@@ -29,4 +29,6 @@
 
 <?php if (!$this->allAccountsOK()) : ?>
 	<div class="notification-global"><?php echo $this->helper('index')->__('One or more of your store views is using Nosto and has multi-currency enabled but does not have the necessary permissions granted. Check the Nosto accounts in each of your store views to grant the necessary permissions or disable multi-currency.') ?></div>
+<?php elseif (!$this->cronEnabledIfNeeded()) : ?>
+	<div class="notification-global"><?php echo $this->helper('index')->__('One or more of your store views is using Nosto and has multi-currency enabled but does not have scheduled exchange-rates cron jobs enabled. Click here to go to the <a href="%s">Nosto Configuration</a> to enable them.', $this->getConfigureUrl()) ?></div>
 <?php endif; ?>

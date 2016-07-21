@@ -59,4 +59,39 @@ class Nosto_Tagging_Block_Adminhtml_Notifications extends Mage_Adminhtml_Block_T
         }
         return true;
     }
+
+    /**
+     * Get index management url
+     *
+     * @return string
+     */
+    public function getConfigureUrl()
+    {
+        return $this->getUrl('adminhtml/system_config/edit/section/nosto_tagging');
+    }
+
+    /**
+     * Returns the status of the cron of the accounts for showing the
+     * notification. If any of the accounts use multi-currency but cron is
+     * disabled then the notification bar should inform the merchant
+     *
+     * @return bool true or false indicating the cron status
+     */
+    public function cronEnabledIfNeeded()
+    {
+        /** @var Nosto_Tagging_Helper_Account $accountHelper */
+        $accountHelper = Mage::helper('nosto_tagging/account');
+        /** @var Nosto_Tagging_Helper_Data $dataHelper */
+        $dataHelper = Mage::helper('nosto_tagging/data');
+        foreach (Mage::app()->getStores() as $store) {
+            $account = $accountHelper->find($store);
+            if ($account !== null) {
+                if (!$dataHelper->multiCurrencyDisabled($store)
+                    && !$dataHelper->isScheduledCurrencyExchangeRateUpdateEnabled($store)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }
