@@ -176,4 +176,56 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
 
         return $params;
     }
+
+    /**
+     * Generates url_path for the a product based on url_key.
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @param Mage_Core_Model_Store $store
+     *
+     * @return string the url.
+     */
+    public function generateUrlPath(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
+    {
+        $url_key = $product->formatUrlKey($product->getUrlKey());
+        /* @var Mage_Catalog_Model_Url */
+        $catalog_url = Mage::getModel('catalog/url');
+        $id_path = $catalog_url->generatePath('id', $product, null, null);
+        $url_path = $catalog_url->getUnusedPath($store->getId(), $url_key, $id_path);
+        $suffix = $catalog_url->getProductUrlSuffix($store->getId());
+        if (!empty($suffix)) {
+            $url_path .= $suffix;
+        }
+
+        return $url_path;
+    }
+
+    /**
+     * Generates url for a product
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @param Mage_Core_Model_Store $store
+     *
+     * @return string the url.
+     */
+    public function generateProductUrl(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
+    {
+        /** @var Nosto_Tagging_Helper_Data $helper */
+        $helper = Mage::helper('nosto_tagging');
+        /* @var Mage_Catalog_Model_Product_Url $url*/
+        $nosto_product_url = Mage::getModel('nosto_tagging/meta_product_url');
+        $url_params = array(
+            '_nosid' => true,
+            '_ignore_category' => true,
+            '_store' => $store->getId(),
+        );
+        if ($helper->getUsePrettyProductUrls($store)) {
+            $url_params['_store_to_url'] = false;
+        } else {
+            $url_params['_store_to_url'] = true;
+        }
+        $product_url = $nosto_product_url->getUrl($product, $url_params);
+
+        return $product_url;
+    }
 }

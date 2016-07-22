@@ -322,23 +322,18 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         // Unset the cached url first, as it won't include the `___store` param
         // if it's cached. We need to define the specific store view in the url
         // in case the same domain is used for all sites.
-
-        /** @var Nosto_Tagging_Helper_Data $helper */
-        $helper = Mage::helper('nosto_tagging');
-        $product_url = null;
         $product->unsetData('url');
-        if ($helper->getUsePrettyProductUrls()) {
-            $product_url = $product->getProductUrl(false);
-        } else {
-            $product_url = $product->getUrlInStore(
-                array(
-                    '_nosid' => true,
-                    '_ignore_category' => true,
-                    '_store' => $store->getCode(),
-                )
-            );
-        }
+        /** @var Nosto_Tagging_Helper_Url $url_helper */
+        $url_helper = Mage::helper('nosto_tagging/url');
 
+        // Due to a bug in Mage the url_path and request_path are not updated
+        // before catalog_product_save_commit_after fires
+        $generated_url_path = $url_helper->generateUrlPath($product, $store);
+        if ($product->getUrlPath() != $generated_url_path) {
+            $product->setUrlPath($generated_url_path);
+            $product->setRequestPath($generated_url_path);
+        }
+        $product_url = $url_helper->generateProductUrl($product, $store);
         return $product_url;
     }
 
