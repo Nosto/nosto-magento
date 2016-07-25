@@ -210,6 +210,10 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
      */
     public function generateProductUrl(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
+        // Unset the cached url first, as it won't include the `___store` param
+        // if it's cached. We need to define the specific store view in the url
+        // in case the same domain is used for all sites.
+        $product->unsetData('url');
         /** @var Nosto_Tagging_Helper_Data $helper */
         $helper = Mage::helper('nosto_tagging');
         /* @var Mage_Catalog_Model_Product_Url $url*/
