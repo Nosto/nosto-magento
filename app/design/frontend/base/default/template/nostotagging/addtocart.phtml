@@ -28,7 +28,9 @@
 
 <?php
 $formAction = Mage::getUrl('checkout/cart/add');
-$formKey = Mage::getSingleton('core/session')->getFormKey();
+/** @var Mage_Core_Model_Session $session */
+$session = Mage::getSingleton('core/session');
+$formKey = $session->getFormKey();
 ?>
 <!-- Nosto `add-to-cart` Script -->
 <script type="text/javascript">

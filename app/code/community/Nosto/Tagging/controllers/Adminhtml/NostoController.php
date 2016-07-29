@@ -153,7 +153,8 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                 if (!empty($details)) {
                    $meta->setDetails(json_decode($details));
                 }
-                $account = NostoAccount::create($meta);
+                $service = new NostoOperationAccount($meta);
+                $account = $service->create();
                 if ($accountHelper->save($account, $store)) {
                     $responseBody = array(
                         'success' => true,
@@ -262,6 +263,8 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
      */
     protected function _isAllowed()
     {
-        return Mage::getSingleton('admin/session')->isAllowed('nosto');
+        /** @var Mage_Admin_Model_Session $session */
+        $session = Mage::getSingleton('admin/session');
+        return $session->isAllowed('nosto');
     }
 }

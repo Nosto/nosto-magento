@@ -36,13 +36,19 @@ class Nosto_Tagging_Model_Export_Collection_Order extends NostoOrderCollection i
     public function getJson()
     {
         $array = array();
+
+        /** @var NostoHelperDate $dateHelper */
+        $dateHelper = Nosto::helper('date');
+        /** @var NostoHelperPrice $priceHelper */
+        $priceHelper = Nosto::helper('price');
+
         /** @var Nosto_Tagging_Model_Meta_Order $item */
         foreach ($this->getArrayCopy() as $item) {
             $data = array(
                 'order_number' => $item->getOrderNumber(),
                 'external_order_ref' => $item->getExternalOrderRef(),
                 'order_statuses' => array(),
-                'created_at' => Nosto::helper('date')->format($item->getCreatedDate()),
+                'created_at' => $dateHelper->format($item->getCreatedDate()),
                 'buyer' => array(),
                 'payment_provider' => $item->getPaymentProvider(),
                 'purchased_items' => array(),
@@ -56,7 +62,7 @@ class Nosto_Tagging_Model_Export_Collection_Order extends NostoOrderCollection i
                     'product_id' => $orderItem->getProductId(),
                     'quantity' => (int)$orderItem->getQuantity(),
                     'name' => $orderItem->getName(),
-                    'unit_price' => Nosto::helper('price')->format($orderItem->getUnitPrice()),
+                    'unit_price' => $priceHelper->format($orderItem->getUnitPrice()),
                     'price_currency_code' => strtoupper($orderItem->getCurrencyCode()),
                 );
             }

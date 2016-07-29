@@ -201,7 +201,9 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getCookieId()
     {
-        return Mage::getModel('core/cookie')->get(self::COOKIE_NAME);
+        /** @var Mage_Core_Model_Cookie $cookies */
+        $cookies = Mage::getModel('core/cookie');
+        return $cookies->get(self::COOKIE_NAME);
     }
 
     /**
@@ -221,6 +223,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Return the checksum for visitor
      *
+     * @param string $name the name of the account to clean up
      * @return string
      */
     public function cleanUpAccountTitle($name)
@@ -251,6 +254,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
                 'label' => 'None'
             )
         );
+        /** @var Mage_Catalog_Model_Resource_Product_Attribute_Collection $attribute */
         foreach($attributes as $attribute) {
             $code = $attribute->getData('attribute_code');
             if (in_array($code, self::$notValidAttributesForTags)) {

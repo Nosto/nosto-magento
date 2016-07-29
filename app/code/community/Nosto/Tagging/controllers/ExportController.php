@@ -126,6 +126,7 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
             $products = Mage::getModel('nosto_tagging/product')->getCollection();
             $this->applyIdFilters($products);
             $products->addStoreFilter(Mage::app()->getStore()->getId())
+                ->addAttributeToSelect('*')
                 ->addAttributeToFilter(
                     'status', array(
                         'eq' => Mage_Catalog_Model_Product_Status::STATUS_ENABLED
@@ -147,10 +148,7 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
                 /** @var Nosto_Tagging_Model_Meta_Product $meta */
                 $meta = Mage::getModel('nosto_tagging/meta_product');
                 $meta->loadData($product);
-                $validator = new NostoValidator($meta);
-                if ($validator->validate()) {
-                    $collection[] = $meta;
-                }
+                $collection[] = $meta;
             }
             $this->export($collection);
         }
@@ -163,7 +161,9 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
      */
     protected function export(NostoExportCollectionInterface $collection)
     {
-        $account = Mage::helper('nosto_tagging/account')->find();
+        /** @var Nosto_Tagging_Helper_Account $accountHelper */
+        $accountHelper = Mage::helper('nosto_tagging/account');
+        $account = $accountHelper->find();
         if ($account !== null) {
             $cipherText = NostoExporter::export($account, $collection);
             echo $cipherText;
