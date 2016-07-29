@@ -38,12 +38,11 @@ class Nosto_Tagging_Model_Meta_Account_Owner extends NostoSignupOwner
 
     /**
      * Loads the meta data for the given store.
-     *
-     * @param Mage_Core_Model_Store $store the store view to load the data for.
      */
-    public function loadData(Mage_Core_Model_Store $store)
+    public function loadData()
     {
         $session = Mage::getSingleton('admin/session');
+        /** @noinspection PhpUndefinedMethodInspection */
         /** @var Mage_Admin_Model_User $user */
         $user = $session->getUser();
         if ($user) {
