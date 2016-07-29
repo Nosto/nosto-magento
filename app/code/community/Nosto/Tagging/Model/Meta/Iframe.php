@@ -43,6 +43,7 @@ class Nosto_Tagging_Model_Meta_Iframe extends NostoIframe
     public function loadData(Mage_Core_Model_Store $store)
     {
         /** @var Mage_Admin_Model_User $user */
+        /** @noinspection PhpUndefinedMethodInspection */
         $user = Mage::getSingleton('admin/session')->getUser();
         /** @var Nosto_Tagging_Helper_Url $urlHelper */
         $urlHelper = Mage::helper('nosto_tagging/url');
