@@ -136,6 +136,10 @@ Open Software License ("OSL") v3.0
 ## Changelog
 
 
+### 2.7.0-RC1
+* Introduce product attribute tagging 
+* Support for product URLs without store parameter
+
 ### 2.6.15
 * Add support for sending the account details & new platform UI
 * Add check if table `nosto_tagging_customer` already exists before creating it
