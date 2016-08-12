@@ -178,29 +178,6 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Generates url_path for the a product based on url_key.
-     *
-     * @param Mage_Catalog_Model_Product $product
-     * @param Mage_Core_Model_Store $store
-     *
-     * @return string the url.
-     */
-    public function generateUrlPath(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
-    {
-        $url_key = $product->formatUrlKey($product->getUrlKey());
-        /* @var Mage_Catalog_Model_Url */
-        $catalog_url = Mage::getModel('catalog/url');
-        $id_path = $catalog_url->generatePath('id', $product, null, null);
-        $url_path = $catalog_url->getUnusedPath($store->getId(), $url_key, $id_path);
-        $suffix = $catalog_url->getProductUrlSuffix($store->getId());
-        if (!empty($suffix)) {
-            $url_path .= $suffix;
-        }
-
-        return $url_path;
-    }
-
-    /**
      * Generates url for a product
      *
      * @param Mage_Catalog_Model_Product $product
