@@ -216,7 +216,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
         $product->unsetData('url');
         /** @var Nosto_Tagging_Helper_Data $helper */
         $helper = Mage::helper('nosto_tagging');
-        /* @var Mage_Catalog_Model_Product_Url $url*/
+        /* @var Nosto_Tagging_Model_Meta_Product_Url $url*/
         $nosto_product_url = Mage::getModel('nosto_tagging/meta_product_url');
         $url_params = array(
             '_nosid' => true,

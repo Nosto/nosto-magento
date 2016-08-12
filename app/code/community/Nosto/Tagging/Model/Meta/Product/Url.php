@@ -48,6 +48,12 @@ class Nosto_Tagging_Model_Meta_Product_Url extends Mage_Catalog_Model_Product_Ur
      */
     public function getUrl(Mage_Catalog_Model_Product $product, $params = array())
     {
+
+        if (isset($params['_store_to_url']) && $params['_store_to_url']) {
+
+            return parent::getUrl($product, $params);
+        }
+
         $url = $product->getData('url');
         if (!empty($url)) {
             return $url;
