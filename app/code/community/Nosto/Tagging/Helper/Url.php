@@ -176,4 +176,37 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
 
         return $params;
     }
+
+    /**
+     * Generates url for a product
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @param Mage_Core_Model_Store $store
+     *
+     * @return string the url.
+     */
+    public function generateProductUrl(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
+    {
+        // Unset the cached url first, as it won't include the `___store` param
+        // if it's cached. We need to define the specific store view in the url
+        // in case the same domain is used for all sites.
+        $product->unsetData('url');
+        /** @var Nosto_Tagging_Helper_Data $helper */
+        $helper = Mage::helper('nosto_tagging');
+        /* @var Nosto_Tagging_Model_Meta_Product_Url $url*/
+        $nosto_product_url = Mage::getModel('nosto_tagging/meta_product_url');
+        $url_params = array(
+            '_nosid' => true,
+            '_ignore_category' => true,
+            '_store' => $store->getId(),
+        );
+        if ($helper->getUsePrettyProductUrls($store)) {
+            $url_params['_store_to_url'] = false;
+        } else {
+            $url_params['_store_to_url'] = true;
+        }
+        $product_url = $nosto_product_url->getUrl($product, $url_params);
+
+        return $product_url;
+    }
 }
