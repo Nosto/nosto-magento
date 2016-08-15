@@ -136,6 +136,9 @@ Open Software License ("OSL") v3.0
 ## Changelog
 
 
+### Unreleased - develop
+* Force Oauth to use always the base url
+
 ### 2.7.0-RC1
 * Introduce product attribute tagging 
 * Support for product URLs without store parameter
