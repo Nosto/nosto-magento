@@ -64,7 +64,8 @@ class Nosto_Tagging_Model_Meta_Oauth extends Mage_Core_Model_Abstract implements
             'nosto/oauth',
             array(
                 '_store' => $store->getId(),
-                '_store_to_url' => true
+                '_store_to_url' => true,
+                '_type' => Mage_Core_Model_Store::URL_TYPE_WEB,
             )
         );
         $this->_languageIsoCode = substr(
