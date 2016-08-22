@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Magento
  *  
@@ -82,6 +83,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
             // If we are not under a store view, then redirect to the first
             // found one. Nosto is configured per store.
             foreach (Mage::app()->getWebsites() as $website) {
+                /** @var Mage_Core_Model_Website $website */
                 $storeId = $website->getDefaultGroup()->getDefaultStoreId();
                 if (!empty($storeId)) {
                     $this->_redirect('*/*/index', array('store' => $storeId));
@@ -103,9 +105,9 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
 
         $store = $this->getSelectedStore();
         if ($this->getRequest()->isPost() && $store !== null) {
-            $client = new NostoOAuthClient(
-                Mage::helper('nosto_tagging/oauth')->getMetaData($store)
-            );
+            /** @var Nosto_Tagging_Helper_Oauth $oauthHelper */
+            $oauthHelper = Mage::helper('nosto_tagging/oauth');
+            $client = new NostoOAuthClient($oauthHelper->getMetaData($store));
             $responseBody = array(
                 'success' => true,
                 'redirect_url' => $client->getAuthorizationUrl(),
@@ -148,12 +150,15 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                 $details = $this->getRequest()->getPost('details');
                 $meta = $accountHelper->getMetaData($store);
                 if (Zend_Validate::is($email, 'EmailAddress')) {
-                    $meta->getOwner()->setEmail($email);
+                    /** @var Nosto_Tagging_Model_Meta_Account_Owner $owner */
+                    $owner = $meta->getOwner();
+                    $owner->setEmail($email);
                 }
                 if (!empty($details)) {
                    $meta->setDetails(json_decode($details));
                 }
-                $account = NostoAccount::create($meta);
+                $service = new NostoOperationAccount($meta);
+                $account = $service->create();
                 if ($accountHelper->save($account, $store)) {
                     $responseBody = array(
                         'success' => true,
@@ -262,6 +267,8 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
      */
     protected function _isAllowed()
     {
-        return Mage::getSingleton('admin/session')->isAllowed('nosto');
+        /** @var Mage_Admin_Model_Session $session */
+        $session = Mage::getSingleton('admin/session');
+        return $session->isAllowed('nosto');
     }
 }

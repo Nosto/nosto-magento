@@ -44,9 +44,9 @@ class Nosto_Tagging_Model_System_Config_Source_Image
     {
         $options = array();
 
-        $entityTypeId = Mage::getSingleton('eav/config')
-            ->getEntityType(Mage_Catalog_Model_Product::ENTITY)
-            ->getId();
+        /** @var Mage_Eav_Model_Config $eav */
+        $eav = Mage::getSingleton('eav/config');
+        $entityTypeId = $eav->getEntityType(Mage_Catalog_Model_Product::ENTITY)->getId();
         $collection = Mage::getResourceModel('catalog/product_attribute_collection');
         $collection->setEntityTypeFilter($entityTypeId);
         $collection->setFrontendInputTypeFilter('media_image');

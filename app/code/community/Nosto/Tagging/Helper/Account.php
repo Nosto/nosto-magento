@@ -51,12 +51,12 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
     /**
      * Saves the account and the associated api tokens for the store view scope.
      *
-     * @param NostoAccount               $account the account to save.
-     * @param Mage_Core_Model_Store|null $store   the store view to save it for.
+     * @param NostoAccountInterface  $account the account to save.
+     * @param Mage_Core_Model_Store|null   $store   the store view to save it for.
      *
      * @return bool true on success, false otherwise.
      */
-    public function save(NostoAccount $account, Mage_Core_Model_Store $store = null)
+    public function save(NostoAccountInterface $account, Mage_Core_Model_Store $store = null)
     {
         if ($store === null) {
             $store = Mage::app()->getStore();
@@ -88,12 +88,12 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
     /**
      * Removes an account with associated api tokens for the store view scope.
      *
-     * @param NostoAccount               $account the account to remove.
+     * @param NostoAccountInterface               $account the account to remove.
      * @param Mage_Core_Model_Store|null $store   the store view to remove it for.
      *
      * @return bool true on success, false otherwise.
      */
-    public function remove(NostoAccount $account, Mage_Core_Model_Store $store = null)
+    public function remove(NostoAccountInterface $account, Mage_Core_Model_Store $store = null)
     {
         if ($store === null) {
             $store = Mage::app()->getStore();
@@ -116,7 +116,8 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
 
         try {
             // Notify Nosto that the account was deleted.
-            $account->delete();
+            $service = new NostoOperationUninstall($account);
+            $service->delete();
         } catch (NostoException $e) {
             // Failures are logged but not shown to the user.
             Mage::log(
@@ -183,8 +184,7 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
      */
     public function getMetaData(Mage_Core_Model_Store $store)
     {
-        /** @var Nosto_Tagging_Model_Meta_Account $meta */
-        $meta = Mage::getModel('nosto_tagging/meta_account');
+        $meta = new Nosto_Tagging_Model_Meta_Account();
         $meta->loadData($store);
         return $meta;
     }
@@ -195,16 +195,21 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
      * account can be created from.
      *
      * @param Mage_Core_Model_Store $store the store view to get the url for.
-     * @param NostoAccount $account the Nosto account to get the iframe url for.
+     * @param NostoAccount $config the Nosto config to get the iframe url for.
      * @param array $params optional extra params for the url.
      *
      * @return string the iframe url.
      */
-    public function getIframeUrl(Mage_Core_Model_Store $store, NostoAccount $account = null, array $params = array())
+    public function getIframeUrl(Mage_Core_Model_Store $store, NostoAccount $config = null, array $params = array())
     {
-        /** @var Nosto_Tagging_Model_Meta_Account_Iframe $meta */
-        $meta = Mage::getModel('nosto_tagging/meta_account_iframe');
+        $meta = new Nosto_Tagging_Model_Meta_Iframe();
         $meta->loadData($store);
-        return Nosto::helper('iframe')->getUrl($meta, $account, $params);
+
+        $user = new Nosto_Tagging_Model_Meta_Account_Owner();
+        $user->loadData($store);
+
+        /** @var NostoHelperIframe $iframeHelper */
+        $iframeHelper = Nosto::helper('iframe');
+        return $iframeHelper->getUrl($meta, $config, $user, $params);
     }
 }

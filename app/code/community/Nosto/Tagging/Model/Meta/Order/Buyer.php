@@ -60,6 +60,7 @@ class Nosto_Tagging_Model_Meta_Order_Buyer extends Mage_Core_Model_Abstract impl
      */
     public function __construct(array $args)
     {
+        parent::__construct();
         if (!isset($args['firstName']) || !is_string($args['firstName'])) {
             Mage::log(
                 sprintf(

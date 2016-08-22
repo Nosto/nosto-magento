@@ -25,6 +25,7 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+/** @noinspection PhpIncludeInspection */
 require_once Mage::getBaseDir('lib') . '/nosto/php-sdk/src/config.inc.php';
 
 $version = (string)Mage::getConfig()->getNode('modules/Nosto_Tagging/version');

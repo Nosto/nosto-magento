@@ -55,6 +55,7 @@ class Nosto_Tagging_Model_Observer
     {
         if (Mage::helper('nosto_tagging')->isModuleEnabled()) {
             /** @var $layout Mage_Core_Model_Layout_Update */
+            /** @noinspection PhpUndefinedMethodInspection */
             $layout = $observer->getEvent()->getLayout()->getUpdate();
             $layout->addHandle(self::XML_LAYOUT_PAGE_DEFAULT_FOOTER_HANDLE);
         }
@@ -73,6 +74,7 @@ class Nosto_Tagging_Model_Observer
     public function sendProductUpdate(Varien_Event_Observer $observer)
     {
         if (Mage::helper('nosto_tagging')->isModuleEnabled()) {
+            /** @noinspection PhpUndefinedMethodInspection */
             /** @var Mage_Catalog_Model_Product $product */
             $product = $observer->getEvent()->getProduct();
             // Always "upsert" the product for all stores it is available in.
@@ -82,17 +84,20 @@ class Nosto_Tagging_Model_Observer
             foreach ($product->getStoreIds() as $storeId) {
                 $store = Mage::app()->getStore($storeId);
 
-                /** @var NostoAccount $account */
-                $account = Mage::helper('nosto_tagging/account')
-                    ->find($store);
+                /** @var Nosto_Tagging_Helper_Account $accountHelper */
+                $accountHelper = Mage::helper('nosto_tagging/account');
+                /** @var NostoAccountInterface $account */
+                $account = $accountHelper->find($store);
+
                 if ($account === null || !$account->isConnectedToNosto()) {
                     continue;
                 }
 
+                /** @var Mage_Catalog_Model_Product $catalog */
+                $catalog = Mage::getModel('catalog/product');
                 // Load the product model for this particular store view.
-                $product = Mage::getModel('catalog/product')
-                    ->setStoreId($store->getId())
-                    ->load($product->getId());
+                /** @noinspection PhpUndefinedMethodInspection */
+                $product = $catalog->setStoreId($store->getId())->load($product->getId());
                 if (is_null($product)) {
                     continue;
                 }
@@ -131,14 +136,17 @@ class Nosto_Tagging_Model_Observer
     {
         if (Mage::helper('nosto_tagging')->isModuleEnabled()) {
             /** @var Mage_Catalog_Model_Product $product */
+            /** @noinspection PhpUndefinedMethodInspection */
             $product = $observer->getEvent()->getProduct();
             // Products are always deleted from all store views, regardless of
             // the store view scope switcher on the product edit page.
             /** @var Mage_Core_Model_Store $store */
             foreach (Mage::app()->getStores() as $store) {
-                /** @var NostoAccount $account */
-                $account = Mage::helper('nosto_tagging/account')
-                    ->find($store);
+
+                /** @var Nosto_Tagging_Helper_Account $accountHelper */
+                $accountHelper = Mage::helper('nosto_tagging/account');
+                /** @var NostoAccountInterface $account */
+                $account = $accountHelper->find($store);
 
                 if ($account === null || !$account->isConnectedToNosto()) {
                     continue;
@@ -175,19 +183,23 @@ class Nosto_Tagging_Model_Observer
         if (Mage::helper('nosto_tagging')->isModuleEnabled()) {
             try {
                 /** @var Mage_Sales_Model_Order $mageOrder */
+                /** @noinspection PhpUndefinedMethodInspection */
                 $mageOrder = $observer->getEvent()->getOrder();
                 /** @var Nosto_Tagging_Model_Meta_Order $order */
                 $order = Mage::getModel('nosto_tagging/meta_order');
                 $order->loadData($mageOrder);
-                /** @var NostoAccount $account */
-                $account = Mage::helper('nosto_tagging/account')
-                    ->find($mageOrder->getStore());
-                $customerId = Mage::helper('nosto_tagging/customer')
-                    ->getNostoId($mageOrder);
+
+                /** @var Nosto_Tagging_Helper_Account $accountHelper */
+                $accountHelper = Mage::helper('nosto_tagging/account');
+                /** @var NostoAccountInterface $account */
+                $account = $accountHelper->find($mageOrder->getStore());
+
+                /** @var Nosto_Tagging_Helper_Customer $customerHelper */
+                $customerHelper = Mage::helper('nosto_tagging/customer');
+                $customerId = $customerHelper->getNostoId($mageOrder);
                 if ($account !== null && $account->isConnectedToNosto()) {
-                    /** @var Nosto_Tagging_Model_Service_Order $service */
-                    $service = Mage::getModel('nosto_tagging/service_order');
-                    $service->confirm($order, $account, $customerId);
+                    $service = new NostoOperationOrderConfirmation($account);
+                    $service->send($order, $customerId);
                 }
             } catch (NostoException $e) {
                 Mage::log("\n" . $e->__toString(), Zend_Log::ERR, 'nostotagging.log');

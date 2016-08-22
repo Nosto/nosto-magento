@@ -138,6 +138,7 @@ Open Software License ("OSL") v3.0
 
 ### Unreleased - develop
 * Force Oauth to use always the base url
+* Refactor and unify the logic using Nosto services in SDK
 
 ### 2.7.0-RC1
 * Introduce product attribute tagging 
