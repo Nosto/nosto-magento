@@ -33,9 +33,17 @@ $formKey = Mage::getSingleton('core/session')->getFormKey();
 <!-- Nosto `add-to-cart` Script -->
 <script type="text/javascript">
     if (typeof Nosto === "undefined") {
-    var Nosto = {};
+        var Nosto = {};
     }
-    Nosto.addProductToCart = function (productId) {
+    Nosto.addProductToCart = function (productId, element) {
+        if (typeof nostojs !== 'undefined' && typeof element == 'object') {
+            var slotId = Nosto.resolveContextSlotId(element);
+            if (slotId) {
+                nostojs(function (api) {
+                    api.recommendedProductAddedToCart(productId, slotId);
+                });
+            }
+        }
         var form = document.createElement("form");
         form.setAttribute("method", "post");
         form.setAttribute("action", "<?php echo $formAction; ?>");
@@ -45,8 +53,8 @@ $formKey = Mage::getSingleton('core/session')->getFormKey();
             "form_key": "<?php echo $formKey; ?>"
         };
 
-        for(var key in hiddenFields) {
-            if(hiddenFields.hasOwnProperty(key)) {
+        for (var key in hiddenFields) {
+            if (hiddenFields.hasOwnProperty(key)) {
                 var hiddenField = document.createElement("input");
                 hiddenField.setAttribute("type", "hidden");
                 hiddenField.setAttribute("name", key);
@@ -58,4 +66,21 @@ $formKey = Mage::getSingleton('core/session')->getFormKey();
         document.body.appendChild(form);
         form.submit();
     };
+    Nosto.resolveContextSlotId = function (element) {
+        var m = 20;
+        var n = 0;
+        var e = element;
+        while (typeof e.parentElement !== "undefined" && e.parentElement) {
+            ++n;
+            e = e.parentElement;
+            if (e.getAttribute('class') == 'nosto_element' && e.getAttribute('id')) {
+                return e.getAttribute('id');
+            }
+            if (n >= m) {
+                return false;
+            }
+        }
+        return false;
+    }
+
 </script>
