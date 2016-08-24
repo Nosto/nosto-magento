@@ -135,10 +135,12 @@ Open Software License ("OSL") v3.0
 
 ## Changelog
 
-
-### Unreleased - develop
-* Force Oauth to use always the base url
+### 2.8.0-RC1
 * Refactor and unify the logic using Nosto services in SDK
+
+### 2.7.0-RC2
+* Force Oauth to use always the base url
+* Define recommendation as viewed when calling Nosto's addToCart method
 
 ### 2.7.0-RC1
 * Introduce product attribute tagging 
