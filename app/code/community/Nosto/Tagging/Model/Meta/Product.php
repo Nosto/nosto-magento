@@ -282,7 +282,6 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
                         }
                         $attribute_value = trim($attribute_value);
                         if (!empty($attribute_value)) {
-                            $frontend_label = $product_attribute->getFrontendLabel();
                             $this->_tags[$tag_id][] = sprintf(
                                 '%s:%s',
                                 $key,
