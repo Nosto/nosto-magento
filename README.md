@@ -135,6 +135,11 @@ Open Software License ("OSL") v3.0
 
 ## Changelog
 
+### 2.7.0
+* Introduce product attribute tagging 
+* Support for product URLs without store parameter
+* Force Oauth to use always the base url
+* Define recommendation as viewed when calling Nosto's addToCart method
 
 ### 2.6.15
 * Add support for sending the account details & new platform UI

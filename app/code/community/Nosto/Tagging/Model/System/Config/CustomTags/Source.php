@@ -26,40 +26,25 @@
  */
 
 /**
- * Extension system setting source model for choosing which image version is to
- * be tagged on the product page.
+ * Extension system setting source model for choosing which attributes should
+ * be added to tags
  *
  * @category Nosto
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_System_Config_Source_Image
+class Nosto_Tagging_Model_System_Config_CustomTags_Source
 {
     /**
-     * Returns the image version options to choose from.
+     * Returns all available product attributes
      *
      * @return array the options.
      */
     public function toOptionArray()
     {
-        $options = array();
+        /* @var Nosto_Tagging_Helper_Data $nosto_helper */
+        $nosto_helper = Mage::helper('nosto_tagging');
 
-        $entityTypeId = Mage::getSingleton('eav/config')
-            ->getEntityType(Mage_Catalog_Model_Product::ENTITY)
-            ->getId();
-        $collection = Mage::getResourceModel('catalog/product_attribute_collection');
-        $collection->setEntityTypeFilter($entityTypeId);
-        $collection->setFrontendInputTypeFilter('media_image');
-        /* @var $attribute Mage_Eav_Model_Entity_Attribute */
-        foreach ($collection as $attribute) {
-            if ($attribute instanceof Mage_Eav_Model_Entity_Attribute) {
-                $options[] = array(
-                    'value' => $attribute->getAttributeCode(),
-                    'label' => $attribute->getFrontend()->getLabel(),
-                );
-            }
-        }
-
-        return $options;
+        return $nosto_helper->getProductAttributeOptions();
     }
 }

@@ -26,40 +26,30 @@
  */
 
 /**
- * Extension system setting source model for choosing which image version is to
- * be tagged on the product page.
+ * Helper class for working with the cache
  *
  * @category Nosto
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_System_Config_Source_Image
+class Nosto_Tagging_Helper_Cache extends Mage_Core_Helper_Abstract
 {
     /**
-     * Returns the image version options to choose from.
-     *
-     * @return array the options.
+     * Flushes the Magento caches, not all of them but some of them, normally
+     * after creating an account or connecting with nosto.
      */
-    public function toOptionArray()
+    public function flushCache()
     {
-        $options = array();
+        Mage::app()->getCacheInstance()->cleanType('config');
+        Mage::app()->getCacheInstance()->cleanType('layout');
+        Mage::app()->getCacheInstance()->cleanType('block_html');
+    }
 
-        $entityTypeId = Mage::getSingleton('eav/config')
-            ->getEntityType(Mage_Catalog_Model_Product::ENTITY)
-            ->getId();
-        $collection = Mage::getResourceModel('catalog/product_attribute_collection');
-        $collection->setEntityTypeFilter($entityTypeId);
-        $collection->setFrontendInputTypeFilter('media_image');
-        /* @var $attribute Mage_Eav_Model_Entity_Attribute */
-        foreach ($collection as $attribute) {
-            if ($attribute instanceof Mage_Eav_Model_Entity_Attribute) {
-                $options[] = array(
-                    'value' => $attribute->getAttributeCode(),
-                    'label' => $attribute->getFrontend()->getLabel(),
-                );
-            }
-        }
-
-        return $options;
+    /**
+     * Flushes the Magento caches, specifically the configuration cache
+     */
+    public function flushConfigCache()
+    {
+        Mage::app()->getCacheInstance()->cleanType('config');
     }
 }

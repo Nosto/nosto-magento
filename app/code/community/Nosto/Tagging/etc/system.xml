@@ -36,12 +36,11 @@
             <groups>
                 <image_options translate="label">
                     <label>Image Options</label>
-                    <frontend_type>text</frontend_type>
                     <sort_order>20</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    <expanded>0</expanded>
+                    <expanded>1</expanded>
                     <fields>
                         <image_version translate="label">
                             <label>Image Version</label>
@@ -54,6 +53,66 @@
                         </image_version>
                     </fields>
                 </image_options>
+                <pretty_url translate="label">
+                    <label>URL structure</label>
+                    <sort_order>30</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <fields>
+                        <in_use translate="label">
+                            <label>Remove store parameter from URLs</label>
+                            <comment>Set this to yes if you have configured different URLs or domains for each store or if you are only using single store view.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </in_use>
+                    </fields>
+                </pretty_url>
+                <attribute_to_tag translate="label">
+                    <label>Attributes to tags</label>
+                    <sort_order>40</sort_order>
+                    <show_in_default>0</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>0</expanded>
+                    <fields>
+                        <tag1 translate="label">
+                            <label>Product attributes for Nosto tags 1</label>
+                            <comment>Choose attributes that will be added to tags 1 when present</comment>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>nosto_tagging/system_config_customTags_source</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>0</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </tag1>
+                        <tag2 translate="label">
+                            <label>Product attributes for Nosto tags 2</label>
+                            <comment>Choose attributes that will be added to tags 2 when present</comment>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>nosto_tagging/system_config_customTags_source</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>0</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </tag2>
+                        <tag3 translate="label">
+                            <label>Product attributes for Nosto tags 3</label>
+                            <comment>Choose attributes that will be added to tags 3 when present</comment>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>nosto_tagging/system_config_customTags_source</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>0</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </tag3>
+                    </fields>
+                </attribute_to_tag>
             </groups>
         </nosto_tagging>
     </sections>

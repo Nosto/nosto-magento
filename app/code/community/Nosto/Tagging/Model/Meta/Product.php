@@ -79,11 +79,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     /**
      * @var array the tags for the product.
      */
-    protected $_tags = array(
-        'tag1' => array(),
-        'tag2' => array(),
-        'tag3' => array(),
-    );
+    protected $_tags = array();
 
     /**
      * @var array the categories the product is located in.
@@ -140,6 +136,14 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         );
     }
 
+    public function __construct()
+    {
+        parent::__construct();
+        foreach (Nosto_Tagging_Helper_Data::$validTags as $validTag) {
+            $this->_tags[$validTag] = array();
+        }
+    }
+
     /**
      * Loads the product info from a Magento product model.
      *
@@ -182,6 +186,8 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         if ($product->hasData('created_at')) {
             $this->_datePublished = $product->getData('created_at');
         }
+
+        $this->amendAttributeTags($product, $store);
     }
 
     /**
@@ -242,7 +248,60 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
             $tags[] = self::ADD_TO_CART;
         }
 
+
         return $tags;
+    }
+
+    /**
+     * Amends the product attributes to tags array if attributes are defined
+     * and are present in product
+     *
+     * @param Mage_Catalog_Model_Product $product the product model.
+     * @param Mage_Core_Model_Store      $store the store model.
+     *
+     */
+    protected function amendAttributeTags(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
+    {
+        $product_attributes = $product->getAttributes();
+        /* @var Nosto_Tagging_Helper_Data $nosto_helper */
+        $nosto_helper = Mage::helper("nosto_tagging");
+
+        foreach (Nosto_Tagging_Helper_Data::$validTags as $tag_id) {
+            $attributes_to_tag = $nosto_helper->getAttributesToTag($tag_id, $store->getId());
+            if (empty($attributes_to_tag) || !is_array($attributes_to_tag)) {
+                continue;
+            }
+            /* @var Mage_Catalog_Model_Resource_Eav_Attribute $product_attribute*/
+            foreach ($product_attributes as $key=>$product_attribute) {
+                if (in_array($key, $attributes_to_tag)) {
+                    try {
+                        $attribute_data = $product->getData($key);
+                        $attribute_value = $product->getAttributeText($key);
+                        if (!$attribute_value && is_scalar($attribute_data)) {
+                            $attribute_value = $attribute_data;
+                        }
+                        $attribute_value = trim($attribute_value);
+                        if (!empty($attribute_value)) {
+                            $this->_tags[$tag_id][] = sprintf(
+                                '%s:%s',
+                                $key,
+                                $attribute_value
+                            );
+                        }
+                    } catch (Exception $e) {
+                        Mage::log(
+                            sprintf(
+                                'Failed to add attribute %s to tags. Error message was: %s',
+                                $key,
+                                $e->getMessage()
+                            ),
+                            Zend_Log::WARN,
+                            Nosto_Tagging_Model_Base::LOG_FILE_NAME
+                        );
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -259,18 +318,10 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
      */
     protected function buildUrl(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
-        // Unset the cached url first, as it won't include the `___store` param
-        // if it's cached. We need to define the specific store view in the url
-        // in case the same domain is used for all sites.
-        $product->unsetData('url');
-        return $product
-            ->getUrlInStore(
-                array(
-                    '_nosid' => true,
-                    '_ignore_category' => true,
-                    '_store' => $store->getCode(),
-                )
-            );
+        /** @var Nosto_Tagging_Helper_Url $url_helper */
+        $url_helper = Mage::helper('nosto_tagging/url');
+        $product_url = $url_helper->generateProductUrl($product, $store);
+        return $product_url;
     }
 
     /**

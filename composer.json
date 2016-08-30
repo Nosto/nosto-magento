@@ -5,8 +5,8 @@
     "type":"magento-module",
     "repositories": [
         {
-          "type": "vcs",
-          "url": "https://github.com/mridang/magazine.git"
+            "type": "vcs",
+            "url": "https://github.com/mridang/magazine.git"
         }
     ],
     "require": {
