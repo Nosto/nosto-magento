@@ -2,7 +2,6 @@ vendor
 node_modules
 .idea
 build/*
-*.tgz
 lib
 build
 
