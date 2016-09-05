@@ -205,7 +205,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
         } else {
             $url_params['_store_to_url'] = true;
         }
-        $product_url = $nosto_product_url->getUrl($product, $url_params);
+        $product_url = $nosto_product_url->getUrl($product, $url_params, $store);
 
         return $product_url;
     }
