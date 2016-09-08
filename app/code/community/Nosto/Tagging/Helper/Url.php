@@ -166,6 +166,12 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
         );
     }
 
+    /**
+     * Returns the default options for fetching Magento urls
+     *
+     * @param Mage_Core_Model_Store $store
+     * @return array
+     */
     private function getUrlOptions(Mage_Core_Model_Store $store)
     {
         /* @var Nosto_Tagging_Helper_Data $nosto_helper */
@@ -212,6 +218,14 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
         return $product_url;
     }
 
+
+    /**
+     * Removes given parameter from the url
+     *
+     * @param $url
+     * @param $param
+     * @return string
+     */
     public function removeQueryParamFromUrl($url, $param)
     {
         $modified_url = $url;
