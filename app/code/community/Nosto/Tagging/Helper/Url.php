@@ -37,6 +37,11 @@
 class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
 {
     /**
+     * The ___store parameter in Magento URLs
+     */
+    const MAGENTO_STORE_URL_PARAMETER = '___store';
+
+    /**
      * Gets the absolute preview URL to the current store view product page.
      * The product is the first one found in the database for the store.
      * The preview url includes "nostodebug=true" parameter.
@@ -161,6 +166,12 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
         );
     }
 
+    /**
+     * Returns the default options for fetching Magento urls
+     *
+     * @param Mage_Core_Model_Store $store
+     * @return array
+     */
     private function getUrlOptions(Mage_Core_Model_Store $store)
     {
         /* @var Nosto_Tagging_Helper_Data $nosto_helper */
@@ -193,20 +204,48 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
         $product->unsetData('url');
         /** @var Nosto_Tagging_Helper_Data $helper */
         $helper = Mage::helper('nosto_tagging');
-        /* @var Nosto_Tagging_Model_Meta_Product_Url $url*/
-        $nosto_product_url = Mage::getModel('nosto_tagging/meta_product_url');
         $url_params = array(
             '_nosid' => true,
             '_ignore_category' => true,
             '_store' => $store->getId(),
+            '_store_to_url' => true
         );
+        $product_url = $product->getUrlInStore($url_params);
         if ($helper->getUsePrettyProductUrls($store)) {
-            $url_params['_store_to_url'] = false;
-        } else {
-            $url_params['_store_to_url'] = true;
+            $product_url = $this->removeQueryParamFromUrl($product_url, '___store');
         }
-        $product_url = $nosto_product_url->getUrl($product, $url_params);
 
         return $product_url;
+    }
+
+
+    /**
+     * Removes given parameter from the url
+     *
+     * @param $url
+     * @param $param
+     * @return string
+     */
+    public function removeQueryParamFromUrl($url, $param)
+    {
+        $modified_url = $url;
+        $url_parts = NostoHttpRequest::parseUrl($url);
+        if (
+            $url_parts !== false
+            && isset($url_parts['query'])
+        ) {
+            $query_array = NostoHttpRequest::parseQueryString($url_parts['query']);
+            if(isset($query_array[$param])) {
+                unset($query_array[$param]);
+                if (empty($query_array)) {
+                    unset($url_parts['query']);
+                } else {
+                    $url_parts['query'] = http_build_query($query_array);
+                }
+                $modified_url = NostoHttpRequest::buildUrl($url_parts);
+            }
+        }
+
+        return $modified_url;
     }
 }

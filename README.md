@@ -135,6 +135,9 @@ Open Software License ("OSL") v3.0
 
 ## Changelog
 
+### 2.7.1
+* Fix product URL generation for Magento EE
+
 ### 2.7.0
 * Introduce product attribute tagging 
 * Support for product URLs without store parameter
