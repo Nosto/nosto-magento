@@ -207,8 +207,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         $helper = Mage::helper('nosto_tagging');
         $baseCurrencyCode = $store->getBaseCurrencyCode();
         $taggingPrice = $basePrice;
-        $storeId = $store->getId();
-        if (!$helper->multiCurrencyDisabled($store) && $currentCurrencyCode !== $store->getBaseCurrencyCode()) {
+        if ($helper->multiCurrencyDisabled($store) && $currentCurrencyCode !== $store->getBaseCurrencyCode()) {
             $taggingPrice = Mage::helper('directory')->currencyConvert(
                 $basePrice,
                 $baseCurrencyCode,
