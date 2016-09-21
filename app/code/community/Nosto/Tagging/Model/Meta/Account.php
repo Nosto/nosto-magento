@@ -144,7 +144,7 @@ class Nosto_Tagging_Model_Meta_Account extends Mage_Core_Model_Abstract implemen
 
         /** @var Nosto_Tagging_Model_Meta_Account_Owner $owner */
         $owner = Mage::getModel('nosto_tagging/meta_account_owner');
-        $owner->loadData($store);
+        $owner->loadData();
         $this->_owner = $owner;
 
         /** @var Nosto_Tagging_Model_Meta_Account_Billing $billing */

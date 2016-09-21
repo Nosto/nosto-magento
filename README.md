@@ -135,6 +135,18 @@ Open Software License ("OSL") v3.0
 
 ## Changelog
 
+### 2.9.0-RC1
+* Add support for multiple currencies
+* Add notifications for incomplete Nosto settings
+
+### 2.7.1
+* Fix product URL generation for Magento EE
+
+### 2.7.0
+* Introduce product attribute tagging 
+* Support for product URLs without store parameter
+* Force Oauth to use always the base url
+* Define recommendation as viewed when calling Nosto's addToCart method
 
 ### 2.6.15
 * Add support for sending the account details & new platform UI
