@@ -36,6 +36,13 @@
 class Nosto_Tagging_Block_Adminhtml_Notifications extends Mage_Adminhtml_Block_Template
 {
     /**
+     * The id for the a tag where echange rate cron is configured
+     *
+     * @var string
+     */
+    const EXCHANGE_RATE_CRON_FRAGMENT = 'nosto_tagging_scheduled_currency_exchange_rate_update-head';
+
+    /**
      * Returns the status of the accounts for showing the notification. If any
      * of the accounts use multi-currency and have tokens missing, then the
      * notification bar should inform the merchant
@@ -68,7 +75,12 @@ class Nosto_Tagging_Block_Adminhtml_Notifications extends Mage_Adminhtml_Block_T
      */
     public function getConfigureUrl()
     {
-        return $this->getUrl('adminhtml/system_config/edit/section/nosto_tagging');
+        return $this->getUrl(
+            'adminhtml/system_config/edit/section/nosto_tagging',
+            array(
+                '_fragment' => self::EXCHANGE_RATE_CRON_FRAGMENT
+            )
+        );
     }
 
     /**
