@@ -99,7 +99,7 @@ class Nosto_Tagging_Model_Service_Order
             $data['order_status_label'] = $order->getOrderStatus()->getLabel();
         }
         /** @var NostoHelperPrice $priceHelper */
-        $priceHelper = Nosto::helper('date');
+        $priceHelper = Nosto::helper('price');
         foreach ($order->getPurchasedItems() as $item) {
             $data['purchased_items'][] = array(
                 'product_id' => $item->getProductId(),
