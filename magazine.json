@@ -1,7 +1,7 @@
 {
   "name": "Nosto_Tagging",
   "version": {
-    "release": "2.7.1"
+    "release": "2.7.D"
   },
   "stability": {
     "release": "stable"
@@ -27,7 +27,7 @@
     "required": {
       "php": {
         "min": "5.2.0",
-        "max": "6.0.0"
+        "max": "7.1.0"
       },
       "package": {
         "name": "Mage_Core_Modules",
