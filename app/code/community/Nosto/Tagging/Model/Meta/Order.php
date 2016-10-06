@@ -190,12 +190,14 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
         try {
             $appliedRules = array();
             foreach ($order->getAllVisibleItems() as $item) {
+                /** @var Mage_Sales_Model_Order_Item $item */
                 $itemAppliedRules = $item->getAppliedRuleIds();
                 if (empty($itemAppliedRules)) {
                     continue;
                 }
                 $ruleIds = explode(',', $item->getAppliedRuleIds());
                 foreach ($ruleIds as $ruleId) {
+                    /** @var Mage_SalesRule_Model_Rule $rule */
                     $rule = Mage::getModel('salesrule/rule')->load($ruleId);
                     $appliedRules[$ruleId] = $rule->getName();
                 }
@@ -223,7 +225,7 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
      */
     protected function buildItem(Mage_Sales_Model_Order_Item $item, Mage_Sales_Model_Order $order)
     {
-        /* @var Nosto_Tagging_Helper_Price */
+        /* @var Nosto_Tagging_Helper_Price $nostoPriceHelper */
         $nostoPriceHelper = Mage::helper('nosto_tagging/price');
         return Mage::getModel(
             'nosto_tagging/meta_order_item',

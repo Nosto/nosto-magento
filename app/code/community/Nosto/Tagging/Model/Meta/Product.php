@@ -107,6 +107,11 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     protected $_datePublished;
 
     /**
+     * @var string the default variation identifier of the shop
+     */
+    protected $_variationId;
+
+    /**
      * @inheritdoc
      */
     protected function _construct()
@@ -158,14 +163,25 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
 
         /** @var Nosto_Tagging_Helper_Price $priceHelper */
         $priceHelper = Mage::helper('nosto_tagging/price');
+        /** @var Nosto_Tagging_Helper_Data $dataHelper */
+        $dataHelper = Mage::helper('nosto_tagging');
 
         $this->_url = $this->buildUrl($product, $store);
         $this->_productId = $product->getId();
         $this->_name = $product->getName();
         $this->_imageUrl = $this->buildImageUrl($product, $store);
-        $this->_price = $priceHelper->convertToDefaultCurrency($priceHelper->getProductFinalPriceInclTax($product), $store);
-        $this->_listPrice = $priceHelper->convertToDefaultCurrency($priceHelper->getProductPriceInclTax($product), $store);
-        $this->_currencyCode = $store->getDefaultCurrency()->getCode();
+        $currentCurrencyCode = $store->getCurrentCurrencyCode();
+        $this->_price = $priceHelper->getTaggingPrice(
+            $priceHelper->getProductFinalPriceInclTax($product),
+            $currentCurrencyCode,
+            $store
+        );
+        $this->_listPrice = $priceHelper->getTaggingPrice(
+            $priceHelper->getProductPriceInclTax($product),
+            $currentCurrencyCode,
+            $store
+        );
+        $this->_currencyCode = $priceHelper->getTaggingCurrencyCode($currentCurrencyCode, $store);
         $this->_availability = $this->buildAvailability($product);
         $this->_categories = $this->buildCategories($product);
 
@@ -178,6 +194,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
             $this->_description = $product->getData('description');
         }
         if ($product->hasData('manufacturer')) {
+            /** @noinspection PhpParamsInspection */
             $this->_brand = $product->getAttributeText('manufacturer');
         }
         if (($tags = $this->buildTags($product, $store)) !== array()) {
@@ -185,6 +202,9 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         }
         if ($product->hasData('created_at')) {
             $this->_datePublished = $product->getData('created_at');
+        }
+        if (!$dataHelper->multiCurrencyDisabled($store)) {
+            $this->_variationId = $store->getBaseCurrencyCode();
         }
 
         $this->amendAttributeTags($product, $store);
@@ -571,6 +591,6 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
      */
     public function getVariationId()
     {
-        return null;
+        return $this->_variationId;
     }
 }

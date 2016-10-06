@@ -135,6 +135,10 @@ Open Software License ("OSL") v3.0
 
 ## Changelog
 
+### 2.9.0-RC1
+* Add support for multiple currencies
+* Add notifications for incomplete Nosto settings
+
 ### 2.7.1
 * Fix product URL generation for Magento EE
 

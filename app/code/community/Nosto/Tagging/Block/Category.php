@@ -49,8 +49,10 @@ class Nosto_Tagging_Block_Category extends Mage_Core_Block_Template
      */
     protected function _toHtml()
     {
+        /** @var Nosto_Tagging_Helper_Account $helper */
+        $helper = Mage::helper('nosto_tagging/account');
         if (!Mage::helper('nosto_tagging')->isModuleEnabled()
-            || !Mage::helper('nosto_tagging/account')->existsAndIsConnected()
+            || !$helper->existsAndIsConnected()
             || !$this->getCategory()
         ) {
             return '';
@@ -68,8 +70,9 @@ class Nosto_Tagging_Block_Category extends Mage_Core_Block_Template
     {
         if (!$this->_category) {
             $category = Mage::registry('current_category');
-            $this->_category = Mage::helper('nosto_tagging')
-                ->buildCategoryString($category);
+            /** @var Nosto_Tagging_Helper_Data $helper */
+            $helper = Mage::helper('nosto_tagging');
+            $this->_category = $helper->buildCategoryString($category);
         }
 
         return $this->_category;

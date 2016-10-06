@@ -54,7 +54,9 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
     );
 
     protected function applyIdFilters(&$collection) {
+        /** @var Mage_Sales_Model_Resource_Collection_Abstract $collection */
         if ($id = $this->getRequest()->getParam(self::ID)) {
+            /** @var string $collectionModel */
             $collectionModel = $collection->getModelName();
             if (
                 !empty(self::$searchableFields[$collectionModel])
@@ -164,7 +166,9 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
      */
     protected function export(NostoExportCollectionInterface $collection)
     {
-        $account = Mage::helper('nosto_tagging/account')->find();
+        /** @var Nosto_Tagging_Helper_Account $helper */
+        $helper = Mage::helper('nosto_tagging/account');
+        $account = $helper->find();
         if ($account !== null) {
             $cipherText = NostoExporter::export($account, $collection);
             echo $cipherText;

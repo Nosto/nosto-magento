@@ -33,6 +33,7 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
+/** @noinspection PhpUndefinedClassInspection */
 class Nosto_Tagging_Model_Container_Cart extends Enterprise_PageCache_Model_Container_Advanced_Quote
 {
     /**
@@ -43,6 +44,8 @@ class Nosto_Tagging_Model_Container_Cart extends Enterprise_PageCache_Model_Cont
      */
     protected function _getIdentifier()
     {
+        /** @noinspection PhpUndefinedMethodInspection */
+        /** @noinspection PhpUndefinedClassInspection */
         return $this->_getCookieValue(
             Enterprise_PageCache_Model_Cookie::COOKIE_CART, ''
         )
@@ -57,13 +60,17 @@ class Nosto_Tagging_Model_Container_Cart extends Enterprise_PageCache_Model_Cont
      */
     protected function _renderBlock()
     {
+        /** @noinspection PhpUndefinedMethodInspection */
+        /** @noinspection PhpUndefinedClassInspection */
         $block = $this->_getPlaceHolderBlock();
+        /** @noinspection PhpUndefinedFieldInspection */
         Mage::dispatchEvent(
             'render_block', array(
                 'block' => $block,
                 'placeholder' => $this->_placeholder
             )
         );
+        /** @noinspection PhpUndefinedMethodInspection */
         return $block->toHtml();
     }
 }

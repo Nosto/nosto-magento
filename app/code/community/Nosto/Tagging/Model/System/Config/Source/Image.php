@@ -44,7 +44,9 @@ class Nosto_Tagging_Model_System_Config_Source_Image
     {
         $options = array();
 
-        $entityTypeId = Mage::getSingleton('eav/config')
+        /** @var Mage_Eav_Model_Config $config */
+        $config = Mage::getSingleton('eav/config');
+        $entityTypeId = $config
             ->getEntityType(Mage_Catalog_Model_Product::ENTITY)
             ->getId();
         $collection = Mage::getResourceModel('catalog/product_attribute_collection');

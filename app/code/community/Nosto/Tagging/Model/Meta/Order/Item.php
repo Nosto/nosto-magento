@@ -71,6 +71,7 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
      */
     public function __construct(array $args)
     {
+        parent::__construct();
         if (!isset($args['productId']) || empty($args['productId'])) {
             Mage::log(
                 sprintf(

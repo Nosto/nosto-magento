@@ -28,11 +28,20 @@
 
 <?php
 /**
- * @var $this           Mage_Catalog_Block_Category_View
- * @var $nostoHelper    Nosto_Tagging_Helper_Data
+ * @var $this Nosto_Tagging_Block_Adminhtml_System_Config_Currency_Formats
+ * @var Zend_Currency[] $formats
  */
-$category = $this->getCurrentCategory();
-$nostoHelper = Mage::helper('nosto_tagging');
 ?>
 
-<div class="nosto_element" id="<?php echo $nostoHelper->escapeHtml($category->getNostoId()); ?>"></div>
+<?php foreach ($this->getCurrencyFormats() as $storeName => $formats): ?>
+    <fieldset>
+        <legend style="visibility: visible; width: auto; height: auto; line-height: normal">
+            <?php echo $this->escapeHtml($storeName); ?>
+        </legend>
+        <ul>
+            <?php foreach ($formats as $format): ?>
+                <li><?php echo $format->toCurrency('1234.56'); ?></li>
+            <?php endforeach; ?>
+        </ul>
+    </fieldset>
+<?php endforeach; ?>

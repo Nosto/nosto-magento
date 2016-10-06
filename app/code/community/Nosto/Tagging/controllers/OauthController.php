@@ -67,11 +67,16 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
         $store = Mage::app()->getStore();
         if (($code = $request->getParam('code')) !== null) {
             try {
+                /** @var Nosto_Tagging_Helper_Oauth $oauthHelper */
+                $oauthHelper = Mage::helper('nosto_tagging/oauth');
                 $account = NostoAccount::syncFromNosto(
-                    Mage::helper('nosto_tagging/oauth')->getMetaData($store),
+                    $oauthHelper->getMetaData($store),
                     $code
                 );
-                if (Mage::helper('nosto_tagging/account')->save($account, $store)) {
+
+                /** @var Nosto_Tagging_Helper_Account $accountHelper */
+                $accountHelper = Mage::helper('nosto_tagging/account');
+                if ($accountHelper->save($account, $store)) {
                     $params = array(
                         'message_type' => NostoMessage::TYPE_SUCCESS,
                         'message_code' => NostoMessage::CODE_ACCOUNT_CONNECT,
