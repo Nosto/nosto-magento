@@ -88,6 +88,7 @@
         <exec executable="./lib/bin/magazine" dir="${buildsrc}">
             <arg value="package"/>
             <arg value="magazine.json" />
+            <arg value="${version}" />
             <arg value="-vvv" />
         </exec>
         <move file="${buildsrc}/${packagename}" tofile="${builddest}/${packagename}" />
