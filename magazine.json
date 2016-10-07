@@ -1,8 +1,5 @@
 {
   "name": "Nosto_Tagging",
-  "version": {
-    "release": "2.9.0-RC2"
-  },
   "stability": {
     "release": "stable"
   },

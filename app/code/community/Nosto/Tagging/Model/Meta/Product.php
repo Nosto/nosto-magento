@@ -102,11 +102,6 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     protected $_brand;
 
     /**
-     * @var string the product publication date in the shop.
-     */
-    protected $_datePublished;
-
-    /**
      * @var string the default variation identifier of the shop
      */
     protected $_variationId;
@@ -199,9 +194,6 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         }
         if (($tags = $this->buildTags($product, $store)) !== array()) {
             $this->_tags['tag1'] = $tags;
-        }
-        if ($product->hasData('created_at')) {
-            $this->_datePublished = $product->getData('created_at');
         }
         if (!$dataHelper->multiCurrencyDisabled($store)) {
             $this->_variationId = $store->getBaseCurrencyCode();
@@ -554,16 +546,6 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     public function getBrand()
     {
         return $this->_brand;
-    }
-
-    /**
-     * Returns the product publication date in the shop.
-     *
-     * @return string the date.
-     */
-    public function getDatePublished()
-    {
-        return $this->_datePublished;
     }
 
     /**
