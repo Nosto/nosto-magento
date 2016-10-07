@@ -27,7 +27,7 @@
 
 /**
  * Nosto page-type block.
- * Used to define the page-type so they can be used for the popup triggers
+ * Defines the page-type so they can be used for the popup triggers
  *
  * @method string getPageType() Return the type of the page (defined in layout).
  *
