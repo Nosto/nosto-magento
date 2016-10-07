@@ -575,7 +575,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     {
         $attribute_data = $product->getData($attributeName);
         $attribute_value = $product->getAttributeText($attributeName);
-        if (!$attribute_value && is_scalar($attribute_data)) {
+        if (empty($attribute_value) && is_scalar($attribute_data)) {
             $attribute_value = $attribute_data;
         }
         return trim($attribute_value);
