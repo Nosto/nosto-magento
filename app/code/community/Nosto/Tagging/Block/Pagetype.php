@@ -59,7 +59,7 @@ class Nosto_Tagging_Block_Pagetype extends Mage_Core_Block_Template
     }
 
     /**
-     * Return the page-type of the. If none is defined in the layout xml,
+     * Return the page-type of the current page. If none is defined in the layout xml,
      * then set a default one.
      *
      * @return string
