@@ -34,6 +34,12 @@
  */
 class Nosto_Tagging_Helper_Customer extends Mage_Core_Helper_Abstract
 {
+
+    /**
+     * @var string the algorithm to use for hashing customer id.
+     */
+    const CUSTOMER_HASH_ALGO = 'sha256';
+
     /**
      * Gets the Nosto ID for an order model.
      * The Nosto ID represents the customer who placed to the order on Nosto's
@@ -85,5 +91,22 @@ class Nosto_Tagging_Helper_Customer extends Mage_Core_Helper_Abstract
                 $customer->save();
             }
         }
+    }
+
+    /**
+     * Return the checksum / customer reference for customer
+     *
+     * @return string
+     */
+    public function generateCustomerReference(Mage_Customer_Model_Customer $customer)
+    {
+        /* @var $nostoHelper Nosto_Tagging_Helper_Data */
+        $nostoHelper = Mage::helper('nosto_tagging');
+        $installationId = $nostoHelper->getInstallationId();
+
+        return hash(
+            self::CUSTOMER_HASH_ALGO,
+            $customer->getId().$customer->getEmail().$installationId
+        );
     }
 }

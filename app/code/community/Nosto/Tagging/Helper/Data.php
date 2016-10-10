@@ -55,29 +55,35 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const COOKIE_NAME = '2c_cId';
 
     /**
-     * @var string the name of the cookie where the Nosto ID can be found.
+     * @var string the algorithm to use for hashing visitor id.
      */
     const VISITOR_HASH_ALGO = 'sha256';
+
     /**
      * Path to store config multi currency method setting.
      */
     const XML_PATH_MULTI_CURRENCY_METHOD = 'nosto_tagging/multi_currency/method';
+
     /**
      * Path to store config scheduled currency exchange rate update enabled setting.
      */
     const XML_PATH_SCHEDULED_CURRENCY_EXCHANGE_RATE_UPDATE_ENABLED = 'nosto_tagging/scheduled_currency_exchange_rate_update/enabled';
+
     /**
      * Multi currency method option for currency exchange rates.
      */
     const MULTI_CURRENCY_METHOD_EXCHANGE_RATE = 'exchangeRate';
+
     /**
      * Multi currency method option for price variations in tagging.
      */
     const MULTI_CURRENCY_METHOD_PRICE_VARIATION = 'priceVariation';
+
     /**
      * No multi currency
      */
     const MULTI_CURRENCY_DISABLED = 'disabled';
+
     /**
      * Path to store config for using the product API or not.
      */
@@ -92,6 +98,11 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      * @var int the product attribute type id
      */
     const PRODUCT_TYPE_ATTRIBUTE_ID = 4;
+
+    /*
+     * @var srtring Nosto customer reference attribute name
+     */
+    const NOSTO_CUSTOMER_REFERENCE_ATTRIBUTE_NAME = 'nosto_customer_reference';
 
     /**
      * List of strings to remove from the default Nosto account title

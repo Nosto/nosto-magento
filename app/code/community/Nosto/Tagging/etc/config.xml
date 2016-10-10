@@ -28,7 +28,7 @@
 <config>
     <modules>
         <Nosto_Tagging>
-            <version>2.9.0-RC2</version>
+            <version>2.9.0</version>
         </Nosto_Tagging>
     </modules>
     <global>
@@ -39,6 +39,25 @@
                     <class>Nosto_Tagging_Model_Resource_Setup</class>
                 </setup>
             </tagging_setup>
+            <nosto_customer_reference_setup>
+                <setup>
+                    <module>Nosto_Tagging</module>
+                    <class>Nosto_Tagging_Model_Resource_Setup</class>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </nosto_customer_reference_setup>
+            <nosto_customer_reference_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </nosto_customer_reference_write>
+            <nosto_customer_reference_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </nosto_customer_reference_read>
         </resources>
         <blocks>
             <nosto_tagging>
