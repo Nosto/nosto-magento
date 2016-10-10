@@ -157,7 +157,7 @@
                 </attribute_to_tag>
                 <brand_attribute translate="label">
                     <label>Brand attribute</label>
-                    <sort_order>40</sort_order>
+                    <sort_order>60</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
@@ -178,7 +178,7 @@
                 <multi_currency translate="label">
                     <label>Multi Currency</label>
                     <frontend_type>text</frontend_type>
-                    <sort_order>60</sort_order>
+                    <sort_order>70</sort_order>
                     <show_in_default>0</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
