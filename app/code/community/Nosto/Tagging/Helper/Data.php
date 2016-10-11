@@ -45,7 +45,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_IMAGE_VERSION = 'nosto_tagging/image_options/image_version';
 
     /**
-     * Path to store config for attributes to tag 1
+     * Path to store config for attributes to tag
      */
     const XML_PATH_CUSTOM_TAGS = 'nosto_tagging/attribute_to_tag/';
 
@@ -87,6 +87,11 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      * @var boolean the path for setting for product urls
      */
     const XML_PATH_PRETTY_URL = 'nosto_tagging/pretty_url/in_use';
+
+    /**
+     * Path to store config for brand attribute
+     */
+    const XML_PATH_BRAND_ATTRIBUTE = 'nosto_tagging/brand_attribute/tag';
 
     /*
      * @var int the product attribute type id
@@ -216,6 +221,18 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     public function getUsePrettyProductUrls($store = null)
     {
          return Mage::getStoreConfig(self::XML_PATH_PRETTY_URL, $store);
+    }
+
+    /**
+     * Returns the attribute to be used for brand tagging
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     *
+     * @return string
+     */
+    public function getBrandAttribute($store = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_BRAND_ATTRIBUTE, $store);
     }
 
     /**

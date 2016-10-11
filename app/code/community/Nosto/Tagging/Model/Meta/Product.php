@@ -188,9 +188,9 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         if ($product->hasData('description')) {
             $this->_description = $product->getData('description');
         }
-        if ($product->hasData('manufacturer')) {
-            /** @noinspection PhpParamsInspection */
-            $this->_brand = $product->getAttributeText('manufacturer');
+        $brandAttribute = $dataHelper->getBrandAttribute($store);
+        if ($product->hasData($brandAttribute)) {
+            $this->_brand = $this->getAttributeValue($product, $brandAttribute);
         }
         if (($tags = $this->buildTags($product, $store)) !== array()) {
             $this->_tags['tag1'] = $tags;
@@ -287,12 +287,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
             foreach ($product_attributes as $key=>$product_attribute) {
                 if (in_array($key, $attributes_to_tag)) {
                     try {
-                        $attribute_data = $product->getData($key);
-                        $attribute_value = $product->getAttributeText($key);
-                        if (!$attribute_value && is_scalar($attribute_data)) {
-                            $attribute_value = $attribute_data;
-                        }
-                        $attribute_value = trim($attribute_value);
+                        $attribute_value = $this->getAttributeValue($product, $key);
                         if (!empty($attribute_value)) {
                             $this->_tags[$tag_id][] = sprintf(
                                 '%s:%s',
@@ -574,5 +569,21 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     public function getVariationId()
     {
         return $this->_variationId;
+    }
+
+    private function getAttributeValue(Mage_Catalog_Model_Product $product, $attributeName)
+    {
+        $attribute = $product->getResource()->getAttribute($attributeName);
+        if ($attribute instanceof Mage_Catalog_Model_Resource_Eav_Attribute) {
+            $attribute_data = $product->getData($attributeName);
+            $attribute_value = $product->getAttributeText($attributeName);
+            if (empty($attribute_value) && is_scalar($attribute_data)) {
+                $attribute_value = $attribute_data;
+            }
+        } else {
+            $attribute_value = null;
+        }
+        return trim($attribute_value);
+
     }
 }
