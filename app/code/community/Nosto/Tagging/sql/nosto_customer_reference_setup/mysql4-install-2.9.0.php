@@ -34,4 +34,4 @@
 
 /* @var $setupHelper Nosto_Tagging_Helper_Setup */
 $setupHelper = Mage::helper('nosto_tagging/setup');
-$setupHelper->addNostoCustomerReferenceEav($this, true);
+$setupHelper->addNostoCustomerReferenceEav($this);
