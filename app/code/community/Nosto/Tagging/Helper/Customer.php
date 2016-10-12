@@ -86,4 +86,20 @@ class Nosto_Tagging_Helper_Customer extends Mage_Core_Helper_Abstract
             }
         }
     }
+
+    /**
+     * Return the checksum / customer reference for customer
+     *
+     * @return string
+     */
+    public function generateCustomerReference(Mage_Customer_Model_Customer $customer)
+    {
+        $hash = md5($customer->getId().$customer->getEmail());
+        $uuid = uniqid(
+            substr($hash, 0, 8),
+            true
+        );
+
+        return $uuid;
+    }
 }
