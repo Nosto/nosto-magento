@@ -106,4 +106,52 @@ class Nosto_Tagging_Block_Adminhtml_Notifications extends Mage_Adminhtml_Block_T
         }
         return true;
     }
+
+    /**
+     * Checks if any of the Nosto accounts where previously installed into a
+     * different store or magento installtion. This would happen mostly when
+     * development / staging setup is deployed to the production.
+     *
+     * @return bool true or false indicating if everything is ok
+     */
+    public function getInvalidAccountDomains()
+    {
+        /** @var Nosto_Tagging_Helper_Url $urlHelper */
+        $urlHelper = Mage::helper('nosto_tagging/url');
+        /** @var Nosto_Tagging_Helper_Data $dataHelper */
+        $dataHelper = Mage::helper('nosto_tagging/data');
+        /** @var Nosto_Tagging_Helper_Account $accountHelper */
+        $accountHelper = Mage::helper('nosto_tagging/account');
+        $result = array();
+        /* @var $store Mage_Core_Model_Store */
+        foreach (Mage::app()->getStores() as $store) {
+            $savedFrontPageUrl = $dataHelper->getStoreFrontPageUrl($store);
+            /* @var $nostoAccount NostoAccount */
+            $nostoAccount = $accountHelper->find($store);
+            if (
+                empty($savedFrontPageUrl)
+                || $nostoAccount instanceof NostoAccount == false
+            ) {
+                continue;
+            }
+            $currentFrontPageUrl = $urlHelper->getFrontPageUrlForStore($store);
+            if ($savedFrontPageUrl != $currentFrontPageUrl) {
+                $invalidConfig = array(
+                    'savedUrl' => $savedFrontPageUrl,
+                    'currentUrl' => $currentFrontPageUrl,
+                    'storeId' => $store->getId(),
+                    'nostoAccount' => $nostoAccount->getName(),
+                    'actionUrl' => $this->getUrl(
+                        'adminhtml/nosto/resetAccountSettings/',
+                        array('store'=>$store->getId())
+                    )
+                );
+
+                $result[] = $invalidConfig;
+            }
+       }
+
+        return $result;
+    }
+
 }

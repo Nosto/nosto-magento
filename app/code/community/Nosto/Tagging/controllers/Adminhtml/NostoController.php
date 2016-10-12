@@ -194,7 +194,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                    $meta->setDetails(json_decode($details));
                 }
                 $account = NostoAccount::create($meta);
-                if ($accountHelper->save($account, $store)) {
+                if ($accountHelper->save($account, $store, true)) {
                     $accountHelper->updateCurrencyExchangeRates($account, $store);
                     $responseBody = array(
                         'success' => true,
@@ -230,6 +230,57 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         }
 
         $this->getResponse()->setBody(json_encode($responseBody));
+    }
+
+    /**
+     * Resets Nosto settings inside Magento
+     */
+    public function resetAccountSettingsAction()
+    {
+        $storeId = $this->getRequest()->getParam('store');
+        /* @var $adminSession Mage_Admin_Model_Session */
+        $adminSession = Mage::getSingleton('adminhtml/session');
+        if (empty($storeId)) {
+            $adminSession->addError(
+                'Nosto account could not be resetted due to a missing store'
+            );
+            $this->_redirect('*/*/index');
+
+            return;
+        }
+
+        /* @var Nosto_Tagging_Helper_Account $accountHelper */
+        $accountHelper = Mage::helper('nosto_tagging/account');
+        /* @var $store Mage_Core_Model_Store */
+        $store = Mage::getModel('core/store')->load($storeId);
+        if ($store instanceof Mage_Core_Model_Store === false ) {
+            $adminSession->addError(
+                'Nosto account could not be resetted due to a invalid store id'
+            );
+            $this->_redirect('*/*/index');
+
+            return;
+        }
+        $nostoAccount = $accountHelper->find($store);
+        if ($nostoAccount instanceof NostoAccount == false) {
+            $adminSession->addError(
+                'No Nosto account found for this store'
+            );
+            $this->_redirect('*/*/index');
+
+            return;
+        }
+
+        $accountHelper->resetAccountSettings($nostoAccount, $store);
+        $adminSession->addSuccess(
+            'Nosto account settings successfully resetted. Please create new account or connect with exising Nosto account'
+        );
+        $this->_redirect(
+            'adminhtml/nosto/index/',
+            array('store'=>$store->getId())
+        );
+
+        return;
     }
 
     /**

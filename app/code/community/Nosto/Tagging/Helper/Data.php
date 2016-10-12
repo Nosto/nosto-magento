@@ -99,6 +99,11 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      */
     const XML_PATH_BRAND_ATTRIBUTE = 'nosto_tagging/brand_attribute/tag';
 
+    /**
+     * Path to store config for installed domain
+     */
+    const XML_PATH_STORE_FRONT_PAGE_URL = 'nosto_tagging/settings/front_page_url';
+
     /*
      * @var int the product attribute type id
      */
@@ -244,6 +249,52 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     public function getBrandAttribute($store = null)
     {
         return Mage::getStoreConfig(self::XML_PATH_BRAND_ATTRIBUTE, $store);
+    }
+
+    /**
+     * Returns the front page URL used for the store during Nosto account
+     * installation
+     *
+     * @param Mage_Core_Model_Store $store the store model
+     *
+     * @return string
+     */
+    public function getStoreFrontPageUrl(Mage_Core_Model_Store $store)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_STORE_FRONT_PAGE_URL, $store);
+    }
+
+    /**
+     * Saves current front page url of the store into the settings. This is
+     * used for validating that Nosto account was actually installed into the
+     * current store and Magento installation.
+     *
+     * @param Mage_Core_Model_Store $store
+     */
+    public function saveCurrentStoreFrontPageUrl(Mage_Core_Model_Store $store)
+    {
+        /* @var $urlHelper Nosto_Tagging_Helper_Url */
+        $urlHelper = Mage::helper('nosto_tagging/url');
+        $frontPageUrl = $urlHelper->getFrontPageUrlForStore($store);
+        $this->saveStoreFrontPageUrl($store, $frontPageUrl);
+    }
+
+    /**
+     * Saves the front page url of the store into the settings.
+     *
+     * @param Mage_Core_Model_Store $store
+     * @param string $url
+     */
+    public function saveStoreFrontPageUrl(Mage_Core_Model_Store $store, $url)
+    {
+        /** @var Mage_Core_Model_Config $config */
+        $config = Mage::getModel('core/config');
+        $config->saveConfig(
+            self::XML_PATH_STORE_FRONT_PAGE_URL,
+            $url,
+            'stores',
+            $store->getId()
+        );
     }
 
     /**

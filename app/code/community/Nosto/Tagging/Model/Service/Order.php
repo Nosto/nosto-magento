@@ -120,6 +120,7 @@ class Nosto_Tagging_Model_Service_Order
                 $data['buyer']['email'] = $order->getBuyerInfo()->getEmail();
             }
         }
+
         return json_encode($data);
     }
 }

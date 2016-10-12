@@ -53,10 +53,11 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
      *
      * @param NostoAccount               $account the account to save.
      * @param Mage_Core_Model_Store|null $store   the store view to save it for.
+     * @param bool $firstRun
      *
      * @return bool true on success, false otherwise.
      */
-    public function save(NostoAccount $account, Mage_Core_Model_Store $store = null)
+    public function save(NostoAccount $account, Mage_Core_Model_Store $store = null, $firstRun = false)
     {
         if ($store === null) {
             $store = Mage::app()->getStore();
@@ -77,16 +78,22 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
             self::XML_PATH_TOKENS, json_encode($tokens), 'stores',
             $store->getId()
         );
-
-        /** @var Nosto_Tagging_Helper_Cache $helper */
-        $helper = Mage::helper('nosto_tagging/cache');
-        $helper->flushCache();
+        // We want to save the fron page url only once
+        if ($firstRun) {
+            /* @var $helperData Nosto_Tagging_Helper_Data */
+            $helperData = Mage::helper('nosto_tagging');
+            $helperData->saveCurrentStoreFrontPageUrl($store);
+        }
+        /** @var Nosto_Tagging_Helper_Cache $helperCache */
+        $helperCache = Mage::helper('nosto_tagging/cache');
+        $helperCache->flushCache();
 
         return true;
     }
 
     /**
-     * Removes an account with associated api tokens for the store view scope.
+     * Removes an account with associated api tokens for the store view scope
+     * and informs Nosto about the removal via API.
      *
      * @param NostoAccount               $account the account to remove.
      * @param Mage_Core_Model_Store|null $store   the store view to remove it for.
@@ -95,49 +102,24 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
      */
     public function remove(NostoAccount $account, Mage_Core_Model_Store $store = null)
     {
-        if ($store === null) {
-            $store = Mage::app()->getStore();
-        }
-        if ((int)$store->getId() < 1) {
-            return false;
-        }
-        /** @var Mage_Core_Model_Config $config */
-        $config = Mage::getModel('core/config');
-        $config->saveConfig(
-            self::XML_PATH_ACCOUNT, null, 'stores', $store->getId()
-        );
-        $config->saveConfig(
-            self::XML_PATH_TOKENS, null, 'stores', $store->getId()
-        );
-
-        //Enable API upserts by default when new account is added
-        // or account is reconnected
-        /* @var $nostoHelper Nosto_Tagging_Helper_Data */
-        $nostoHelper = Mage::helper('nosto_tagging');
-        if (!$nostoHelper->getUseProductApi($store)) {
-            $config->saveConfig(
-                Nosto_Tagging_Helper_Data::XML_PATH_USE_PRODUCT_API,
-                true,
-                'stores',
-                $store->getId()
-            );
+        $success = true;
+        if ($this->resetAccountSettings($account, $store)) {
+            try {
+                // Notify Nosto that the account was deleted.
+                $account->delete();
+            } catch (NostoException $e) {
+                // Failures are logged but not shown to the user.
+                Mage::log(
+                    "\n" . $e->__toString(),
+                    Zend_Log::ERR,
+                    Nosto_Tagging_Model_Base::LOG_FILE_NAME
+                );
+            }
+        } else {
+            $success = false;
         }
 
-        /** @var Nosto_Tagging_Helper_Cache $helper */
-        $helper = Mage::helper('nosto_tagging/cache');
-        $helper->flushCache();
-
-        try {
-            // Notify Nosto that the account was deleted.
-            $account->delete();
-        } catch (NostoException $e) {
-            // Failures are logged but not shown to the user.
-            Mage::log(
-                "\n" . $e->__toString(), Zend_Log::ERR, 'nostotagging.log'
-            );
-        }
-
-        return true;
+        return $success;
     }
 
     /**
@@ -284,8 +266,66 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
             $service = new NostoOperationAccount($account, $this->getMetaData($store));
             return $service->update();
         } catch (NostoException $e) {
-            Mage::log("\n" . $e, Zend_Log::ERR, Nosto_Tagging_Model_Base::LOG_FILE_NAME);
+            Mage::log(
+                "\n" . $e, Zend_Log::ERR,
+                Nosto_Tagging_Model_Base::LOG_FILE_NAME
+            );
         }
         return false;
+    }
+
+    /**
+     * Resets all saved Nosto settings in Magento
+     *
+     * @param NostoAccount $account
+     * @param Mage_Core_Model_Store|null $store
+     *
+     * @return bool
+     */
+    public function resetAccountSettings(NostoAccount $account, Mage_Core_Model_Store $store = null)
+    {
+        if ($store === null) {
+            $store = Mage::app()->getStore();
+        }
+        if ((int)$store->getId() < 1) {
+            return false;
+        }
+        /** @var Mage_Core_Model_Config $config */
+        $config = Mage::getModel('core/config');
+        $config->saveConfig(
+            self::XML_PATH_ACCOUNT,
+            null,
+            'stores',
+            $store->getId()
+        );
+        $config->saveConfig(
+            self::XML_PATH_TOKENS,
+            null,
+            'stores',
+            $store->getId()
+        );
+
+        /** @var $dataHelper Nosto_Tagging_Helper_Data */
+        $dataHelper = Mage::helper('nosto_tagging/data');
+        $dataHelper->saveStoreFrontPageUrl($store, null);
+
+        //Enable API upserts by default when new account is added
+        // or account is reconnected
+        /* @var $nostoHelper Nosto_Tagging_Helper_Data */
+        $nostoHelper = Mage::helper('nosto_tagging');
+        if (!$nostoHelper->getUseProductApi($store)) {
+            $config->saveConfig(
+                Nosto_Tagging_Helper_Data::XML_PATH_USE_PRODUCT_API,
+                true,
+                'stores',
+                $store->getId()
+            );
+        }
+
+        /** @var Nosto_Tagging_Helper_Cache $helper */
+        $helper = Mage::helper('nosto_tagging/cache');
+        $helper->flushCache();
+
+        return true;
     }
 }
