@@ -78,7 +78,7 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
             self::XML_PATH_TOKENS, json_encode($tokens), 'stores',
             $store->getId()
         );
-        // We want to save the fron page url only once
+        // We want to save the front page url only once
         if ($firstRun) {
             /* @var $helperData Nosto_Tagging_Helper_Data */
             $helperData = Mage::helper('nosto_tagging');

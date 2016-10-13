@@ -139,7 +139,7 @@ class Nosto_Tagging_Block_Adminhtml_Notifications extends Mage_Adminhtml_Block_T
                 $invalidConfig = array(
                     'savedUrl' => $savedFrontPageUrl,
                     'currentUrl' => $currentFrontPageUrl,
-                    'storeId' => $store->getId(),
+                    'storeName' => $store->getName(),
                     'nostoAccount' => $nostoAccount->getName(),
                     'actionUrl' => $this->getUrl(
                         'adminhtml/nosto/resetAccountSettings/',

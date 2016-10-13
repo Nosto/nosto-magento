@@ -42,8 +42,10 @@ if (!empty($invalidAccountDomains) && is_array($invalidAccountDomains)) :
 		<div class="notification-global"><?php
 			echo $this->helper('index')->__(
 				sprintf(
-					'It looks like you\'ve created the account for <strong class="label">%s</strong>and currently the store\'s front page is <strong class="label">%s</strong>. It is not possible to share Nosto accounts across multiple domains. Please reset the Nosto settings, and create a new Nosto account, or connect to an existing account.',
+					'It looks like you\'ve created Nosto account (%s) for <strong class="label">%s</strong> and currently store\'s (%s) front page is <strong class="label">%s</strong>. It is not possible to share Nosto accounts across multiple domains. Please reset the Nosto settings, and create a new Nosto account, or connect to an existing account.',
+					$invalidAccountDomain['nostoAccount'],
 					$invalidAccountDomain['savedUrl'],
+					$invalidAccountDomain['storeName'],
 					$invalidAccountDomain['currentUrl']
 				)
 			);
