@@ -110,9 +110,18 @@ class Nosto_Tagging_Block_Adminhtml_Notifications extends Mage_Adminhtml_Block_T
     /**
      * Checks if any of the Nosto accounts where previously installed into a
      * different store or magento installtion. This would happen mostly when
-     * development / staging setup is deployed to the production.
+     * development/staging setup is deployed to the production or vice versa.
      *
-     * @return bool true or false indicating if everything is ok
+     * Return array structure
+     * [
+     *  'savedUrl' => $savedFrontPageUrl,
+     *  'currentUrl' => $currentFrontPageUrl,
+     *  'storeName' => $store->getName(),
+     *  'nostoAccount' => $nostoAccount->getName(),
+     *  'actionUrl' => $this->getUrl(
+     * ]
+     *
+     * @return array (see structure above)
      */
     public function getInvalidAccountDomains()
     {
@@ -149,9 +158,8 @@ class Nosto_Tagging_Block_Adminhtml_Notifications extends Mage_Adminhtml_Block_T
 
                 $result[] = $invalidConfig;
             }
-       }
+        }
 
         return $result;
     }
-
 }

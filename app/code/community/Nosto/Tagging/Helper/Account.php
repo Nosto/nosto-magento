@@ -275,7 +275,8 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Resets all saved Nosto settings in Magento
+     * Resets all saved Nosto account settings in Magento. This does not reset
+     * tokens or any of the Nosto configurations.
      *
      * @param NostoAccount $account
      * @param Mage_Core_Model_Store|null $store
