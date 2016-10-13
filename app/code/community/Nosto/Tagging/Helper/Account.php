@@ -51,13 +51,16 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
     /**
      * Saves the account and the associated api tokens for the store view scope.
      *
-     * @param NostoAccount               $account the account to save.
-     * @param Mage_Core_Model_Store|null $store   the store view to save it for.
-     * @param bool $firstRun
+     * @param NostoAccount $account the account to save.
+     * @param Mage_Core_Model_Store|null $store the store view to save it for.
      *
      * @return bool true on success, false otherwise.
+     *
      */
-    public function save(NostoAccount $account, Mage_Core_Model_Store $store = null, $firstRun = false)
+    public function save(
+        NostoAccount $account,
+        Mage_Core_Model_Store $store = null
+    )
     {
         if ($store === null) {
             $store = Mage::app()->getStore();
@@ -78,12 +81,9 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
             self::XML_PATH_TOKENS, json_encode($tokens), 'stores',
             $store->getId()
         );
-        // We want to save the front page url only once
-        if ($firstRun) {
-            /* @var $helperData Nosto_Tagging_Helper_Data */
-            $helperData = Mage::helper('nosto_tagging');
-            $helperData->saveCurrentStoreFrontPageUrl($store);
-        }
+        /* @var $helperData Nosto_Tagging_Helper_Data */
+        $helperData = Mage::helper('nosto_tagging');
+        $helperData->saveCurrentStoreFrontPageUrl($store);
         /** @var Nosto_Tagging_Helper_Cache $helperCache */
         $helperCache = Mage::helper('nosto_tagging/cache');
         $helperCache->flushCache();

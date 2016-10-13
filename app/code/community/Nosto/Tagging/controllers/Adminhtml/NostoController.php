@@ -194,7 +194,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                    $meta->setDetails(json_decode($details));
                 }
                 $account = NostoAccount::create($meta);
-                if ($accountHelper->save($account, $store, true)) {
+                if ($accountHelper->save($account, $store)) {
                     $accountHelper->updateCurrencyExchangeRates($account, $store);
                     $responseBody = array(
                         'success' => true,
