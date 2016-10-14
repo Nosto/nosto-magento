@@ -24,10 +24,11 @@
   ~ @copyright Copyright (c) 2013-2016 Nosto Solutions Ltd (http://www.nosto.com)
   ~ @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
   -->
+<!--suppress XmlUnboundNsPrefix -->
 <config>
     <modules>
         <Nosto_Tagging>
-           <version>2.7.1</version>
+            <version>2.8.0</version>
         </Nosto_Tagging>
     </modules>
     <global>
@@ -38,6 +39,25 @@
                     <class>Nosto_Tagging_Model_Resource_Setup</class>
                 </setup>
             </tagging_setup>
+            <nosto_customer_reference_setup>
+                <setup>
+                    <module>Nosto_Tagging</module>
+                    <class>Nosto_Tagging_Model_Resource_Setup</class>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </nosto_customer_reference_setup>
+            <nosto_customer_reference_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </nosto_customer_reference_write>
+            <nosto_customer_reference_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </nosto_customer_reference_read>
         </resources>
         <blocks>
             <nosto_tagging>
@@ -91,6 +111,15 @@
                     </nosto_tagging_sales_order_save_commit_after>
                 </observers>
             </sales_order_save_commit_after>
+            <admin_system_config_changed_section_nosto_tagging>
+                <observers>
+                    <nosto_tagging_custom>
+                        <type>singleton</type>
+                        <class>Nosto_Tagging_Model_Observer</class>
+                        <method>syncNostoAccount</method>
+                    </nosto_tagging_custom>
+                </observers>
+            </admin_system_config_changed_section_nosto_tagging>
         </events>
     </global>
     <adminhtml>
@@ -153,9 +182,27 @@
     </frontend>
     <default>
         <nosto_tagging>
+            <general>
+                <use_product_api>1</use_product_api>
+            </general>
             <image_options>
                 <image_version>image</image_version>
             </image_options>
+            <multi_currency>
+                <method>disabled</method>
+            </multi_currency>
+            <brand_attribute>
+                <tag>manufacturer</tag>
+            </brand_attribute>
         </nosto_tagging>
     </default>
+    <crontab>
+        <jobs>
+            <nostotagging_currency_exchange_rate_update>
+                <run>
+                    <model>nosto_tagging/observer::scheduledCurrencyExchangeRateUpdate</model>
+                </run>
+            </nostotagging_currency_exchange_rate_update>
+        </jobs>
+    </crontab>
 </config>

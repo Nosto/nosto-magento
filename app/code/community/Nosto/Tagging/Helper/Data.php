@@ -45,7 +45,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_IMAGE_VERSION = 'nosto_tagging/image_options/image_version';
 
     /**
-     * Path to store config for attributes to tag 1
+     * Path to store config for attributes to tag
      */
     const XML_PATH_CUSTOM_TAGS = 'nosto_tagging/attribute_to_tag/';
 
@@ -55,19 +55,64 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const COOKIE_NAME = '2c_cId';
 
     /**
-     * @var string the name of the cookie where the Nosto ID can be found.
+     * @var string the algorithm to use for hashing visitor id.
      */
     const VISITOR_HASH_ALGO = 'sha256';
+
+    /**
+     * Path to store config multi currency method setting.
+     */
+    const XML_PATH_MULTI_CURRENCY_METHOD = 'nosto_tagging/multi_currency/method';
+
+    /**
+     * Path to store config scheduled currency exchange rate update enabled setting.
+     */
+    const XML_PATH_SCHEDULED_CURRENCY_EXCHANGE_RATE_UPDATE_ENABLED = 'nosto_tagging/scheduled_currency_exchange_rate_update/enabled';
+
+    /**
+     * Multi currency method option for currency exchange rates.
+     */
+    const MULTI_CURRENCY_METHOD_EXCHANGE_RATE = 'exchangeRate';
+
+    /**
+     * Multi currency method option for price variations in tagging.
+     */
+    const MULTI_CURRENCY_METHOD_PRICE_VARIATION = 'priceVariation';
+
+    /**
+     * No multi currency
+     */
+    const MULTI_CURRENCY_DISABLED = 'disabled';
+
+    /**
+     * Path to store config for using the product API or not.
+     */
+    const XML_PATH_USE_PRODUCT_API = 'nosto_tagging/general/use_product_api';
 
     /*
      * @var boolean the path for setting for product urls
      */
     const XML_PATH_PRETTY_URL = 'nosto_tagging/pretty_url/in_use';
 
+    /**
+     * Path to store config for brand attribute
+     */
+    const XML_PATH_BRAND_ATTRIBUTE = 'nosto_tagging/brand_attribute/tag';
+
+    /**
+     * Path to store config for installed domain
+     */
+    const XML_PATH_STORE_FRONT_PAGE_URL = 'nosto_tagging/settings/front_page_url';
+
     /*
      * @var int the product attribute type id
      */
     const PRODUCT_TYPE_ATTRIBUTE_ID = 4;
+
+    /*
+     * @var srtring Nosto customer reference attribute name
+     */
+    const NOSTO_CUSTOMER_REFERENCE_ATTRIBUTE_NAME = 'nosto_customer_reference';
 
     /**
      * List of strings to remove from the default Nosto account title
@@ -195,12 +240,71 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Returns the attribute to be used for brand tagging
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     *
+     * @return string
+     */
+    public function getBrandAttribute($store = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_BRAND_ATTRIBUTE, $store);
+    }
+
+    /**
+     * Returns the front page URL used for the store during Nosto account
+     * installation
+     *
+     * @param Mage_Core_Model_Store $store the store model
+     *
+     * @return string
+     */
+    public function getStoreFrontPageUrl(Mage_Core_Model_Store $store)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_STORE_FRONT_PAGE_URL, $store);
+    }
+
+    /**
+     * Saves current front page url of the store into the settings. This is
+     * used for validating that Nosto account was actually installed into the
+     * current store and Magento installation.
+     *
+     * @param Mage_Core_Model_Store $store
+     */
+    public function saveCurrentStoreFrontPageUrl(Mage_Core_Model_Store $store)
+    {
+        /* @var $urlHelper Nosto_Tagging_Helper_Url */
+        $urlHelper = Mage::helper('nosto_tagging/url');
+        $frontPageUrl = $urlHelper->getFrontPageUrlForStore($store);
+        $this->saveStoreFrontPageUrl($store, $frontPageUrl);
+    }
+
+    /**
+     * Saves the front page url of the store into the settings.
+     *
+     * @param Mage_Core_Model_Store $store
+     * @param string $url
+     */
+    public function saveStoreFrontPageUrl(Mage_Core_Model_Store $store, $url)
+    {
+        /** @var Mage_Core_Model_Config $config */
+        $config = Mage::getModel('core/config');
+        $config->saveConfig(
+            self::XML_PATH_STORE_FRONT_PAGE_URL,
+            $url,
+            'stores',
+            $store->getId()
+        );
+    }
+
+    /**
      * Return the Nosto cookie value
      *
      * @return string
      */
     public function getCookieId()
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return Mage::getModel('core/cookie')->get(self::COOKIE_NAME);
     }
 
@@ -221,15 +325,91 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Return the checksum for visitor
      *
-     * @param string $name
-     * @return string
+     * @param string $name the title of the account
+     * @return string the cleaned title of the account
      */
     public function cleanUpAccountTitle($name)
     {
         $clean = str_replace(self::$removeFromTitle, '', $name);
         return $clean;
     }
-    
+
+    /**
+     * Return the multi currency method in use, i.e. "exchangeRate" or
+     * "priceVariation".
+     *
+     * If "exchangeRate", it means that the product prices in the recommendation
+     * is updated through the Exchange Rate API to Nosto.
+     *
+     * If "priceVariation", it means that the product price variations should be
+     * tagged along side the product.
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     *
+     * @return string
+     */
+    public function getMultiCurrencyMethod($store = null)
+    {
+        if ($store instanceof Mage_Core_Model_Store === false) {
+            $store = Mage::app()->getStore();
+        }
+        return Mage::getStoreConfig(self::XML_PATH_MULTI_CURRENCY_METHOD, $store);
+    }
+
+    /**
+     * Checks if either exchange rates or price variants
+     * are used in store.
+     *
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     *
+     * @return bool
+     */
+    public function multiCurrencyDisabled($store = null)
+    {
+        $method = $this->getMultiCurrencyMethod($store);
+        return ($method === self::MULTI_CURRENCY_DISABLED);
+    }
+
+    /**
+     * Checks if the multi currency method in use is the "exchangeRate", i.e.
+     * the product prices in the recommendation is updated through the Exchange
+     * Rate API to Nosto.
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     *
+     * @return bool
+     */
+    public function isMultiCurrencyMethodExchangeRate($store = null)
+    {
+        $method = $this->getMultiCurrencyMethod($store);
+        return ($method === self::MULTI_CURRENCY_METHOD_EXCHANGE_RATE);
+    }
+
+    /**
+     * Returns if the scheduled currency exchange rate update is enabled.
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     *
+     * @return bool
+     */
+    public function isScheduledCurrencyExchangeRateUpdateEnabled($store = null)
+    {
+        return (bool)Mage::getStoreConfig(self::XML_PATH_SCHEDULED_CURRENCY_EXCHANGE_RATE_UPDATE_ENABLED, $store);
+    }
+
+    /**
+     * Returns product updates should be sent via API to Nosto
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     * @return boolean
+     */
+    public function getUseProductApi($store = null)
+    {
+        $useApi = (bool)Mage::getStoreConfig(self::XML_PATH_USE_PRODUCT_API, $store);
+        return $useApi;
+    }
+
     public function getProductAttributeOptions()
     {
         $resourceModel = Mage::getResourceModel(

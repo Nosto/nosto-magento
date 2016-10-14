@@ -42,8 +42,10 @@ class Nosto_Tagging_Block_Searchterm extends Mage_Core_Block_Template
      */
     protected function _toHtml()
     {
+        /** @var Nosto_Tagging_Helper_Account $helper */
+        $helper = Mage::helper('nosto_tagging/account');
         if (!Mage::helper('nosto_tagging')->isModuleEnabled()
-            || !Mage::helper('nosto_tagging/account')->existsAndIsConnected()
+            || !$helper->existsAndIsConnected()
         ) {
             return '';
         }
@@ -58,6 +60,8 @@ class Nosto_Tagging_Block_Searchterm extends Mage_Core_Block_Template
      */
     public function getSearchTerm()
     {
-        return $this->helper('catalogsearch')->getQueryText();
+        /** @var Mage_CatalogSearch_Helper_Data $helper */
+        $helper = $this->helper('catalogsearch');
+        return $helper->getQueryText();
     }
 }

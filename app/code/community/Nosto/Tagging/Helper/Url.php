@@ -248,4 +248,16 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
 
         return $modified_url;
     }
+
+    /**
+     * Returns the front page url configured for a store
+     *
+     * @param Mage_Core_Model_Store $store
+     * @return string
+     */
+    public function getFrontPageUrlForStore(Mage_Core_Model_Store $store)
+    {
+
+        return $store->getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB);
+    }
 }

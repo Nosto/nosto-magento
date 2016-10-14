@@ -84,11 +84,13 @@ class Nosto_Tagging_Model_Service_Order
      */
     protected function getOrderAsJson(Nosto_Tagging_Model_Meta_Order $order)
     {
+        /** @var NostoHelperDate $dateHelper */
+        $dateHelper = Nosto::helper('date');
         $data = array(
             'order_number' => $order->getOrderNumber(),
             'external_order_ref' => $order->getExternalOrderRef(),
             'buyer' => array(),
-            'created_at' => Nosto::helper('date')->format($order->getCreatedDate()),
+            'created_at' => $dateHelper->format($order->getCreatedDate()),
             'payment_provider' => $order->getPaymentProvider(),
             'purchased_items' => array(),
         );
@@ -96,12 +98,14 @@ class Nosto_Tagging_Model_Service_Order
             $data['order_status_code'] = $order->getOrderStatus()->getCode();
             $data['order_status_label'] = $order->getOrderStatus()->getLabel();
         }
+        /** @var NostoHelperPrice $priceHelper */
+        $priceHelper = Nosto::helper('price');
         foreach ($order->getPurchasedItems() as $item) {
             $data['purchased_items'][] = array(
                 'product_id' => $item->getProductId(),
                 'quantity' => $item->getQuantity(),
                 'name' => $item->getName(),
-                'unit_price' => Nosto::helper('price')->format($item->getUnitPrice()),
+                'unit_price' => $priceHelper->format($item->getUnitPrice()),
                 'price_currency_code' => strtoupper($item->getCurrencyCode()),
             );
         }
@@ -116,6 +120,7 @@ class Nosto_Tagging_Model_Service_Order
                 $data['buyer']['email'] = $order->getBuyerInfo()->getEmail();
             }
         }
+
         return json_encode($data);
     }
 }

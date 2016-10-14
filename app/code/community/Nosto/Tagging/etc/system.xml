@@ -24,6 +24,7 @@
   ~ @copyright Copyright (c) 2013-2016 Nosto Solutions Ltd (http://www.nosto.com)
   ~ @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
   -->
+<!--suppress XmlUnboundNsPrefix -->
 <config>
     <sections>
         <nosto_tagging translate="label">
@@ -34,9 +35,50 @@
             <show_in_website>1</show_in_website>
             <show_in_store>1</show_in_store>
             <groups>
+                <general>
+                    <label>General</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>0</expanded>
+                    <fields>
+                        <use_product_api translate="label">
+                            <label>Real-time product updates to Nosto</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </use_product_api>
+                    </fields>
+                </general>
+                <currency_formats translate="label">
+                    <label>Currency formats</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>20</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>0</expanded>
+                    <fields>
+                        <currency_formats translate="label">
+                            <label>Currency Formats</label>
+                            <comment>Preview of the current currency formats extracted from Magento.</comment>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>nosto_tagging/adminhtml_system_config_currency_formats</frontend_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </currency_formats>
+                    </fields>
+                </currency_formats>
                 <image_options translate="label">
                     <label>Image Options</label>
-                    <sort_order>20</sort_order>
+                    <sort_order>30</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
@@ -47,15 +89,15 @@
                             <frontend_type>select</frontend_type>
                             <source_model>nosto_tagging/system_config_source_image</source_model>
                             <sort_order>10</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
+                            <show_in_default>0</show_in_default>
+                            <show_in_website>0</show_in_website>
                             <show_in_store>1</show_in_store>
                         </image_version>
                     </fields>
                 </image_options>
                 <pretty_url translate="label">
                     <label>URL structure</label>
-                    <sort_order>30</sort_order>
+                    <sort_order>40</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
@@ -75,7 +117,7 @@
                 </pretty_url>
                 <attribute_to_tag translate="label">
                     <label>Attributes to tags</label>
-                    <sort_order>40</sort_order>
+                    <sort_order>50</sort_order>
                     <show_in_default>0</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
@@ -113,6 +155,87 @@
                         </tag3>
                     </fields>
                 </attribute_to_tag>
+                <brand_attribute translate="label">
+                    <label>Brand attribute</label>
+                    <sort_order>60</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <fields>
+                        <tag translate="label">
+                            <label>Nosto brand attribute</label>
+                            <comment>Choose attribute that will be used as a brand attribute for Nosto product tagging</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>nosto_tagging/system_config_brand_source</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </tag>
+                    </fields>
+                </brand_attribute>
+                <multi_currency translate="label">
+                    <label>Multi Currency</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>70</sort_order>
+                    <show_in_default>0</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>0</expanded>
+                    <fields>
+                        <method translate="label">
+                            <label>Multi Currency Method</label>
+                            <comment>Use either exchange rates or price variations for multi currency product recommendations.</comment>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>nosto_tagging/adminhtml_system_config_currency_method</frontend_model>
+                            <source_model>nosto_tagging/system_config_source_multi_currency_method</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </method>
+                    </fields>
+                </multi_currency>
+                <scheduled_currency_exchange_rate_update translate="label">
+                    <label>Scheduled Currency Exchange Rate Update</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>70</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>0</expanded>
+                    <fields>
+                        <enabled translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </enabled>
+                        <time translate="label">
+                            <label>Start Time</label>
+                            <comment>The start time is entered in the default timezone configured for the installation.</comment>
+                            <frontend_type>time</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </time>
+                        <frequency translate="label">
+                            <label>Frequency</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_cron_frequency</source_model>
+                            <backend_model>nosto_tagging/system_config_backend_currency_exchange_rate_cron</backend_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </frequency>
+                    </fields>
+                </scheduled_currency_exchange_rate_update>
             </groups>
         </nosto_tagging>
     </sections>

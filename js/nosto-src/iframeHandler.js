@@ -35,6 +35,7 @@
     var handlePostMessage = function(data, options) {
         var TYPE_NEW_ACCOUNT = "newAccount",
             TYPE_CONNECT_ACCOUNT = "connectAccount",
+            TYPE_SYNC_ACCOUNT = "syncAccount",
             TYPE_REMOVE_ACCOUNT = "removeAccount";
 
         var settings = extendObject({
@@ -42,6 +43,7 @@
                 urls: {
                     createAccount: "",
                     connectAccount: "",
+                    syncAccount: "",
                     deleteAccount: ""
                 }
         }, options);
@@ -65,6 +67,18 @@
 
             case TYPE_CONNECT_ACCOUNT:
                 xhr(settings.urls.connectAccount, {
+                    success: function (response) {
+                        if (response.success && response.redirect_url) {
+                            window.location.href = response.redirect_url;
+                        } else if (!response.success && response.redirect_url) {
+                            $iframe.src = response.redirect_url;
+                        }
+                    }
+                });
+                break;
+
+            case TYPE_SYNC_ACCOUNT:
+                xhr(settings.urls.syncAccount, {
                     success: function (response) {
                         if (response.success && response.redirect_url) {
                             window.location.href = response.redirect_url;

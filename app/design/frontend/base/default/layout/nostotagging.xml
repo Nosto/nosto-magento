@@ -24,6 +24,7 @@
   ~ @copyright Copyright (c) 2013-2016 Nosto Solutions Ltd (http://www.nosto.com)
   ~ @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
   -->
+<!--suppress XmlUnboundNsPrefix -->
 <layout version="1.0.0">
     <!--                                       -->
     <!-- Adds Nosto tagging meta-data to site  -->
@@ -56,6 +57,10 @@
             <block type="nosto_tagging/customer" name="nosto.customer" template="nostotagging/customer.phtml"/>
         </reference>
 
+        <!-- Tag currency variation -->
+        <reference name="after_body_start">
+            <block type="nosto_tagging/variation" name="nosto.variation" template="nostotagging/variation.phtml"/>
+        </reference>
     </default>
 
     <!-- Tag category -->
@@ -140,6 +145,13 @@
     <cms_index_index>
         <!-- Add 4 content placeholders after the home page content -->
         <reference name="content">
+            <block type="nosto_tagging/pagetype" name="nosto.page.type.front" after="-"
+                   template="nostotagging/pagetype.phtml">
+                <action method="setData">
+                    <name>page_type</name>
+                    <value>front</value>
+                </action>
+            </block>
             <block type="nosto_tagging/element" name="nosto.page.home1" after="-"
                    template="nostotagging/element.phtml">
                 <action method="setData">
@@ -175,6 +187,13 @@
     <checkout_cart_index>
         <!-- Adds 3 content placeholders after the cart content -->
         <reference name="content">
+            <block type="nosto_tagging/pagetype" name="nosto.page.type.cart" after="-"
+                   template="nostotagging/pagetype.phtml">
+                <action method="setData">
+                    <name>page_type</name>
+                    <value>cart</value>
+                </action>
+            </block>
             <block type="nosto_tagging/element" name="nosto.page.cart1" after="checkout.cart"
                    template="nostotagging/element.phtml">
                 <action method="setData">
@@ -203,6 +222,13 @@
     <catalog_product_view>
         <!-- Adds 3 content placeholders after the product info -->
         <reference name="content">
+            <block type="nosto_tagging/pagetype" name="nosto.page.type.product" after="-"
+                   template="nostotagging/pagetype.phtml">
+                <action method="setData">
+                    <name>page_type</name>
+                    <value>product</value>
+                </action>
+            </block>
             <block type="nosto_tagging/element" name="nosto.page.product1" after="product.info"
                    template="nostotagging/element.phtml">
                 <action method="setData">
@@ -237,6 +263,13 @@
     <nosto_tagging_catalog_category>
         <!-- Adds 2 content placeholders; 1 before and 1 after the products -->
         <reference name="content">
+            <block type="nosto_tagging/pagetype" name="nosto.page.type.category" after="-"
+                   template="nostotagging/pagetype.phtml">
+                <action method="setData">
+                    <name>page_type</name>
+                    <value>category</value>
+                </action>
+            </block>
             <block type="nosto_tagging/element" name="nosto.page.category1" before="category.products"
                    template="nostotagging/element.phtml">
                 <action method="setData">
@@ -258,6 +291,13 @@
     <catalogsearch_result_index>
         <!-- Adds 2 content placeholders; 1 before and 1 after the search result -->
         <reference name="content">
+            <block type="nosto_tagging/pagetype" name="nosto.page.type.search" after="-"
+                   template="nostotagging/pagetype.phtml">
+                <action method="setData">
+                    <name>page_type</name>
+                    <value>search</value>
+                </action>
+            </block>
             <block type="nosto_tagging/element" name="nosto.page.search1" before="search.result"
                    template="nostotagging/element.phtml">
                 <action method="setData">
@@ -281,6 +321,13 @@
     <!-- 404 Not found page -->
     <cms_index_noroute>
         <reference name="content">
+            <block type="nosto_tagging/pagetype" name="nosto.page.type.notfound" after="-"
+                   template="nostotagging/pagetype.phtml">
+                <action method="setData">
+                    <name>page_type</name>
+                    <value>notfound</value>
+                </action>
+            </block>
             <block type="nosto_tagging/element" name="nosto.page.notfound1" after="-"
                    template="nostotagging/element.phtml">
                 <action method="setData">
@@ -308,6 +355,13 @@
     <!-- Order confirmation page -->
     <checkout_onepage_success>
         <reference name="content">
+            <block type="nosto_tagging/pagetype" name="nosto.page.type.order" after="-"
+                   template="nostotagging/pagetype.phtml">
+                <action method="setData">
+                    <name>page_type</name>
+                    <value>order</value>
+                </action>
+            </block>
             <block type="nosto_tagging/element" name="nosto.page.orderconfirmation1" after="-"
                    template="nostotagging/element.phtml">
                 <action method="setData">

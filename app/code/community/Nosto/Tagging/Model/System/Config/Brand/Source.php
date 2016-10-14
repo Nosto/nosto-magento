@@ -24,15 +24,26 @@
  * @copyright Copyright (c) 2013-2016 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-?>
 
-<?php
 /**
- * @var $this           Mage_Catalog_Block_Category_View
- * @var $nostoHelper    Nosto_Tagging_Helper_Data
+ * Extension system setting source model for choosing which attributes should
+ * be added to tags
+ *
+ * @category Nosto
+ * @package  Nosto_Tagging
+ * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-$category = $this->getCurrentCategory();
-$nostoHelper = Mage::helper('nosto_tagging');
-?>
-
-<div class="nosto_element" id="<?php echo $nostoHelper->escapeHtml($category->getNostoId()); ?>"></div>
+class Nosto_Tagging_Model_System_Config_Brand_Source
+{
+    /**
+     * Returns all available product attributes
+     *
+     * @return array the options.
+     */
+    public function toOptionArray()
+    {
+        /* @var Nosto_Tagging_Helper_Data $nosto_helper */
+        $nosto_helper = Mage::helper('nosto_tagging');
+        return $nosto_helper->getProductAttributeOptions();
+    }
+}

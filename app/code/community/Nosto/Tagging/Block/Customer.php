@@ -43,9 +43,12 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
      */
     protected function _toHtml()
     {
-        if (!$this->helper('customer')->isLoggedIn()
-            || !$this->helper('nosto_tagging')->isModuleEnabled()
-            || !Mage::helper('nosto_tagging/account')->existsAndIsConnected()
+        /** @var Nosto_Tagging_Helper_Account $helper */
+        $helper = Mage::helper('nosto_tagging/account');
+        /** @noinspection PhpUndefinedMethodInspection */
+        if (!Mage::helper('nosto_tagging')->isModuleEnabled()
+            || !$helper->existsAndIsConnected()
+            || !$this->helper('customer')->isLoggedIn()
         ) {
             return '';
         }
@@ -64,4 +67,40 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
         return $helper->getVisitorChecksum();
     }
 
+    /*
+     * Returns the customer reference of the customer
+     */
+    protected function getCustomerReference()
+    {
+        try {
+            /* @var $customerHelper Nosto_Tagging_Helper_Customer */
+            $customerHelper = Mage::helper('nosto_tagging/customer');
+            /* @var $customer Mage_Customer_Model_Customer */
+            $customer = $this->getCustomer();
+            $ref = $customer->getData(
+                Nosto_Tagging_Helper_Data::NOSTO_CUSTOMER_REFERENCE_ATTRIBUTE_NAME
+            );
+            $ref = $customerHelper->generateCustomerReference($customer);
+            if (empty($ref)) {
+                $ref = $customerHelper->generateCustomerReference($customer);
+                $customer->setData(
+                    Nosto_Tagging_Helper_Data::NOSTO_CUSTOMER_REFERENCE_ATTRIBUTE_NAME,
+                    $ref
+                );
+                $customer->save();
+            }
+        } catch (\Exception $e) {
+            Mage::log(
+                sprintf(
+                    'Could not get customer reference. Error was: %s',
+                    $e->getMessage()
+                ),
+                Zend_Log::ERR,
+                Nosto_Tagging_Model_Base::LOG_FILE_NAME
+            );
+            $ref = null;
+        }
+
+        return $ref;
+    }
 }
