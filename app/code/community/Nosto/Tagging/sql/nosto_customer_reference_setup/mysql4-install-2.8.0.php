@@ -26,7 +26,7 @@
  */
 
 /**
- * This install script will run only when installing the version 2.9.0 or above
+ * This install script will run only when installing the version 2.8.0 or above
  *
  * Adds custom attribute `nosto_customer_reference` for the Customer object
  *
