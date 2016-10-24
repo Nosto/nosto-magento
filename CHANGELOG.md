@@ -1,5 +1,8 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 2.8.1
+* Add css for hiding the page type tagging
+
 ### 2.8.0
 * Add support for using multiple currencies
 * Add notifications for incomplete or invalid Nosto settings
