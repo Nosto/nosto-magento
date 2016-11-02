@@ -80,7 +80,6 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
             $ref = $customer->getData(
                 Nosto_Tagging_Helper_Data::NOSTO_CUSTOMER_REFERENCE_ATTRIBUTE_NAME
             );
-            $ref = $customerHelper->generateCustomerReference($customer);
             if (empty($ref)) {
                 $ref = $customerHelper->generateCustomerReference($customer);
                 $customer->setData(
