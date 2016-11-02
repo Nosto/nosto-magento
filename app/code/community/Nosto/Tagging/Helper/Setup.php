@@ -62,7 +62,7 @@ class Nosto_Tagging_Helper_Setup extends Mage_Core_Helper_Abstract
             $attributeDefinition = array(
                 "type" => "varchar",
                 "label" => "Nosto Customer Reference",
-                "input" => "label",
+                "input" => "text",
                 "visible" => true,
                 "required" => false,
                 "unique" => true,
@@ -90,5 +90,23 @@ class Nosto_Tagging_Helper_Setup extends Mage_Core_Helper_Abstract
             $attribute->save();
         }
         $installer->endSetup();
+    }
+
+    /**
+     * Changes the nosto_customer_reference frontend input type to text
+     *
+     * @param $installer Nosto_Tagging_Model_Resource_Setup
+     *
+     * @return void
+     */
+    public function alterCustomerReferenceInputType(Nosto_Tagging_Model_Resource_Setup $installer)
+    {
+        $installer->updateAttribute(
+            'customer',
+            Nosto_Tagging_Helper_Data::NOSTO_CUSTOMER_REFERENCE_ATTRIBUTE_NAME,
+            array(
+                'frontend_input' => 'text',
+            )
+        );
     }
 }
