@@ -90,6 +90,12 @@
         </reference>
     </checkout_onepage_success>
 
+    <checkout_klarna_success>
+        <reference name="after_body_start">
+            <block type="nosto_tagging/order_vaimo_klarna" name="nosto.order.vaimo.klarna" template="nostotagging/order.phtml"/>
+        </reference>
+    </checkout_klarna_success>
+
     <!--                                       -->
     <!-- Adds Nosto elements to site           -->
     <!--                                       -->
