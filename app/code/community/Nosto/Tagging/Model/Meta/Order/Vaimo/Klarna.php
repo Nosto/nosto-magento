@@ -41,6 +41,21 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna extends Nosto_Tagging_Model_Me
 
     private $discountFactor;
 
+    public static $requiredFieldsForItem = array(
+        'reference',
+        'quantity',
+        'name',
+        'total_price_including_tax',
+    );
+
+    public static $requiredFieldsForOrder = array(
+        'completed_at',
+        'status',
+        'billing_address',
+        'cart',
+        'purchase_currency',
+    );
+
     /**
      * Loads the order info from a Magento quote model.
      *
@@ -60,6 +75,18 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna extends Nosto_Tagging_Model_Me
         $cid = $quote->getKlarnaCheckoutId();
         $klarna->setQuote($quote, Vaimo_Klarna_Helper_Data::KLARNA_METHOD_CHECKOUT);
         $vaimoKlarnaOrder = $klarna->getKlarnaOrderRaw($quote->getKlarnaCheckoutId());
+        try {
+            self::validateKlarnaOrder($vaimoKlarnaOrder);
+        } catch (NostoException $e) {
+            Mage::log(
+                sprintf(
+                    'Failed to validate VaimoKlarnaOrder. Error was %s',
+                    $e->getMessage()
+                )
+            );
+
+            return false;
+        }
         $this->_orderNumber = $quote->getKlarnaCheckoutId();
         $this->_externalOrderRef = null;
         $this->_createdDate = $vaimoKlarnaOrder['completed_at'];
@@ -85,23 +112,20 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna extends Nosto_Tagging_Model_Me
             'lastName' => '',
             'email' => ''
         );
-        if(!empty($vaimoKlarnaOrder['billing_address'])) {
-            $vaimoKlarnaBilling = $vaimoKlarnaOrder['billing_address'];
-            if (!empty($vaimoKlarnaBilling['given_name'])) {
-                $buyer_attributes['firstName'] = $vaimoKlarnaBilling['given_name'];
-            }
-            if (!empty($vaimoKlarnaBilling['family_name'])) {
-                $buyer_attributes['lastName'] = $vaimoKlarnaBilling['family_name'];
-            }
-            if (!empty($vaimoKlarnaBilling['email'])) {
-                $buyer_attributes['email'] = $vaimoKlarnaBilling['email'];
-            }
+        $vaimoKlarnaBilling = $vaimoKlarnaOrder['billing_address'];
+        if (!empty($vaimoKlarnaBilling['given_name'])) {
+            $buyer_attributes['firstName'] = $vaimoKlarnaBilling['given_name'];
+        }
+        if (!empty($vaimoKlarnaBilling['family_name'])) {
+            $buyer_attributes['lastName'] = $vaimoKlarnaBilling['family_name'];
+        }
+        if (!empty($vaimoKlarnaBilling['email'])) {
+            $buyer_attributes['email'] = $vaimoKlarnaBilling['email'];
         }
         $this->_buyer = Mage::getModel(
             'nosto_tagging/meta_order_buyer',
             $buyer_attributes
         );
-
         if (
             !empty($vaimoKlarnaOrder['cart'])
             && is_array($vaimoKlarnaOrder['cart'])
@@ -145,19 +169,8 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna extends Nosto_Tagging_Model_Me
     public function buildKlarnaItem(array $klarnaItem, $klarnaOrder)
     {
         $discountedPercentage = $this->getDiscountFactor($klarnaOrder['cart']);
+        self::validateKlarnaItem($klarnaItem);
 
-        if (empty($klarnaItem['reference'])) {
-            Nosto::throwException('Empty product reference - cannot create item');
-        }
-        if (empty($klarnaItem['quantity'])) {
-            Nosto::throwException('Empty product quantiy- cannot create item');
-        }
-        if (empty($klarnaItem['name'])) {
-            Nosto::throwException('Empty product name - cannot create item');
-        }
-        if (empty($klarnaItem['total_price_including_tax'])) {
-            Nosto::throwException('Empty product price including tax - cannot create item');
-        }
         //ToDo - check that this check works
         if (!empty($klarnaOrder['purchase_currency'])) {
             $currencyCode = $klarnaOrder['purchase_currency'];
@@ -231,5 +244,52 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna extends Nosto_Tagging_Model_Me
         $klarnaCheckoutId = $quote->getKlarnaCheckoutId();
         parent::loadData($order);
         $this->_orderNumber = $klarnaCheckoutId;
+    }
+
+    public static function validateKlarnaItem(array $item)
+    {
+        return self::validateKlarnaEntity('Item', $item);
+    }
+
+    public static function validateKlarnaOrder($order)
+    {
+        return self::validateKlarnaEntity('Order', $order);
+    }
+
+    public static function validateKlarnaEntity($type, $entity)
+    {
+        $rules = sprintf('requiredFieldsFor%s', ucfirst($type));
+        $empty = false;
+        foreach (self::$$rules as $field) {
+            if (
+                is_object($entity)
+            ) {
+                if (get_class($entity) === 'Varien_Object') {
+                    $val = $entity->get($field);
+                    if (empty($val)) {
+                        $empty = true;
+                    }
+                } elseif (isset($entity[$field])) {
+                    $val = $entity[$field];
+                    if (empty($val)) {
+                        $empty = true;
+                    }
+                }
+            } elseif (is_array($entity)) {
+                if (empty($entity[$field])) {
+                    $empty = true;
+                }
+            }
+            if ($empty === true) {
+                Nosto::throwException(
+                    sprintf(
+                        'Cannot create item - empty %s',
+                        $field
+                    )
+                );
+            }
+        }
+
+        return true;
     }
 }

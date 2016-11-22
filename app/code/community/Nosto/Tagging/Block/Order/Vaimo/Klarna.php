@@ -62,12 +62,12 @@ class Nosto_Tagging_Block_Order_Vaimo_Klarna extends Mage_Checkout_Block_Success
      */
     public function getLastOrder()
     {
-        $nostoKlarnaOrder = null;
+        $nostoOrder = null;
         try {
             $checkoutId = Mage::getSingleton('checkout/session')->getKlarnaCheckoutPrevId();
             /* @var Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna $nosto*/
-            $nostoKlarnaOrder = Mage::getModel('nosto_tagging/meta_order_vaimo_klarna');
-            $nostoKlarnaOrder->loadOrderByKlarnaId($checkoutId);
+            $nostoOrder = Mage::getModel('nosto_tagging/meta_order_vaimo_klarna');
+            $nostoOrder->loadOrderByKlarnaId($checkoutId);
         } catch (Exception $e) {
             Mage::log(
                 sprintf(
@@ -79,7 +79,7 @@ class Nosto_Tagging_Block_Order_Vaimo_Klarna extends Mage_Checkout_Block_Success
             );
         }
 
-        return $nostoKlarnaOrder;
+        return $nostoOrder;
     }
 
     /*
