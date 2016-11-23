@@ -33,7 +33,7 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Block_Order_Vaimo_Klarna extends Mage_Checkout_Block_Success
+class Nosto_Tagging_Block_Order_Vaimo_Klarna_Checkout extends Mage_Checkout_Block_Success
 {
     /**
      * Render order info as hidden meta data if the module is enabled for the
@@ -65,9 +65,9 @@ class Nosto_Tagging_Block_Order_Vaimo_Klarna extends Mage_Checkout_Block_Success
         $nostoOrder = null;
         try {
             $checkoutId = Mage::getSingleton('checkout/session')->getKlarnaCheckoutPrevId();
-            /* @var Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna $nosto*/
-            $nostoOrder = Mage::getModel('nosto_tagging/meta_order_vaimo_klarna');
-            $nostoOrder->loadOrderByKlarnaId($checkoutId);
+            /* @var Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout $nosto*/
+            $nostoOrder = Mage::getModel('nosto_tagging/meta_order_vaimo_klarna_checkout');
+            $nostoOrder->loadOrderByKlarnaCheckoutId($checkoutId);
         } catch (Exception $e) {
             Mage::log(
                 sprintf(

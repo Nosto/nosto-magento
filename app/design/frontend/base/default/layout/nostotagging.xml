@@ -92,7 +92,7 @@
 
     <checkout_klarna_success>
         <reference name="after_body_start">
-            <block type="nosto_tagging/order_vaimo_klarna" name="nosto.order.vaimo.klarna" template="nostotagging/order.phtml"/>
+            <block type="nosto_tagging/order_vaimo_klarna_checkout" name="nosto.order.vaimo.klarna" template="nostotagging/order.phtml"/>
         </reference>
     </checkout_klarna_success>
 
