@@ -66,10 +66,11 @@ class Nosto_Tagging_Helper_Class extends Mage_Core_Helper_Abstract
         }
 
         if ($orderClass instanceof NostoOrderInterface) {
+
             return $orderClass;
         } else {
+
             return Mage::getModel('nosto_tagging/meta_order');
         }
-
     }
 }
