@@ -415,6 +415,11 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         return $useApi;
     }
 
+    /**
+     * Returns the product attributes that can be used in Nosto tags
+     *
+     * @return array  ['value' => $code, 'label' => $label]
+     */
     public function getProductAttributeOptions()
     {
         $resourceModel = Mage::getResourceModel(
@@ -474,9 +479,14 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         return explode(',', $tags);
     }
 
+    /**
+     * Returns boolean if the store code should be added to the URLs
+     *
+     * @param Mage_Core_Model_Store $store
+     * @return bool
+     */
     public function getAddStoreCodeToUrlPath(Mage_Core_Model_Store $store)
     {
-        return true;
         $addCode = false;
         if (
             Mage::getStoreConfig(self::XML_PATH_MAGE_ADD_STORE_CODE_TO_URL_PATH)
