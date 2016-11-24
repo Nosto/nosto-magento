@@ -36,9 +36,17 @@ require_once __DIR__ . '/../bootstrap.php';
  */
 class Nosto_Tagging_Helper_Class extends Mage_Core_Helper_Abstract
 {
+    /*
+     * Loads correct / plugable class based on payment provider
+     *
+     * @param Mage_Sales_Model_Order $order
+     *
+     * @return Nosto
+     */
     public function getOrderClass(Mage_Sales_Model_Order $order)
     {
         $paymentProvider = false;
+        $orderClass = false;
         $payment = $order->getPayment();
         if (is_object($payment)) {
             $paymentProvider = $payment->getMethod();

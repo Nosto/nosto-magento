@@ -46,12 +46,20 @@ class Nosto_Tagging_Helper_Klarna extends Mage_Core_Helper_Abstract
      */
     public function getSettingCreateOrderForVaimoKlarna(Mage_Core_Model_Store $store = null)
     {
-        return $this->getKlarnaConfig(
+        return $this->getVaimoKlarnaConfig(
             self::PATH_VAIMO_KLARNA_CREATE_ORDER_ON_SUCCESS,
             $store
         );
     }
 
+    /**
+     * Returns Klarna config for the given path
+     *
+     * @param string $path
+     * @param Mage_Core_Model_Store|null $store
+     *
+     * @return mixed
+     */
     public function getVaimoKlarnaConfig($path, Mage_Core_Model_Store $store)
     {
         $fullPath = sprintf(

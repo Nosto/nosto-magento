@@ -384,4 +384,31 @@
             </block>
         </reference>
     </checkout_onepage_success>
+
+    <!-- Klarna Order confirmation page -->
+    <checkout_klarna_success>
+        <reference name="content">
+            <block type="nosto_tagging/pagetype" name="nosto.page.type.order" after="-"
+                   template="nostotagging/pagetype.phtml">
+                <action method="setData">
+                    <name>page_type</name>
+                    <value>order</value>
+                </action>
+            </block>
+            <block type="nosto_tagging/element" name="nosto.page.orderconfirmation1" after="checkout"
+                   template="nostotagging/element.phtml">
+                <action method="setData">
+                    <name>div_id</name>
+                    <value>thankyou-nosto-1</value>
+                </action>
+            </block>
+            <block type="nosto_tagging/element" name="nosto.page.orderconfirmation2" after="nosto.page.orderconfirmation1"
+                   template="nostotagging/element.phtml">
+                <action method="setData">
+                    <name>div_id</name>
+                    <value>thankyou-nosto-2</value>
+                </action>
+            </block>
+        </reference>
+    </checkout_klarna_success>
 </layout>
