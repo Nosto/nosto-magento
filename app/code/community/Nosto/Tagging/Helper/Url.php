@@ -260,4 +260,51 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
 
         return $store->getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB);
     }
+
+    /**
+     * Returns Oauth redirection URL
+     *
+     * @param Mage_Core_Model_Store $store
+     * @return string
+     */
+    public function getOauthRedirectUrl(Mage_Core_Model_Store $store)
+    {
+        /* @var Nosto_Tagging_Helper_Data $configHelper */
+        $configHelper = Mage::helper('nosto_tagging');
+        if ($configHelper->getAddStoreCodeToUrlPath($store)) {
+            $url = Mage::getUrl(
+                'nosto/oauth',
+                array(
+                    '_store' => $store->getId(),
+                    '_store_to_url' => false,
+                    '_type' => Mage_Core_Model_Store::URL_TYPE_WEB,
+                )
+            );
+            $baseUrl = $store->getBaseUrl();
+            $urlParts = explode($baseUrl, $url);
+            $path = $urlParts[1];
+            $pathParts = explode('/', $path);
+            if ($pathParts[0] !== $store->getCode()) {
+                array_unshift(
+                    $pathParts,
+                    substr($baseUrl, 0, -1),
+                    $store->getCode()
+                );
+                $finalUrl = implode('/', $pathParts);
+            } else {
+                $finalUrl = $url;
+            }
+        } else {
+            $finalUrl = Mage::getUrl(
+                'nosto/oauth',
+                array(
+                    '_store' => $store->getId(),
+                    '_store_to_url' => true,
+                    '_type' => Mage_Core_Model_Store::URL_TYPE_WEB,
+                )
+            );
+        }
+
+        return $finalUrl;
+    }
 }
