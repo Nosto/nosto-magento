@@ -274,56 +274,33 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
             array(
                 '_store' => $store->getId(),
                 '_store_to_url' => true,
-                '_type' => Mage_Core_Model_Store::URL_TYPE_WEB,
+                '_type' => Mage_Core_Model_Store::URL_TYPE_LINK,
             )
         );
 
-        /* @var Nosto_Tagging_Helper_Data $configHelper */
-        $configHelper = Mage::helper('nosto_tagging');
-        if ($configHelper->getAddStoreCodeToUrlPath($store)) {
-            $oauthUrlParts = parse_url($url);
-            $baseUrlParts = parse_url($store->getBaseUrl());
-            $oauthPathParts = explode(
-                '/',
-                trim($oauthUrlParts['path'], '/')
-            );
-            $basePathParts = explode(
-                '/',
-                trim($baseUrlParts['path'], '/')
-            );
-            // The parts of the pat that exist in oauth path can be removed
-            foreach ($basePathParts as $index=>$basePathPart) {
-                if (
-                    !empty($oauthPathParts[$index])
-                    && $basePathPart === $oauthPathParts[$index]) {
-                    unset($oauthPathParts[$index]);
-                }
-            }
-            $newPathParts = array_merge($basePathParts, $oauthPathParts);
-            $newUrlParts = array(
-                'scheme' => $oauthUrlParts['scheme'],
-                'host' => $oauthUrlParts['host'],
-                'path' => implode('/', $newPathParts),
-                'query' => '',
-            );
-            if (isset($oauthUrlParts['query'])) {
-                $newUrlParts['query'] = $oauthUrlParts['query'];
-            }
-            if (isset($oauthUrlParts['port'])) {
-                $newUrlParts['port'] = $oauthUrlParts['port'];
-            }
-            $finalUrl = sprintf(
-                '%s://%s%s/%s?%s',
-                $newUrlParts['scheme'],
-                $newUrlParts['host'],
-                !empty($newUrlParts['port']) ? ':'.$newUrlParts['port'] : '',
-                $newUrlParts['path'],
-                $newUrlParts['query']
+        return $url;
+    }
+
+    /**
+     * Returns front page URL of the store
+     *
+     * @param Mage_Core_Model_Store $store
+     * @return string
+     */
+    public function getFrontPageUrl(Mage_Core_Model_Store $store)
+    {
+        /* @var Nosto_Tagging_Helper_Data $helper */
+        $helper = Mage::helper('nosto_tagging');
+        if (!$helper->getUsePrettyProductUrls($store)) {
+            $url = NostoHttpRequest::replaceQueryParamInUrl(
+                '___store',
+                $store->getCode(),
+                $store->getBaseUrl(Mage_Core_Model_Store::URL_TYPE_LINK)
             );
         } else {
-            $finalUrl = $url;
+            $url = $store->getBaseUrl(Mage_Core_Model_Store::URL_TYPE_LINK);
         }
 
-        return $finalUrl;
+        return $url;
     }
 }
