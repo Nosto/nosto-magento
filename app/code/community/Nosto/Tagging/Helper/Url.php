@@ -269,42 +269,74 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
      */
     public function getOauthRedirectUrl(Mage_Core_Model_Store $store)
     {
+        $url = Mage::getUrl(
+            'nosto/oauth',
+            array(
+                '_store' => $store->getId(),
+                '_store_to_url' => true,
+                '_type' => Mage_Core_Model_Store::URL_TYPE_WEB,
+            )
+        );
+
         /* @var Nosto_Tagging_Helper_Data $configHelper */
         $configHelper = Mage::helper('nosto_tagging');
         if ($configHelper->getAddStoreCodeToUrlPath($store)) {
-            $url = Mage::getUrl(
-                'nosto/oauth',
-                array(
-                    '_store' => $store->getId(),
-                    '_store_to_url' => false,
-                    '_type' => Mage_Core_Model_Store::URL_TYPE_WEB,
+            $oauthUrlParts = parse_url($url);
+            $baseUrlParts = parse_url($store->getBaseUrl());
+            $oauthPathParts = explode(
+                '/',
+                self::removeLeadingAndTrailingSlash(
+                    $oauthUrlParts['path']
                 )
             );
-            $baseUrl = $store->getBaseUrl();
-            $urlParts = explode($baseUrl, $url);
-            $path = $urlParts[1];
-            $pathParts = explode('/', $path);
-            if ($pathParts[0] !== $store->getCode()) {
-                array_unshift(
-                    $pathParts,
-                    substr($baseUrl, 0, -1),
-                    $store->getCode()
-                );
-                $finalUrl = implode('/', $pathParts);
-            } else {
-                $finalUrl = $url;
+            $basePathParts = explode(
+                '/',
+                self::removeLeadingAndTrailingSlash(
+                    $baseUrlParts['path']
+                )
+            );
+            // The parts of the pat that exist in oauth path can be removed
+            foreach ($basePathParts as $index=>$basePathPart) {
+                if (
+                    !empty($oauthPathParts[$index])
+                    && $basePathPart === $oauthPathParts[$index]) {
+                    unset($oauthPathParts[$index]);
+                }
             }
-        } else {
-            $finalUrl = Mage::getUrl(
-                'nosto/oauth',
-                array(
-                    '_store' => $store->getId(),
-                    '_store_to_url' => true,
-                    '_type' => Mage_Core_Model_Store::URL_TYPE_WEB,
-                )
+            $newPathParts = array_merge($basePathParts, $oauthPathParts);
+            $newUrlParts = array(
+                'scheme' => $oauthUrlParts['scheme'],
+                'host' => $oauthUrlParts['host'],
+                'path' => implode('/', $newPathParts),
+                'query' => '',
             );
+            if (isset($oauthUrlParts['query'])) {
+                $newUrlParts['query'] = $oauthUrlParts['query'];
+            }
+            $finalUrl = sprintf(
+                '%s://%s/%s?%s',
+                $newUrlParts['scheme'],
+                $newUrlParts['host'],
+                $newUrlParts['path'],
+                $newUrlParts['query']
+            );
+        } else {
+            $finalUrl = $url;
         }
 
         return $finalUrl;
+    }
+
+    public static function removeLeadingAndTrailingSlash($string)
+    {
+        $substr = substr($string, 0, 1);
+        if ($substr === '/') {
+            $string = substr($string, 1);
+        }
+        if (substr($string, -1) === '/') {
+            $string = substr($string, 0, -1);
+        }
+
+        return $string;
     }
 }
