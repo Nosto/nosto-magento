@@ -285,15 +285,11 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
             $baseUrlParts = parse_url($store->getBaseUrl());
             $oauthPathParts = explode(
                 '/',
-                self::removeLeadingAndTrailingSlash(
-                    $oauthUrlParts['path']
-                )
+                trim($oauthUrlParts['path'], '/')
             );
             $basePathParts = explode(
                 '/',
-                self::removeLeadingAndTrailingSlash(
-                    $baseUrlParts['path']
-                )
+                trim($baseUrlParts['path'], '/')
             );
             // The parts of the pat that exist in oauth path can be removed
             foreach ($basePathParts as $index=>$basePathPart) {
@@ -313,10 +309,14 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
             if (isset($oauthUrlParts['query'])) {
                 $newUrlParts['query'] = $oauthUrlParts['query'];
             }
+            if (isset($oauthUrlParts['port'])) {
+                $newUrlParts['port'] = $oauthUrlParts['port'];
+            }
             $finalUrl = sprintf(
-                '%s://%s/%s?%s',
+                '%s://%s%s/%s?%s',
                 $newUrlParts['scheme'],
                 $newUrlParts['host'],
+                !empty($newUrlParts['port']) ? ':'.$newUrlParts['port'] : '',
                 $newUrlParts['path'],
                 $newUrlParts['query']
             );
@@ -325,18 +325,5 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
         }
 
         return $finalUrl;
-    }
-
-    public static function removeLeadingAndTrailingSlash($string)
-    {
-        $substr = substr($string, 0, 1);
-        if ($substr === '/') {
-            $string = substr($string, 1);
-        }
-        if (substr($string, -1) === '/') {
-            $string = substr($string, 0, -1);
-        }
-
-        return $string;
     }
 }
