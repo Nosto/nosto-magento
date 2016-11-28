@@ -122,7 +122,9 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
         $urlHelper = Mage::helper('nosto_tagging/url');
         /** @var Nosto_Tagging_Helper_Data $dataHelper */
         $dataHelper = Mage::helper('nosto_tagging/data');
-
+        /* @var Mage_Core_Model_App_Emulation $emulation */
+        $emulation = Mage::getSingleton('core/app_emulation');
+        $env = $emulation->startEnvironmentEmulation($store->getId());
         $this->_firstName = $user->getFirstname();
         $this->_lastName = $user->getLastname();
         $this->_email = $user->getEmail();
@@ -139,6 +141,7 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
         $this->_previewUrlCart = $urlHelper->getPreviewUrlCart($store);
         $this->_previewUrlFront = $urlHelper->getPreviewUrlFront($store);
         $this->_shopName = $store->getName();
+        $emulation->stopEnvironmentEmulation($env);
     }
 
     /**
