@@ -114,11 +114,6 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      */
     const NOSTO_CUSTOMER_REFERENCE_ATTRIBUTE_NAME = 'nosto_customer_reference';
 
-    /*
-     * @var Path to Magento's store code setting
-     */
-    const XML_PATH_MAGE_ADD_STORE_CODE_TO_URL_PATH = 'web/url/use_store';
-
     /**
      * List of strings to remove from the default Nosto account title
      *
@@ -477,24 +472,5 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         $tag_path = self::XML_PATH_CUSTOM_TAGS . $tag_id;
         $tags = Mage::getStoreConfig($tag_path, $store);
         return explode(',', $tags);
-    }
-
-    /**
-     * Returns boolean if the store code should be added to the URLs
-     *
-     * @param Mage_Core_Model_Store $store
-     * @return bool
-     */
-    public function getAddStoreCodeToUrlPath(Mage_Core_Model_Store $store)
-    {
-        $addCode = false;
-        if (
-            Mage::getStoreConfig(self::XML_PATH_MAGE_ADD_STORE_CODE_TO_URL_PATH)
-            && $store->getCode()
-        ) {
-            $addCode = true;
-        }
-
-        return $addCode;
     }
 }
