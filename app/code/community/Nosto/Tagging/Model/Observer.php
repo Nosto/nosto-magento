@@ -169,7 +169,7 @@ class Nosto_Tagging_Model_Observer
                 } catch (NostoException $e) {
                     Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
                 }
-                $emulation->startEnvironmentEmulation($env);
+                $emulation->stopEnvironmentEmulation($env);
             }
         }
 
