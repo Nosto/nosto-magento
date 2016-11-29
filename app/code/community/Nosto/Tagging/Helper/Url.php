@@ -67,14 +67,12 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
             )
             ->setPageSize(1)
             ->setCurPage(1);
-        $urlOptions = $this->getUrlOptions($store);
         /** @var Mage_Catalog_Model_Product $product */
         $product = $collection->getFirstItem();
         if ($product instanceof Mage_Catalog_Model_Product) {
+            $urlOptions = $this->getUrlOptions($store);
             $url = $product->getUrlInStore($urlOptions);
-            $productUrl = NostoHttpRequest::replaceQueryParamInUrl(
-                'nostodebug', 'true', $url
-            );
+            $productUrl = $this->addNostoPreviewParameter($url);
         }
 
         return $productUrl;
@@ -91,7 +89,6 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
      */
     public function getPreviewUrlCategory(Mage_Core_Model_Store $store)
     {
-        $urlOptions = $this->getUrlOptions($store);
         $rootCategoryId = (int)$store->getRootCategoryId();
         $categoryUrl = '';
         $collection = Mage::getModel('catalog/category')
@@ -103,16 +100,14 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
         /** @var Mage_Catalog_Model_Category $category */
         $category = $collection->getFirstItem();
         if ($category instanceof Mage_Catalog_Model_Category) {
-            $category = Mage::getModel('catalog/category')->load($category->getId());
+            $urlOptions = $this->getUrlOptions($store);
             $url = $category->getUrl($urlOptions);
             if ($urlOptions['_store_to_url']) {
                 $url = NostoHttpRequest::replaceQueryParamInUrl(
                     '___store', $store->getCode(), $url
                 );
             }
-            $categoryUrl = NostoHttpRequest::replaceQueryParamInUrl(
-                'nostodebug', 'true', $url
-            );
+            $categoryUrl = $this->addNostoPreviewParameter($url);
         }
 
         return $categoryUrl;
@@ -131,9 +126,8 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
     {
         $url = Mage::getUrl('catalogsearch/result', $this->getUrlOptions($store));
         $url = NostoHttpRequest::replaceQueryParamInUrl('q', 'nosto', $url);
-        return NostoHttpRequest::replaceQueryParamInUrl(
-            'nostodebug', 'true', $url
-        );
+
+        return $this->addNostoPreviewParameter($url);
     }
 
     /**
@@ -147,9 +141,8 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
     public function getPreviewUrlCart(Mage_Core_Model_Store $store)
     {
         $url = Mage::getUrl('checkout/cart', $this->getUrlOptions($store));
-        return NostoHttpRequest::replaceQueryParamInUrl(
-            'nostodebug', 'true', $url
-        );
+
+        return $this->addNostoPreviewParameter($url);
     }
 
     /**
@@ -163,9 +156,8 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
     public function getPreviewUrlFront(Mage_Core_Model_Store $store)
     {
         $url = Mage::getUrl('', $this->getUrlOptions($store));
-        return NostoHttpRequest::replaceQueryParamInUrl(
-            'nostodebug', 'true', $url
-        );
+
+        return $this->addNostoPreviewParameter($url);
     }
 
     /**
@@ -252,18 +244,6 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Returns the front page url configured for a store
-     *
-     * @param Mage_Core_Model_Store $store
-     * @return string
-     */
-    public function getFrontPageUrlForStore(Mage_Core_Model_Store $store)
-    {
-
-        return $store->getBaseUrl(Mage_Core_Model_Store::URL_TYPE_LINK);
-    }
-
-    /**
      * Returns Oauth redirection URL
      *
      * @param Mage_Core_Model_Store $store
@@ -304,5 +284,12 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
         }
 
         return $url;
+    }
+
+    private function addNostoPreviewParameter($url)
+    {
+        return NostoHttpRequest::replaceQueryParamInUrl(
+            'nostodebug', 'true', $url
+        );
     }
 }
