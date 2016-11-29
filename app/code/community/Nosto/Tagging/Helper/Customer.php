@@ -90,6 +90,8 @@ class Nosto_Tagging_Helper_Customer extends Mage_Core_Helper_Abstract
     /**
      * Return the checksum / customer reference for customer
      *
+     * @param Mage_Customer_Model_Customer $customer
+     *
      * @return string
      */
     public function generateCustomerReference(Mage_Customer_Model_Customer $customer)

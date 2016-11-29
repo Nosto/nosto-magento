@@ -101,7 +101,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
         $category = $collection->getFirstItem();
         if ($category instanceof Mage_Catalog_Model_Category) {
             $urlOptions = $this->getUrlOptions($store);
-            $url = $category->getUrl($urlOptions);
+            $url = $category->getUrl();
             if ($urlOptions['_store_to_url']) {
                 $url = NostoHttpRequest::replaceQueryParamInUrl(
                     '___store', $store->getCode(), $url
