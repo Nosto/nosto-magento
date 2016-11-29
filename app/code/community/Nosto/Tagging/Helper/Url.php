@@ -68,13 +68,13 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
             ->setPageSize(1)
             ->setCurPage(1);
         $urlOptions = $this->getUrlOptions($store);
-        foreach ($collection as $product) {
-            /** @var Mage_Catalog_Model_Product $product */
+        /** @var Mage_Catalog_Model_Product $product */
+        $product = $collection->getFirstItem();
+        if ($product instanceof Mage_Catalog_Model_Product) {
             $url = $product->getUrlInStore($urlOptions);
             $productUrl = NostoHttpRequest::replaceQueryParamInUrl(
                 'nostodebug', 'true', $url
             );
-            break;
         }
 
         return $productUrl;
@@ -100,9 +100,9 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
             ->addFieldToFilter('path', array('like' => "1/$rootCategoryId/%"))
             ->setPageSize(1)
             ->setCurPage(1);
-
         /** @var Mage_Catalog_Model_Category $category */
-        foreach ($collection as $category) {
+        $category = $collection->getFirstItem();
+        if ($category instanceof Mage_Catalog_Model_Category) {
             $category = Mage::getModel('catalog/category')->load($category->getId());
             $url = $category->getUrl($urlOptions);
             if ($urlOptions['_store_to_url']) {
@@ -113,7 +113,6 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
             $categoryUrl = NostoHttpRequest::replaceQueryParamInUrl(
                 'nostodebug', 'true', $url
             );
-            break;
         }
 
         return $categoryUrl;
