@@ -135,13 +135,15 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     );
 
     /**
-     * List of attributes that cannot be added to tags due to buggy internal
-     * processing of attributes
+     * List of attributes that cannot be added to tags due to data type and
+     * Magento's internal processing of attributes
      *
      * @var array
      */
     public static $notValidAttributesForTags = array(
-        'group_price', // Magento fails to get the value
+        'group_price',
+        'tier_price',
+        'media_gallery',
     );
 
     /**
