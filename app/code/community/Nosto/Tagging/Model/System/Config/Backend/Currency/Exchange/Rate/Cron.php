@@ -44,7 +44,7 @@ class Nosto_Tagging_Model_System_Config_Backend_Currency_Exchange_Rate_Cron exte
      * Generates the cron configuration for updating exchange rates update to
      * Nosto.
      *
-     * Note that if cron is ran Hourly the hour field is not sent posted at all
+     * Note that if cron is ran Hourly the hour field is not posted at all
      * as the hour selector gets disabled when frequency is set to hourly
      *
      * @inheritdoc
