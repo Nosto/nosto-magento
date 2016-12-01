@@ -83,7 +83,6 @@ class Nosto_Tagging_Model_Observer
             // other stores as well.
             foreach ($product->getStoreIds() as $storeId) {
                 $store = Mage::app()->getStore($storeId);
-
                 /** @var Nosto_Tagging_Helper_Account $helper */
                 $helper = Mage::helper('nosto_tagging/account');
                 $account = $helper->find($store);
@@ -106,6 +105,9 @@ class Nosto_Tagging_Model_Observer
                     continue;
                 }
 
+                /* @var Mage_Core_Model_App_Emulation $emulation */
+                $emulation = Mage::getSingleton('core/app_emulation');
+                $env = $emulation->startEnvironmentEmulation($store->getId());
                 /** @var Nosto_Tagging_Model_Meta_Product $model */
                 $model = Mage::getModel('nosto_tagging/meta_product');
                 $model->loadData($product, $store);
@@ -122,6 +124,7 @@ class Nosto_Tagging_Model_Observer
                         Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
                     }
                 }
+                $emulation->stopEnvironmentEmulation($env);
             }
         }
 
@@ -153,11 +156,12 @@ class Nosto_Tagging_Model_Observer
                 if ($account === null || !$account->isConnectedToNosto()) {
                     continue;
                 }
-
+                /* @var Mage_Core_Model_App_Emulation $emulation */
+                $emulation = Mage::getSingleton('core/app_emulation');
+                $env = $emulation->startEnvironmentEmulation($store->getId());
                 /** @var Nosto_Tagging_Model_Meta_Product $model */
                 $model = Mage::getModel('nosto_tagging/meta_product');
                 $model->setProductId($product->getId());
-
                 try {
                     $service = new NostoOperationProduct($account);
                     $service->addProduct($model);
@@ -165,6 +169,7 @@ class Nosto_Tagging_Model_Observer
                 } catch (NostoException $e) {
                     Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
                 }
+                $emulation->stopEnvironmentEmulation($env);
             }
         }
 
@@ -304,6 +309,7 @@ class Nosto_Tagging_Model_Observer
                 }
             }
         }
+
         return $this;
     }
 }

@@ -277,7 +277,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     {
         /* @var $urlHelper Nosto_Tagging_Helper_Url */
         $urlHelper = Mage::helper('nosto_tagging/url');
-        $frontPageUrl = $urlHelper->getFrontPageUrlForStore($store);
+        $frontPageUrl = $urlHelper->getFrontPageUrl($store);
         $this->saveStoreFrontPageUrl($store, $frontPageUrl);
     }
 
@@ -412,6 +412,11 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         return $useApi;
     }
 
+    /**
+     * Returns the product attributes that can be used in Nosto tags
+     *
+     * @return array  ['value' => $code, 'label' => $label]
+     */
     public function getProductAttributeOptions()
     {
         $resourceModel = Mage::getResourceModel(
