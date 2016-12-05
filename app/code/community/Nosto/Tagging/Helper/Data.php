@@ -114,6 +114,11 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      */
     const NOSTO_CUSTOMER_REFERENCE_ATTRIBUTE_NAME = 'nosto_customer_reference';
 
+    /*
+     * @var srtring Nosto customer reference attribute name
+     */
+    const XML_PATH_EXCHANGE_RATE_CRON_FREQUENCY = 'nosto_tagging/scheduled_currency_exchange_rate_update/frequency';
+
     /**
      * List of strings to remove from the default Nosto account title
      *
@@ -408,6 +413,16 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     {
         $useApi = (bool)Mage::getStoreConfig(self::XML_PATH_USE_PRODUCT_API, $store);
         return $useApi;
+    }
+
+    /**
+     * Returns exchange rate cron frequency
+     *
+     * @return string
+     */
+    public function getExchangeRateCronFrequency()
+    {
+        return Mage::getStoreConfig(self::XML_PATH_EXCHANGE_RATE_CRON_FREQUENCY);
     }
 
     public function getProductAttributeOptions()
