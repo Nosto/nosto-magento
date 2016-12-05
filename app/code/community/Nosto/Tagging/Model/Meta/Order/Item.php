@@ -105,7 +105,7 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
             );
             $args['name'] = '';
         }
-        if (!isset($args['unitPrice']) || empty($args['unitPrice'])) {
+        if (!isset($args['unitPrice'])) {
             Mage::log(
                 sprintf(
                     '%s.unitPrice must have a value',
@@ -115,7 +115,13 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
                 Nosto_Tagging_Model_Base::LOG_FILE_NAME
             );
             $args['unitPrice'] = '';
+        } elseif (
+            empty($args['unitPrice'])
+            || !is_numeric($args['unitPrice'])
+        ) {
+           $args['unitPrice'] = 0;
         }
+
         if (!isset($args['currencyCode']) || empty($args['currencyCode'])) {
             Mage::log(
                 sprintf(
