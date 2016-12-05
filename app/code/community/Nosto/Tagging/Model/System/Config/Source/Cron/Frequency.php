@@ -26,7 +26,7 @@
  */
 
 /**
- * Extension system setting source model for choosing exchange cron frequency0
+ * Extends system setting source model for choosing exchange cron frequency
  *
  * @category Nosto
  * @package  Nosto_Tagging

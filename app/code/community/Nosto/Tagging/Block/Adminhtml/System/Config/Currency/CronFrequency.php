@@ -26,8 +26,7 @@
  */
 
 /**
- * Info block to show the current configured currency formats for the viewed
- * store scope on the system config page.
+ * Block for editing Nosto's currency exchange cron frequency
  *
  * @category Nosto
  * @package  Nosto_Tagging
@@ -42,11 +41,16 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Currency_CronFrequency
     const HOUR_SELECT_NAME = 'groups[scheduled_currency_exchange_rate_update][fields][time][value][]';
 
     /**
-     * @var
+     * Array of the available frequency options
+     *
+     * @var array
      */
     private $options;
+
     /**
-     * @var
+     * Form element to be rendered
+     *
+     * @var Varien_Data_Form_Element_Abstract
      */
     private $element;
 
@@ -130,8 +134,6 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Currency_CronFrequency
     {
         /* @var Nosto_Tagging_Helper_Data $configHelper */
         $configHelper = Mage::helper('nosto_tagging');
-        $exchangeRateCronFrequency
-            = $configHelper->getExchangeRateCronFrequency();
-        return $exchangeRateCronFrequency;
+        return $configHelper->getExchangeRateCronFrequency();
     }
 }

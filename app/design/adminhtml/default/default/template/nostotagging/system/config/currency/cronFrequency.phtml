@@ -29,7 +29,6 @@
 <?php
 /**
  * @var $this Nosto_Tagging_Block_Adminhtml_System_Config_Currency_CronFrequency
- * @var Zend_Currency[] $formats
  */
 ?>
 
@@ -46,8 +45,7 @@
          <option value="<?php echo $option['value']; ?>" <?php echo $selected; ?>><?php echo $option['label']; ?></option>
     <?php endforeach; ?>
 </select>
-
-<!-- Form handler exhange rates -->
+<!-- Form handler for exchange rates -->
 <script type="text/javascript">
     function nostoHandleCronSettings() {
         var frequencyValue,hourField,frequencyField;
