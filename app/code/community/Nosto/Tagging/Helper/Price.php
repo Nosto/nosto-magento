@@ -82,20 +82,28 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
      *
      * @return float
      */
-    protected function _getProductPrice($product, $finalPrice = false, $inclTax = true)
-    {
+    protected function _getProductPrice(
+        $product,
+        $finalPrice = false,
+        $inclTax = true
+    ) {
         $price = 0;
 
         switch ($product->getTypeId()) {
             case Mage_Catalog_Model_Product_Type::TYPE_BUNDLE:
-                // Get the bundle product "from" price.
+                // Get the bundle product "from" / min price.
+                // Price for bundled "parent" product cannot be configured in
+                // store admin. In practise there is no such thing as
+                // parent product for the bundled type product
                 /** @var Mage_Bundle_Model_Product_Price $model */
                 $model = $product->getPriceModel();
                 $price = $model->getTotalPrices($product, 'min', $inclTax);
                 break;
-
             case Mage_Catalog_Model_Product_Type::TYPE_GROUPED:
                 // Get the grouped product "starting at" price.
+                // Price for grouped "parent" product cannot be configured in
+                // store admin. In practise there is no such thing as
+                // parent product for the grouped type product
                 /** @var Mage_Catalog_Model_Config $config */
                 $config = Mage::getSingleton('catalog/config');
                 /** @var $tmpProduct Mage_Catalog_Model_Product */
@@ -119,17 +127,70 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
                     }
                 }
                 break;
-
-            default:
-                /** @var Mage_Tax_Helper_Data $helper */
-                $helper = Mage::helper('tax');
-                $price = $finalPrice
-                    ? $product->getFinalPrice()
-                    : $product->getPrice();
-                if ($inclTax) {
-                    $price = $helper->getPrice($product, $price, true);
+            case Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE:
+                // For configurable products we use the price defined for the
+                // "parent" product. If for some reason the parent product
+                // doesn't have a price configured we fetch the lowest price
+                // configured from a child product / variation
+                $price = $this->_getDefaultFromProduct(
+                    $product,
+                    $finalPrice,
+                    $inclTax
+                );
+                if (!$price) {
+                    $associatedProducts = Mage::getModel(
+                        'catalog/product_type_configurable'
+                    )->getUsedProducts(null, $product);
+                    $lowestPrice = false;
+                    foreach ($associatedProducts as $associatedProduct) {
+                        /* @var Mage_Catalog_Model_Product $productModel */
+                        $productModel = Mage::getModel('catalog/product')->load(
+                            $associatedProduct->getId()
+                        );
+                        if ($finalPrice) {
+                            $variationPrice = $this->getProductFinalPriceInclTax($productModel);
+                        } else {
+                            $variationPrice = $this->getProductPriceInclTax($productModel);
+                        }
+                        if (!$lowestPrice || $variationPrice < $lowestPrice) {
+                            $lowestPrice = $variationPrice;
+                        }
+                    }
+                    $price = $lowestPrice;
                 }
                 break;
+            default:
+                $price = $this->_getDefaultFromProduct(
+                    $product,
+                    $finalPrice,
+                    $inclTax
+                );
+                break;
+        }
+
+        return $price;
+    }
+
+    /**
+     * Returns the price from product
+     *
+     * @param $product
+     * @param bool $finalPrice
+     * @param bool $inclTax
+     * @return float
+     */
+    protected function _getDefaultFromProduct(
+        $product,
+        $finalPrice = false,
+        $inclTax = true
+    ) {
+        /** @var Mage_Tax_Helper_Data $helper */
+        $helper = Mage::helper('tax');
+        $price = $finalPrice
+            ? $product->getFinalPrice()
+            : $product->getPrice();
+        if ($inclTax) {
+            $price = $helper->getPrice($product, $price, true);
         }
 
         return $price;
