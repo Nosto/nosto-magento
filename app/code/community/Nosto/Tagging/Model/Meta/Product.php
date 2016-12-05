@@ -107,6 +107,74 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     protected $_variationId;
 
     /**
+     * @var float the price paid for the supplier
+     */
+    protected $_supplierCost;
+
+    /**
+     * @var int product stock
+     */
+    protected $_inventoryLevel;
+
+    /**
+     * @var int the amount of reviews
+     */
+    protected $_reviewCount;
+
+    /**
+     * @var float the value of the rating(s)
+     */
+    protected $_ratingValue;
+
+    /**
+     * @var array alternative image urls
+     */
+    protected $_alternateImageUrls;
+
+    /**
+     * @var string the condition of the product
+     */
+    protected $_condition;
+
+    /**
+     * @var string the gender (target group) of the product
+     */
+    protected $_gender;
+
+    /**
+     * @var string the the age group
+     */
+    protected $_ageGroup;
+
+    /**
+     * @var string the barcode
+     */
+    protected $_gtin;
+
+    /**
+     * @var string category used in Google's services
+     */
+    protected $_googleCategory;
+
+    /**
+     * @var string the pricing measure of the product. Pricing measure for a
+     * 0.33 liter bottle for example is "0.33".
+     */
+    protected $_unitPricingMeasure;
+
+    /**
+     * @var string the pricing base measure of the product. Pricing base measure
+     * for a 0.33l bottle is "1".
+     */
+    protected $_unitPricingBaseMeasure;
+
+    /**
+     * @var string the pricing unit of the product. Pricing unit for a 0.33l
+     * bottle is "l" (litre).
+     */
+    protected $_unitPricingUnit;
+
+    /**
      * @inheritdoc
      */
     protected function _construct()
@@ -142,6 +210,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         foreach (Nosto_Tagging_Helper_Data::$validTags as $validTag) {
             $this->_tags[$validTag] = array();
         }
+        $this->_alternateImageUrls = array();
     }
 
     /**
@@ -583,7 +652,113 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         } else {
             $attribute_value = null;
         }
-        return trim($attribute_value);
 
+        return trim($attribute_value);
     }
+
+    /**
+     * @return float
+     */
+    public function getSupplierCost()
+    {
+        return $this->_supplierCost;
+    }
+
+    /**
+     * @return int
+     */
+    public function getInventoryLevel()
+    {
+        return $this->_inventoryLevel;
+    }
+
+    /**
+     * @return int
+     */
+    public function getReviewCount()
+    {
+        return $this->_reviewCount;
+    }
+
+    /**
+     * @return float
+     */
+    public function getRatingValue()
+    {
+        return $this->_ratingValue;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAlternateImageUrls()
+    {
+        return $this->_alternateImageUrls;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCondition()
+    {
+        return $this->_condition;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGender()
+    {
+        return $this->_gender;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAgeGroup()
+    {
+        return $this->_ageGroup;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGtin()
+    {
+        return $this->_gtin;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGoogleCategory()
+    {
+        return $this->_googleCategory;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUnitPricingMeasure()
+    {
+        return $this->_unitPricingMeasure;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUnitPricingBaseMeasure()
+    {
+        return $this->_unitPricingBaseMeasure;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUnitPricingUnit()
+    {
+        return $this->_unitPricingUnit;
+    }
+
+
 }
