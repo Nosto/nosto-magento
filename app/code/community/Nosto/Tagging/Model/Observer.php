@@ -278,6 +278,9 @@ class Nosto_Tagging_Model_Observer
                 if ($account instanceof NostoAccount === false) {
                     continue;
                 }
+                /* @var Mage_Core_Model_App_Emulation $emulation */
+                $emulation = Mage::getSingleton('core/app_emulation');
+                $env = $emulation->startEnvironmentEmulation($store->getId());
                 if (!$accountHelper->updateAccount($account, $store)) {
                     Mage::log(
                         sprintf(
@@ -307,6 +310,7 @@ class Nosto_Tagging_Model_Observer
                         );
                     }
                 }
+                $emulation->stopEnvironmentEmulation($env);
             }
         }
 
