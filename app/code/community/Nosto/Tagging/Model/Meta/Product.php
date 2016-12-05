@@ -657,7 +657,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     }
 
     /**
-     * @return float
+     * @inheritdoc
      */
     public function getSupplierCost()
     {
@@ -665,7 +665,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     }
 
     /**
-     * @return int
+     * @inheritdoc
      */
     public function getInventoryLevel()
     {
@@ -673,7 +673,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     }
 
     /**
-     * @return int
+     * @inheritdoc
      */
     public function getReviewCount()
     {
@@ -681,7 +681,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     }
 
     /**
-     * @return float
+     * @inheritdoc
      */
     public function getRatingValue()
     {
@@ -689,7 +689,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     }
 
     /**
-     * @return array
+     * @inheritdoc
      */
     public function getAlternateImageUrls()
     {
@@ -697,7 +697,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     }
 
     /**
-     * @return string
+     * @inheritdoc
      */
     public function getCondition()
     {
@@ -705,7 +705,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     }
 
     /**
-     * @return string
+     * @inheritdoc
      */
     public function getGender()
     {
@@ -713,7 +713,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     }
 
     /**
-     * @return string
+     * @inheritdoc
      */
     public function getAgeGroup()
     {
@@ -721,7 +721,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     }
 
     /**
-     * @return string
+     * @inheritdoc
      */
     public function getGtin()
     {
@@ -729,7 +729,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     }
 
     /**
-     * @return string
+     * @inheritdoc
      */
     public function getGoogleCategory()
     {
@@ -737,7 +737,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     }
 
     /**
-     * @return string
+     * @inheritdoc
      */
     public function getUnitPricingMeasure()
     {
@@ -745,7 +745,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     }
 
     /**
-     * @return string
+     * @inheritdoc
      */
     public function getUnitPricingBaseMeasure()
     {
@@ -753,12 +753,10 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     }
 
     /**
-     * @return string
+     * @inheritdoc
      */
     public function getUnitPricingUnit()
     {
         return $this->_unitPricingUnit;
     }
-
-
 }
