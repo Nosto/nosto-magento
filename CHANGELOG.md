@@ -1,5 +1,19 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 2.9.0
+* Add support for Vaimo Klarna checkout extension
+* Add support for new product attributes
+* Add "js stub" for Nosto javascript
+* Add possilibity to run Nosto exchange rate cron hourly
+* Fix issue with configurable product visibility
+* Fix oauth redirection URL issue when store codes are added to URLs
+* Display applicable Nosto settings in all configuration scopes
+* Display errors if Nosto account creation or account connect fails
+* Move source models used by Nosto admin configuration under a single directory
+* Allow zero as a unit price for ordered item
+* Fetch min price from variation when configurable (parent) product doesn't have a price defined
+* Send missing API tokens to Nosto
+
 ### 2.8.2
 * Change the customer reference type to be text
 
