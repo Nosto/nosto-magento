@@ -50,7 +50,7 @@
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
-                            <show_in_website>0</show_in_website>
+                            <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </use_product_api>
                     </fields>
@@ -71,7 +71,7 @@
                             <frontend_model>nosto_tagging/adminhtml_system_config_currency_formats</frontend_model>
                             <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
-                            <show_in_website>0</show_in_website>
+                            <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </currency_formats>
                     </fields>
@@ -82,15 +82,15 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    <expanded>1</expanded>
+                    <expanded>0</expanded>
                     <fields>
                         <image_version translate="label">
                             <label>Image Version</label>
                             <frontend_type>select</frontend_type>
                             <source_model>nosto_tagging/system_config_source_image</source_model>
                             <sort_order>10</sort_order>
-                            <show_in_default>0</show_in_default>
-                            <show_in_website>0</show_in_website>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </image_version>
                     </fields>
@@ -101,7 +101,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    <expanded>1</expanded>
+                    <expanded>0</expanded>
                     <fields>
                         <in_use translate="label">
                             <label>Remove store parameter from URLs</label>
@@ -118,7 +118,7 @@
                 <attribute_to_tag translate="label">
                     <label>Attributes to tags</label>
                     <sort_order>50</sort_order>
-                    <show_in_default>0</show_in_default>
+                    <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <expanded>0</expanded>
@@ -127,9 +127,9 @@
                             <label>Product attributes for Nosto tags 1</label>
                             <comment>Choose attributes that will be added to tags 1 when present</comment>
                             <frontend_type>multiselect</frontend_type>
-                            <source_model>nosto_tagging/system_config_customTags_source</source_model>
+                            <source_model>nosto_tagging/system_config_source_custom_tags</source_model>
                             <sort_order>10</sort_order>
-                            <show_in_default>0</show_in_default>
+                            <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </tag1>
@@ -137,9 +137,9 @@
                             <label>Product attributes for Nosto tags 2</label>
                             <comment>Choose attributes that will be added to tags 2 when present</comment>
                             <frontend_type>multiselect</frontend_type>
-                            <source_model>nosto_tagging/system_config_customTags_source</source_model>
+                            <source_model>nosto_tagging/system_config_source_custom_tags</source_model>
                             <sort_order>20</sort_order>
-                            <show_in_default>0</show_in_default>
+                            <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </tag2>
@@ -147,9 +147,9 @@
                             <label>Product attributes for Nosto tags 3</label>
                             <comment>Choose attributes that will be added to tags 3 when present</comment>
                             <frontend_type>multiselect</frontend_type>
-                            <source_model>nosto_tagging/system_config_customTags_source</source_model>
+                            <source_model>nosto_tagging/system_config_source_custom_tags</source_model>
                             <sort_order>30</sort_order>
-                            <show_in_default>0</show_in_default>
+                            <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </tag3>
@@ -161,13 +161,13 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    <expanded>1</expanded>
+                    <expanded>0</expanded>
                     <fields>
                         <tag translate="label">
                             <label>Nosto brand attribute</label>
                             <comment>Choose attribute that will be used as a brand attribute for Nosto product tagging</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>nosto_tagging/system_config_brand_source</source_model>
+                            <source_model>nosto_tagging/system_config_source_brand</source_model>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -179,7 +179,7 @@
                     <label>Multi Currency</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>70</sort_order>
-                    <show_in_default>0</show_in_default>
+                    <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <expanded>0</expanded>
@@ -200,10 +200,10 @@
                 <scheduled_currency_exchange_rate_update translate="label">
                     <label>Scheduled Currency Exchange Rate Update</label>
                     <frontend_type>text</frontend_type>
-                    <sort_order>70</sort_order>
+                    <sort_order>80</sort_order>
                     <show_in_default>1</show_in_default>
-                    <show_in_website>1</show_in_website>
-                    <show_in_store>1</show_in_store>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
                     <expanded>0</expanded>
                     <fields>
                         <enabled translate="label">
@@ -227,8 +227,9 @@
                         <frequency translate="label">
                             <label>Frequency</label>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_cron_frequency</source_model>
+                            <source_model>nosto_tagging/system_config_source_cron_frequency</source_model>
                             <backend_model>nosto_tagging/system_config_backend_currency_exchange_rate_cron</backend_model>
+                            <frontend_model>nosto_tagging/adminhtml_system_config_currency_cronFrequency</frontend_model>
                             <sort_order>30</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>

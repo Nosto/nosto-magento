@@ -37,9 +37,14 @@
             <block type="nosto_tagging/meta" name="nosto.meta" template="nostotagging/meta.phtml" before="-"/>
         </reference>
 
+        <!-- Adds Nosto js stub to head -->
+        <reference name="head">
+            <block type="core/template" name="nosto.js.stub" template="nostotagging/jsstub.phtml"/>
+        </reference>
+
         <!-- Adds Nosto embed script to head -->
         <reference name="head">
-            <block type="nosto_tagging/embed" name="nosto.embed" template="nostotagging/embed.phtml"/>
+            <block type="nosto_tagging/embed" name="nosto.embed" template="nostotagging/embed.phtml" after="nosto.js.stub"/>
         </reference>
 
         <!-- Adds Nosto `add-to-cart` script to head -->
@@ -89,6 +94,12 @@
             <block type="nosto_tagging/order" name="nosto.order" template="nostotagging/order.phtml"/>
         </reference>
     </checkout_onepage_success>
+
+    <checkout_klarna_success>
+        <reference name="after_body_start">
+            <block type="nosto_tagging/order_vaimo_klarna_checkout" name="nosto.order.vaimo.klarna" template="nostotagging/order.phtml"/>
+        </reference>
+    </checkout_klarna_success>
 
     <!--                                       -->
     <!-- Adds Nosto elements to site           -->
@@ -378,4 +389,31 @@
             </block>
         </reference>
     </checkout_onepage_success>
+
+    <!-- Klarna Order confirmation page -->
+    <checkout_klarna_success>
+        <reference name="content">
+            <block type="nosto_tagging/pagetype" name="nosto.page.type.order" after="-"
+                   template="nostotagging/pagetype.phtml">
+                <action method="setData">
+                    <name>page_type</name>
+                    <value>order</value>
+                </action>
+            </block>
+            <block type="nosto_tagging/element" name="nosto.page.orderconfirmation1" after="checkout"
+                   template="nostotagging/element.phtml">
+                <action method="setData">
+                    <name>div_id</name>
+                    <value>thankyou-nosto-1</value>
+                </action>
+            </block>
+            <block type="nosto_tagging/element" name="nosto.page.orderconfirmation2" after="nosto.page.orderconfirmation1"
+                   template="nostotagging/element.phtml">
+                <action method="setData">
+                    <name>div_id</name>
+                    <value>thankyou-nosto-2</value>
+                </action>
+            </block>
+        </reference>
+    </checkout_klarna_success>
 </layout>

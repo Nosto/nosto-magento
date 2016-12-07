@@ -41,6 +41,12 @@ class Nosto_Tagging_Model_System_Config_Backend_Currency_Exchange_Rate_Cron exte
     const CRON_STRING_PATH = 'crontab/jobs/nostotagging_currency_exchange_rate_update/schedule/cron_expr';
 
     /**
+     * Generates the cron configuration for updating exchange rates update to
+     * Nosto.
+     *
+     * Note that if cron is ran Hourly the hour field is not posted at all
+     * as the hour selector gets disabled when frequency is set to hourly
+     *
      * @inheritdoc
      */
     protected function _afterSave()
@@ -50,11 +56,12 @@ class Nosto_Tagging_Model_System_Config_Backend_Currency_Exchange_Rate_Cron exte
 
         $weekly = Mage_Adminhtml_Model_System_Config_Source_Cron_Frequency::CRON_WEEKLY;
         $monthly = Mage_Adminhtml_Model_System_Config_Source_Cron_Frequency::CRON_MONTHLY;
+        $hourly = Nosto_Tagging_Model_System_Config_Source_Cron_Frequency::CRON_HOURLY;
         $cronExpr = implode(
             ' ',
             array(
-                (int)$time[1],                          # Minute
-                (int)$time[0],                          # Hour
+                ($frequency === $hourly) ? (int)$time[0] : (int)$time[1], # Minute
+                ($frequency === $hourly) ? '*' : (int)$time[0], # Hour
                 ($frequency === $monthly) ? '1' : '*',  # Day of the Month
                 '*',                                    # Month of the Year
                 ($frequency === $weekly) ? '1' : '*',   # Day of the Week

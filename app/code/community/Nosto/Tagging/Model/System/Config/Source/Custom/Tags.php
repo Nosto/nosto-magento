@@ -33,7 +33,7 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_System_Config_CustomTags_Source
+class Nosto_Tagging_Model_System_Config_Source_Custom_Tags
 {
     /**
      * Returns all available product attributes

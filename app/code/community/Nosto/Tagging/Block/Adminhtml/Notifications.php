@@ -56,7 +56,7 @@ class Nosto_Tagging_Block_Adminhtml_Notifications extends Mage_Adminhtml_Block_T
         /** @var Nosto_Tagging_Helper_Data $dataHelper */
         $dataHelper = Mage::helper('nosto_tagging/data');
         foreach (Mage::app()->getStores() as $store) {
-            /** @var Nosto_Tagging_Model_Meta_Account $account */
+            /** @var NostoAccount $account */
             $account = $accountHelper->find($store);
             if ($account !== null
                 && $account->isConnectedToNosto()
@@ -143,7 +143,7 @@ class Nosto_Tagging_Block_Adminhtml_Notifications extends Mage_Adminhtml_Block_T
             ) {
                 continue;
             }
-            $currentFrontPageUrl = $urlHelper->getFrontPageUrlForStore($store);
+            $currentFrontPageUrl = $urlHelper->getFrontPageUrl($store);
             if ($savedFrontPageUrl != $currentFrontPageUrl) {
                 $invalidConfig = array(
                     'savedUrl' => $savedFrontPageUrl,

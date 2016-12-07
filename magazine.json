@@ -6,7 +6,7 @@
   "license": {
     "_content": "OSL",
     "attribs": {
-      "uri": "http://opensource.org/licenses/osl-3.0.php"
+      "uri": "https://opensource.org/licenses/OSL-3.0"
     }
   },
   "channel": "community",
@@ -29,7 +29,7 @@
       "package": {
         "name": "Mage_Core_Modules",
         "min": "1.6.0.0",
-        "max": "1.9.2.4",
+        "max": "1.9.3.1",
         "channel": "community"
       }
     }

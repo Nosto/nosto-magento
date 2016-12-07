@@ -110,9 +110,14 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const PRODUCT_TYPE_ATTRIBUTE_ID = 4;
 
     /*
-     * @var srtring Nosto customer reference attribute name
+     * @var string Nosto customer reference attribute name
      */
     const NOSTO_CUSTOMER_REFERENCE_ATTRIBUTE_NAME = 'nosto_customer_reference';
+
+    /*
+     * @var string Nosto customer reference attribute name
+     */
+    const XML_PATH_EXCHANGE_RATE_CRON_FREQUENCY = 'nosto_tagging/scheduled_currency_exchange_rate_update/frequency';
 
     /**
      * List of strings to remove from the default Nosto account title
@@ -135,13 +140,15 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     );
 
     /**
-     * List of attributes that cannot be added to tags due to buggy internal
-     * processing of attributes
+     * List of attributes that cannot be added to tags due to data type and
+     * Magento's internal processing of attributes
      *
      * @var array
      */
     public static $notValidAttributesForTags = array(
-        'group_price', // Magento fails to get the value
+        'group_price',
+        'tier_price',
+        'media_gallery',
     );
 
     /**
@@ -275,7 +282,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     {
         /* @var $urlHelper Nosto_Tagging_Helper_Url */
         $urlHelper = Mage::helper('nosto_tagging/url');
-        $frontPageUrl = $urlHelper->getFrontPageUrlForStore($store);
+        $frontPageUrl = $urlHelper->getFrontPageUrl($store);
         $this->saveStoreFrontPageUrl($store, $frontPageUrl);
     }
 
@@ -410,6 +417,24 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         return $useApi;
     }
 
+    /**
+     * Returns exchange rate cron frequency
+     *
+     * For possible return values
+     * @see Nosto_Tagging_Model_System_Config_Source_Cron_Frequency
+     *
+     * @return string
+     */
+    public function getExchangeRateCronFrequency()
+    {
+        return Mage::getStoreConfig(self::XML_PATH_EXCHANGE_RATE_CRON_FREQUENCY);
+    }
+
+    /**
+     * Returns the product attributes that can be used in Nosto tags
+     *
+     * @return array  ['value' => $code, 'label' => $label]
+     */
     public function getProductAttributeOptions()
     {
         $resourceModel = Mage::getResourceModel(

@@ -80,11 +80,16 @@ class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
         }
         $params['v'] = self::IFRAME_VERSION;
         $store = $this->getSelectedStore();
+        /* @var Mage_Core_Model_App_Emulation $emulation */
+        $emulation = Mage::getSingleton('core/app_emulation');
+        $env = $emulation->startEnvironmentEmulation($store->getId());
         /** @var Nosto_Tagging_Helper_Account $helper */
         $helper = Mage::helper('nosto_tagging/account');
         $account = $helper->find($store);
-        return $this->_iframeUrl = $helper
-            ->getIframeUrl($store, $account, $params);
+        $this->_iframeUrl = $helper->getIframeUrl($store, $account, $params);
+        $emulation->stopEnvironmentEmulation($env);
+
+        return $this->_iframeUrl;
     }
 
     /**
