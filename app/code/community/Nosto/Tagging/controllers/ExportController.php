@@ -100,10 +100,12 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
             }
             /** @var Nosto_Tagging_Model_Export_Collection_Order $collection */
             $collection = Mage::getModel('nosto_tagging/export_collection_order');
+            /* @var Mage_Sales_Model_Order $order */
             foreach ($orders as $order) {
-                /** @var Nosto_Tagging_Model_Meta_Order $meta */
-                $meta = Mage::getModel('nosto_tagging/meta_order');
-                // We don't need special items like shipping cost and discounts.
+                /** @var Nosto_Tagging_Helper_Class $helper */
+                $helper = Mage::helper('nosto_tagging/class');
+                /** @var Nosto_Tagging_Model_Meta_Order $order */
+                $meta = $helper->getOrderClass($order);
                 $meta->includeSpecialItems = true;
                 $meta->loadData($order);
                 $collection[] = $meta;
@@ -145,8 +147,8 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
                 $products = array();
             }
             $collection = new NostoExportProductCollection();
+            /** @var Mage_Catalog_Model_Product $product */
             foreach ($products as $product) {
-                /** @var Mage_Catalog_Model_Product $product */
                 /** @var Nosto_Tagging_Model_Meta_Product $meta */
                 $meta = Mage::getModel('nosto_tagging/meta_product');
                 $meta->loadData($product);

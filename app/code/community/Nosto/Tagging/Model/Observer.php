@@ -192,22 +192,31 @@ class Nosto_Tagging_Model_Observer
                 /** @var Mage_Sales_Model_Order $mageOrder */
                 /** @noinspection PhpUndefinedMethodInspection */
                 $mageOrder = $observer->getEvent()->getOrder();
-                /** @var Nosto_Tagging_Model_Meta_Order $order */
-                $order = Mage::getModel('nosto_tagging/meta_order');
-                $order->loadData($mageOrder);
-                /** @var Nosto_Tagging_Helper_Account $helper */
-                $helper = Mage::helper('nosto_tagging/account');
-                $account = $helper->find($mageOrder->getStore());
-                /** @var Nosto_Tagging_Helper_Customer $helper */
-                $helper = Mage::helper('nosto_tagging/customer');
-                $customerId = $helper->getNostoId($mageOrder);
-                if ($account !== null && $account->isConnectedToNosto()) {
-                    /** @var Nosto_Tagging_Model_Service_Order $service */
-                    $service = Mage::getModel('nosto_tagging/service_order');
-                    $service->confirm($order, $account, $customerId);
+
+                if ($mageOrder instanceof Mage_Sales_Model_Order) {
+                    /** @var Nosto_Tagging_Helper_Class $helper */
+                    $helper = Mage::helper('nosto_tagging/class');
+                    /** @var Nosto_Tagging_Model_Meta_Order $order */
+                    $order = $helper->getOrderClass($mageOrder);
+                    $order->loadData($mageOrder);
+                    /** @var Nosto_Tagging_Helper_Account $helper */
+                    $helper = Mage::helper('nosto_tagging/account');
+                    $account = $helper->find($mageOrder->getStore());
+                    /** @var Nosto_Tagging_Helper_Customer $helper */
+                    $helper = Mage::helper('nosto_tagging/customer');
+                    $customerId = $helper->getNostoId($mageOrder);
+                    if ($account !== null && $account->isConnectedToNosto()) {
+                        /** @var Nosto_Tagging_Model_Service_Order $service */
+                        $service = Mage::getModel('nosto_tagging/service_order');
+                        $service->confirm($order, $account, $customerId);
+                    }
                 }
             } catch (NostoException $e) {
-                Mage::log("\n" . $e->__toString(), Zend_Log::ERR, 'nostotagging.log');
+                Mage::log(
+                    "\n" . $e->__toString(),
+                    Zend_Log::ERR,
+                    'nostotagging.log'
+                );
             }
         }
 

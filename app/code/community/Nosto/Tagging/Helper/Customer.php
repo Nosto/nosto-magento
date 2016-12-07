@@ -41,7 +41,7 @@ class Nosto_Tagging_Helper_Customer extends Mage_Core_Helper_Abstract
      *
      * @param Mage_Sales_Model_Order $order the order to get the Nosto ID for.
      *
-     * @return bool|string the Nosto ID or false if not found for order.
+     * @return string|bool
      */
     public function getNostoId(Mage_Sales_Model_Order $order)
     {
