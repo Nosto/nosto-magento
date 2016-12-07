@@ -47,7 +47,6 @@ class Nosto_Tagging_Block_Order_Vaimo_Klarna_Checkout extends Mage_Checkout_Bloc
         $helper = Mage::helper('nosto_tagging/account');
         if (!Mage::helper('nosto_tagging')->isModuleEnabled()
             || !$helper->existsAndIsConnected()
-            || !$helper->isModuleEnabled(Nosto_Tagging_Helper_Klarna::MODULE_NAME)
         ) {
             return '';
         }
