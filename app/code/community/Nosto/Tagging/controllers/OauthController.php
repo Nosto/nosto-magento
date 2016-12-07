@@ -93,6 +93,7 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
                 $params = array(
                     'message_type' => NostoMessage::TYPE_ERROR,
                     'message_code' => NostoMessage::CODE_ACCOUNT_CONNECT,
+                    'message_text' => $e->getMessage(),
                     'store' => (int)$store->getId(),
                     '_store' => Mage_Core_Model_App::ADMIN_STORE_ID,
                 );
