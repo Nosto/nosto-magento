@@ -148,7 +148,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         if ($this->getRequest()->isPost() && !is_null($store) && !is_null($account)) {
             /** @var Nosto_Tagging_Model_Meta_Oauth $meta */
             $meta = new Nosto_Tagging_Model_Meta_Oauth();
-            $meta->loadData($store, $account);
+            $meta->loadData($store);
             $client = new NostoOAuthClient($meta);
             $responseBody = array(
                 'success' => true,

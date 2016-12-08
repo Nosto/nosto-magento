@@ -66,7 +66,7 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Currency_Method extends Mage_A
             $element->setDisabled('disabled');
             $metaOauth = new Nosto_Tagging_Model_Meta_Oauth();
             /** @noinspection PhpUndefinedVariableInspection */
-            $metaOauth->loadData($store, $nostoAccount);
+            $metaOauth->loadData($store);
             $client = new NostoOAuthClient($metaOauth);
             $comment = sprintf(
                 'Your Nosto account is missing required tokens' .
