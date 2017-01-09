@@ -54,17 +54,18 @@ class Nosto_Tagging_Helper_Class extends Mage_Core_Helper_Abstract
 
         if (is_string($paymentProvider)) {
             try {
-                $orderClass = Mage::getModel(
-                    sprintf(
-                        'nosto_tagging/meta_order_%s',
-                        $paymentProvider
-                    )
+                $classId = sprintf(
+                    'nosto_tagging/meta_order_%s',
+                    $paymentProvider
                 );
+                $className = Mage::getConfig()->getModelClassName($classId);
+                if (class_exists($className)) {
+                    $orderClass = Mage::getModel($classId);
+                }
             } catch (Exception $e) {
                 $orderClass = false;
             }
         }
-
         if ($orderClass instanceof NostoOrderInterface) {
 
             return $orderClass;
