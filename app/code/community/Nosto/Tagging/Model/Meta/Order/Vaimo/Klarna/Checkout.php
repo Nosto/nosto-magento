@@ -267,7 +267,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
             Mage::log(
                 sprintf(
                     'Could not find klarnaCheckoutId from quote #%d',
-                    $order->quoteId()
+                    $order->getQuoteId()
                 ),
                 Zend_Log::ERR,
                 Nosto_Tagging_Model_Base::LOG_FILE_NAME
