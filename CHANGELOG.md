@@ -1,5 +1,9 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 2.9.1
+* Add for custom payment provider class existence 
+* Fix invalid method call in case of an error in Vaimo Klarna Checkout class 
+
 ### 2.9.0
 * Add support for Vaimo Klarna checkout extension
 * Add support for new product attributes
