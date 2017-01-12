@@ -120,6 +120,11 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_EXCHANGE_RATE_CRON_FREQUENCY = 'nosto_tagging/scheduled_currency_exchange_rate_update/frequency';
 
     /**
+     * Path to store attribute map
+     */
+    const XML_PATH_ATTRIBUTE_MAP = 'nosto_tagging/attribute_map';
+
+    /**
      * List of strings to remove from the default Nosto account title
      *
      * @var array
@@ -255,7 +260,25 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getBrandAttribute($store = null)
     {
-        return Mage::getStoreConfig(self::XML_PATH_BRAND_ATTRIBUTE, $store);
+        $brandAttribute = $this->getMappedAttribute('brand', $store);
+        $deprecatedBrandAttribute = Mage::getStoreConfig(
+            self::XML_PATH_BRAND_ATTRIBUTE, $store
+        );
+
+        return $storeConfig;
+    }
+
+    /**
+     * Returns the mapped attribute
+     *
+     * @param string $attribute
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     * @return string
+     */
+    public function getMappedAttribute($attribute, $store = null)
+    {
+        $xmlPath = self::XML_PATH_ATTRIBUTE_MAP . "/" . $attribute;
+        return Mage::getStoreConfig($xmlPath, $store);
     }
 
     /**

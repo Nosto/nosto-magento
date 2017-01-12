@@ -204,6 +204,11 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         );
     }
 
+    public static $customizableAttributes = array(
+        'brand' => '_brand',
+        'gtin' => '_gtin'
+    );
+
     public function __construct()
     {
         parent::__construct();
@@ -270,6 +275,23 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
 
         $this->amendAttributeTags($product, $store);
         $this->amendReviews($product, $store);
+        $this->amendCustomizableAttributes($product, $store);
+
+        /* @var Nosto_Tagging_Helper_Stock $stockHelper */
+        $stockHelper = Mage::helper('nosto_tagging/stock');
+        try {
+            $this->_inventoryLevel = $stockHelper->getQty($product);
+        } catch (Exception $e) {
+            Mage::log(
+                sprintf(
+                    'Failed to resolve inventory level for product %d to tags. Error message was: %s',
+                    $product->getId(),
+                    $e->getMessage()
+                ),
+                Zend_Log::WARN,
+                Nosto_Tagging_Model_Base::LOG_FILE_NAME
+            );
+        }
     }
 
     /**
@@ -359,6 +381,29 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
                 1
             );
             $this->_reviewCount = $ratingSummary->getReviewsCount();
+        }
+    }
+
+    /**
+     * Amends the customizable attributes
+     *
+     * @param Mage_Catalog_Model_Product $product the product model.
+     * @param Mage_Core_Model_Store      $store the store model.
+     *
+     */
+    protected function amendCustomizableAttributes(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
+    {
+        /* @var Nosto_Tagging_Helper_Data $nosto_helper */
+        $nosto_helper = Mage::helper("nosto_tagging");
+
+        foreach (self::$customizableAttributes as $mageAttr => $nostoAttr) {
+            $mapped = $nosto_helper->getMappedAttribute($mageAttr, $store);
+            if ($mapped) {
+                $value = $this->getAttributeValue($product, $mapped);
+                if(!empty($value)) {
+                    $this->$nostoAttr = $value;
+                }
+            }
         }
     }
 

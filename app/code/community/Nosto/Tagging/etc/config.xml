@@ -191,9 +191,9 @@
             <multi_currency>
                 <method>disabled</method>
             </multi_currency>
-            <brand_attribute>
-                <tag>manufacturer</tag>
-            </brand_attribute>
+            <attribute_map>
+                <brand>manufacturer</brand>
+            </attribute_map>
         </nosto_tagging>
     </default>
     <crontab>
