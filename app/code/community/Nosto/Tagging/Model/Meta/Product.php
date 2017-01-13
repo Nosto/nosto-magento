@@ -204,6 +204,19 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         );
     }
 
+    /**
+     * Array of attributes that can be customized from Nosto's store admin
+     * settings
+     *
+     * @var array
+     */
+    public static $customizableAttributes = array(
+        'gtin' => '_gtin',
+        'unit_price_unit' => '_unitPricingUnit',
+        'unit_price_measure' => '_unitPricingMeasure',
+        'unit_price_base_measure' => '_unitPricingBaseMeasure',
+    );
+
     public function __construct()
     {
         parent::__construct();
@@ -269,6 +282,24 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         }
 
         $this->amendAttributeTags($product, $store);
+        $this->amendReviews($product, $store);
+        $this->amendCustomizableAttributes($product, $store);
+
+        /* @var Nosto_Tagging_Helper_Stock $stockHelper */
+        $stockHelper = Mage::helper('nosto_tagging/stock');
+        try {
+            $this->_inventoryLevel = $stockHelper->getQty($product);
+        } catch (Exception $e) {
+            Mage::log(
+                sprintf(
+                    'Failed to resolve inventory level for product %d to tags. Error message was: %s',
+                    $product->getId(),
+                    $e->getMessage()
+                ),
+                Zend_Log::WARN,
+                Nosto_Tagging_Model_Base::LOG_FILE_NAME
+            );
+        }
     }
 
     /**
@@ -329,8 +360,59 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
             $tags[] = self::ADD_TO_CART;
         }
 
-
         return $tags;
+    }
+
+    /**
+     * Amends the product reviews product
+     *
+     * @param Mage_Catalog_Model_Product $product the product model.
+     * @param Mage_Core_Model_Store      $store the store model.
+     *
+     */
+    protected function amendReviews(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
+    {
+        /* @var Mage_Rating_Model_Rating $review_summary */
+        $ratingSummary = Mage::getModel('review/review_summary')
+            ->setStoreId($store->getId())
+            ->load($product->getId());
+
+        if (
+            $ratingSummary instanceof Mage_Review_Model_Review_Summary
+            && $ratingSummary->getRatingSummary()
+        ) {
+            $this->_ratingValue = number_format(
+                round(
+                    $ratingSummary->getRatingSummary()/20,
+                    1
+                ),
+                1
+            );
+            $this->_reviewCount = $ratingSummary->getReviewsCount();
+        }
+    }
+
+    /**
+     * Amends the customizable attributes
+     *
+     * @param Mage_Catalog_Model_Product $product the product model.
+     * @param Mage_Core_Model_Store      $store the store model.
+     *
+     */
+    protected function amendCustomizableAttributes(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
+    {
+        /* @var Nosto_Tagging_Helper_Data $nosto_helper */
+        $nosto_helper = Mage::helper("nosto_tagging");
+
+        foreach (self::$customizableAttributes as $mageAttr => $nostoAttr) {
+            $mapped = $nosto_helper->getMappedAttribute($mageAttr, $store);
+            if ($mapped) {
+                $value = $this->getAttributeValue($product, $mapped);
+                if(!empty($value)) {
+                    $this->$nostoAttr = $value;
+                }
+            }
+        }
     }
 
     /**
@@ -640,6 +722,13 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         return $this->_variationId;
     }
 
+    /**
+     * Fetches the value of a product attribute
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @param string $attributeName
+     * @return string
+     */
     private function getAttributeValue(Mage_Catalog_Model_Product $product, $attributeName)
     {
         $attribute = $product->getResource()->getAttribute($attributeName);

@@ -194,6 +194,9 @@
             <brand_attribute>
                 <tag>manufacturer</tag>
             </brand_attribute>
+            <attribute_map>
+                <gtin>0</gtin>
+            </attribute_map>
         </nosto_tagging>
     </default>
     <crontab>
