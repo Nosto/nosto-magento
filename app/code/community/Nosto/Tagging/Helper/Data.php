@@ -260,12 +260,9 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getBrandAttribute($store = null)
     {
-        $brandAttribute = $this->getMappedAttribute('brand', $store);
-        $deprecatedBrandAttribute = Mage::getStoreConfig(
+        return Mage::getStoreConfig(
             self::XML_PATH_BRAND_ATTRIBUTE, $store
         );
-
-        return $storeConfig;
     }
 
     /**

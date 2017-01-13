@@ -155,16 +155,16 @@
                         </tag3>
                     </fields>
                 </attribute_to_tag>
-                <attribute_map translate="label">
-                    <label>Attributes map</label>
+                <brand_attribute translate="label">
+                    <label>Brand attribute</label>
                     <sort_order>60</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <expanded>0</expanded>
                     <fields>
-                        <brand translate="label">
-                            <label>Brand attribute</label>
+                        <tag translate="label">
+                            <label>Nosto brand attribute</label>
                             <comment>Choose attribute that will be used as a brand attribute for Nosto product tagging</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>nosto_tagging/system_config_source_attribute</source_model>
@@ -172,7 +172,17 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </brand>
+                        </tag>
+                    </fields>
+                </brand_attribute>
+                <attribute_map translate="label">
+                    <label>Optional attributes</label>
+                    <sort_order>60</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>0</expanded>
+                    <fields>
                         <gtin translate="label">
                             <label>Gtin / barcode attribute</label>
                             <comment>Choose attribute that will be used as GTIN / barcode attribute for Nosto product tagging</comment>

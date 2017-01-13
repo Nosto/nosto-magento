@@ -204,8 +204,13 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         );
     }
 
+    /**
+     * Array of attributes that can be customized from Nosto's store admin
+     * settings
+     *
+     * @var array
+     */
     public static $customizableAttributes = array(
-        'brand' => '_brand',
         'gtin' => '_gtin'
     );
 
@@ -714,6 +719,13 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         return $this->_variationId;
     }
 
+    /**
+     * Fetches the value of a product attribute
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @param string $attributeName
+     * @return string
+     */
     private function getAttributeValue(Mage_Catalog_Model_Product $product, $attributeName)
     {
         $attribute = $product->getResource()->getAttribute($attributeName);
