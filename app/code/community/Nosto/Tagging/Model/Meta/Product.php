@@ -372,23 +372,22 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
      */
     protected function amendReviews(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
-        /* @var Mage_Rating_Model_Rating $review_summary */
-        $ratingSummary = Mage::getModel('review/review_summary')
-            ->setStoreId($store->getId())
-            ->load($product->getId());
-
-        if (
-            $ratingSummary instanceof Mage_Review_Model_Review_Summary
-            && $ratingSummary->getRatingSummary()
-        ) {
-            $this->_ratingValue = number_format(
-                round(
-                    $ratingSummary->getRatingSummary()/20,
-                    1
-                ),
-                1
-            );
-            $this->_reviewCount = $ratingSummary->getReviewsCount();
+        /* @var Nosto_Tagging_Helper_Data $dataHelper*/
+        $dataHelper = Mage::helper('nosto_tagging');
+        if ($dataHelper->getRatingsAndReviewsProvider($store)) {
+            /* @var Nosto_Tagging_Helper_Class $classHelper */
+            $classHelper = Mage::helper('nosto_tagging/class');
+            /* @var Nosto_Tagging_Model_Meta_Rating $ratingClass */
+            $ratingClass = $classHelper->getRatingClass($store);
+            if ($ratingClass) {
+                $ratingClass->init($product, $store);
+                if ($ratingClass->getRating()) {
+                    $this->_ratingValue = $ratingClass->getRating();
+                }
+                if ($ratingClass->getReviewCount()) {
+                    $this->_reviewCount = $ratingClass->getReviewCount();
+                }
+            }
         }
     }
 

@@ -125,6 +125,11 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_ATTRIBUTE_MAP = 'nosto_tagging/attribute_map';
 
     /**
+     * Path to store rating provider
+     */
+    const XML_PATH_RATING_PROVIDER = 'nosto_tagging/ratings_and_reviews/provider';
+
+    /**
      * List of strings to remove from the default Nosto account title
      *
      * @var array
@@ -513,4 +518,18 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         $tags = Mage::getStoreConfig($tag_path, $store);
         return explode(',', $tags);
     }
+
+    /**
+     * Return the retings and reviews provider
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     *
+     * @return string
+     */
+    public function getRatingsAndReviewsProvider($store = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_RATING_PROVIDER, $store);
+    }
+
+
 }

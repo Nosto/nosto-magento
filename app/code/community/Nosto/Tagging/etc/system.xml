@@ -287,6 +287,27 @@
                         </frequency>
                     </fields>
                 </scheduled_currency_exchange_rate_update>
+                <ratings_and_reviews translate="label">
+                    <label>Ratings &amp; Reviews</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>80</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <fields>
+                        <provider translate="label">
+                            <label>Ratings source</label>
+                            <frontend_type>radios</frontend_type>
+                            <source_model>nosto_tagging/system_config_source_ratings_provider</source_model>
+                            <frontend_model>nosto_tagging/adminhtml_system_config_ratings_provider</frontend_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </provider>
+                    </fields>
+                </ratings_and_reviews>
             </groups>
         </nosto_tagging>
     </sections>

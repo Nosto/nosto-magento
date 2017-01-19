@@ -37,40 +37,109 @@ require_once __DIR__ . '/../bootstrap.php';
 class Nosto_Tagging_Helper_Class extends Mage_Core_Helper_Abstract
 {
     /*
-     * Loads correct / plugable class based on payment provider
+     * Loads correct / plugable order class based on payment provider
      *
      * @param Mage_Sales_Model_Order $order
      *
-     * @return Nosto
+     * @return NostoOrderInterface
+     */
+    /**
+     * @param Mage_Sales_Model_Order $order
+     * @return false|Mage_Core_Model_Abstract|null
      */
     public function getOrderClass(Mage_Sales_Model_Order $order)
     {
-        $paymentProvider = false;
-        $orderClass = false;
+        $paymentProvider = '';
         $payment = $order->getPayment();
         if (is_object($payment)) {
             $paymentProvider = $payment->getMethod();
         }
+        $classId = sprintf(
+            'nosto_tagging/meta_order_%s',
+            $paymentProvider
+        );
+        return $this->getClass(
+            $classId,
+            'NostoOrderInterface',
+            'nosto_tagging/meta_order'
+        );
+    }
 
-        if (is_string($paymentProvider)) {
-            try {
-                $orderClass = Mage::getModel(
-                    sprintf(
-                        'nosto_tagging/meta_order_%s',
-                        $paymentProvider
-                    )
-                );
-            } catch (Exception $e) {
-                $orderClass = false;
+    /*
+     * Loads correct / plugable rating class
+     *
+     *
+     * @param Mage_Core_Model_Store $store
+     * @return Nosto_Tagging_Model_Meta_Rating|null
+     */
+    /**
+     * @param Mage_Core_Model_Store $store
+     * @return false|Mage_Core_Model_Abstract|null
+     */
+    public function getRatingClass(Mage_Core_Model_Store $store)
+    {
+        $class = null;
+        /* @var Nosto_Tagging_Helper_Data $dataHelper */
+        $dataHelper = Mage::helper('nosto_tagging');
+
+        if ($provider = $dataHelper->getRatingsAndReviewsProvider($store)) {
+            /* @var Nosto_Tagging_Helper_Rating $ratingHelper */
+            $ratingHelper = Mage::helper('nosto_tagging/rating');
+            $providerName = $ratingHelper->getModuleNameByProvider($provider);
+
+            $classId = self::createClassId('meta_rating_%s', $providerName);
+            $class = $this->getClass(
+                $classId,
+                'Nosto_Tagging_Model_Meta_Rating_Interface'
+            );
+        }
+
+        return $class;
+    }
+
+    /**
+     * Creates a class identifier
+     *
+     * @param $classString
+     * @param $identifier
+     * @return string
+     */
+    private static function createClassId($classString, $identifier)
+    {
+        $classId = sprintf(
+            'nosto_tagging/' . $classString,
+            $identifier
+        );
+
+        return strtolower($classId);
+    }
+
+    /**
+     * Tries to find class by given attributes
+     *
+     * @param $classId
+     * @param $expected
+     * @param bool $fallback
+     * @return false|Mage_Core_Model_Abstract|null
+     */
+    private function getClass($classId, $expected, $fallback = false) {
+        $class = null;
+        try {
+            if (is_string($classId)) {
+                $className = Mage::getConfig()->getModelClassName($classId);
+                if (class_exists($className)) {
+                    $class = Mage::getModel($classId);
+                }
+            }
+            if ($class instanceof $expected == false && $fallback !== false) {
+                $class = Mage::getModel($fallback);
+            }
+        } catch (Exception $e) {
+            if ($fallback !== false) {
+                $class = Mage::getModel($fallback);
             }
         }
 
-        if ($orderClass instanceof NostoOrderInterface) {
-
-            return $orderClass;
-        } else {
-
-            return Mage::getModel('nosto_tagging/meta_order');
-        }
+        return $class;
     }
 }
