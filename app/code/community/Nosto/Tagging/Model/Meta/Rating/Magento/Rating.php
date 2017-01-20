@@ -34,7 +34,7 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Rating_Yotpo_Yotpo extends Nosto_Tagging_Model_Meta_Rating
+class Nosto_Tagging_Model_Meta_Rating_Magento_Rating extends Nosto_Tagging_Model_Meta_Rating
 {
     /**
      * @inheritdoc
@@ -55,14 +55,16 @@ class Nosto_Tagging_Model_Meta_Rating_Yotpo_Yotpo extends Nosto_Tagging_Model_Me
             $ratingSummary instanceof Mage_Review_Model_Review_Summary
             && $ratingSummary->getRatingSummary()
         ) {
-            $this->_ratingValue = number_format(
-                round(
-                    $ratingSummary->getRatingSummary()/20,
+            $this->setRating(
+                number_format(
+                    round(
+                        $ratingSummary->getRatingSummary()/20,
+                        1
+                    ),
                     1
-                ),
-                1
+                )
             );
-            $this->_reviewCount = $ratingSummary->getReviewsCount();
+            $this->setReviewCount($ratingSummary->getReviewsCount());
         }
     }
 }
