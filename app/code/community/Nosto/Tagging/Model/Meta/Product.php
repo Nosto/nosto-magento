@@ -284,6 +284,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         $this->amendAttributeTags($product, $store);
         $this->amendReviews($product, $store);
         $this->amendCustomizableAttributes($product, $store);
+        $this->amendAlternativeImages($product, $store);
 
         /* @var Nosto_Tagging_Helper_Stock $stockHelper */
         $stockHelper = Mage::helper('nosto_tagging/stock');
@@ -361,6 +362,27 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         }
 
         return $tags;
+    }
+
+    /**
+     * Adds the alternative image urls
+     *
+     * @param Mage_Catalog_Model_Product $product the product model.
+     * @param Mage_Core_Model_Store      $store the store model.
+     *
+     */
+    protected function amendAlternativeImages(
+        Mage_Catalog_Model_Product $product,
+        Mage_Core_Model_Store $store
+    ) {
+        /* @var Mage_Catalog_Model_Product_Attribute_Media_Api $mediaApi */
+        $mediaApi = Mage::getModel('catalog/product_attribute_media_api');
+        $mediaItems = $mediaApi->items($product->getId(), $store);
+        if (is_array($mediaItems)) {
+            foreach ($mediaItems as $image) {
+                $this->addAlternateImage($image);
+            }
+        }
     }
 
     /**
@@ -846,5 +868,17 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     public function getUnitPricingUnit()
     {
         return $this->_unitPricingUnit;
+    }
+
+    public function addAlternateImage(array $image)
+    {
+        if (
+            isset($image['url'])
+            && (isset($image['exclude']) && empty($image['exclude']))
+            && !in_array($image['url'], $this->_alternateImageUrls)
+            && $image['url'] != $this->_imageUrl
+        ) {
+            $this->_alternateImageUrls[] = $image['url'];
+        }
     }
 }

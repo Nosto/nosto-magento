@@ -66,6 +66,10 @@ $dateHelper = Mage::helper('nosto_tagging/date');
     <?php if (!$helper->multiCurrencyDisabled()): ?>
         <span class="variation_id"><?php echo $helper->escapeHtml($product->getVariationId()); ?></span>
     <?php endif; ?>
+    <?php foreach ($product->getAlternateImageUrls() as $alternateImageUrl): ?>
+        <span class="alternate_image_url"><?php echo $helper->escapeHtml($alternateImageUrl); ?></span>
+    <?php endforeach; ?>
+
 </div>
 <?php if ($this->getCurrentCategory()): ?>
     <div class="nosto_category" style="display:none"><?php echo $helper->escapeHtml($this->getCurrentCategory()); ?></div>
