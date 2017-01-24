@@ -212,9 +212,6 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
      */
     public static $customizableAttributes = array(
         'gtin' => '_gtin',
-        'unit_price_unit' => '_unitPricingUnit',
-        'unit_price_measure' => '_unitPricingMeasure',
-        'unit_price_base_measure' => '_unitPricingBaseMeasure',
     );
 
     public function __construct()

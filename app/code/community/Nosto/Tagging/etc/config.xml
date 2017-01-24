@@ -197,6 +197,9 @@
             <attribute_map>
                 <gtin>0</gtin>
             </attribute_map>
+            <ratings_and_reviews>
+                <provider>0</provider>
+            </ratings_and_reviews>
         </nosto_tagging>
     </default>
     <crontab>

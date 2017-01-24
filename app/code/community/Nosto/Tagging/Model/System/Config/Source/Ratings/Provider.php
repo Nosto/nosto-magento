@@ -44,7 +44,7 @@ class Nosto_Tagging_Model_System_Config_Source_Ratings_Provider
     {
         /* @var Nosto_Tagging_Helper_Rating $nostoHelperRatings */
         $nostoHelperRatings = Mage::helper('nosto_tagging/rating');
-        $ratingProviders = $nostoHelperRatings->getRatingProviders();
+        $ratingProviders = $nostoHelperRatings->getActiveRatingProviders();
         $options = array(
             array(
                 'value' => 0,

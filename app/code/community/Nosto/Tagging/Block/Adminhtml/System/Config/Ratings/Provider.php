@@ -53,19 +53,26 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Ratings_Provider
         $this->setElement($element);
         $data = $this->element->getData();
         $values = $data['values'];
-        $html = '';
+        $html = '<table cellspacing="0" border="0" class="form-list">';
+        $html .='<colgroup class="label"></colgroup>';
+        $html .='<colgroup class="value"></colgroup>';
+        $html .='<colgroup class="scope-label"></colgroup>';
+        $html .='<colgroup class=""></colgroup>';
+        $html .= '<tbody>';
         if ($values) {
             foreach ($values as $data) {
                 $html .= $this->renderOption($data);
             }
         }
+        $html .= '</tbody></table>';
         return $html;
     }
 
     private function renderOption($item) {
+        $tdCss = 'vertical-align: middle; border-bottom: 1px gainsboro solid; padding: 4px 0 4px 0';
         $html = '';
         $currentValue = $this->element->getEscapedValue();
-        $selected = ($item['value'] === $currentValue) ? 'checked' : '';
+        $selected = ((string)$item['value'] === (string)$currentValue) ? 'checked' : '';
         $optionId = sprintf('nosto_tagging_ratings_and_reviews_provider_%s', $item['value']);
         $optionName = 'groups[ratings_and_reviews][fields][provider][value]';
         if (!empty($item['image_url'])) {
@@ -76,14 +83,20 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Ratings_Provider
         } else {
             $imageHtml = null;
         }
-        $html .= sprintf('<input id="%s" type="radio" name="%s" value="%s" %s>%s %s</input><br/>',
+        $html .= sprintf('<tr id="row_nosto_tagging_%s">', $optionId);
+        $html .= sprintf('<td style="%s"><input id="%s" type="radio" name="%s" value="%s" %s> %s</input></td>',
+            $tdCss,
             $optionId,
             $optionName,
             $item['value'],
             $selected,
-            $item['label'],
+            $item['label']
+        );
+        $html .= sprintf('<td style="%s"> %s</td>',
+            $tdCss,
             $imageHtml
         );
+        $html .= sprintf('</tr>');
 
         return $html;
     }

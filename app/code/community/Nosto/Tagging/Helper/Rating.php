@@ -34,13 +34,24 @@
  */
 class Nosto_Tagging_Helper_Rating extends Mage_Core_Helper_Abstract
 {
+    /**
+     * The ratings and reviews provider name for Yotpo
+     */
     const RATING_PROVIDER_YOTPO = 'yotpo';
+    /**
+     * The ratings and reviews provider name for Yotpo
+     */
     const RATING_PROVIDER_MAGENTO = 'magento';
 
+    /**
+     * A list of out-of-the-box supported ratings and reviews providers
+     * Note that these modules need to be enabled also
+     * @var array
+     */
     private static $ratingProviders = array(
         'yotpo' => array(
             'description' => 'Use Yotpo for ratings and reviews',
-            'image_url' => 'https://www.yotpo.com/wp-content/uploads/2015/11/Yotpo-Logo.png',
+            'image_url' => '',
             'module' => 'Yotpo_Yotpo'
         ),
         'magento' => array(
@@ -50,11 +61,41 @@ class Nosto_Tagging_Helper_Rating extends Mage_Core_Helper_Abstract
         ),
     );
 
-    public function getRatingProviders()
+    /**
+     * Returns and array of supported rating providers
+     *
+     * @return array
+     */
+    public function getSupportedRatingProviders()
     {
         return self::$ratingProviders;
     }
 
+    /**
+     * Returns installed and supported ratings and reviews providers
+     *
+     * @return array
+     */
+    public function getActiveRatingProviders()
+    {
+        $installed = array();
+        foreach ($this->getSupportedRatingProviders() as $provider=>$config) {
+            if ($provider === self::RATING_PROVIDER_MAGENTO
+                || Mage::helper('core')->isModuleEnabled($config['module'])
+            ) {
+                $installed[$provider] = $config;
+            }
+        }
+
+        return $installed;
+    }
+
+    /**
+     * Returns the module name for the given provider
+     *
+     * @param $provider
+     * @return null
+     */
     public function getModuleNameByProvider($provider)
     {
         $module = null;
@@ -67,6 +108,13 @@ class Nosto_Tagging_Helper_Rating extends Mage_Core_Helper_Abstract
         return $module;
     }
 
+    /**
+     * Tries to load class for handling the ratings and reviews for the
+     * given provider
+     *
+     * @param $provider
+     * @return null
+     */
     public function loadClass($provider)
     {
         $module = null;
