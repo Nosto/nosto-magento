@@ -58,7 +58,7 @@ abstract class Nosto_Tagging_Model_Meta_Rating
      */
     public function setReviewCount($reviewCount)
     {
-        $this->reviewCount = $reviewCount;
+        $this->reviewCount = (int)$reviewCount;
     }
 
     /**
@@ -74,7 +74,7 @@ abstract class Nosto_Tagging_Model_Meta_Rating
      */
     public function setRating($rating)
     {
-        $this->rating = $rating;
+        $this->rating = (float)$rating;
     }
 
     /**

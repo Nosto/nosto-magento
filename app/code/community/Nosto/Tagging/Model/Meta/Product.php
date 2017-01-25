@@ -393,7 +393,8 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     {
         /* @var Nosto_Tagging_Helper_Data $dataHelper*/
         $dataHelper = Mage::helper('nosto_tagging');
-        if ($dataHelper->getRatingsAndReviewsProvider($store)) {
+        $ratingProvider = $dataHelper->getRatingsAndReviewsProvider($store);
+        if ($ratingProvider) {
             /* @var Nosto_Tagging_Helper_Class $classHelper */
             $classHelper = Mage::helper('nosto_tagging/class');
             /* @var Nosto_Tagging_Model_Meta_Rating $ratingClass */
@@ -406,6 +407,15 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
                 if ($ratingClass->getReviewCount()) {
                     $this->_reviewCount = $ratingClass->getReviewCount();
                 }
+            } else {
+                Mage::log(
+                    sprintf(
+                        'No rating class implementation found for %s',
+                        $ratingProvider
+                    ),
+                    Zend_Log::WARN,
+                    Nosto_Tagging_Model_Base::LOG_FILE_NAME
+                );
             }
         }
     }
