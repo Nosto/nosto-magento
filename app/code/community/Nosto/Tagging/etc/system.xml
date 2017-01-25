@@ -184,7 +184,7 @@
                     <expanded>0</expanded>
                     <fields>
                         <gtin translate="label">
-                            <label>Gtin / barcode attribute</label>
+                            <label>GTIN / barcode attribute</label>
                             <comment>Choose attribute that will be used as GTIN / barcode attribute for Nosto product tagging</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>nosto_tagging/system_config_source_attribute</source_model>

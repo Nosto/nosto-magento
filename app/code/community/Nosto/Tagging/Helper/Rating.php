@@ -44,20 +44,35 @@ class Nosto_Tagging_Helper_Rating extends Mage_Core_Helper_Abstract
     const RATING_PROVIDER_MAGENTO = 'magento';
 
     /**
+     * Array key for provider description
+     */
+    const FIELD_DESCRIPTION = 'description';
+
+    /**
+     * Array key for provider image url
+     */
+    const FIELD_IMAGE_URL = 'image_url';
+
+    /**
+     * Array key for provider module name
+     */
+    const FIELD_MODULE = 'module';
+
+    /**
      * A list of out-of-the-box supported ratings and reviews providers
      * Note that these modules need to be enabled also
      * @var array
      */
     private static $ratingProviders = array(
-        'yotpo' => array(
-            'description' => 'Use Yotpo for ratings and reviews',
-            'image_url' => '',
-            'module' => 'Yotpo_Yotpo'
+        self::RATING_PROVIDER_YOTPO => array(
+            self::FIELD_DESCRIPTION => 'Use Yotpo for ratings and reviews',
+            self::FIELD_IMAGE_URL => '',
+            self::FIELD_MODULE => 'Yotpo_Yotpo'
         ),
-        'magento' => array(
-            'description' => 'Use Magento\'s native ratings and reviews',
-            'image_url' => '',
-            'module' => 'Magento_Rating'
+        self::RATING_PROVIDER_MAGENTO => array(
+            self::FIELD_DESCRIPTION => 'Use Magento\'s native ratings and reviews',
+            self::FIELD_IMAGE_URL => '',
+            self::FIELD_MODULE => 'Magento_Rating'
         ),
     );
 
@@ -80,8 +95,9 @@ class Nosto_Tagging_Helper_Rating extends Mage_Core_Helper_Abstract
     {
         $installed = array();
         foreach ($this->getSupportedRatingProviders() as $provider=>$config) {
-            if ($provider === self::RATING_PROVIDER_MAGENTO
-                || Mage::helper('core')->isModuleEnabled($config['module'])
+            if (
+                $provider === self::RATING_PROVIDER_MAGENTO
+                || Mage::helper('core')->isModuleEnabled($config[self::FIELD_MODULE])
             ) {
                 $installed[$provider] = $config;
             }
@@ -101,9 +117,9 @@ class Nosto_Tagging_Helper_Rating extends Mage_Core_Helper_Abstract
         $module = null;
         if (
             !empty(self::$ratingProviders[$provider])
-            && !empty(self::$ratingProviders[$provider]['module'])
+            && !empty(self::$ratingProviders[$provider][self::FIELD_MODULE])
         ) {
-            $module = self::$ratingProviders[$provider]['module'];
+            $module = self::$ratingProviders[$provider][self::FIELD_MODULE];
         }
         return $module;
     }
@@ -120,9 +136,9 @@ class Nosto_Tagging_Helper_Rating extends Mage_Core_Helper_Abstract
         $module = null;
         if (
             !empty(self::$ratingProviders[$provider])
-            && !empty(self::$ratingProviders[$provider]['module'])
+            && !empty(self::$ratingProviders[$provider][self::FIELD_MODULE])
         ) {
-            $module = self::$ratingProviders[$provider]['module'];
+            $module = self::$ratingProviders[$provider][self::FIELD_MODULE];
         }
         return $module;
     }

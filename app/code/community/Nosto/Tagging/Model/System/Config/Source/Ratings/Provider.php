@@ -25,6 +25,8 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+use Nosto_Tagging_Helper_Rating as RatingHelper;
+
 /**
  * Extension system setting source model for choosing which attributes should
  * be added to tags
@@ -54,12 +56,12 @@ class Nosto_Tagging_Model_System_Config_Source_Ratings_Provider
         foreach ($ratingProviders as $key=>$ratingProvider) {
             $option = array(
                 'value' => $key,
-                'label' => $ratingProvider['description']
+                'label' => $ratingProvider[RatingHelper::FIELD_DESCRIPTION]
             );
-            if (!empty($ratingProvider['image_url'])){
-                $option['image_url'] = $ratingProvider['image_url'];
+            if (!empty($ratingProvider[RatingHelper::FIELD_IMAGE_URL])){
+                $option[RatingHelper::FIELD_IMAGE_URL] = $ratingProvider[RatingHelper::FIELD_IMAGE_URL];
             } else {
-                $option['image_url'] = null;
+                $option[RatingHelper::FIELD_IMAGE_URL] = null;
             }
             $options[] = $option;
         }

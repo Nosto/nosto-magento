@@ -282,22 +282,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         $this->amendReviews($product, $store);
         $this->amendCustomizableAttributes($product, $store);
         $this->amendAlternativeImages($product, $store);
-
-        /* @var Nosto_Tagging_Helper_Stock $stockHelper */
-        $stockHelper = Mage::helper('nosto_tagging/stock');
-        try {
-            $this->_inventoryLevel = $stockHelper->getQty($product);
-        } catch (Exception $e) {
-            Mage::log(
-                sprintf(
-                    'Failed to resolve inventory level for product %d to tags. Error message was: %s',
-                    $product->getId(),
-                    $e->getMessage()
-                ),
-                Zend_Log::WARN,
-                Nosto_Tagging_Model_Base::LOG_FILE_NAME
-            );
-        }
+        $this->amendInventoryLevel($product);
     }
 
     /**
@@ -362,6 +347,32 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     }
 
     /**
+     * Adds the stock level / inventory level
+     *
+     * @param Mage_Catalog_Model_Product $product the product model.
+     *
+     */
+    protected function amendInventoryLevel(
+        Mage_Catalog_Model_Product $product
+    ) {
+        /* @var Nosto_Tagging_Helper_Stock $stockHelper */
+        $stockHelper = Mage::helper('nosto_tagging/stock');
+        try {
+            $this->_inventoryLevel = $stockHelper->getQty($product);
+        } catch (Exception $e) {
+            Mage::log(
+                sprintf(
+                    'Failed to resolve inventory level for product %d to tags. Error message was: %s',
+                    $product->getId(),
+                    $e->getMessage()
+                ),
+                Zend_Log::WARN,
+                Nosto_Tagging_Model_Base::LOG_FILE_NAME
+            );
+        }
+    }
+
+    /**
      * Adds the alternative image urls
      *
      * @param Mage_Catalog_Model_Product $product the product model.
@@ -399,7 +410,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
             $classHelper = Mage::helper('nosto_tagging/class');
             /* @var Nosto_Tagging_Model_Meta_Rating $ratingClass */
             $ratingClass = $classHelper->getRatingClass($store);
-            if ($ratingClass) {
+            if ($ratingClass instanceof Nosto_Tagging_Model_Meta_Rating_Interface) {
                 $ratingClass->init($product, $store);
                 if ($ratingClass->getRating()) {
                     $this->_ratingValue = $ratingClass->getRating();
