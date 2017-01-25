@@ -120,6 +120,16 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_EXCHANGE_RATE_CRON_FREQUENCY = 'nosto_tagging/scheduled_currency_exchange_rate_update/frequency';
 
     /**
+     * Path to store attribute map
+     */
+    const XML_PATH_ATTRIBUTE_MAP = 'nosto_tagging/attribute_map';
+
+    /**
+     * Path to store rating provider
+     */
+    const XML_PATH_RATING_PROVIDER = 'nosto_tagging/ratings_and_reviews/provider';
+
+    /**
      * List of strings to remove from the default Nosto account title
      *
      * @var array
@@ -255,7 +265,22 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getBrandAttribute($store = null)
     {
-        return Mage::getStoreConfig(self::XML_PATH_BRAND_ATTRIBUTE, $store);
+        return Mage::getStoreConfig(
+            self::XML_PATH_BRAND_ATTRIBUTE, $store
+        );
+    }
+
+    /**
+     * Returns the mapped attribute
+     *
+     * @param string $attribute
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     * @return string
+     */
+    public function getMappedAttribute($attribute, $store = null)
+    {
+        $xmlPath = self::XML_PATH_ATTRIBUTE_MAP . "/" . $attribute;
+        return Mage::getStoreConfig($xmlPath, $store);
     }
 
     /**
@@ -493,4 +518,18 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         $tags = Mage::getStoreConfig($tag_path, $store);
         return explode(',', $tags);
     }
+
+    /**
+     * Return the retings and reviews provider
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     *
+     * @return string
+     */
+    public function getRatingsAndReviewsProvider($store = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_RATING_PROVIDER, $store);
+    }
+
+
 }
