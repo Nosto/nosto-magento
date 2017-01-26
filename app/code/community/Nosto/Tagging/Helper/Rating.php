@@ -37,11 +37,11 @@ class Nosto_Tagging_Helper_Rating extends Mage_Core_Helper_Abstract
     /**
      * The ratings and reviews provider name for Yotpo
      */
-    const RATING_PROVIDER_YOTPO = 'yotpo';
+    const RATING_PROVIDER_YOTPO = 'Yotpo_Yotpo';
     /**
      * The ratings and reviews provider name for Yotpo
      */
-    const RATING_PROVIDER_MAGENTO = 'magento';
+    const RATING_PROVIDER_MAGENTO = 'Mage_Rating';
 
     /**
      * Array key for provider description
@@ -59,6 +59,11 @@ class Nosto_Tagging_Helper_Rating extends Mage_Core_Helper_Abstract
     const FIELD_MODULE = 'module';
 
     /**
+     * Array key for provider module name
+     */
+    const FIELD_CONFIG_PATH = 'config_path';
+
+    /**
      * A list of out-of-the-box supported ratings and reviews providers
      * Note that these modules need to be enabled also
      * @var array
@@ -68,11 +73,12 @@ class Nosto_Tagging_Helper_Rating extends Mage_Core_Helper_Abstract
             self::FIELD_DESCRIPTION => 'Use Yotpo for ratings and reviews',
             self::FIELD_IMAGE_URL => '',
             self::FIELD_MODULE => 'Yotpo_Yotpo'
+
         ),
         self::RATING_PROVIDER_MAGENTO => array(
             self::FIELD_DESCRIPTION => 'Use Magento\'s native ratings and reviews',
             self::FIELD_IMAGE_URL => '',
-            self::FIELD_MODULE => 'Magento_Rating'
+            self::FIELD_MODULE => 'Mage_Rating'
         ),
     );
 
@@ -96,8 +102,7 @@ class Nosto_Tagging_Helper_Rating extends Mage_Core_Helper_Abstract
         $installed = array();
         foreach ($this->getSupportedRatingProviders() as $provider=>$config) {
             if (
-                $provider === self::RATING_PROVIDER_MAGENTO
-                || Mage::helper('core')->isModuleEnabled($config[self::FIELD_MODULE])
+                Mage::helper('core')->isModuleEnabled($config[self::FIELD_MODULE])
             ) {
                 $installed[$provider] = $config;
             }

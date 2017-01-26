@@ -89,7 +89,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      */
     const XML_PATH_USE_PRODUCT_API = 'nosto_tagging/general/use_product_api';
 
-    /*
+    /**
      * @var boolean the path for setting for product urls
      */
     const XML_PATH_PRETTY_URL = 'nosto_tagging/pretty_url/in_use';
@@ -104,17 +104,17 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      */
     const XML_PATH_STORE_FRONT_PAGE_URL = 'nosto_tagging/settings/front_page_url';
 
-    /*
+    /**
      * @var int the product attribute type id
      */
     const PRODUCT_TYPE_ATTRIBUTE_ID = 4;
 
-    /*
+    /**
      * @var string Nosto customer reference attribute name
      */
     const NOSTO_CUSTOMER_REFERENCE_ATTRIBUTE_NAME = 'nosto_customer_reference';
 
-    /*
+    /**
      * @var string Nosto customer reference attribute name
      */
     const XML_PATH_EXCHANGE_RATE_CRON_FREQUENCY = 'nosto_tagging/scheduled_currency_exchange_rate_update/frequency';
@@ -531,5 +531,44 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         return Mage::getStoreConfig(self::XML_PATH_RATING_PROVIDER, $store);
     }
 
+    /**
+     * Returns all store views for the installation
+     *
+     * @return Store[]
+     */
+    public function getAllStoreViews()
+    {
+        $response = array();
+        foreach (Mage::app()->getWebsites() as $website) {
+            foreach ($website->getGroups() as $group) {
+                $stores = $group->getStores();
+                foreach ($stores as $store) {
+                    $response[] = $store;
+                }
+            }
+        }
 
+        return $response;
+    }
+
+    /**
+     * Returns an array of store config in each store view
+     *
+     * @param $path
+     * @return array
+     */
+    public function getConfigInAllStores($path)
+    {
+        $stores = $this->getAllStoreViews();
+        $values = array();
+        foreach ($stores as $store) {
+            $storeId = $store->getStoreId();
+            if ($storeId) {
+                $values[$storeId] = Mage::getStoreConfig($path, $store);
+            }
+        }
+
+        return $values;
+    }
 }
+

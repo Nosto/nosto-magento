@@ -34,7 +34,7 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Rating_Magento_Rating extends Nosto_Tagging_Model_Meta_Rating
+class Nosto_Tagging_Model_Meta_Rating_Mage_Rating extends Nosto_Tagging_Model_Meta_Rating
 {
     /**
      * @inheritdoc
@@ -44,13 +44,10 @@ class Nosto_Tagging_Model_Meta_Rating_Magento_Rating extends Nosto_Tagging_Model
         Mage_Core_Model_Store $store
     )
     {
-
-        //Build logic here, pluggable? Below is mage
         /* @var Mage_Rating_Model_Rating $review_summary */
         $ratingSummary = Mage::getModel('review/review_summary')
             ->setStoreId($store->getId())
             ->load($product->getId());
-
         if (
             $ratingSummary instanceof Mage_Review_Model_Review_Summary
             && $ratingSummary->getRatingSummary()
