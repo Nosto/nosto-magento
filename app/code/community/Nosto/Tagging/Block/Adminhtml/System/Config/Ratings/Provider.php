@@ -52,6 +52,10 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Ratings_Provider
 
         $this->setElement($element);
         $data = $this->element->getData();
+        if ($this->element->getInherit()) {
+            $this->element->setDisabled(true);
+        }
+
         $values = $data['values'];
         $html = '<table cellspacing="0" border="0" class="form-list">';
         $html .='<colgroup class="label"></colgroup>';
@@ -72,6 +76,10 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Ratings_Provider
         $tdCss = 'vertical-align: middle; border-bottom: 1px gainsboro solid; padding: 4px 0 4px 0';
         $html = '';
         $currentValue = $this->element->getEscapedValue();
+        $disabled = '';
+        if ($this->element->getDisabled()) {
+            $disabled = 'disabled="disabled"';
+        }
         $selected = ((string)$item['value'] === (string)$currentValue) ? 'checked' : '';
         $optionId = sprintf('nosto_tagging_ratings_and_reviews_provider_%s', $item['value']);
         $optionName = 'groups[ratings_and_reviews][fields][provider][value]';
@@ -84,12 +92,13 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Ratings_Provider
             $imageHtml = null;
         }
         $html .= sprintf('<tr id="row_nosto_tagging_%s">', $optionId);
-        $html .= sprintf('<td style="%s"><input id="%s" type="radio" name="%s" value="%s" %s> %s</input></td>',
+        $html .= sprintf('<td style="%s"><input id="%s" type="radio" name="%s" value="%s" %s %s> %s</input></td>',
             $tdCss,
             $optionId,
             $optionName,
             $item['value'],
             $selected,
+            $disabled,
             $item['label']
         );
         $html .= sprintf('<td style="%s"> %s</td>',
