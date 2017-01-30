@@ -253,7 +253,7 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
         try {
             /** @var Nosto_Tagging_Model_Meta_Account $settings */
             $settings = Mage::getModel('nosto_tagging/meta_account');
-            $settings->loadData($store);
+            $settings->loadData($store, null, null);
             $operation = new NostoOperationSettings($account);
             return $operation->update($settings);
         } catch (NostoException $e) {

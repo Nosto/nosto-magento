@@ -535,12 +535,14 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Returns all store views for the installation
      *
-     * @return Store[]
+     * @return Mage_Core_Model_Store[]
      */
     public function getAllStoreViews()
     {
         $response = array();
+        /** @var Mage_Core_Model_Website $website */
         foreach (Mage::app()->getWebsites() as $website) {
+            /** @var Mage_Core_Model_Store_Group $group */
             foreach ($website->getGroups() as $group) {
                 $stores = $group->getStores();
                 foreach ($stores as $store) {
@@ -563,6 +565,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         $stores = $this->getAllStoreViews();
         $values = array();
         foreach ($stores as $store) {
+            /** @noinspection PhpUndefinedMethodInspection */
             $storeId = $store->getStoreId();
             if ($storeId) {
                 $values[$storeId] = Mage::getStoreConfig($path, $store);

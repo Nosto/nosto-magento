@@ -65,16 +65,19 @@ class Nosto_Tagging_Helper_Stock extends Mage_Core_Helper_Abstract
                 $qty = $this->getMinQty($products);
                 break;
             case Mage_Catalog_Model_Product_Type::TYPE_GROUPED:
-                $products = $product->getTypeInstance(true)->getAssociatedProducts($product);
+                /** @var Mage_Catalog_Model_Product_Type_Grouped $productType */
+                $productType = $product->getTypeInstance(true);
+                $products = $productType->getAssociatedProducts($product);
                 $qty = $this->getMinQty($products);
                 break;
             case Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE:
-                $products = Mage::getModel(
-                    'catalog/product_type_configurable'
-                )->getUsedProducts(null, $product);
+                /** @var Mage_Catalog_Model_Product_Type_Configurable $productType */
+                $productType = Mage::getModel('catalog/product_type_configurable');
+                $products = $productType->getUsedProducts(null, $product);
                 $qty = $this->getQtySum($products);
                 break;
             default:
+                /** @var Mage_CatalogInventory_Model_Stock_Item $stockItem */
                 $stockItem = Mage::getModel('cataloginventory/stock_item');
                 $qty += $stockItem->loadByProduct($product)->getQty();
                 break;
