@@ -10,11 +10,15 @@
         }
     ],
     "require": {
-        "nosto/php-sdk": "1.16.1"
+        "nosto/php-sdk": "dev-feature/refactor-and-improve-sdk"
     },
     "require-dev": {
         "mridang/magazine": "0.1",
-        "phing/phing": "2.*"
+        "phing/phing": "2.*",
+        "etsy/phan": "0.8.0",
+        "phpmd/phpmd": "^2.5",
+        "squizlabs/php_codesniffer": "2.*",
+        "sebastian/phpcpd": "*"
     },
     "config": {
         "vendor-dir": "lib"

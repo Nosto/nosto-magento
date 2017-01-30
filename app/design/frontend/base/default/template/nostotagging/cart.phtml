@@ -27,8 +27,6 @@
 
 /**
  * @var $this               Nosto_Tagging_Block_Cart
- * @var $nostoHelper        Nosto_Tagging_Helper_Data
- * @var $nostoPriceHelper   Nosto_Tagging_Helper_Price
  */
 $items = $this->getItems();
 $currency = Mage::app()->getStore()->getCurrentCurrencyCode();
@@ -44,7 +42,7 @@ $nostoPriceHelper = Mage::helper('nosto_tagging/price');
         <span class="product_id"><?php echo $this->getProductId($item); ?></span>
         <span class="quantity"><?php echo $item->getQty(); ?></span>
         <span class="name"><?php echo $nostoHelper->escapeHtml($this->getProductName($item)); ?></span>
-        <span class="unit_price"><?php echo $nostoPriceHelper->getFormattedPrice($item->getPriceInclTax()); ?></span>
+        <span class="unit_price"><?php echo $this->formatNostoPrice($item->getPriceInclTax()); ?></span>
         <span class="price_currency_code"><?php echo strtoupper($currency); ?></span>
     </div>
     <?php endforeach; ?>

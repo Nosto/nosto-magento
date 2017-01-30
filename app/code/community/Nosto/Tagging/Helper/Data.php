@@ -119,6 +119,10 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      */
     const XML_PATH_EXCHANGE_RATE_CRON_FREQUENCY = 'nosto_tagging/scheduled_currency_exchange_rate_update/frequency';
 
+    const TAG1 = 'tag1';
+    const TAG2 = 'tag2';
+    const TAG3 = 'tag3';
+
     /**
      * Path to store attribute map
      */
@@ -143,11 +147,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      *
      * @var array
      */
-    public static $validTags = array(
-        'tag1',
-        'tag2',
-        'tag3'
-    );
+    public static $validTags = array(self::TAG1, self::TAG2, self::TAG3);
 
     /**
      * List of attributes that cannot be added to tags due to data type and
@@ -218,7 +218,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         $installationId = Mage::getStoreConfig(self::XML_PATH_INSTALLATION_ID);
         if (empty($installationId)) {
             // Running bin2hex() will make the ID string length 64 characters.
-            $installationId = bin2hex(NostoCryptRandom::getRandomString(32));
+            $installationId = bin2hex(phpseclib\Crypt\Random::string(32));
             /** @var Mage_Core_Model_Config $config */
             $config = Mage::getModel('core/config');
             $config->saveConfig(
@@ -482,6 +482,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
                 'label' => 'None'
             )
         );
+        /** @var Mage_Eav_Model_Attribute $attribute */
         foreach($attributes as $attribute) {
             $code = $attribute->getData('attribute_code');
             if (in_array($code, self::$notValidAttributesForTags)) {

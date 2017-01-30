@@ -51,14 +51,14 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
     /**
      * Saves the account and the associated api tokens for the store view scope.
      *
-     * @param NostoAccount $account the account to save.
+     * @param NostoAccountInterface $account the account to save.
      * @param Mage_Core_Model_Store|null $store the store view to save it for.
      *
      * @return bool true on success, false otherwise.
      *
      */
     public function save(
-        NostoAccount $account,
+        NostoAccountInterface $account,
         Mage_Core_Model_Store $store = null
     )
     {
@@ -95,7 +95,7 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
      * Removes an account with associated api tokens for the store view scope
      * and informs Nosto about the removal via API.
      *
-     * @param NostoAccount               $account the account to remove.
+     * @param NostoAccount $account the account to remove.
      * @param Mage_Core_Model_Store|null $store   the store view to remove it for.
      *
      * @return bool true on success, false otherwise.
@@ -103,10 +103,13 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
     public function remove(NostoAccount $account, Mage_Core_Model_Store $store = null)
     {
         $success = true;
-        if ($this->resetAccountSettings($account, $store)) {
+        if ($this->resetAccountSettings($store)) {
             try {
-                // Notify Nosto that the account was deleted.
-                $account->delete();
+                /** @var Nosto_Tagging_Model_Meta_User $currentUser */
+                $currentUser = Mage::getModel('nosto_tagging/meta_user');
+                $currentUser->loadData();
+                $operation = new NostoOperationUninstall($account);
+                $operation->delete($currentUser);
             } catch (NostoException $e) {
                 // Failures are logged but not shown to the user.
                 Mage::log(
@@ -169,22 +172,6 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Returns the meta data model needed for creating a new nosto account
-     * using the Nosto SDk.
-     *
-     * @param Mage_Core_Model_Store $store the store view to get the data for.
-     *
-     * @return Nosto_Tagging_Model_Meta_Account the meta data instance.
-     */
-    public function getMetaData(Mage_Core_Model_Store $store)
-    {
-        /** @var Nosto_Tagging_Model_Meta_Account $meta */
-        $meta = Mage::getModel('nosto_tagging/meta_account');
-        $meta->loadData($store);
-        return $meta;
-    }
-
-    /**
      * Returns the account administration iframe url.
      * If there is no account the "front page" url will be returned where an
      * account can be created from.
@@ -197,12 +184,14 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
      */
     public function getIframeUrl(Mage_Core_Model_Store $store, NostoAccount $account = null, array $params = array())
     {
-        /** @var Nosto_Tagging_Model_Meta_Account_Iframe $meta */
-        $meta = Mage::getModel('nosto_tagging/meta_account_iframe');
-        $meta->loadData($store);
-        /** @var NostoHelperIframe $helper */
-        $helper = Nosto::helper('iframe');
-        return $helper->getUrl($meta, $account, $params);
+        /** @var Nosto_Tagging_Model_Meta_Account_Iframe $iframeParams */
+        $iframeParams = Mage::getModel('nosto_tagging/meta_account_iframe');
+        $iframeParams->loadData($store);
+
+        /** @var Nosto_Tagging_Model_Meta_User $currentUser */
+        $currentUser = Mage::getModel('nosto_tagging/meta_user');
+        $currentUser->loadData();
+        return NostoHelperIframe::getUrl($iframeParams, $account, $currentUser, $params);
     }
 
     /**
@@ -211,12 +200,12 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
      * Checks if multi currency is enabled for the store before attempting to
      * send the exchange rates.
      *
-     * @param NostoAccount $account the account for which tp update the rates.
+     * @param NostoAccountInterface $account the account for which tp update the rates.
      * @param Mage_Core_Model_Store $store the store which rates are to be updated.
      *
      * @return bool
      */
-    public function updateCurrencyExchangeRates(NostoAccount $account, Mage_Core_Model_Store $store)
+    public function updateCurrencyExchangeRates(NostoAccountInterface $account, Mage_Core_Model_Store $store)
     {
         /** @var Nosto_Tagging_Helper_Data $helper */
         $helper = Mage::helper('nosto_tagging');
@@ -237,11 +226,10 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
         /** @var Nosto_Tagging_Helper_Currency $helper */
         $helper = Mage::helper('nosto_tagging/currency');
         try {
-            /** @var Nosto_Tagging_Model_Collection_Rates $collection */
-            $collection = $helper
-                ->getExchangeRateCollection($baseCurrencyCode, $currencyCodes);
-            $service = new NostoOperationExchangeRate($account, $collection);
-            return $service->update();
+            /** @var NostoExchangeRateCollection $collection */
+            $collection = $helper->getExchangeRateCollection($baseCurrencyCode, $currencyCodes);
+            $service = new NostoOperationExchangeRate($account);
+            return $service->update($collection);
         } catch (NostoException $e) {
             Mage::log("\n" . $e, Zend_Log::ERR, Nosto_Tagging_Model_Base::LOG_FILE_NAME);
         }
@@ -263,8 +251,11 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
     public function updateAccount(NostoAccount $account, Mage_Core_Model_Store $store)
     {
         try {
-            $service = new NostoOperationAccount($account, $this->getMetaData($store));
-            return $service->update();
+            /** @var Nosto_Tagging_Model_Meta_Account $settings */
+            $settings = Mage::getModel('nosto_tagging/meta_account');
+            $settings->loadData($store);
+            $operation = new NostoOperationSettings($account);
+            return $operation->update($settings);
         } catch (NostoException $e) {
             Mage::log(
                 "\n" . $e, Zend_Log::ERR,
@@ -278,12 +269,10 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
      * Resets all saved Nosto account settings in Magento. This does not reset
      * tokens or any of the Nosto configurations.
      *
-     * @param NostoAccount $account
      * @param Mage_Core_Model_Store|null $store
-     *
      * @return bool
      */
-    public function resetAccountSettings(NostoAccount $account, Mage_Core_Model_Store $store = null)
+    public function resetAccountSettings(Mage_Core_Model_Store $store = null)
     {
         if ($store === null) {
             $store = Mage::app()->getStore();

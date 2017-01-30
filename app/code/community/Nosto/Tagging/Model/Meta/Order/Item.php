@@ -34,34 +34,8 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract implements NostoOrderPurchasedItemInterface
+class Nosto_Tagging_Model_Meta_Order_Item extends NostoLineItem
 {
-    /**
-     * @var string|int the unique identifier of the purchased item.
-     * If this item is for discounts or shipping cost, the id can be 0.
-     */
-    protected $_productId;
-
-    /**
-     * @var int the quantity of the item included in the order.
-     */
-    protected $_quantity;
-
-    /**
-     * @var string the name of the item included in the order.
-     */
-    protected $_name;
-
-    /**
-     * @var float The unit price of the item included in the order.
-     */
-    protected $_unitPrice;
-
-    /**
-     * @var string the 3-letter ISO code (ISO 4217) for the item currency.
-     */
-    protected $_currencyCode;
-
     /**
      * Constructor.
      *
@@ -134,69 +108,10 @@ class Nosto_Tagging_Model_Meta_Order_Item extends Mage_Core_Model_Abstract imple
             $args['currencyCode'] = '';
         }
 
-        $this->_productId = $args['productId'];
-        $this->_quantity = $args['quantity'];
-        $this->_name = $args['name'];
-        $this->_unitPrice = $args['unitPrice'];
-        $this->_currencyCode = $args['currencyCode'];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function _construct()
-    {
-        $this->_init('nosto_tagging/meta_order_item');
-    }
-
-    /**
-     * The unique identifier of the purchased item.
-     * If this item is for discounts or shipping cost, the id can be 0.
-     *
-     * @return string|int
-     */
-    public function getProductId()
-    {
-        return $this->_productId;
-    }
-
-    /**
-     * The quantity of the item included in the order.
-     *
-     * @return int the quantity.
-     */
-    public function getQuantity()
-    {
-        return $this->_quantity;
-    }
-
-    /**
-     * The name of the item included in the order.
-     *
-     * @return string the name.
-     */
-    public function getName()
-    {
-        return $this->_name;
-    }
-
-    /**
-     * The unit price of the item included in the order.
-     *
-     * @return float the unit price.
-     */
-    public function getUnitPrice()
-    {
-        return $this->_unitPrice;
-    }
-
-    /**
-     * The 3-letter ISO code (ISO 4217) for the item currency.
-     *
-     * @return string the currency ISO code.
-     */
-    public function getCurrencyCode()
-    {
-        return $this->_currencyCode;
+        $this->setProductId($args['productId']);
+        $this->setQuantity($args['quantity']);
+        $this->setName($args['name']);
+        $this->setPrice($args['unitPrice']);
+        $this->setPriceCurrencyCode($args['currencyCode']);
     }
 }

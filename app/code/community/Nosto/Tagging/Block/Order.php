@@ -82,4 +82,14 @@ class Nosto_Tagging_Block_Order extends Mage_Checkout_Block_Success
         return $helper->getVisitorChecksum();
     }
 
+    /**
+     * Formats a price e.g. "1234.56".
+     *
+     * @param int $price the price to format.
+     * @return string the formatted price.
+     */
+    public function formatNostoPrice($price)
+    {
+        return NostoHelperPrice::format($price);
+    }
 }

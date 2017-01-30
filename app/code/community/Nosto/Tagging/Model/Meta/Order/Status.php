@@ -34,30 +34,12 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Order_Status extends Mage_Core_Model_Abstract implements NostoOrderStatusInterface
+class Nosto_Tagging_Model_Meta_Order_Status extends NostoOrderStatus
 {
     /**
-     * @var string the order status code.
-     */
-    protected $_code;
-
-    /**
-     * @var string the order status label.
-     */
-    protected $_label;
-
-    /**
-     * @var string the order status created at date.
-     */
-    protected $_createdAt;
-
-    /**
-     * Constructor.
-     *
-     * Sets up this Value Object.
+     * Constructor. Sets up this Value Object.
      *
      * @param array $args the object data.
-     *
      */
     public function __construct(array $args)
     {
@@ -102,46 +84,8 @@ class Nosto_Tagging_Model_Meta_Order_Status extends Mage_Core_Model_Abstract imp
             $args['createdAt'] = '';
         }
 
-        $this->_code = $args['code'];
-        $this->_label = $args['label'];
-        $this->_createdAt = $args['createdAt'];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function _construct()
-    {
-        $this->_init('nosto_tagging/meta_order_status');
-    }
-
-    /**
-     * Returns the order status code.
-     *
-     * @return string the code.
-     */
-    public function getCode()
-    {
-        return $this->_code;
-    }
-
-    /**
-     * Returns the order status label.
-     *
-     * @return string the label.
-     */
-    public function getLabel()
-    {
-        return $this->_label;
-    }
-
-    /**
-     * Returns the status created date.
-     *
-     * @return string the created date or null if not set.
-     */
-    public function getCreatedAt()
-    {
-        return $this->_createdAt;
+        $this->setCode($args['code']);
+        $this->setLabel($args['label']);
+        //$this->_createdAt = $args['createdAt']; // TODO
     }
 }

@@ -98,8 +98,7 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
             if ($currentPage > $orders->getLastPageNumber()) {
                 $orders = array();
             }
-            /** @var Nosto_Tagging_Model_Export_Collection_Order $collection */
-            $collection = Mage::getModel('nosto_tagging/export_collection_order');
+            $collection = new NostoOrderCollection();
             /* @var Mage_Sales_Model_Order $order */
             foreach ($orders as $order) {
                 /** @var Nosto_Tagging_Helper_Class $helper */
@@ -108,7 +107,7 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
                 $meta = $helper->getOrderClass($order);
                 $meta->includeSpecialItems = true;
                 $meta->loadData($order);
-                $collection[] = $meta;
+                $collection->append($order);
             }
             $this->export($collection);
         }
@@ -146,16 +145,13 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
             if ($currentPage > $products->getLastPageNumber()) {
                 $products = array();
             }
-            $collection = new NostoExportProductCollection();
+            $collection = new NostoProductCollection();
             /** @var Mage_Catalog_Model_Product $product */
             foreach ($products as $product) {
                 /** @var Nosto_Tagging_Model_Meta_Product $meta */
                 $meta = Mage::getModel('nosto_tagging/meta_product');
                 $meta->loadData($product);
-                $validator = new NostoValidator($meta);
-                if ($validator->validate()) {
-                    $collection[] = $meta;
-                }
+                $collection->append($product);
             }
             $this->export($collection);
         }
@@ -164,15 +160,15 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
     /**
      * Encrypts the export collection and outputs it to the browser.
      *
-     * @param NostoExportCollectionInterface $collection the data collection to export.
+     * @param NostoCollection $collection the data collection to export.
      */
-    protected function export(NostoExportCollectionInterface $collection)
+    protected function export(NostoCollection $collection)
     {
         /** @var Nosto_Tagging_Helper_Account $helper */
         $helper = Mage::helper('nosto_tagging/account');
         $account = $helper->find();
         if ($account !== null) {
-            $cipherText = NostoExporter::export($account, $collection);
+            $cipherText = NostoHelperExporter::export($account, $collection);
             echo $cipherText;
         }
         die();

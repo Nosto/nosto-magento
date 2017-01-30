@@ -129,6 +129,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
     public function getPreviewUrlProduct(Mage_Core_Model_Store $store)
     {
         $productUrl = '';
+        /** @var Mage_Catalog_Model_Resource_Product_Collection $collection */
         $collection = Mage::getModel('catalog/product')
             ->getCollection()
             ->addStoreFilter($store->getId())
@@ -166,6 +167,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
     {
         $rootCategoryId = (int)$store->getRootCategoryId();
         $categoryUrl = '';
+        /** @var Mage_Catalog_Model_Resource_Category_Collection $collection */
         $collection = Mage::getModel('catalog/category')
             ->getCollection()
             ->addFieldToFilter('is_active', 1)

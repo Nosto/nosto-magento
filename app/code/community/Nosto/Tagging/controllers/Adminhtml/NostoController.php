@@ -104,11 +104,10 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
 
         $store = $this->getSelectedStore();
         if ($this->getRequest()->isPost() && $store !== null) {
-            /** @var Nosto_Tagging_Helper_Oauth $helper */
-            $helper = Mage::helper('nosto_tagging/oauth');
-            $client = new NostoOAuthClient(
-                $helper->getMetaData($store)
-            );
+            /** @var Nosto_Tagging_Model_Meta_Oauth $meta */
+            $meta = Mage::getModel('nosto_tagging/meta_oauth');
+            $meta->loadData($store);
+            $client = new NostoOAuthClient($meta);
             $responseBody = array(
                 'success' => true,
                 'redirect_url' => $client->getAuthorizationUrl(),
@@ -147,7 +146,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         $account = !is_null($store) ? $accountHelper->find($store) : null;
         if ($this->getRequest()->isPost() && !is_null($store) && !is_null($account)) {
             /** @var Nosto_Tagging_Model_Meta_Oauth $meta */
-            $meta = new Nosto_Tagging_Model_Meta_Oauth();
+            $meta = Mage::getModel('nosto_tagging/meta_oauth');
             $meta->loadData($store);
             $client = new NostoOAuthClient($meta);
             $responseBody = array(
@@ -184,16 +183,32 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         $store = $this->getSelectedStore();
         if ($this->getRequest()->isPost() && $store !== null) {
             try {
-                $email = $this->getRequest()->getPost('email');
-                $details = $this->getRequest()->getPost('details');
-                $meta = $accountHelper->getMetaData($store);
-                if (Zend_Validate::is($email, 'EmailAddress')) {
-                    $meta->getOwner()->setEmail($email);
+
+                $signupDetails = $this->getRequest()->getPost('details');
+                if (!empty($signupDetails)) {
+                    $signupDetails = json_decode($signupDetails, true);
                 }
-                if (!empty($details)) {
-                   $meta->setDetails(json_decode($details));
+
+                $emailAddress = $this->getRequest()->getPost('email');
+                /** @var Nosto_Tagging_Model_Meta_Account_Owner $accountOwner */
+                $accountOwner = Mage::getModel('nosto_tagging/meta_account_owner');
+                $accountOwner->loadData();
+                if ($accountOwner->getEmail() !== $emailAddress) {
+                    if (\Zend_Validate::is($emailAddress, 'EmailAddress')) {
+                        $accountOwner->setFirstName(null);
+                        $accountOwner->setLastName(null);
+                        $accountOwner->setEmail($emailAddress);
+                    } else {
+                        throw new NostoException("Invalid email address " . $emailAddress);
+                    }
                 }
-                $account = NostoAccount::create($meta);
+
+                /** @var Nosto_Tagging_Model_Meta_Account $signup */
+                $signup = Mage::getModel('nosto_tagging/meta_account');
+                $signup->loadData($store, $signupDetails, $accountOwner);
+
+                $operation = new NostoOperationAccount($signup);
+                $account = $operation->create();
                 if ($accountHelper->save($account, $store)) {
                     $accountHelper->updateCurrencyExchangeRates($account, $store);
                     $responseBody = array(
@@ -271,7 +286,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
             return;
         }
 
-        $accountHelper->resetAccountSettings($nostoAccount, $store);
+        $accountHelper->resetAccountSettings($store);
         $adminSession->addSuccess(
             'Nosto account settings successfully resetted. Please create new account or connect with exising Nosto account'
         );
@@ -413,6 +428,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
             if (is_null($account)) {
                 continue;
             }
+
             if ($accountHelper->updateAccount($account, $store)) {
                 $responseBody['data'][] = array(
                     'type' => 'success',

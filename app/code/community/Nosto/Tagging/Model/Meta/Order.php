@@ -34,64 +34,8 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements NostoOrderInterface
+class Nosto_Tagging_Model_Meta_Order extends NostoOrder
 {
-    /**
-     * @var bool if the special items, e.g. shipping cost, discounts, should be
-     * included in the `$_items` list.
-     */
-    public $includeSpecialItems = true;
-
-    /**
-     * @var string|int the unique order number identifying the order.
-     */
-    protected $_orderNumber;
-
-    /**
-     * @var string the Magento order "real order ID" property.
-     */
-    protected $_externalOrderRef;
-
-    /**
-     * @var string the date when the order was placed.
-     */
-    protected $_createdDate;
-
-    /**
-     * @var string the payment provider used for order.
-     *
-     * Formatted according to "[provider name] [provider version]".
-     */
-    protected $_paymentProvider;
-
-    /**
-     * @var Nosto_Tagging_Model_Meta_Order_Buyer the user info of the buyer.
-     */
-    protected $_buyer;
-
-    /**
-     * @var Nosto_Tagging_Model_Meta_Order_Item[] the items in the order.
-     */
-    protected $_items = array();
-
-    /**
-     * @var Nosto_Tagging_Model_Meta_Order_Status the order status.
-     */
-    protected $_orderStatus;
-
-    /**
-     * @var Nosto_Tagging_Model_Meta_Order_Status[] list of order status history.
-     */
-    protected $_orderStatuses = array();
-
-    /**
-     * @inheritdoc
-     */
-    protected function _construct()
-    {
-        $this->_init('nosto_tagging/meta_order');
-    }
-
     /**
      * Loads the order info from a Magento order model.
      *
@@ -99,83 +43,66 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
      */
     public function loadData(Mage_Sales_Model_Order $order)
     {
-        $this->_orderNumber = $order->getId();
-        $this->_externalOrderRef = $order->getRealOrderId();
-        $this->_createdDate = $order->getCreatedAt();
+        $this->setOrderNumber($order->getId());
+        $this->setExternalOrderRef($order->getRealOrderId());
+        $this->setCreatedDate($order->getCreatedAt());
         $payment = $order->getPayment();
         if (is_object($payment)) {
-            $this->_paymentProvider = $payment->getMethod();
+            $this->setPaymentProvider($payment->getMethod());
         }
         if (empty($this->_paymentProvider)) {
-            $this->_paymentProvider = 'unknown';
+            $this->setPaymentProvider('unknown');
         }
 
         if ($order->getStatus()) {
-            $this->_orderStatus = Mage::getModel(
-                'nosto_tagging/meta_order_status',
-                array(
-                    'code' => $order->getStatus(),
-                    'label' => $order->getStatusLabel()
-                )
-            );
+            $orderStatus = new NostoOrderStatus();
+            $orderStatus->setCode($order->getStatus());
+            $orderStatus->setLabel($order->getStatusLabel());
+            $this->setOrderStatus($orderStatus);
         }
 
-        foreach ($order->getAllStatusHistory() as $item) {
-            /** @var Mage_Sales_Model_Order_Status_History $item */
-            if ($item->getStatus()) {
-                $this->_orderStatuses[] = Mage::getModel(
-                    'nosto_tagging/meta_order_status',
-                    array(
-                        'code' => $item->getStatus(),
-                        'label' => $item->getStatusLabel(),
-                        'createdAt' => $item->getCreatedAt()
-                    )
-                );
+        foreach ($order->getAllStatusHistory() as $status) {
+            /** @var Mage_Sales_Model_Order_Status_History $status */
+            if ($status->getStatus()) {
+                $orderStatus = new NostoOrderStatus();
+                $orderStatus->setCode($status->getStatus());
+                $orderStatus->setLabel($status->getStatusLabel());
+                // 'createdAt' => $item->getCreatedAt() TODO:
+                $this->addOrderStatus($orderStatus);
             }
         }
 
-        $this->_buyer = Mage::getModel(
-            'nosto_tagging/meta_order_buyer',
-            array(
-                'firstName' => $order->getCustomerFirstname(),
-                'lastName' => $order->getCustomerLastname(),
-                'email' => $order->getCustomerEmail()
-            )
-        );
+        $orderBuyer = new NostoOrderBuyer();
+        $orderBuyer->setFirstName($order->getCustomerFirstname());
+        $orderBuyer->setLastName($order->getCustomerLastname());
+        $orderBuyer->setEmail($order->getCustomerEmail());
+        $this->setCustomer($orderBuyer);
 
+        /** @var Mage_Sales_Model_Order_Item $item */
         foreach ($order->getAllVisibleItems() as $item) {
-            /** @var $item Mage_Sales_Model_Order_Item */
-            $this->_items[] = $this->buildItem($item, $order);
+            $purchasedItem = new NostoLineItem();
+            /* @var Nosto_Tagging_Helper_Price $nostoPriceHelper */
+            $nostoPriceHelper = Mage::helper('nosto_tagging/price');
+            $purchasedItem->setProductId($this->buildItemProductId($item));
+            $purchasedItem->setQuantity((int)$item->getQtyOrdered());
+            $purchasedItem->setName($this->buildItemName($item));
+            $purchasedItem->setPrice($nostoPriceHelper->getItemFinalPriceInclTax($item));
+            $purchasedItem->setPriceCurrencyCode($order->getOrderCurrencyCode());
+            $this->addPurchasedItems($purchasedItem);
         }
 
-        if ($this->includeSpecialItems) {
-            if (($discount = $order->getDiscountAmount()) < 0) {
-                /** @var Nosto_Tagging_Model_Meta_Order_Item $orderItem */
-                $this->_items[] = Mage::getModel(
-                    'nosto_tagging/meta_order_item',
-                    array(
-                        'productId' => -1,
-                        'quantity' => 1,
-                        'name' => $this->buildDiscountRuleDescription($order),
-                        'unitPrice' => $discount,
-                        'currencyCode' => $order->getOrderCurrencyCode()
-                    )
-                );
-            }
+        if (($discountAmount = $order->getDiscountAmount()) < 0) {
+            $discountItem = new NostoLineItem();
+            $discountName = $this->buildDiscountRuleDescription($order);
+            $discountItem->loadSpecialItemData($discountName, $discountAmount, $order->getOrderCurrencyCode());
+            $this->addPurchasedItems($discountItem);
+        }
 
-            if (($shippingInclTax = $order->getShippingInclTax()) > 0) {
-                /** @var Nosto_Tagging_Model_Meta_Order_Item $orderItem */
-                $this->_items[] = Mage::getModel(
-                    'nosto_tagging/meta_order_item',
-                    array(
-                        'productId' => -1,
-                        'quantity' => 1,
-                        'name' => 'Shipping and handling',
-                        'unitPrice' => $shippingInclTax,
-                        'currencyCode' => $order->getOrderCurrencyCode()
-                    )
-                );
-            }
+        if (($shippingAmount = $order->getShippingInclTax()) > 0) {
+            $shippingItem = new NostoLineItem();
+            $shippingName = 'Shipping and handling';
+            $shippingItem->loadSpecialItemData($shippingName, $shippingAmount, $order->getOrderCurrencyCode());
+            $this->addPurchasedItems($shippingItem);
         }
     }
 
@@ -213,30 +140,6 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
         }
 
         return $discountTxt;
-    }
-
-    /**
-     * Builds a order items object form the Magento sales item.
-     *
-     * @param Mage_Sales_Model_Order_Item $item the sales item model.
-     * @param Mage_Sales_Model_Order $order the order model.
-     *
-     * @return Nosto_Tagging_Model_Meta_Order_Item the built item.
-     */
-    protected function buildItem(Mage_Sales_Model_Order_Item $item, Mage_Sales_Model_Order $order)
-    {
-        /* @var Nosto_Tagging_Helper_Price $nostoPriceHelper */
-        $nostoPriceHelper = Mage::helper('nosto_tagging/price');
-        return Mage::getModel(
-            'nosto_tagging/meta_order_item',
-            array(
-                'productId' => $this->buildItemProductId($item),
-                'quantity' => (int)$item->getQtyOrdered(),
-                'name' => $this->buildItemName($item),
-                'unitPrice' => $nostoPriceHelper->getItemFinalPriceInclTax($item),
-                'currencyCode' => $order->getOrderCurrencyCode()
-            )
-        );
     }
 
     /**
@@ -352,86 +255,5 @@ class Nosto_Tagging_Model_Meta_Order extends Mage_Core_Model_Abstract implements
         }
 
         return $name;
-    }
-
-    /**
-     * The unique order number identifying the order.
-     *
-     * @return string|int the order number.
-     */
-    public function getOrderNumber()
-    {
-        return $this->_orderNumber;
-    }
-
-    /**
-     * Returns the Magento order "real order ID" property.
-     *
-     * @return string the order ref.
-     */
-    public function getExternalOrderRef()
-    {
-        return $this->_externalOrderRef;
-    }
-
-    /**
-     * The date when the order was placed.
-     *
-     * @return string the creation date.
-     */
-    public function getCreatedDate()
-    {
-        return $this->_createdDate;
-    }
-
-    /**
-     * The payment provider used for placing the order, formatted according to
-     * "[provider name] [provider version]".
-     *
-     * @return string the payment provider.
-     */
-    public function getPaymentProvider()
-    {
-        return $this->_paymentProvider;
-    }
-
-    /**
-     * The buyer info of the user who placed the order.
-     *
-     * @return NostoOrderBuyerInterface the meta data model.
-     */
-    public function getBuyerInfo()
-    {
-        return $this->_buyer;
-    }
-
-    /**
-     * The purchased items which were included in the order.
-     *
-     * @return NostoOrderPurchasedItemInterface[] the meta data models.
-     */
-    public function getPurchasedItems()
-    {
-        return $this->_items;
-    }
-
-    /**
-     * Returns the order status model.
-     *
-     * @return NostoOrderStatusInterface the model.
-     */
-    public function getOrderStatus()
-    {
-        return $this->_orderStatus;
-    }
-
-    /**
-     * Returns a list of order status history items.
-     *
-     * @return Nosto_Tagging_Model_Meta_Order_Status[] the list.
-     */
-    public function getOrderStatuses()
-    {
-        return $this->_orderStatuses;
     }
 }

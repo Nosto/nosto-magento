@@ -33,31 +33,8 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Account_Owner extends Mage_Core_Model_Abstract implements NostoAccountMetaDataOwnerInterface
+class Nosto_Tagging_Model_Meta_Account_Owner extends NostoSignupOwner
 {
-    /**
-     * @var string the account owner first name.
-     */
-    protected $_firstName;
-
-    /**
-     * @var string the account owner last name.
-     */
-    protected $_lastName;
-
-    /**
-     * @var string the account owner email address.
-     */
-    protected $_email;
-
-    /**
-     * @inheritdoc
-     */
-    protected function _construct()
-    {
-        $this->_init('nosto_tagging/meta_account_owner');
-    }
-
     /**
      * Loads the user data from the active session.
      *
@@ -68,49 +45,9 @@ class Nosto_Tagging_Model_Meta_Account_Owner extends Mage_Core_Model_Abstract im
         /** @noinspection PhpUndefinedMethodInspection */
         $user = Mage::getSingleton('admin/session')->getUser();
         if ($user) {
-            $this->_firstName = $user->getFirstname();
-            $this->_lastName = $user->getLastname();
-            $this->_email = $user->getEmail();
+            $this->setFirstName($user->getFirstname());
+            $this->setLastName($user->getLastname());
+            $this->setEmail($user->getEmail());
         }
-    }
-
-    /**
-     * The first name of the account owner.
-     *
-     * @return string the first name.
-     */
-    public function getFirstName()
-    {
-        return $this->_firstName;
-    }
-
-    /**
-     * The last name of the account owner.
-     *
-     * @return string the last name.
-     */
-    public function getLastName()
-    {
-        return $this->_lastName;
-    }
-
-    /**
-     * The email address of the account owner.
-     *
-     * @return string the email address.
-     */
-    public function getEmail()
-    {
-        return $this->_email;
-    }
-
-    /**
-     * Sets the owner email address.
-     *
-     * @param string $email the email address.
-     */
-    public function setEmail($email)
-    {
-        $this->_email = $email;
     }
 }

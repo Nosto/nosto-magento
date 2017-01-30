@@ -28,13 +28,10 @@
 /**
  * @var $this        Nosto_Tagging_Block_Product
  * @var $helper      Nosto_Tagging_Helper_Data
- * @var $priceHelper Nosto_Tagging_Helper_Price
- * @var $dateHelper  Nosto_Tagging_Helper_Date
  */
 $product = $this->getMetaProduct();
 $helper = Mage::helper('nosto_tagging');
 $priceHelper = Mage::helper('nosto_tagging/price');
-$dateHelper = Mage::helper('nosto_tagging/date');
 ?>
 
 <!-- Nosto Product Tagging -->
@@ -43,25 +40,29 @@ $dateHelper = Mage::helper('nosto_tagging/date');
     <span class="product_id"><?php echo $product->getProductId(); ?></span>
     <span class="name"><?php echo $helper->escapeHtml($product->getName()); ?></span>
     <span class="image_url"><?php echo $product->getImageUrl(); ?></span>
-    <span class="price"><?php echo $priceHelper->getFormattedPrice($product->getPrice()); ?></span>
-    <span class="price_currency_code"><?php echo $product->getCurrencyCode(); ?></span>
+    <span class="price"><?php echo $this->formatNostoPrice($product->getPrice()); ?></span>
+    <span class="price_currency_code"><?php echo $product->getPriceCurrencyCode(); ?></span>
     <span class="availability"><?php echo $product->getAvailability(); ?></span>
     <?php foreach ($product->getCategories() as $category): ?>
         <span class="category"><?php echo $helper->escapeHtml($category); ?></span>
     <?php endforeach; ?>
-    <?php if ($product->getFullDescription()): ?>
-        <span class="description"><?php echo $helper->escapeHtml($product->getFullDescription()); ?></span>
+    <?php if ($product->getDescription()): ?>
+        <span class="description"><?php echo $helper->escapeHtml($product->getDescription()); ?></span>
     <?php endif; ?>
     <?php if ($product->getListPrice()): ?>
-        <span class="list_price"><?php echo $priceHelper->getFormattedPrice($product->getListPrice()); ?></span>
+        <span class="list_price"><?php echo $this->formatNostoPrice($product->getListPrice()); ?></span>
     <?php endif; ?>
     <?php if ($product->getBrand()): ?>
         <span class="brand"><?php echo $helper->escapeHtml($product->getBrand()); ?></span>
     <?php endif; ?>
-    <?php foreach ($product->getTags() as $type => $tags): ?>
-        <?php foreach ($tags as $tag): ?>
-            <span class="<?php echo $helper->quoteEscape($type); ?>"><?php echo $helper->escapeHtml($tag); ?></span>
-        <?php endforeach; ?>
+    <?php foreach ($product->getTag1() as $tag) : ?>
+        <span class="tag1"><?php echo $this->escapeHtml($tag); ?></span>
+    <?php endforeach; ?>
+    <?php foreach ($product->getTag2() as $tag) : ?>
+        <span class="tag2"><?php echo $this->escapeHtml($tag); ?></span>
+    <?php endforeach; ?>
+    <?php foreach ($product->getTag3() as $tag) : ?>
+        <span class="tag3"><?php echo $this->escapeHtml($tag); ?></span>
     <?php endforeach; ?>
     <?php if (!$helper->multiCurrencyDisabled()): ?>
         <span class="variation_id"><?php echo $helper->escapeHtml($product->getVariationId()); ?></span>

@@ -39,7 +39,7 @@ class Nosto_Tagging_Helper_Currency extends Mage_Core_Helper_Abstract
      *
      * @param string $locale the locale to get the currency format in.
      * @param string $currencyCode the currency ISO 4217 code to get the currency in.
-     * @return NostoCurrency the parsed currency.
+     * @return NostoCurrencyFormat the parsed currency.
      */
     public function getCurrencyObject($locale, $currencyCode)
     {
@@ -52,9 +52,8 @@ class Nosto_Tagging_Helper_Currency extends Mage_Core_Helper_Abstract
             $format = substr($format, 0, $pos);
         }
         // Check if the currency symbol is before or after the amount.
-        $symbolPosition = (strpos(trim($format), '¤') === 0)
-            ? NostoCurrencySymbol::SYMBOL_POS_LEFT
-            : NostoCurrencySymbol::SYMBOL_POS_RIGHT;
+        $symbolPosition = strpos(trim($format), '¤') === 0;
+
         // Remove all other characters than "0", "#", "." and ",",
         $format = preg_replace('/[^0\#\.,]/', '', $format);
         // Calculate the decimal precision.
@@ -68,27 +67,19 @@ class Nosto_Tagging_Helper_Currency extends Mage_Core_Helper_Abstract
         if (($pos = strpos($decimalFormat, '#')) !== false){
             $precision = strlen($decimalFormat) - $pos - $precision;
         }
-        // Calculate the group length.
-        if (strrpos($format, ',') !== false) {
-            $groupLength = ($decimalPos - strrpos($format, ',') - 1);
-        } else {
-            $groupLength = strrpos($format, '.');
-        }
+
         // If the symbol is missing for the current locale, use the ISO code.
         $currencySymbol = $currency->getSymbol();
         if (is_null($currencySymbol)) {
             $currencySymbol = $currencyCode;
         }
 
-        return new NostoCurrency(
-            new NostoCurrencyCode($currencyCode),
-            new NostoCurrencySymbol($currencySymbol, $symbolPosition),
-            new NostoCurrencyFormat(
-                $symbols['group'],
-                $groupLength,
-                $symbols['decimal'],
-                $precision
-            )
+        return new NostoCurrencyFormat(
+            $symbolPosition,
+            $currencySymbol,
+            $symbols['decimal'],
+            $symbols['group'],
+            $precision
         );
     }
 
@@ -97,12 +88,11 @@ class Nosto_Tagging_Helper_Currency extends Mage_Core_Helper_Abstract
      *
      * @param string $baseCurrencyCode the currency code to base the rates on.
      * @param array  $currencyCodes the currency codes to fetch the rates for.
-     *
-     * @return Nosto_Tagging_Model_Collection_Rates
+     * @return NostoExchangeRateCollection
      */
     public function getExchangeRateCollection($baseCurrencyCode, array $currencyCodes)
     {
-        $collection = new Nosto_Tagging_Model_Collection_Rates();
+        $collection = new NostoExchangeRateCollection();
         /** @var Mage_Directory_Model_Currency $currency */
         $currency = Mage::getModel('directory/currency');
         $rates = $currency->getCurrencyRates($baseCurrencyCode, $currencyCodes);

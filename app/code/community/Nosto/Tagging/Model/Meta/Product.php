@@ -34,176 +34,8 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implements NostoProductInterface, NostoValidatableInterface
+class Nosto_Tagging_Model_Meta_Product extends NostoProduct
 {
-    /**
-     * @var string the absolute url to the product page in the shop frontend.
-     */
-    protected $_url;
-
-    /**
-     * @var string the product's unique identifier.
-     */
-    protected $_productId;
-
-    /**
-     * @var string the name of the product.
-     */
-    protected $_name;
-
-    /**
-     * @var string the absolute url the one of the product images in frontend.
-     */
-    protected $_imageUrl;
-
-    /**
-     * @var string the product price including possible discounts and taxes.
-     */
-    protected $_price;
-
-    /**
-     * @var string the product list price without discounts but incl taxes.
-     */
-    protected $_listPrice;
-
-    /**
-     * @var string the currency code (ISO 4217) the product is sold in.
-     */
-    protected $_currencyCode;
-
-    /**
-     * @var string the availability of the product, i.e. is in stock or not.
-     */
-    protected $_availability;
-
-    /**
-     * @var array the tags for the product.
-     */
-    protected $_tags = array();
-
-    /**
-     * @var array the categories the product is located in.
-     */
-    protected $_categories = array();
-
-    /**
-     * @var string the product short description.
-     */
-    protected $_shortDescription;
-
-    /**
-     * @var string the product description.
-     */
-    protected $_description;
-
-    /**
-     * @var string the product brand name.
-     */
-    protected $_brand;
-
-    /**
-     * @var string the default variation identifier of the shop
-     */
-    protected $_variationId;
-
-    /**
-     * @var float the price paid for the supplier
-     */
-    protected $_supplierCost;
-
-    /**
-     * @var int product stock
-     */
-    protected $_inventoryLevel;
-
-    /**
-     * @var int the amount of reviews
-     */
-    protected $_reviewCount;
-
-    /**
-     * @var float the value of the rating(s)
-     */
-    protected $_ratingValue;
-
-    /**
-     * @var array alternative image urls
-     */
-    protected $_alternateImageUrls;
-
-    /**
-     * @var string the condition of the product
-     */
-    protected $_condition;
-
-    /**
-     * @var string the gender (target group) of the product
-     */
-    protected $_gender;
-
-    /**
-     * @var string the the age group
-     */
-    protected $_ageGroup;
-
-    /**
-     * @var string the barcode
-     */
-    protected $_gtin;
-
-    /**
-     * @var string category used in Google's services
-     */
-    protected $_googleCategory;
-
-    /**
-     * @var string the pricing measure of the product. Pricing measure for a
-     * 0.33 liter bottle for example is "0.33".
-     */
-    protected $_unitPricingMeasure;
-
-    /**
-     * @var string the pricing base measure of the product. Pricing base measure
-     * for a 0.33l bottle is "1".
-     */
-    protected $_unitPricingBaseMeasure;
-
-    /**
-     * @var string the pricing unit of the product. Pricing unit for a 0.33l
-     * bottle is "l" (litre).
-     */
-    protected $_unitPricingUnit;
-
-    /**
-     * @inheritdoc
-     */
-    protected function _construct()
-    {
-        $this->_init('nosto_tagging/meta_product');
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getValidationRules()
-    {
-        return array(
-            array(
-                array(
-                    '_url',
-                    '_productId',
-                    '_name',
-                    '_imageUrl',
-                    '_price',
-                    '_listPrice',
-                    '_currencyCode',
-                    '_availability'
-                ),
-                'required'
-            )
-        );
-    }
-
     /**
      * Array of attributes that can be customized from Nosto's store admin
      * settings
@@ -213,15 +45,6 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     public static $customizableAttributes = array(
         'gtin' => '_gtin',
     );
-
-    public function __construct()
-    {
-        parent::__construct();
-        foreach (Nosto_Tagging_Helper_Data::$validTags as $validTag) {
-            $this->_tags[$validTag] = array();
-        }
-        $this->_alternateImageUrls = array();
-    }
 
     /**
      * Loads the product info from a Magento product model.
@@ -240,42 +63,41 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         /** @var Nosto_Tagging_Helper_Data $dataHelper */
         $dataHelper = Mage::helper('nosto_tagging');
 
-        $this->_url = $this->buildUrl($product, $store);
-        $this->_productId = $product->getId();
-        $this->_name = $product->getName();
-        $this->_imageUrl = $this->buildImageUrl($product, $store);
-        $currentCurrencyCode = $store->getCurrentCurrencyCode();
-        $this->_price = $priceHelper->getTaggingPrice(
+        $this->setUrl($this->buildUrl($product, $store));
+        $this->setProductId($product->getId());
+        $this->setName($product->getName());
+        $this->setImageUrl($this->buildImageUrl($product, $store));
+        $this->setPrice($priceHelper->getTaggingPrice(
             $priceHelper->getProductFinalPriceInclTax($product),
-            $currentCurrencyCode,
+            $store->getCurrentCurrencyCode(),
             $store
-        );
-        $this->_listPrice = $priceHelper->getTaggingPrice(
+        ));
+        $this->setListPrice($priceHelper->getTaggingPrice(
             $priceHelper->getProductPriceInclTax($product),
-            $currentCurrencyCode,
+            $store->getCurrentCurrencyCode(),
             $store
-        );
-        $this->_currencyCode = $priceHelper->getTaggingCurrencyCode($currentCurrencyCode, $store);
-        $this->_availability = $this->buildAvailability($product);
-        $this->_categories = $this->buildCategories($product);
+        ));
+        $this->setPriceCurrencyCode($priceHelper->getTaggingCurrencyCode($store->getCurrentCurrencyCode(), $store));
+        $this->setAvailability($this->buildAvailability($product));
+        $this->setCategories($this->buildCategories($product));
 
         // Optional properties.
 
         if ($product->hasData('short_description')) {
-            $this->_shortDescription = $product->getData('short_description');
+            $this->setDescription($product->getData('short_description'));
         }
         if ($product->hasData('description')) {
-            $this->_description = $product->getData('description');
+            $this->setDescription($this->getDescription() . ' ' . $product->getData('description'));
         }
         $brandAttribute = $dataHelper->getBrandAttribute($store);
         if ($product->hasData($brandAttribute)) {
-            $this->_brand = $this->getAttributeValue($product, $brandAttribute);
+            $this->setBrand($this->getAttributeValue($product, $brandAttribute));
         }
         if (($tags = $this->buildTags($product, $store)) !== array()) {
-            $this->_tags['tag1'] = $tags;
+            $this->setTag1($tags);
         }
         if (!$dataHelper->multiCurrencyDisabled($store)) {
-            $this->_variationId = $store->getBaseCurrencyCode();
+            $this->setVariationId($store->getBaseCurrencyCode());
         }
 
         $this->amendAttributeTags($product, $store);
@@ -352,13 +174,11 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
      * @param Mage_Catalog_Model_Product $product the product model.
      *
      */
-    protected function amendInventoryLevel(
-        Mage_Catalog_Model_Product $product
-    ) {
+    protected function amendInventoryLevel(Mage_Catalog_Model_Product $product) {
         /* @var Nosto_Tagging_Helper_Stock $stockHelper */
         $stockHelper = Mage::helper('nosto_tagging/stock');
         try {
-            $this->_inventoryLevel = $stockHelper->getQty($product);
+            $this->setInventoryLevel($stockHelper->getQty($product));
         } catch (Exception $e) {
             Mage::log(
                 sprintf(
@@ -388,7 +208,14 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         $mediaItems = $mediaApi->items($product->getId(), $store);
         if (is_array($mediaItems)) {
             foreach ($mediaItems as $image) {
-                $this->addAlternateImage($image);
+                if (
+                    isset($image['url'])
+                    && (isset($image['exclude']) && empty($image['exclude']))
+                    && !in_array($image['url'], $this->getAlternateImageUrls())
+                    && $image['url'] != $this->getImageUrl()
+                ) {
+                    $this->addAlternateImageUrls($image['url']);
+                }
             }
         }
     }
@@ -413,10 +240,10 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
             if ($ratingClass instanceof Nosto_Tagging_Model_Meta_Rating_Interface) {
                 $ratingClass->init($product, $store);
                 if ($ratingClass->getRating()) {
-                    $this->_ratingValue = $ratingClass->getRating();
+                    $this->setRatingValue($ratingClass->getRating());
                 }
                 if ($ratingClass->getReviewCount()) {
-                    $this->_reviewCount = $ratingClass->getReviewCount();
+                    $this->setReviewCount($ratingClass->getReviewCount());
                 }
             } else {
                 Mage::log(
@@ -479,11 +306,17 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
                     try {
                         $attribute_value = $this->getAttributeValue($product, $key);
                         if (!empty($attribute_value)) {
-                            $this->_tags[$tag_id][] = sprintf(
-                                '%s:%s',
-                                $key,
-                                $attribute_value
-                            );
+                            switch ($tag_id) {
+                                case Nosto_Tagging_Helper_Data::TAG1:
+                                    $this->addTag1(sprintf('%s:%s', $key, $attribute_value));
+                                    break;
+                                case Nosto_Tagging_Helper_Data::TAG2:
+                                    $this->addTag2(sprintf('%s:%s', $key, $attribute_value));
+                                    break;
+                                case Nosto_Tagging_Helper_Data::TAG3:
+                                    $this->addTag3(sprintf('%s:%s', $key, $attribute_value));
+                                    break;
+                            }
                         }
                     } catch (Exception $e) {
                         Mage::log(
@@ -594,174 +427,6 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     }
 
     /**
-     * Returns the absolute url to the product page in the shop frontend.
-     *
-     * @return string the url.
-     */
-    public function getUrl()
-    {
-        return $this->_url;
-    }
-
-    /**
-     * Returns the product's unique identifier.
-     *
-     * @return int|string the ID.
-     */
-    public function getProductId()
-    {
-        return $this->_productId;
-    }
-
-    /**
-     * Setter for the product's unique identifier.
-     *
-     * @param int|string $productId the ID.
-     */
-    public function setProductId($productId)
-    {
-        $this->_productId = $productId;
-    }
-
-    /**
-     * Returns the name of the product.
-     *
-     * @return string the name.
-     */
-    public function getName()
-    {
-        return $this->_name;
-    }
-
-    /**
-     * Returns the absolute url the one of the product images in the frontend.
-     *
-     * @return string the url.
-     */
-    public function getImageUrl()
-    {
-        return $this->_imageUrl;
-    }
-
-    /**
-     * Returns the price of the product including possible discounts and taxes.
-     *
-     * @return float the price.
-     */
-    public function getPrice()
-    {
-        return $this->_price;
-    }
-
-    /**
-     * Returns the list price of the product without discounts but incl taxes.
-     *
-     * @return float the price.
-     */
-    public function getListPrice()
-    {
-        return $this->_listPrice;
-    }
-
-    /**
-     * Returns the currency code (ISO 4217) the product is sold in.
-     *
-     * @return string the currency ISO code.
-     */
-    public function getCurrencyCode()
-    {
-        return $this->_currencyCode;
-    }
-
-    /**
-     * Returns the availability of the product, i.e. if it is in stock or not.
-     *
-     * @return string the availability, either "InStock" or "OutOfStock".
-     */
-    public function getAvailability()
-    {
-        return $this->_availability;
-    }
-
-    /**
-     * Returns the tags for the product.
-     *
-     * @return array the tags array, e.g. array('tag1' => array("winter", "shoe")).
-     */
-    public function getTags()
-    {
-        return $this->_tags;
-    }
-
-    /**
-     * Returns the categories the product is located in.
-     *
-     * @return array list of category strings, e.g. array("/shoes/winter").
-     */
-    public function getCategories()
-    {
-        return $this->_categories;
-    }
-
-    /**
-     * Returns the product short description.
-     *
-     * @return string the short description.
-     */
-    public function getShortDescription()
-    {
-        return $this->_shortDescription;
-    }
-
-    /**
-     * Returns the product description.
-     *
-     * @return string the description.
-     */
-    public function getDescription()
-    {
-        return $this->_description;
-    }
-
-    /**
-     * Returns the product brand name.
-     *
-     * @return string the brand name.
-     */
-    public function getBrand()
-    {
-        return $this->_brand;
-    }
-
-    /**
-     * Returns the full product description,
-     * i.e. both the "short" and "normal" descriptions concatenated.
-     *
-     * @return string the full descriptions.
-     */
-    public function getFullDescription()
-    {
-        $descriptions = array();
-        if (!empty($this->_shortDescription)) {
-            $descriptions[] = $this->_shortDescription;
-        }
-        if (!empty($this->_description)) {
-            $descriptions[] = $this->_description;
-        }
-        return implode(' ', $descriptions);
-    }
-
-    /**
-     * Returns the product variation id.
-     *
-     * @return mixed|null
-     */
-    public function getVariationId()
-    {
-        return $this->_variationId;
-    }
-
-    /**
      * Fetches the value of a product attribute
      *
      * @param Mage_Catalog_Model_Product $product
@@ -773,6 +438,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         $attribute = $product->getResource()->getAttribute($attributeName);
         if ($attribute instanceof Mage_Catalog_Model_Resource_Eav_Attribute) {
             $attribute_data = $product->getData($attributeName);
+            /** @noinspection PhpParamsInspection */
             $attribute_value = $product->getAttributeText($attributeName);
             if (empty($attribute_value) && is_scalar($attribute_data)) {
                 $attribute_value = $attribute_data;
@@ -782,121 +448,5 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         }
 
         return trim($attribute_value);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getSupplierCost()
-    {
-        return $this->_supplierCost;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getInventoryLevel()
-    {
-        return $this->_inventoryLevel;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getReviewCount()
-    {
-        return $this->_reviewCount;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getRatingValue()
-    {
-        return $this->_ratingValue;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getAlternateImageUrls()
-    {
-        return $this->_alternateImageUrls;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getCondition()
-    {
-        return $this->_condition;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getGender()
-    {
-        return $this->_gender;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getAgeGroup()
-    {
-        return $this->_ageGroup;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getGtin()
-    {
-        return $this->_gtin;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getGoogleCategory()
-    {
-        return $this->_googleCategory;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getUnitPricingMeasure()
-    {
-        return $this->_unitPricingMeasure;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getUnitPricingBaseMeasure()
-    {
-        return $this->_unitPricingBaseMeasure;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getUnitPricingUnit()
-    {
-        return $this->_unitPricingUnit;
-    }
-
-    public function addAlternateImage(array $image)
-    {
-        if (
-            isset($image['url'])
-            && (isset($image['exclude']) && empty($image['exclude']))
-            && !in_array($image['url'], $this->_alternateImageUrls)
-            && $image['url'] != $this->_imageUrl
-        ) {
-            $this->_alternateImageUrls[] = $image['url'];
-        }
     }
 }
