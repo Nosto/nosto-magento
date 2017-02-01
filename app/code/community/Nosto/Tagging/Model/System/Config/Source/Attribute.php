@@ -26,14 +26,27 @@
  */
 
 /**
- * General purpose source model attributes
+ * Abstract source model class for product attributes
  *
  * @category Nosto
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_System_Config_Source_Attribute
+abstract class Nosto_Tagging_Model_System_Config_Source_Attribute
 {
+
+    /**
+     * List of attributes that cannot be added to tags due to data type and
+     * Magento's internal processing of attributes
+     *
+     * @var array
+     */
+    public static $notValidCustomAttributes = array(
+        'group_price',
+        'tier_price',
+        'media_gallery',
+    );
+
     /**
      * Returns all available attributes
      *
@@ -41,8 +54,33 @@ class Nosto_Tagging_Model_System_Config_Source_Attribute
      */
     public function toOptionArray()
     {
-        /* @var Nosto_Tagging_Helper_Data $nosto_helper */
-        $nosto_helper = Mage::helper('nosto_tagging');
-        return $nosto_helper->getProductAttributeOptions();
+        $attributes = $this->getProductAttributes();
+        $attributeArray = array(
+            array(
+                'value' => 0,
+                'label' => 'None'
+            )
+        );
+        foreach($attributes as $attribute) {
+            $code = $attribute->getData('attribute_code');
+            if (in_array($code, self::$notValidCustomAttributes)) {
+                continue;
+            }
+            $label = $attribute->getData('frontend_label');
+            $attributeArray[] = array(
+                'value' => $code,
+                'label' => sprintf('%s (%s)', $code, $label)
+            );
+        }
+
+        return $attributeArray;
     }
+
+
+    /**
+     * Returns a collection of attributes defined by the child class
+     *
+     * @return Mage_Catalog_Model_Resource_Product_Attribute_Collection
+     */
+    abstract public function getProductAttributes();
 }

@@ -1,6 +1,9 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
 ### 2.9.0-RC2
+* Add support for sending supplier cost to Nosto
+
+### 2.9.0-RC2
 * Send integrated modules info to Nosto
 
 ### 2.9.0-RC1

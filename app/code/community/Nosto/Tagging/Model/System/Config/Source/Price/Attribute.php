@@ -33,16 +33,31 @@
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
 class Nosto_Tagging_Model_System_Config_Source_Price_Attribute
+    extends Nosto_Tagging_Model_System_Config_Source_Attribute
 {
     /**
-     * Returns available price attributes for product model
-     *
-     * @return array the options.
+     * EAV field name for input type
      */
-    public function toOptionArray()
+    const EAV_FRONTEND_INPUT_FIELD = 'frontend_input';
+
+    /**
+     * EAV input type for prices
+     */
+    const EAV_PRICE_INPUT = 'price';
+
+
+    /**
+     * @inheritdoc
+     */
+    public function getProductAttributes()
     {
         /* @var Nosto_Tagging_Helper_Data $nosto_helper */
         $nosto_helper = Mage::helper('nosto_tagging');
-        return $nosto_helper->getPriceAttributeOptions();
+
+        return $nosto_helper->getProductAttributes(
+            array(
+                self::EAV_FRONTEND_INPUT_FIELD => self::EAV_PRICE_INPUT
+            )
+        );
     }
 }
