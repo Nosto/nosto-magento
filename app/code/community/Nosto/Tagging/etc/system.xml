@@ -193,6 +193,16 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </gtin>
+                        <supplier_cost translate="label">
+                            <label>Supplier cost</label>
+                            <comment>Choose attribute that will be used as a supplier cost for Nosto product. Please note that this field will not be tagged into the html source. It will be only sent via API to Nosto.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>nosto_tagging/system_config_source_price_attribute</source_model>
+                            <sort_order>90</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </supplier_cost>
                     </fields>
                 </attribute_map>
                 <multi_currency translate="label">

@@ -196,6 +196,7 @@
             </brand_attribute>
             <attribute_map>
                 <gtin>0</gtin>
+                <supplier_cost>cost</supplier_cost>
             </attribute_map>
             <ratings_and_reviews>
                 <provider>0</provider>

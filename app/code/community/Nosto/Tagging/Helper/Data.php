@@ -130,6 +130,16 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_RATING_PROVIDER = 'nosto_tagging/ratings_and_reviews/provider';
 
     /**
+     * EAV field name for input type
+     */
+    const EAV_FRONTEND_INPUT_FIELD = 'frontend_input';
+
+    /**
+     * EAV input type for prices
+     */
+    const EAV_PRICE_INPUT = 'price';
+
+    /**
      * List of strings to remove from the default Nosto account title
      *
      * @var array
@@ -456,15 +466,25 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Returns the product attributes that can be used in Nosto tags
+     * Returns all available product attributes
      *
-     * @return array  ['value' => $code, 'label' => $label]
+     * @param array $filters ['field_to_filter' => 'value']
+     * @return Mage_Catalog_Model_Resource_Product_Attribute_Collection
      */
-    public function getProductAttributeOptions()
+    public function getProductAttributes(array $filters=array())
     {
         $resourceModel = Mage::getResourceModel(
             'catalog/product_attribute_collection'
         );
+
+        if (is_array($filters) && !empty($filters)) {
+            foreach ($filters as $attribute => $value) {
+                $resourceModel->addFieldToFilter(
+                    $attribute,
+                    $value
+                );
+            }
+        }
         $attributes = $resourceModel
             ->addFieldToFilter(
                 'entity_type_id',
@@ -474,6 +494,51 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
                 'attribute_code',
                 Varien_Data_Collection::SORT_ORDER_ASC
             );
+
+        return $attributes;
+    }
+
+    /**
+     * Returns the product attributes that can be used in Nosto tags
+     *
+     * @return array  ['value' => $code, 'label' => $label]
+     */
+    public function getProductAttributeOptions()
+    {
+        $attributes = $this->getProductAttributes();
+        $attributeArray = array(
+            array(
+                'value' => 0,
+                'label' => 'None'
+            )
+        );
+        foreach($attributes as $attribute) {
+            $code = $attribute->getData('attribute_code');
+            if (in_array($code, self::$notValidAttributesForTags)) {
+                continue;
+            }
+            $label = $attribute->getData('frontend_label');
+            $attributeArray[] = array(
+                'value' => $code,
+                'label' => sprintf('%s (%s)', $code, $label)
+            );
+        }
+
+        return $attributeArray;
+    }
+
+    /**
+     * Returns price type the product attributes
+     *
+     * @return array  ['value' => $code, 'label' => $label]
+     */
+    public function getPriceAttributeOptions()
+    {
+        $attributes = $this->getProductAttributes(
+            array(
+                self::EAV_FRONTEND_INPUT_FIELD => self::EAV_PRICE_INPUT
+            )
+        );
         // Add single empty option as a first option. Otherwise multiselect
         // cannot not be unset in Magento.
         $attributeArray = array(
