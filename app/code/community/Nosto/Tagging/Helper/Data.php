@@ -105,11 +105,6 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_STORE_FRONT_PAGE_URL = 'nosto_tagging/settings/front_page_url';
 
     /**
-     * @var int the product attribute type id
-     */
-    const PRODUCT_TYPE_ATTRIBUTE_ID = 4;
-
-    /**
      * @var string Nosto customer reference attribute name
      */
     const NOSTO_CUSTOMER_REFERENCE_ATTRIBUTE_NAME = 'nosto_customer_reference';
@@ -441,39 +436,6 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     public function getExchangeRateCronFrequency()
     {
         return Mage::getStoreConfig(self::XML_PATH_EXCHANGE_RATE_CRON_FREQUENCY);
-    }
-
-    /**
-     * Returns all available product attributes
-     *
-     * @param array $filters ['field_to_filter' => 'value']
-     * @return Mage_Catalog_Model_Resource_Product_Attribute_Collection
-     */
-    public function getProductAttributes(array $filters=array())
-    {
-        $resourceModel = Mage::getResourceModel(
-            'catalog/product_attribute_collection'
-        );
-
-        if (is_array($filters) && !empty($filters)) {
-            foreach ($filters as $attribute => $value) {
-                $resourceModel->addFieldToFilter(
-                    $attribute,
-                    $value
-                );
-            }
-        }
-        $attributes = $resourceModel
-            ->addFieldToFilter(
-                'entity_type_id',
-                self::PRODUCT_TYPE_ATTRIBUTE_ID
-            )
-            ->setOrder(
-                'attribute_code',
-                Varien_Data_Collection::SORT_ORDER_ASC
-            );
-
-        return $attributes;
     }
 
     /**

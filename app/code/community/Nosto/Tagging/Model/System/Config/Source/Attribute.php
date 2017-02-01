@@ -36,6 +36,54 @@ abstract class Nosto_Tagging_Model_System_Config_Source_Attribute
 {
 
     /**
+     * @var int the product attribute type id
+     */
+    const PRODUCT_TYPE_ATTRIBUTE_ID = 4;
+
+    /**
+     * @var string the form key for the value
+     */
+    const OPTION_KEY_VALUE = 'value';
+
+    /**
+     * @var string the form key for the label
+     */
+    const OPTION_KEY_LABEL = 'label';
+
+    /**
+     * Returns all available product attributes
+     *
+     * @param array $filters ['field_to_filter' => 'value']
+     * @return Mage_Catalog_Model_Resource_Product_Attribute_Collection
+     */
+    public function getProductAttributesCollection(array $filters=array())
+    {
+        $resourceModel = Mage::getResourceModel(
+            'catalog/product_attribute_collection'
+        );
+
+        if (is_array($filters) && !empty($filters)) {
+            foreach ($filters as $attribute => $value) {
+                $resourceModel->addFieldToFilter(
+                    $attribute,
+                    $value
+                );
+            }
+        }
+        $attributes = $resourceModel
+            ->addFieldToFilter(
+                'entity_type_id',
+                self::PRODUCT_TYPE_ATTRIBUTE_ID
+            )
+            ->setOrder(
+                'attribute_code',
+                Varien_Data_Collection::SORT_ORDER_ASC
+            );
+
+        return $attributes;
+    }
+
+    /**
      * List of attributes that cannot be added to tags due to data type and
      * Magento's internal processing of attributes
      *
@@ -57,8 +105,8 @@ abstract class Nosto_Tagging_Model_System_Config_Source_Attribute
         $attributes = $this->getProductAttributes();
         $attributeArray = array(
             array(
-                'value' => 0,
-                'label' => 'None'
+                self::OPTION_KEY_VALUE => 0,
+                self::OPTION_KEY_LABEL => 'None'
             )
         );
         foreach($attributes as $attribute) {
@@ -68,8 +116,8 @@ abstract class Nosto_Tagging_Model_System_Config_Source_Attribute
             }
             $label = $attribute->getData('frontend_label');
             $attributeArray[] = array(
-                'value' => $code,
-                'label' => sprintf('%s (%s)', $code, $label)
+                self::OPTION_KEY_VALUE => $code,
+                self::OPTION_KEY_LABEL => sprintf('%s (%s)', $code, $label)
             );
         }
 

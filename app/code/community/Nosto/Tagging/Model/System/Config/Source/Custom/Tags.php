@@ -41,9 +41,6 @@ class Nosto_Tagging_Model_System_Config_Source_Custom_Tags
      */
     public function getProductAttributes()
     {
-        /* @var Nosto_Tagging_Helper_Data $nosto_helper */
-        $nosto_helper = Mage::helper('nosto_tagging');
-
-        return $nosto_helper->getProductAttributes();
+        return parent::getProductAttributesCollection();
     }
 }
