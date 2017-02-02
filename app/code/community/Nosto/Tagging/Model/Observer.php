@@ -77,54 +77,13 @@ class Nosto_Tagging_Model_Observer
             /** @var Mage_Catalog_Model_Product $product */
             /** @noinspection PhpUndefinedMethodInspection */
             $product = $observer->getEvent()->getProduct();
-            // Always "upsert" the product for all stores it is available in.
-            // This is done to avoid data inconsistencies as even if a product
-            // is edited for only one store, the updated data can reflect in
-            // other stores as well.
-            foreach ($product->getStoreIds() as $storeId) {
-                $store = Mage::app()->getStore($storeId);
-                /** @var Nosto_Tagging_Helper_Account $helper */
-                $helper = Mage::helper('nosto_tagging/account');
-                $account = $helper->find($store);
 
-                /* @var $nostoHelper Nosto_Tagging_Helper_Data */
-                $nostoHelper = Mage::helper('nosto_tagging');
-                if ($account === null || !$account->isConnectedToNosto()
-                    || !$nostoHelper->getUseProductApi($store)) {
-                    continue;
-                }
-
-                // Load the product model for this particular store view.
-                /** @var Mage_Catalog_Model_Product $catalog */
-                $catalog = Mage::getModel('catalog/product');
-                /** @noinspection PhpUndefinedMethodInspection */
-                $product = $catalog
-                    ->setStoreId($store->getId())
-                    ->load($product->getId());
-                if (is_null($product)) {
-                    continue;
-                }
-
-                /* @var Mage_Core_Model_App_Emulation $emulation */
-                $emulation = Mage::getSingleton('core/app_emulation');
-                $env = $emulation->startEnvironmentEmulation($store->getId());
-                /** @var Nosto_Tagging_Model_Meta_Product $model */
-                $model = Mage::getModel('nosto_tagging/meta_product');
-                $model->loadData($product, $store);
-
-                // Only send product update if we have all required
-                // data for the product model.
-                $validator = new NostoValidator($model);
-                if ($validator->validate()) {
-                    try {
-                        $service = new NostoOperationProduct($account);
-                        $service->addProduct($model);
-                        $service->upsert();
-                    } catch (NostoException $e) {
-                        Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
-                    }
-                }
-                $emulation->stopEnvironmentEmulation($env);
+            try {
+                /* @var Nosto_Tagging_Model_Service_Product $service */
+                $service = Mage::getModel('nosto_tagging/service_product');
+                $service->updateProduct($product);
+            } catch (NostoException $e) {
+                Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
             }
         }
 
