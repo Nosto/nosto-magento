@@ -53,7 +53,7 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
         )
     );
 
-    protected function applyIdFilters(&$collection) 
+    protected function applyIdFilters(&$collection)
     {
         /** @var Mage_Sales_Model_Resource_Collection_Abstract $collection */
         if ($id = $this->getRequest()->getParam(self::ID)) {

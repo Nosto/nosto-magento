@@ -56,7 +56,7 @@ class Nosto_Tagging_Model_Meta_Rating_Mage_Rating extends Nosto_Tagging_Model_Me
             $this->setRating(
                 number_format(
                     round(
-                        $ratingSummary->getRatingSummary()/20,
+                        $ratingSummary->getRatingSummary() / 20,
                         1
                     ),
                     1

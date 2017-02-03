@@ -33,6 +33,7 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
+
 /** @noinspection PhpUndefinedClassInspection */
 class Nosto_Tagging_Model_Container_Cart extends Enterprise_PageCache_Model_Container_Advanced_Quote
 {

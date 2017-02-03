@@ -61,8 +61,9 @@ class Nosto_Tagging_Block_Adminhtml_Notifications extends Mage_Adminhtml_Block_T
             if ($account !== null
                 && $account->isConnectedToNosto()
                 && $account->hasMissingTokens()
-                && !$dataHelper->multiCurrencyDisabled($store)) {
-                    return false;
+                && !$dataHelper->multiCurrencyDisabled($store)
+            ) {
+                return false;
             }
         }
         return true;
@@ -100,8 +101,9 @@ class Nosto_Tagging_Block_Adminhtml_Notifications extends Mage_Adminhtml_Block_T
             $account = $accountHelper->find($store);
             if ($account !== null
                 && !$dataHelper->multiCurrencyDisabled($store)
-                && !$dataHelper->isScheduledCurrencyExchangeRateUpdateEnabled($store)) {
-                    return false;
+                && !$dataHelper->isScheduledCurrencyExchangeRateUpdateEnabled($store)
+            ) {
+                return false;
             }
         }
         return true;
@@ -152,7 +154,7 @@ class Nosto_Tagging_Block_Adminhtml_Notifications extends Mage_Adminhtml_Block_T
                     'nostoAccount' => $nostoAccount->getName(),
                     'actionUrl' => $this->getUrl(
                         'adminhtml/nosto/resetAccountSettings/',
-                        array('store'=>$store->getId())
+                        array('store' => $store->getId())
                     )
                 );
 

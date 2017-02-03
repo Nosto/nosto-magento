@@ -56,7 +56,7 @@ abstract class Nosto_Tagging_Model_System_Config_Source_Attribute
      * @param array $filters ['field_to_filter' => 'value']
      * @return Mage_Catalog_Model_Resource_Product_Attribute_Collection
      */
-    public function getProductAttributesCollection(array $filters=array())
+    public function getProductAttributesCollection(array $filters = array())
     {
         $resourceModel = Mage::getResourceModel(
             'catalog/product_attribute_collection'

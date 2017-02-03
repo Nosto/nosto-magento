@@ -25,8 +25,9 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-use Nosto_Tagging_Helper_Rating as RatingHelper;
 use Nosto_Tagging_Helper_Data as DataHelper;
+use Nosto_Tagging_Helper_Rating as RatingHelper;
+
 /**
  * Helper class for common Magento modules.
  *
@@ -81,7 +82,7 @@ class Nosto_Tagging_Helper_Module extends Mage_Core_Helper_Abstract
     {
         $active = array();
         $all = $this->getAllModules();
-        foreach ($all as $moduleName=>$module) {
+        foreach ($all as $moduleName => $module) {
             if ($module->active != "false") {
                 $active[$moduleName] = $module;
             }

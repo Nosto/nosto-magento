@@ -158,7 +158,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
         /* @var Mage_Sales_Model_Quote_Item $quoteItem */
         foreach ($quote->getAllItems() as $quoteItem) {
             if ($discountFactor && is_numeric($discountFactor)) {
-                $itemPrice = round($quoteItem->getPriceInclTax(), 2)*$discountFactor;
+                $itemPrice = round($quoteItem->getPriceInclTax(), 2) * $discountFactor;
             } else {
                 $itemPrice = $quoteItem->getPriceInclTax();
             }
@@ -301,9 +301,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
         $rules = sprintf('requiredFieldsFor%s', ucfirst($type));
         $empty = false;
         foreach (self::$$rules as $field) {
-            if (
-                is_object($entity)
-            ) {
+            if (is_object($entity)) {
                 if (get_class($entity) === 'Varien_Object') {
                     $val = $entity->get($field);
                     if (empty($val)) {

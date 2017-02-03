@@ -61,9 +61,9 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
     /**
      * Get unit/final price for a product model.
      *
-     * @param Mage_Catalog_Model_Product $product    the product model.
-     * @param bool                       $finalPrice if final price.
-     * @param bool                       $inclTax    if tax is to be included.
+     * @param Mage_Catalog_Model_Product $product the product model.
+     * @param bool $finalPrice if final price.
+     * @param bool $inclTax if tax is to be included.
      *
      * @return float
      */
@@ -239,9 +239,9 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
             $priceInOrderCurrency = $basePrice;
         }
         if ($quantity > 1) {
-            $priceInOrderCurrency = round($priceInOrderCurrency/$quantity, 2);
+            $priceInOrderCurrency = round($priceInOrderCurrency / $quantity, 2);
         }
-        
+
         return $priceInOrderCurrency;
     }
 
@@ -249,8 +249,8 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
      * If the store uses multiple currencies the prices are converted from base
      * currency into given currency. Otherwise the given price is returned.
      *
-     * @param float                 $basePrice The price of a product in base currency
-     * @param string                $currentCurrencyCode
+     * @param float $basePrice The price of a product in base currency
+     * @param string $currentCurrencyCode
      * @param Mage_Core_Model_Store $store
      * @return float
      */

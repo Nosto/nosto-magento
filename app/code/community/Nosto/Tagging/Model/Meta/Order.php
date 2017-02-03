@@ -135,7 +135,7 @@ class Nosto_Tagging_Model_Meta_Order extends NostoOrder
             $discountTxt = sprintf(
                 'Discount (%s)', implode(', ', $appliedRules)
             );
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $discountTxt = 'Discount (error)';
         }
 
@@ -244,7 +244,7 @@ class Nosto_Tagging_Model_Meta_Order extends NostoOrder
                     ->load($config['product_id']);
                 $parentName = $parent->getName();
                 if (!empty($parentName)) {
-                    $name = $parentName.' - '.$name;
+                    $name = $parentName . ' - ' . $name;
                 }
             }
         }

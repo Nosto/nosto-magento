@@ -50,10 +50,10 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Ratings_Provider
 
         $values = $data['values'];
         $html = '<table cellspacing="0" border="0" class="form-list">';
-        $html .='<colgroup class="label"></colgroup>';
-        $html .='<colgroup class="value"></colgroup>';
-        $html .='<colgroup class="scope-label"></colgroup>';
-        $html .='<colgroup class=""></colgroup>';
+        $html .= '<colgroup class="label"></colgroup>';
+        $html .= '<colgroup class="value"></colgroup>';
+        $html .= '<colgroup class="scope-label"></colgroup>';
+        $html .= '<colgroup class=""></colgroup>';
         $html .= '<tbody>';
         if ($values) {
             foreach ($values as $data) {

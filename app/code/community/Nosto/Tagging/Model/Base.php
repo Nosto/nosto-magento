@@ -51,7 +51,7 @@ class Nosto_Tagging_Model_Base extends Mage_Core_Model_Abstract
      */
     public function __get($name)
     {
-        $getter = 'get'.str_replace('_', '', $name);
+        $getter = 'get' . str_replace('_', '', $name);
         if (method_exists($this, $getter)) {
             return $this->{$getter}();
         }

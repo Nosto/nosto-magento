@@ -237,7 +237,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getUsePrettyProductUrls($store = null)
     {
-         return Mage::getStoreConfig(self::XML_PATH_PRETTY_URL, $store);
+        return Mage::getStoreConfig(self::XML_PATH_PRETTY_URL, $store);
     }
 
     /**

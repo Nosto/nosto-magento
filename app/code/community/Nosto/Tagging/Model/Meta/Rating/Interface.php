@@ -58,7 +58,7 @@ interface Nosto_Tagging_Model_Meta_Rating_Interface
      * Populates rating and review count
      *
      * @param Mage_Catalog_Model_Product $product the product model.
-     * @param Mage_Core_Model_Store      $store the store model.
+     * @param Mage_Core_Model_Store $store the store model.
      *
      */
     public function init(

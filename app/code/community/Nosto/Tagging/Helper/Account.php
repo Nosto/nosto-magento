@@ -96,7 +96,7 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
      * and informs Nosto about the removal via API.
      *
      * @param NostoAccount $account the account to remove.
-     * @param Mage_Core_Model_Store|null $store   the store view to remove it for.
+     * @param Mage_Core_Model_Store|null $store the store view to remove it for.
      *
      * @return bool true on success, false otherwise.
      */
@@ -241,7 +241,7 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
      * "Advanced Settings" page, as well as after an account has been
      * successfully connected through OAuth.
      *
-     * @param NostoAccount          $account the account to update.
+     * @param NostoAccount $account the account to update.
      * @param Mage_Core_Model_Store $store the store to which the account belongs.
      *
      * @return bool

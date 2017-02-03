@@ -143,7 +143,7 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
      * "add to cart" button in the product recommendations.
      *
      * @param Mage_Catalog_Model_Product $product the product model.
-     * @param Mage_Core_Model_Store      $store the store model.
+     * @param Mage_Core_Model_Store $store the store model.
      *
      * @return array
      */
@@ -179,7 +179,7 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
      * @param Mage_Catalog_Model_Product $product the product model.
      *
      */
-    protected function amendInventoryLevel(Mage_Catalog_Model_Product $product) 
+    protected function amendInventoryLevel(Mage_Catalog_Model_Product $product)
     {
         /* @var Nosto_Tagging_Helper_Stock $stockHelper */
         $stockHelper = Mage::helper('nosto_tagging/stock');
@@ -202,7 +202,7 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
      * Adds the alternative image urls
      *
      * @param Mage_Catalog_Model_Product $product the product model.
-     * @param Mage_Core_Model_Store      $store the store model.
+     * @param Mage_Core_Model_Store $store the store model.
      *
      */
     protected function amendAlternativeImages(
@@ -231,7 +231,7 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
      * Amends the product reviews product
      *
      * @param Mage_Catalog_Model_Product $product the product model.
-     * @param Mage_Core_Model_Store      $store the store model.
+     * @param Mage_Core_Model_Store $store the store model.
      *
      */
     protected function amendReviews(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
@@ -269,7 +269,7 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
      * Amends the customizable attributes
      *
      * @param Mage_Catalog_Model_Product $product the product model.
-     * @param Mage_Core_Model_Store      $store the store model.
+     * @param Mage_Core_Model_Store $store the store model.
      *
      */
     protected function amendCustomizableAttributes(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
@@ -293,7 +293,7 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
      * and are present in product
      *
      * @param Mage_Catalog_Model_Product $product the product model.
-     * @param Mage_Core_Model_Store      $store the store model.
+     * @param Mage_Core_Model_Store $store the store model.
      *
      */
     protected function amendAttributeTags(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
@@ -307,8 +307,8 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
             if (empty($attributesToTag) || !is_array($attributesToTag)) {
                 continue;
             }
-            /* @var Mage_Catalog_Model_Resource_Eav_Attribute $productAttribute*/
-            foreach ($productAttributes as $key=>$productAttribute) {
+            /* @var Mage_Catalog_Model_Resource_Eav_Attribute $productAttribute */
+            foreach ($productAttributes as $key => $productAttribute) {
                 if (in_array($key, $attributesToTag)) {
                     try {
                         $attributeValue = $this->getAttributeValue($product, $key);
@@ -349,7 +349,7 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
      * or paths.
      *
      * @param Mage_Catalog_Model_Product $product the product model.
-     * @param Mage_Core_Model_Store      $store the store model.
+     * @param Mage_Core_Model_Store $store the store model.
      *
      * @return string
      */
@@ -367,7 +367,7 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
      * back the the base image if nothing is configured.
      *
      * @param Mage_Catalog_Model_Product $product the product model.
-     * @param Mage_Core_Model_Store      $store the store model.
+     * @param Mage_Core_Model_Store $store the store model.
      *
      * @return null|string
      */
@@ -385,7 +385,7 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
             $baseUrl = rtrim($store->getBaseUrl('media'), '/');
             $file = str_replace(DS, '/', $img);
             $file = ltrim($file, '/');
-            $url = $baseUrl.'/catalog/product/'.$file;
+            $url = $baseUrl . '/catalog/product/' . $file;
         }
         return $url;
     }
@@ -417,7 +417,7 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
                 $data[] = $categoryString;
             }
         }
-        
+
         return array_unique($data);
     }
 

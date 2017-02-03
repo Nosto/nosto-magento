@@ -61,9 +61,9 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
             if ($type !== null && $code !== null) {
                 $session->setData(
                     'nosto_message', array(
-                    'type' => $type,
-                    'code' => $code,
-                    'text' => $text,
+                        'type' => $type,
+                        'code' => $code,
+                        'text' => $text,
                     )
                 );
             }
@@ -271,7 +271,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         $accountHelper = Mage::helper('nosto_tagging/account');
         /* @var $store Mage_Core_Model_Store */
         $store = Mage::getModel('core/store')->load($storeId);
-        if ($store instanceof Mage_Core_Model_Store === false ) {
+        if ($store instanceof Mage_Core_Model_Store === false) {
             $adminSession->addError(
                 'Nosto account could not be resetted due to a invalid store id'
             );
@@ -295,7 +295,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         );
         $this->_redirect(
             'adminhtml/nosto/index/',
-            array('store'=>$store->getId())
+            array('store' => $store->getId())
         );
     }
 

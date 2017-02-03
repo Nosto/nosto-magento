@@ -100,7 +100,7 @@ class Nosto_Tagging_Helper_Customer extends Mage_Core_Helper_Abstract
     public function generateCustomerReference(Mage_Customer_Model_Customer $customer)
     {
         /** @noinspection PhpUndefinedMethodInspection */
-        $hash = md5($customer->getId().$customer->getEmail()); // @codingStandardsIgnoreLine
+        $hash = md5($customer->getId() . $customer->getEmail()); // @codingStandardsIgnoreLine
         $uuid = uniqid(
             substr($hash, 0, 8),
             true

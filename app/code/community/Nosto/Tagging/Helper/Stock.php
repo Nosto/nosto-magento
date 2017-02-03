@@ -88,7 +88,6 @@ class Nosto_Tagging_Helper_Stock extends Mage_Core_Helper_Abstract
      * Searches the minimum quantity from the products collection
      *
      * @param array|Mage_Catalog_Model_Product[] $productCollcetion
-
      * @return int|mixed
      */
     protected function getMinQty(array $productCollcetion)

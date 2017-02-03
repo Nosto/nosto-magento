@@ -93,7 +93,7 @@ class Nosto_Tagging_Model_Meta_Order_Item extends NostoLineItem
             empty($args['unitPrice'])
             || !is_numeric($args['unitPrice'])
         ) {
-           $args['unitPrice'] = 0;
+            $args['unitPrice'] = 0;
         }
 
         if (!isset($args['currencyCode']) || empty($args['currencyCode'])) {

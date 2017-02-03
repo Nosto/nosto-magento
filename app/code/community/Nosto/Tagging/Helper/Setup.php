@@ -80,7 +80,7 @@ class Nosto_Tagging_Helper_Setup extends Mage_Core_Helper_Abstract
                 Nosto_Tagging_Helper_Data::NOSTO_CUSTOMER_REFERENCE_ATTRIBUTE_NAME
             );
 
-            $usedInForms=array("adminhtml_customer");
+            $usedInForms = array("adminhtml_customer");
             $attribute->setData("used_in_forms", $usedInForms)
                 ->setData("is_used_for_customer_segment", false)
                 ->setData("is_system", 1)
