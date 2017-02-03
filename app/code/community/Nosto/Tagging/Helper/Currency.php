@@ -58,7 +58,7 @@ class Nosto_Tagging_Helper_Currency extends Mage_Core_Helper_Abstract
         $format = preg_replace('/[^0\#\.,]/', '', $format);
         // Calculate the decimal precision.
         $precision = 0;
-        if (($decimalPos = strpos($format, '.')) !== false) {
+        if (($decimalPos = strpos($format, '.')) !== false) { // @codingStandardsIgnoreLine
             $precision = (strlen($format) - (strrpos($format, '.') + 1));
         } else {
             $decimalPos = strlen($format);
@@ -81,28 +81,5 @@ class Nosto_Tagging_Helper_Currency extends Mage_Core_Helper_Abstract
             $symbols['group'],
             $precision
         );
-    }
-
-    /**
-     * Returns a collection of currency exchange rates.
-     *
-     * @param string $baseCurrencyCode the currency code to base the rates on.
-     * @param array  $currencyCodes the currency codes to fetch the rates for.
-     * @return NostoExchangeRateCollection
-     */
-    public function getExchangeRateCollection($baseCurrencyCode, array $currencyCodes)
-    {
-        $collection = new NostoExchangeRateCollection();
-        /** @var Mage_Directory_Model_Currency $currency */
-        $currency = Mage::getModel('directory/currency');
-        $rates = $currency->getCurrencyRates($baseCurrencyCode, $currencyCodes);
-        foreach ($rates as $code => $rate) {
-            // Skip base currency.
-            if ($baseCurrencyCode === $code) {
-                continue;
-            }
-            $collection[] = new NostoExchangeRate($code, $code, $rate);
-        }
-        return $collection;
     }
 }

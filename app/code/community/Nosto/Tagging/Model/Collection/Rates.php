@@ -25,9 +25,34 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+
 /**
- * Order collection for historical data exports.
+ * Meta data class which holds information about the exchange rates of a store
+ *
+ * @category Nosto
+ * @package  Nosto_Tagging
+ * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
 class Nosto_Tagging_Model_Collection_Rates extends NostoExchangeRateCollection
 {
+    /**
+     * Loads the currencies and exchange rates from a store
+     *
+     * @param Mage_Core_Model_Store|null $store the store to get the exchange rates for.
+     */
+    public function loadData(Mage_Core_Model_Store $store = null)
+    {
+        $currencyCodes = $store->getAvailableCurrencyCodes(true);
+        $baseCurrencyCode = $store->getBaseCurrencyCode();
+
+        /** @var Mage_Directory_Model_Currency $currency */
+        $currency = Mage::getModel('directory/currency');
+        $rates = $currency->getCurrencyRates($baseCurrencyCode, $currencyCodes);
+        foreach ($rates as $code => $rate) {
+            if ($baseCurrencyCode === $code) {
+                continue; // Skip base currency.
+            }
+            parent::addRate($code, new NostoExchangeRate($code, $rate));
+        }
+    }
 }

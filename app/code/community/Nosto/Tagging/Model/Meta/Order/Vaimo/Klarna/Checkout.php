@@ -260,7 +260,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
      */
     public function loadData(Mage_Sales_Model_Order $order)
     {
-        $store = Mage::getSingleton('core/store')->load($order->store_id);
+        $store = Mage::getSingleton('core/store')->load($order->getStoreId());
         $quote = Mage::getModel('sales/quote')->setStore($store)->load($order->getQuoteId());
         parent::loadData($order);
         $klarnaCheckoutId = $quote->getKlarnaCheckoutId();

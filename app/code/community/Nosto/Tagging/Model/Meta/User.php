@@ -36,7 +36,6 @@ class Nosto_Tagging_Model_Meta_User extends NostoCurrentUser
 {
     /**
      * Loads the user data from the active session.
-     *
      */
     public function loadData()
     {

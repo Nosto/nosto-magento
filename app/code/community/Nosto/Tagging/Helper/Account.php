@@ -220,14 +220,12 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
             );
             return false;
         }
-        $currencyCodes = $store->getAvailableCurrencyCodes(true);
-        $baseCurrencyCode = $store->getBaseCurrencyCode();
 
-        /** @var Nosto_Tagging_Helper_Currency $helper */
-        $helper = Mage::helper('nosto_tagging/currency');
         try {
-            /** @var NostoExchangeRateCollection $collection */
-            $collection = $helper->getExchangeRateCollection($baseCurrencyCode, $currencyCodes);
+            /** @var Nosto_Tagging_Model_Collection_Rates $collection */
+            $collection = Mage::getModel('nosto_tagging/collection_rates');
+            $collection->loadData($store);
+
             $service = new NostoOperationExchangeRate($account);
             return $service->update($collection);
         } catch (NostoException $e) {

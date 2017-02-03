@@ -179,9 +179,7 @@ class Nosto_Tagging_Block_Cart extends Mage_Checkout_Block_Cart_Abstract
             }
         }
 
-        if (!empty($optNames)) {
-            $name .= ' (' . implode(', ', $optNames) . ')';
-        }
+        $name .= !empty($optNames) ? ' (' . implode(', ', $optNames) . ')' : '';
 
         return $name;
     }
