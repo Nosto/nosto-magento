@@ -31,7 +31,7 @@
  *
  * Creates the db table for matching Magento cart quotes to nosto customer ids.
  *
- * @var Nosto_Tagging_Model_Resource_Setup $installer
+ * @var Mage_Eav_Model_Entity_Setup $installer
  */
 
 $installer = $this;

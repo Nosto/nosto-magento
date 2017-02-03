@@ -41,7 +41,7 @@
         </reference>
         <!-- Page content -->
         <reference name="content">
-            <block type="nosto_tagging/adminhtml_wizard" name="nosto.wizard" template="nostotagging/wizard.phtml">
+            <block type="adminhtml/template" name="nosto.wizard" template="nostotagging/wizard.phtml">
                 <!-- Store switcher -->
                 <block type="adminhtml/store_switcher" name="store_switcher" as="store_switcher">
                     <action method="setUseConfirm"><params>0</params></action>
