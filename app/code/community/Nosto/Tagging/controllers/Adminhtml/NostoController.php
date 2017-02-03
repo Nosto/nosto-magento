@@ -188,6 +188,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                 $details = $this->getRequest()->getPost('details');
                 $meta = $accountHelper->getMetaData($store);
                 if (Zend_Validate::is($email, 'EmailAddress')) {
+                    /** @noinspection PhpUndefinedMethodInspection */
                     $meta->getOwner()->setEmail($email);
                 }
                 if (!empty($details)) {

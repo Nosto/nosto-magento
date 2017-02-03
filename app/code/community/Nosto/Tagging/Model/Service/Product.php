@@ -67,7 +67,7 @@ class Nosto_Tagging_Model_Service_Product
             ++$counter;
             if ($product instanceof Mage_Catalog_Model_Product === false) {
                 Nosto::throwException(
-                    sprtinf(
+                    sprintf(
                         'Invalid data type, expecting Mage_Catalog_Model_Product' .
                         ', got %s',
                         get_class($product)
@@ -104,7 +104,7 @@ class Nosto_Tagging_Model_Service_Product
             foreach ($productBatches as $productsInStore) {
                 $service = new NostoOperationProduct($account);
                 foreach ($productsInStore as $mageProduct) {
-                    /** @var Nosto_Tagging_Model_Meta_Product $model */
+                    /** @var Nosto_Tagging_Model_Meta_Product $nostoProduct */
                     $nostoProduct = Mage::getModel('nosto_tagging/meta_product');
                     $nostoProduct->loadData($mageProduct, $store);
                     $service->addProduct($nostoProduct);

@@ -49,7 +49,7 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Ratings_Provider
      */
     protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)
     {
-
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->setElement($element);
         $data = $this->element->getData();
         if ($this->element->getInherit()) {
