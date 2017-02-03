@@ -161,36 +161,4 @@ class Nosto_Tagging_Model_Meta_Order extends NostoOrder
 
         return $discountTxt;
     }
-
-    /**
-     * Returns the product id for a quote item.
-     * Always try to find the "parent" product ID if the product is a child of
-     * another product type. We do this because it is the parent product that
-     * we tag on the product page, and the child does not always have it's own
-     * product page. This is important because it is the tagged info on the
-     * product page that is used to generate recommendations and email content.
-     *
-     * @param Mage_Sales_Model_Order_Item $item the sales item model.
-     *
-     * @return int
-     */
-    protected function buildItemProductId(Mage_Sales_Model_Order_Item $item)
-    {
-        $parent = $item->getProductOptionByCode('super_product_config');
-        if (isset($parent['product_id'])) {
-            return $parent['product_id'];
-        } elseif ($item->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_SIMPLE) {
-            /** @var Mage_Catalog_Model_Product_Type_Configurable $model */
-            $model = Mage::getModel('catalog/product_type_configurable');
-            $parentIds = $model->getParentIdsByChild($item->getProductId());
-            $attributes = $item->getBuyRequest()->getData('super_attribute');
-            // If the product has a configurable parent, we assume we should tag
-            // the parent. If there are many parent IDs, we are safer to tag the
-            // products own ID.
-            if (!empty($parentIds) === 1 && !empty($attributes)) {
-                return $parentIds[0];
-            }
-        }
-        return $item->getProductId();
-    }
 }

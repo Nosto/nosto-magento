@@ -26,23 +26,34 @@
  */
 
 /**
- * @var $this               Nosto_Tagging_Block_Cart
+ * Meta data class which holds information about a grouped item included in an order.
+ *
+ * @category Nosto
+ * @package  Nosto_Tagging
+ * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-$cart = $this->getCart();
-$helper = Mage::helper('nosto_tagging');
-$nostoPriceHelper = Mage::helper('nosto_tagging/price');
-?>
+class Nosto_Tagging_Model_Meta_Cart_Item_Grouped extends Nosto_Tagging_Model_Meta_Cart_Item
+{
 
-<!-- Nosto Cart Tagging -->
-<div class="nosto_cart" style="display:none">
-    <span class="hcid"><?php echo $this->getVisitorChecksum(); ?></span>
-    <?php foreach ($cart->getItems() as $item): ?>
-        <div class="line_item">
-            <span class="product_id"><?php echo $item->getProductId(); ?></span>
-            <span class="quantity"><?php echo $item->getQuantity(); ?></span>
-            <span class="name"><?php echo $helper->escapeHtml($item->getName()); ?></span>
-            <span class="unit_price"><?php echo $this->formatNostoPrice($item->getUnitPrice()); ?></span>
-            <span class="price_currency_code"><?php echo strtoupper($item->getPriceCurrencyCode()); ?></span>
-        </div>
-    <?php endforeach; ?>
-</div>
+    /**
+     * Grouped products will have their parents name prepended.
+     * @inheritdoc
+     */
+    public function buildItemName(Mage_Sales_Model_Quote_Item $item)
+    {
+        $name = $item->getName();
+
+        $config = $item->getBuyRequest()->getData('super_product_config');
+        if (isset($config['product_id'])) {
+            /** @var Mage_Catalog_Model_Product $parent */
+            $parent = Mage::getModel('catalog/product')
+                ->load($config['product_id']);
+            $parentName = $parent->getName();
+            if (!empty($parentName)) {
+                $name = $parentName . ' - ' . $name;
+            }
+        }
+
+        return $name;
+    }
+}
