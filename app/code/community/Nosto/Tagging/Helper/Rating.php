@@ -49,11 +49,6 @@ class Nosto_Tagging_Helper_Rating extends Mage_Core_Helper_Abstract
     const FIELD_DESCRIPTION = 'description';
 
     /**
-     * Array key for provider image url
-     */
-    const FIELD_IMAGE_URL = 'image_url';
-
-    /**
      * Array key for provider module name
      */
     const FIELD_MODULE = 'module';
@@ -71,13 +66,11 @@ class Nosto_Tagging_Helper_Rating extends Mage_Core_Helper_Abstract
     private static $ratingProviders = array(
         self::RATING_PROVIDER_YOTPO => array(
             self::FIELD_DESCRIPTION => 'Yotpo Product Reviews',
-            self::FIELD_IMAGE_URL => '',
             self::FIELD_MODULE => 'Yotpo_Yotpo'
 
         ),
         self::RATING_PROVIDER_MAGENTO => array(
             self::FIELD_DESCRIPTION => 'Magento\'s native product reviews',
-            self::FIELD_IMAGE_URL => '',
             self::FIELD_MODULE => 'Mage_Rating'
         ),
     );
