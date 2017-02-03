@@ -25,11 +25,30 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-/**
- * @var $this           Nosto_Tagging_Block_Element
- * @var $nostoHelper    Nosto_Tagging_Helper_Data
- */
-$nostoHelper = Mage::helper('nosto_tagging');
-?>
+require_once __DIR__ . '/../bootstrap.php'; // @codingStandardsIgnoreLine
 
-<div class="nosto_element" id="<?php echo $nostoHelper->escapeHtml($this->getElementId()); ?>"></div>
+/**
+ * Helper class for OAuth2 related tasks.
+ *
+ * @category Nosto
+ * @package  Nosto_Tagging
+ * @author   Nosto Solutions Ltd <magento@nosto.com>
+ */
+class Nosto_Tagging_Helper_Oauth extends Mage_Core_Helper_Abstract
+{
+    /**
+     * Returns the meta data model needed for using the OAuth2 client included
+     * in the Nosto SDk.
+     *
+     * @param Mage_Core_Model_Store $store the store to get the oauth meta data for..
+     *
+     * @return Nosto_Tagging_Model_Meta_Oauth the meta data instance.
+     */
+    public function getMetaData(Mage_Core_Model_Store $store)
+    {
+        /** @var Nosto_Tagging_Model_Meta_Oauth $meta */
+        $meta = Mage::getModel('nosto_tagging/meta_oauth');
+        $meta->loadData($store);
+        return $meta;
+    }
+}

@@ -1,14 +1,16 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 2.9.0-RC3
+* Add support for sending supplier cost to Nosto
+
 ### 2.9.0-RC2
-* Send integrated module info to Nosto
+* Send integrated modules info to Nosto
 
 ### 2.9.0-RC1
 * Add support for sending following attributes to Nosto
  * rating and reviews data to Nosto (Magento native ratings and Yotpo)
  * alternative images
  * inventory level
- * 
 
 ### 2.9.0
 * Add support for Vaimo Klarna checkout extension

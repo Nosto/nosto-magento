@@ -21,7 +21,7 @@
  * @category  Nosto
  * @package   Nosto_Tagging
  * @author    Nosto Solutions Ltd <magento@nosto.com>
- * @copyright Copyright (c) 2013-2016 Nosto Solutions Ltd (http://www.nosto.com)
+ * @copyright Copyright (c) 2013-2017 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -36,8 +36,8 @@ require_once __DIR__ . '/../bootstrap.php'; // @codingStandardsIgnoreLine
  */
 class Nosto_Tagging_Helper_Class extends Mage_Core_Helper_Abstract
 {
-    /*
-     * Loads correct / plugable order class based on payment provider
+    /**
+     * Loads correct / pluggable order class based on payment provider
      *
      * @param Mage_Sales_Model_Order $order
      *

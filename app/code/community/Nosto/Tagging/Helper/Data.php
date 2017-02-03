@@ -21,7 +21,7 @@
  * @category  Nosto
  * @package   Nosto_Tagging
  * @author    Nosto Solutions Ltd <magento@nosto.com>
- * @copyright Copyright (c) 2013-2016 Nosto Solutions Ltd (http://www.nosto.com)
+ * @copyright Copyright (c) 2013-2017 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -106,11 +106,6 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_STORE_FRONT_PAGE_URL = 'nosto_tagging/settings/front_page_url';
 
     /**
-     * @var int the product attribute type id
-     */
-    const PRODUCT_TYPE_ATTRIBUTE_ID = 4;
-
-    /**
      * @var string Nosto customer reference attribute name
      */
     const NOSTO_CUSTOMER_REFERENCE_ATTRIBUTE_NAME = 'nosto_customer_reference';
@@ -149,18 +144,6 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      * @var array
      */
     public static $validTags = array(self::TAG1, self::TAG2, self::TAG3);
-
-    /**
-     * List of attributes that cannot be added to tags due to data type and
-     * Magento's internal processing of attributes
-     *
-     * @var array
-     */
-    public static $notValidAttributesForTags = array(
-        'group_price',
-        'tier_price',
-        'media_gallery',
-    );
 
     /**
      * @inheritdoc
@@ -454,49 +437,6 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     public function getExchangeRateCronFrequency()
     {
         return Mage::getStoreConfig(self::XML_PATH_EXCHANGE_RATE_CRON_FREQUENCY);
-    }
-
-    /**
-     * Returns the product attributes that can be used in Nosto tags
-     *
-     * @return array  ['value' => $code, 'label' => $label]
-     */
-    public function getProductAttributeOptions()
-    {
-        $resourceModel = Mage::getResourceModel(
-            'catalog/product_attribute_collection'
-        );
-        $attributes = $resourceModel
-            ->addFieldToFilter(
-                'entity_type_id',
-                self::PRODUCT_TYPE_ATTRIBUTE_ID
-            )
-            ->setOrder(
-                'attribute_code',
-                Varien_Data_Collection::SORT_ORDER_ASC
-            );
-        // Add single empty option as a first option. Otherwise multiselect
-        // cannot not be unset in Magento.
-        $attributeArray = array(
-            array(
-                'value' => 0,
-                'label' => 'None'
-            )
-        );
-        /** @var Mage_Eav_Model_Attribute $attribute */
-        foreach ($attributes as $attribute) {
-            $code = $attribute->getData('attribute_code');
-            if (in_array($code, self::$notValidAttributesForTags)) {
-                continue;
-            }
-            $label = $attribute->getData('frontend_label');
-            $attributeArray[] = array(
-                'value' => $code,
-                'label' => sprintf('%s (%s)', $code, $label)
-            );
-        }
-
-        return $attributeArray;
     }
 
     /**

@@ -21,7 +21,7 @@
  * @category  Nosto
  * @package   Nosto_Tagging
  * @author    Nosto Solutions Ltd <magento@nosto.com>
- * @copyright Copyright (c) 2013-2016 Nosto Solutions Ltd (http://www.nosto.com)
+ * @copyright Copyright (c) 2013-2017 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -34,17 +34,13 @@
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
 class Nosto_Tagging_Model_System_Config_Source_Custom_Tags
+    extends Nosto_Tagging_Model_System_Config_Source_Attribute
 {
     /**
-     * Returns all available product attributes
-     *
-     * @return array the options.
+     * @inheritdoc
      */
-    public function toOptionArray()
+    public function getProductAttributes()
     {
-        /* @var Nosto_Tagging_Helper_Data $nostoHelper */
-        $nostoHelper = Mage::helper('nosto_tagging');
-
-        return $nostoHelper->getProductAttributeOptions();
+        return parent::getProductAttributesCollection();
     }
 }

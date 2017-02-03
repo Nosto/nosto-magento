@@ -21,7 +21,7 @@
  * @category  Nosto
  * @package   Nosto_Tagging
  * @author    Nosto Solutions Ltd <magento@nosto.com>
- * @copyright Copyright (c) 2013-2016 Nosto Solutions Ltd (http://www.nosto.com)
+ * @copyright Copyright (c) 2013-2017 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -48,6 +48,7 @@ class Nosto_Tagging_Helper_Customer extends Mage_Core_Helper_Abstract
         /** @var Nosto_Tagging_Model_Customer $customer */
         $customer = Mage::getModel('nosto_tagging/customer');
         $customer->load($order->getQuoteId(), 'quote_id');
+        /** @noinspection PhpUndefinedMethodInspection */
         return $customer->hasData('nosto_id') ? $customer->getNostoId() : false;
     }
 
@@ -77,6 +78,7 @@ class Nosto_Tagging_Helper_Customer extends Mage_Core_Helper_Abstract
                 ->setPageSize(1)
                 ->setCurPage(1)
                 ->getFirstItem(); // @codingStandardsIgnoreLine
+            /** @noinspection PhpUndefinedMethodInspection */
             if ($customer->hasData()) {
                 $customer->setUpdatedAt($dateHelper->gmtDate());
                 $customer->save();
