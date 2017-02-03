@@ -97,7 +97,7 @@
 
     <target name="phpmd">
         <exec executable="./lib/bin/phpmd" passthru="true">
-            <arg value="."/>
+            <arg value="app"/>
             <arg value="--exclude"/>
             <arg value="vendor"/>
             <arg value="text"/>
@@ -112,7 +112,7 @@
     <target name="phpcpd">
         <exec executable="./lib/bin/phpcpd" passthru="true">
             <arg value="--min-lines=1"/>
-            <arg value="src"/>
+            <arg value="app"/>
         </exec>
     </target>
 
