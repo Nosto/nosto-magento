@@ -34,84 +34,52 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Order_Item extends NostoLineItem
+abstract class Nosto_Tagging_Model_Meta_Order_Item extends NostoLineItem
 {
-    /**
-     * Constructor.
-     *
-     * Sets up this Value Object.
-     *
-     * @param array $args the object data.
-     */
-    public function __construct(array $args)
+
+    public function loadData(Mage_Sales_Model_Order_Item $item, $currencyCode)
     {
-        parent::__construct();
-        if (!isset($args['productId']) || empty($args['productId'])) {
-            Mage::log(
-                sprintf(
-                    '%s.productId must have a value',
-                    __CLASS__
-                ),
-                Zend_Log::WARN,
-                Nosto_Tagging_Model_Base::LOG_FILE_NAME
-            );
-            $args['productId'] = '';
-        }
-        if (!isset($args['quantity']) || empty($args['quantity'])) {
-            Mage::log(
-                sprintf(
-                    '%s.quantity must have a value',
-                    __CLASS__
-                ),
-                Zend_Log::WARN,
-                Nosto_Tagging_Model_Base::LOG_FILE_NAME
-            );
-            $args['quantity'] = '';
-        }
-        if (!isset($args['name']) || empty($args['name'])) {
-            Mage::log(
-                sprintf(
-                    '%s.name must be a non-empty string value',
-                    __CLASS__
-                ),
-                Zend_Log::WARN,
-                Nosto_Tagging_Model_Base::LOG_FILE_NAME
-            );
-            $args['name'] = '';
-        }
-        if (!isset($args['unitPrice'])) {
-            Mage::log(
-                sprintf(
-                    '%s.unitPrice must have a value',
-                    __CLASS__
-                ),
-                Zend_Log::WARN,
-                Nosto_Tagging_Model_Base::LOG_FILE_NAME
-            );
-            $args['unitPrice'] = '';
-        } elseif (
-            empty($args['unitPrice'])
-            || !is_numeric($args['unitPrice'])
-        ) {
-            $args['unitPrice'] = 0;
-        }
+        /* @var Nosto_Tagging_Helper_Price $nostoPriceHelper */
+        $nostoPriceHelper = Mage::helper('nosto_tagging/price');
 
-        if (!isset($args['currencyCode']) || empty($args['currencyCode'])) {
-            Mage::log(
-                sprintf(
-                    '%s.currencyCode must be a numeric value',
-                    __CLASS__
-                ),
-                Zend_Log::WARN,
-                Nosto_Tagging_Model_Base::LOG_FILE_NAME
-            );
-            $args['currencyCode'] = '';
-        }
+        parent::setProductId($this->buildItemProductId($item));
+        parent::setQuantity((int)$item->getQtyOrdered());
+        parent::setName($this->buildItemName($item));
+        parent::setPrice($nostoPriceHelper->getItemFinalPriceInclTax($item));
+        parent::setPriceCurrencyCode($currencyCode);
+    }
 
-        $this->setProductId($args['productId']);
-        $this->setQuantity($args['quantity']);
-        $this->setName($args['name']);
-        $this->setPrice($args['unitPrice']);
-        $this->setPriceCurrencyCode($args['currencyCode']);
+    abstract public function buildItemName(Mage_Sales_Model_Order_Item $item);
+
+    /**
+     * Returns the product id for a quote item.
+     * Always try to find the "parent" product ID if the product is a child of
+     * another product type. We do this because it is the parent product that
+     * we tag on the product page, and the child does not always have it's own
+     * product page. This is important because it is the tagged info on the
+     * product page that is used to generate recommendations and email content.
+     *
+     * @param Mage_Sales_Model_Order_Item $item the sales item model.
+     *
+     * @return int
+     */
+    protected function buildItemProductId(Mage_Sales_Model_Order_Item $item)
+    {
+        $parent = $item->getProductOptionByCode('super_product_config');
+        if (isset($parent['product_id'])) {
+            return $parent['product_id'];
+        } elseif ($item->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_SIMPLE) {
+            /** @var Mage_Catalog_Model_Product_Type_Configurable $model */
+            $model = Mage::getModel('catalog/product_type_configurable');
+            $parentIds = $model->getParentIdsByChild($item->getProductId());
+            $attributes = $item->getBuyRequest()->getData('super_attribute');
+            // If the product has a configurable parent, we assume we should tag
+            // the parent. If there are many parent IDs, we are safer to tag the
+            // products own ID.
+            if (!empty($parentIds) === 1 && !empty($attributes)) {
+                return $parentIds[0];
+            }
+        }
+        return $item->getProductId();
     }
 }

@@ -80,15 +80,35 @@ class Nosto_Tagging_Model_Meta_Order extends NostoOrder
 
         /** @var Mage_Sales_Model_Order_Item $item */
         foreach ($order->getAllVisibleItems() as $item) {
-            $purchasedItem = new NostoLineItem();
-            /* @var Nosto_Tagging_Helper_Price $nostoPriceHelper */
-            $nostoPriceHelper = Mage::helper('nosto_tagging/price');
-            $purchasedItem->setProductId($this->buildItemProductId($item));
-            $purchasedItem->setQuantity((int)$item->getQtyOrdered());
-            $purchasedItem->setName($this->buildItemName($item));
-            $purchasedItem->setPrice($nostoPriceHelper->getItemFinalPriceInclTax($item));
-            $purchasedItem->setPriceCurrencyCode($order->getOrderCurrencyCode());
-            $this->addPurchasedItems($purchasedItem);
+            switch ($item->getProductType()) {
+                case Mage_Catalog_Model_Product_Type::TYPE_SIMPLE:
+                    /** @var Nosto_Tagging_Model_Meta_Order_Item_Simple $simpleItem */
+                    $simpleItem = Mage::getModel('nosto_tagging/meta_order_item_simple');
+                    $simpleItem->loadData($item, $order->getOrderCurrencyCode());
+                    $this->addPurchasedItems($simpleItem);
+                    break;
+
+                case Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE:
+                    /** @var Nosto_Tagging_Model_Meta_Order_Item_Configurable $configurableItem */
+                    $configurableItem = Mage::getModel('nosto_tagging/meta_order_item_simple');
+                    $configurableItem->loadData($item, $order->getOrderCurrencyCode());
+                    $this->addPurchasedItems($configurableItem);
+                    break;
+
+                case Mage_Catalog_Model_Product_Type::TYPE_GROUPED:
+                    /** @var Nosto_Tagging_Model_Meta_Order_Item_Grouped $groupedItem */
+                    $groupedItem = Mage::getModel('nosto_tagging/meta_order_item_grouped');
+                    $groupedItem->loadData($item, $order->getOrderCurrencyCode());
+                    $this->addPurchasedItems($groupedItem);
+                    break;
+
+                case Mage_Catalog_Model_Product_Type::TYPE_BUNDLE:
+                    /** @var Nosto_Tagging_Model_Meta_Order_Item_Bundled $bundledItem */
+                    $bundledItem = Mage::getModel('nosto_tagging/meta_order_item_bundled');
+                    $bundledItem->loadData($item, $order->getOrderCurrencyCode());
+                    $this->addPurchasedItems($bundledItem);
+                    break;
+            }
         }
 
         if (($discountAmount = $order->getDiscountAmount()) < 0) {
@@ -172,85 +192,5 @@ class Nosto_Tagging_Model_Meta_Order extends NostoOrder
             }
         }
         return $item->getProductId();
-    }
-
-    /**
-     * Returns the name for a sales item.
-     * Configurable products will have their chosen options added to their name.
-     * Bundle products will have their chosen child product names added.
-     * Grouped products will have their parents name prepended.
-     * All others will have their own name only.
-     *
-     * @param Mage_Sales_Model_Order_Item $item the sales item model.
-     *
-     * @return string
-     */
-    protected function buildItemName(Mage_Sales_Model_Order_Item $item)
-    {
-        $name = $item->getName();
-        $optNames = array();
-
-        if ($item->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_SIMPLE) {
-            /** @var Mage_Catalog_Model_Product_Type_Configurable $model */
-            $model = Mage::getModel('catalog/product_type_configurable');
-            $parentIds = $model->getParentIdsByChild($item->getProductId());
-            // If the product has a configurable parent, we assume we should tag
-            // the parent. If there are many parent IDs, we are safer to tag the
-            // products own name alone.
-            if (!empty($parentIds)) {
-                $attributes = $item->getBuyRequest()->getData('super_attribute');
-                if (is_array($attributes)) {
-                    foreach ($attributes as $id => $value) {
-                        /** @var Mage_Catalog_Model_Resource_Eav_Attribute $attribute */
-                        $attribute = Mage::getModel('catalog/resource_eav_attribute')->load($id);
-                        $label = $attribute->getSource()->getOptionText($value);
-                        if (!empty($label)) {
-                            $optNames[] = $label;
-                        }
-                    }
-                }
-            }
-        } elseif ($item->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE) {
-            $opts = $item->getProductOptionByCode('attributes_info');
-            if (is_array($opts)) {
-                foreach ($opts as $opt) {
-                    if (isset($opt['value']) && is_string($opt['value'])) {
-                        $optNames[] = $opt['value'];
-                    }
-                }
-            }
-        } elseif ($item->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_BUNDLE) {
-            $opts = $item->getProductOptionByCode('bundle_options');
-            if (is_array($opts)) {
-                foreach ($opts as $opt) {
-                    if (isset($opt['value']) && is_array($opt['value'])) {
-                        foreach ($opt['value'] as $val) {
-                            $qty = '';
-                            if (isset($val['qty']) && is_int($val['qty'])) {
-                                $qty .= $val['qty'] . ' x ';
-                            }
-                            if (isset($val['title']) && is_string($val['title'])) {
-                                $optNames[] = $qty . $val['title'];
-                            }
-                        }
-                    }
-                }
-            }
-        } elseif ($item->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_GROUPED) {
-            $config = $item->getProductOptionByCode('super_product_config');
-            if (isset($config['product_id'])) {
-                /** @var Mage_Catalog_Model_Product $parent */
-                $parent = Mage::getModel('catalog/product')
-                    ->load($config['product_id']);
-                $parentName = $parent->getName();
-                if (!empty($parentName)) {
-                    $name = $parentName . ' - ' . $name;
-                }
-            }
-        }
-
-        $name .= !empty($optNames) ? ' (' . implode(', ', $optNames) . ')' : '';
-
-        return $name;
     }
 }
