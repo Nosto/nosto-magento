@@ -39,14 +39,6 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Ratings_Provider
     /**
      * @inheritdoc
      */
-    protected function _construct()
-    {
-        parent::_construct();
-    }
-
-    /**
-     * @inheritdoc
-     */
     protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)
     {
 
@@ -72,7 +64,8 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Ratings_Provider
         return $html;
     }
 
-    private function renderOption($item) {
+    protected function renderOption($item)
+    {
         $tdCss = 'vertical-align: middle; border-bottom: 1px gainsboro solid; padding: 4px 0 4px 0';
         $html = '';
         $currentValue = $this->element->getEscapedValue();
@@ -92,7 +85,8 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Ratings_Provider
             $imageHtml = null;
         }
         $html .= sprintf('<tr id="row_nosto_tagging_%s">', $optionId);
-        $html .= sprintf('<td style="%s"><input id="%s" type="radio" name="%s" value="%s" %s %s> %s</input></td>',
+        $html .= sprintf(
+            '<td style="%s"><input id="%s" type="radio" name="%s" value="%s" %s %s> %s</input></td>',
             $tdCss,
             $optionId,
             $optionName,
@@ -101,7 +95,8 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Ratings_Provider
             $disabled,
             $item['label']
         );
-        $html .= sprintf('<td style="%s"> %s</td>',
+        $html .= sprintf(
+            '<td style="%s"> %s</td>',
             $tdCss,
             $imageHtml
         );

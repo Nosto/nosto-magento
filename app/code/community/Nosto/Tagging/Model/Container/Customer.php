@@ -64,7 +64,7 @@ class Nosto_Tagging_Model_Container_Customer extends Enterprise_PageCache_Model_
         /** @noinspection PhpUndefinedFieldInspection */
         /** @noinspection PhpDeprecationInspection */
         return 'CONTAINER_NOSTO_TAGGING_CUSTOMER_'
-        . md5(
+        . md5( // @codingStandardsIgnoreLine
             $this->_placeholder->getAttribute('cache_id')
             . $this->_getIdentifier()
         );

@@ -42,9 +42,9 @@ class Nosto_Tagging_Model_System_Config_Source_Custom_Tags
      */
     public function toOptionArray()
     {
-        /* @var Nosto_Tagging_Helper_Data $nosto_helper */
-        $nosto_helper = Mage::helper('nosto_tagging');
+        /* @var Nosto_Tagging_Helper_Data $nostoHelper */
+        $nostoHelper = Mage::helper('nosto_tagging');
 
-        return $nosto_helper->getProductAttributeOptions();
+        return $nostoHelper->getProductAttributeOptions();
     }
 }

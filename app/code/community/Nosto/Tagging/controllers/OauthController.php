@@ -25,7 +25,7 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-require_once __DIR__ . '/../bootstrap.php';
+require_once __DIR__ . '/../bootstrap.php'; // @codingStandardsIgnoreLine
 
 /**
  * OAuth2 controller.

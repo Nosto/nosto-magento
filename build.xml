@@ -95,10 +95,55 @@
         <echo msg="Package ready in ${builddest}/${packagename}" />
     </target>
 
-    <!-- ============================================  -->
-    <!-- (DEFAULT)  Target: dist                       -->
-    <!-- ============================================  -->
-    <target name="dist" depends="build">
+    <target name="phpmd">
+        <exec executable="./lib/bin/phpmd" passthru="true">
+            <arg value="."/>
+            <arg value="--exclude"/>
+            <arg value="vendor"/>
+            <arg value="text"/>
+            <arg value="codesize,"/>
+            <arg value="naming,"/>
+            <arg value="unusedcode,"/>
+            <arg value="controversial,"/>
+            <arg value="design"/>
+        </exec>
+    </target>
+
+    <target name="phpcpd">
+        <exec executable="./lib/bin/phpcpd" passthru="true">
+            <arg value="--min-lines=1"/>
+            <arg value="src"/>
+        </exec>
+    </target>
+
+    <target name="phpcbf">
+        <exec executable="./lib/bin/phpcbf" passthru="true">
+            <arg value="--colors"/>
+            <arg value="--report-width=auto"/>
+            <arg value="--standard=MEQP1"/>
+            <arg value="app"/>
+        </exec>
+    </target>
+
+    <target name="phpcs">
+        <exec executable="./lib/bin/phpcs" passthru="true">
+            <arg value="--colors"/>
+            <arg value="--report-width=auto"/>
+            <arg value="--standard=ruleset.xml"/>
+            <arg value="app"/>
+        </exec>
+    </target>
+
+    <target name="phan">
+        <exec executable="./lib/bin/phan" passthru="true">
+            <arg value="--progress-bar"/>
+            <arg value="--signature-compatibility"/>
+            <arg value="--config-file=phan.php"/>
+            <arg value="."/>
+        </exec>
+    </target>
+
+    <target name="dist" depends="phpcs, phan, phpmd, phpcpd, build">
         <echo msg="All done" />
     </target>
 </project>

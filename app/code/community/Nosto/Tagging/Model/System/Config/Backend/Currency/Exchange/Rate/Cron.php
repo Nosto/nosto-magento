@@ -76,7 +76,7 @@ class Nosto_Tagging_Model_System_Config_Backend_Currency_Exchange_Rate_Cron exte
             $model = $model->setPath(self::CRON_STRING_PATH);
             $model->save();
         } catch (Exception $e) {
-            throw new Exception(Mage::helper('cron')->__('Unable to save the cron expression.'));
+            Mage::throwException(Mage::helper('cron')->__('Unable to save the cron expression.'));
         }
     }
 }

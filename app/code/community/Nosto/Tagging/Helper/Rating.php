@@ -68,7 +68,7 @@ class Nosto_Tagging_Helper_Rating extends Mage_Core_Helper_Abstract
      * Note that these modules need to be enabled also
      * @var array
      */
-    private static $ratingProviders = array(
+    protected static $_ratingProviders = array(
         self::RATING_PROVIDER_YOTPO => array(
             self::FIELD_DESCRIPTION => 'Use Yotpo for ratings and reviews',
             self::FIELD_IMAGE_URL => '',
@@ -89,7 +89,7 @@ class Nosto_Tagging_Helper_Rating extends Mage_Core_Helper_Abstract
      */
     public function getSupportedRatingProviders()
     {
-        return self::$ratingProviders;
+        return self::$_ratingProviders;
     }
 
     /**
@@ -121,10 +121,10 @@ class Nosto_Tagging_Helper_Rating extends Mage_Core_Helper_Abstract
     {
         $module = null;
         if (
-            !empty(self::$ratingProviders[$provider])
-            && !empty(self::$ratingProviders[$provider][self::FIELD_MODULE])
+            !empty(self::$_ratingProviders[$provider])
+            && !empty(self::$_ratingProviders[$provider][self::FIELD_MODULE])
         ) {
-            $module = self::$ratingProviders[$provider][self::FIELD_MODULE];
+            $module = self::$_ratingProviders[$provider][self::FIELD_MODULE];
         }
         return $module;
     }
@@ -140,10 +140,10 @@ class Nosto_Tagging_Helper_Rating extends Mage_Core_Helper_Abstract
     {
         $module = null;
         if (
-            !empty(self::$ratingProviders[$provider])
-            && !empty(self::$ratingProviders[$provider][self::FIELD_MODULE])
+            !empty(self::$_ratingProviders[$provider])
+            && !empty(self::$_ratingProviders[$provider][self::FIELD_MODULE])
         ) {
-            $module = self::$ratingProviders[$provider][self::FIELD_MODULE];
+            $module = self::$_ratingProviders[$provider][self::FIELD_MODULE];
         }
         return $module;
     }

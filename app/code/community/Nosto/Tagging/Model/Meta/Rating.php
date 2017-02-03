@@ -38,19 +38,19 @@ abstract class Nosto_Tagging_Model_Meta_Rating
     /**
      * @var int
      */
-    protected $reviewCount;
+    protected $_reviewCount;
 
     /**
      * @var float
      */
-    protected $rating;
+    protected $_rating;
 
     /**
      * @inheritdoc
      */
     public function getReviewCount()
     {
-        return $this->reviewCount;
+        return $this->_reviewCount;
     }
 
     /**
@@ -58,7 +58,7 @@ abstract class Nosto_Tagging_Model_Meta_Rating
      */
     public function setReviewCount($reviewCount)
     {
-        $this->reviewCount = (int)$reviewCount;
+        $this->_reviewCount = (int)$reviewCount;
     }
 
     /**
@@ -66,7 +66,7 @@ abstract class Nosto_Tagging_Model_Meta_Rating
      */
     public function getRating()
     {
-        return $this->rating;
+        return $this->_rating;
     }
 
     /**
@@ -74,7 +74,7 @@ abstract class Nosto_Tagging_Model_Meta_Rating
      */
     public function setRating($rating)
     {
-        $this->rating = (float)$rating;
+        $this->_rating = (float)$rating;
     }
 
     /**

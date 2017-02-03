@@ -86,6 +86,6 @@ class Nosto_Tagging_Model_Meta_Order_Status extends NostoOrderStatus
 
         $this->setCode($args['code']);
         $this->setLabel($args['label']);
-        //$this->_createdAt = $args['createdAt']; // TODO
+        $this->setDate($args['createdAt']);
     }
 }

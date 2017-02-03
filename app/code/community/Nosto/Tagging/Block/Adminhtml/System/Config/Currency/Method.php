@@ -51,7 +51,7 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Currency_Method extends Mage_A
             $accountHelper = Mage::helper('nosto_tagging/account');
             /* @var NostoAccount $nostoAccount */
             $nostoAccount = $accountHelper->find($store);
-            if($nostoAccount instanceof NostoAccountInterface) {
+            if ($nostoAccount instanceof NostoAccountInterface) {
                 foreach (NostoApiToken::getApiTokenNames() as $token) {
                     if (!$nostoAccount->getApiToken($token)) {
                         $disabled = true;

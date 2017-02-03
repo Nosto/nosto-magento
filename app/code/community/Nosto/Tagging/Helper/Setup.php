@@ -57,8 +57,7 @@ class Nosto_Tagging_Helper_Setup extends Mage_Core_Helper_Abstract
             );
             $attributeExists = false;
         }
-        if (!$attributeExists)
-        {
+        if (!$attributeExists) {
             $attributeDefinition = array(
                 "type" => "varchar",
                 "label" => "Nosto Customer Reference",
@@ -81,8 +80,8 @@ class Nosto_Tagging_Helper_Setup extends Mage_Core_Helper_Abstract
                 Nosto_Tagging_Helper_Data::NOSTO_CUSTOMER_REFERENCE_ATTRIBUTE_NAME
             );
 
-            $used_in_forms=array("adminhtml_customer");
-            $attribute->setData("used_in_forms",$used_in_forms)
+            $usedInForms=array("adminhtml_customer");
+            $attribute->setData("used_in_forms", $usedInForms)
                 ->setData("is_used_for_customer_segment", false)
                 ->setData("is_system", 1)
                 ->setData("is_user_defined", 0)

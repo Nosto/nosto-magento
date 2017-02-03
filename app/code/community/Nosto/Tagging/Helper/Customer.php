@@ -58,6 +58,8 @@ class Nosto_Tagging_Helper_Customer extends Mage_Core_Helper_Abstract
      */
     public function updateNostoId()
     {
+        /** @var Mage_Core_Model_Date $dateHelper */
+        $dateHelper = Mage::getSingleton('core/date');
         /** @var Mage_Checkout_Model_Cart $cart */
         $cart = Mage::getModel('checkout/cart');
         /** @var Mage_Core_Model_Cookie $cookie */
@@ -74,14 +76,14 @@ class Nosto_Tagging_Helper_Customer extends Mage_Core_Helper_Abstract
                 ->addFieldToFilter('nosto_id', $nostoId)
                 ->setPageSize(1)
                 ->setCurPage(1)
-                ->getFirstItem();
+                ->getFirstItem(); // @codingStandardsIgnoreLine
             if ($customer->hasData()) {
-                $customer->setUpdatedAt(date('Y-m-d H:i:s'));
+                $customer->setUpdatedAt($dateHelper->gmtDate());
                 $customer->save();
             } else {
                 $customer->setQuoteId($quoteId);
                 $customer->setNostoId($nostoId);
-                $customer->setCreatedAt(date('Y-m-d H:i:s'));
+                $customer->setCreatedAt($dateHelper->gmtDate());
                 $customer->save();
             }
         }
@@ -96,7 +98,7 @@ class Nosto_Tagging_Helper_Customer extends Mage_Core_Helper_Abstract
     public function generateCustomerReference(Mage_Customer_Model_Customer $customer)
     {
         /** @noinspection PhpUndefinedMethodInspection */
-        $hash = md5($customer->getId().$customer->getEmail());
+        $hash = md5($customer->getId().$customer->getEmail()); // @codingStandardsIgnoreLine
         $uuid = uniqid(
             substr($hash, 0, 8),
             true

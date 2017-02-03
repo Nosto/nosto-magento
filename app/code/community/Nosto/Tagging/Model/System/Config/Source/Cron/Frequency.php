@@ -32,7 +32,8 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_System_Config_Source_Cron_Frequency extends Mage_Adminhtml_Model_System_Config_Source_Cron_Frequency
+class Nosto_Tagging_Model_System_Config_Source_Cron_Frequency
+    extends Mage_Adminhtml_Model_System_Config_Source_Cron_Frequency
 {
     const CRON_HOURLY = 'H';
 

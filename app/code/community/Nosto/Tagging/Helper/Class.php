@@ -25,7 +25,7 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-require_once __DIR__ . '/../bootstrap.php';
+require_once __DIR__ . '/../bootstrap.php'; // @codingStandardsIgnoreLine
 
 /**
  * Helper class for loading pluggable classes.
@@ -65,16 +65,11 @@ class Nosto_Tagging_Helper_Class extends Mage_Core_Helper_Abstract
         );
     }
 
-    /*
-     * Loads correct / plugable rating class
-     *
+    /**
+     * Loads correct / pluggable rating class
      *
      * @param Mage_Core_Model_Store $store
      * @return Nosto_Tagging_Model_Meta_Rating|null
-     */
-    /**
-     * @param Mage_Core_Model_Store $store
-     * @return false|Mage_Core_Model_Abstract|null
      */
     public function getRatingClass(Mage_Core_Model_Store $store)
     {
@@ -104,7 +99,7 @@ class Nosto_Tagging_Helper_Class extends Mage_Core_Helper_Abstract
      * @param $identifier
      * @return string
      */
-    private static function createClassId($classString, $identifier)
+    protected static function createClassId($classString, $identifier)
     {
         $classId = sprintf(
             'nosto_tagging/' . $classString,
@@ -122,7 +117,8 @@ class Nosto_Tagging_Helper_Class extends Mage_Core_Helper_Abstract
      * @param bool $fallback
      * @return false|Mage_Core_Model_Abstract|null
      */
-    private function getClass($classId, $expected, $fallback = false) {
+    protected function getClass($classId, $expected, $fallback = false)
+    {
         $class = null;
         try {
             if (is_string($classId)) {

@@ -64,13 +64,13 @@ class Nosto_Tagging_Helper_Currency extends Mage_Core_Helper_Abstract
             $decimalPos = strlen($format);
         }
         $decimalFormat = substr($format, $decimalPos);
-        if (($pos = strpos($decimalFormat, '#')) !== false){
+        if (($pos = strpos($decimalFormat, '#')) !== false) {
             $precision = strlen($decimalFormat) - $pos - $precision;
         }
 
         // If the symbol is missing for the current locale, use the ISO code.
         $currencySymbol = $currency->getSymbol();
-        if (is_null($currencySymbol)) {
+        if ($currencySymbol === null) {
             $currencySymbol = $currencyCode;
         }
 

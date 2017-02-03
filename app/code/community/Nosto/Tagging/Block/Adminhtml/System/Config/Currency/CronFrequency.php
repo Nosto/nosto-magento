@@ -45,14 +45,14 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Currency_CronFrequency
      *
      * @var array
      */
-    private $options;
+    protected $_options;
 
     /**
      * Form element to be rendered
      *
      * @var Varien_Data_Form_Element_Abstract
      */
-    private $element;
+    protected $_element;
 
     /**
      * @inheritdoc
@@ -70,10 +70,10 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Currency_CronFrequency
      */
     protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)
     {
-        $this->element = $element;
-        $data = $this->element->getData();
+        $this->_element = $element;
+        $data = $this->_element->getData();
         if (isset($data['values']) && is_array($data['values'])) {
-            $this->options = $data['values'];
+            $this->_options = $data['values'];
         } else {
             Mage::log(
                 'Could not find any options for cron frequency',
@@ -92,7 +92,7 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Currency_CronFrequency
      */
     public function getOptions()
     {
-        return $this->options;
+        return $this->_options;
     }
 
     /**
@@ -102,7 +102,7 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Currency_CronFrequency
      */
     public function getSelectId()
     {
-        return $this->element->getHtmlId();
+        return $this->_element->getHtmlId();
     }
 
     /**
@@ -112,7 +112,7 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Currency_CronFrequency
      */
     public function getSelectName()
     {
-        return $this->element->getName();
+        return $this->_element->getName();
     }
 
     /**

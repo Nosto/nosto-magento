@@ -62,7 +62,8 @@ class Nosto_Tagging_Block_Cart extends Mage_Checkout_Block_Cart_Abstract
         // that page only, and the cart page recommendation elements we output
         // come through a generic block that cannot be used for this specific
         // action.
-        if (count($this->getItems()) > 0) {
+        $items = $this->getItems();
+        if (!empty($items)) {
             /** @var Nosto_Tagging_Helper_Customer $customerHelper */
             $customerHelper = Mage::helper('nosto_tagging/customer');
             $customerHelper->updateNostoId();
@@ -86,7 +87,7 @@ class Nosto_Tagging_Block_Cart extends Mage_Checkout_Block_Cart_Abstract
     public function getProductId($item)
     {
         $parentItem = $item->getOptionByCode('product_type');
-        if (!is_null($parentItem)) {
+        if ($parentItem !== null) {
             return $parentItem->getProductId();
         } elseif ($item->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_SIMPLE) {
             /** @var Mage_Catalog_Model_Product_Type_Configurable $model */
@@ -96,7 +97,7 @@ class Nosto_Tagging_Block_Cart extends Mage_Checkout_Block_Cart_Abstract
             // If the product has a configurable parent, we assume we should tag
             // the parent. If there are many parent IDs, we are safer to tag the
             // products own ID.
-            if (count($parentIds) === 1 && !empty($attributes)) {
+            if (!empty($parentIds) && !empty($attributes)) {
                 return $parentIds[0];
             }
         }
@@ -126,13 +127,12 @@ class Nosto_Tagging_Block_Cart extends Mage_Checkout_Block_Cart_Abstract
             // If the product has a configurable parent, we assume we should tag
             // the parent. If there are many parent IDs, we are safer to tag the
             // products own name alone.
-            if (count($parentIds) === 1) {
+            if (!empty($parentIds)) {
                 $attributes = $item->getBuyRequest()->getData('super_attribute');
                 if (is_array($attributes)) {
                     foreach ($attributes as $id => $value) {
                         /** @var Mage_Catalog_Model_Resource_Eav_Attribute $attribute */
-                        $attribute = Mage::getModel('catalog/resource_eav_attribute')
-                            ->load($id);
+                        $attribute = Mage::getModel('catalog/resource_eav_attribute')->load($id);
                         $label = $attribute->getSource()->getOptionText($value);
                         if (!empty($label)) {
                             $optNames[] = $label;

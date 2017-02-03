@@ -67,7 +67,8 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Path to store config scheduled currency exchange rate update enabled setting.
      */
-    const XML_PATH_SCHEDULED_CURRENCY_EXCHANGE_RATE_UPDATE_ENABLED = 'nosto_tagging/scheduled_currency_exchange_rate_update/enabled';
+    const XML_PATH_SCHEDULED_CURRENCY_EXCHANGE_RATE_UPDATE_ENABLED
+        = 'nosto_tagging/scheduled_currency_exchange_rate_update/enabled';
 
     /**
      * Multi currency method option for currency exchange rates.
@@ -483,7 +484,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
             )
         );
         /** @var Mage_Eav_Model_Attribute $attribute */
-        foreach($attributes as $attribute) {
+        foreach ($attributes as $attribute) {
             $code = $attribute->getData('attribute_code');
             if (in_array($code, self::$notValidAttributesForTags)) {
                 continue;
@@ -501,22 +502,22 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Return the attributes to be tagged in Nosto tags
      *
-     * @param string $tag_id the name / identifier of the tag (e.g. tag1, tag2).
+     * @param string $tagId the name / identifier of the tag (e.g. tag1, tag2).
      * @param Mage_Core_Model_Store|null $store the store model or null.
      *
      * @throws NostoException
      *
      * @return array
      */
-    public function getAttributesToTag($tag_id, $store = null)
+    public function getAttributesToTag($tagId, $store = null)
     {
-        if (!in_array($tag_id, self::$validTags)) {
+        if (!in_array($tagId, self::$validTags)) {
             throw new NostoException(
-                sprintf('Invalid tag identifier %s', $tag_id)
+                sprintf('Invalid tag identifier %s', $tagId)
             );
         }
-        $tag_path = self::XML_PATH_CUSTOM_TAGS . $tag_id;
-        $tags = Mage::getStoreConfig($tag_path, $store);
+        $tagPath = self::XML_PATH_CUSTOM_TAGS . $tagId;
+        $tags = Mage::getStoreConfig($tagPath, $store);
         return explode(',', $tags);
     }
 

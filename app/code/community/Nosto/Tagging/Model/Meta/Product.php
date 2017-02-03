@@ -54,7 +54,7 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
      */
     public function loadData(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store = null)
     {
-        if (is_null($store)) {
+        if ($store === null) {
             $store = Mage::app()->getStore();
         }
 
@@ -67,16 +67,20 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
         $this->setProductId($product->getId());
         $this->setName($product->getName());
         $this->setImageUrl($this->buildImageUrl($product, $store));
-        $this->setPrice($priceHelper->getTaggingPrice(
-            $priceHelper->getProductFinalPriceInclTax($product),
-            $store->getCurrentCurrencyCode(),
-            $store
-        ));
-        $this->setListPrice($priceHelper->getTaggingPrice(
-            $priceHelper->getProductPriceInclTax($product),
-            $store->getCurrentCurrencyCode(),
-            $store
-        ));
+        $this->setPrice(
+            $priceHelper->getTaggingPrice(
+                $priceHelper->getProductFinalPriceInclTax($product),
+                $store->getCurrentCurrencyCode(),
+                $store
+            )
+        );
+        $this->setListPrice(
+            $priceHelper->getTaggingPrice(
+                $priceHelper->getProductPriceInclTax($product),
+                $store->getCurrentCurrencyCode(),
+                $store
+            )
+        );
         $this->setPriceCurrencyCode($priceHelper->getTaggingCurrencyCode($store->getCurrentCurrencyCode(), $store));
         $this->setAvailability($this->buildAvailability($product));
         $this->setCategories($this->buildCategories($product));
@@ -117,7 +121,7 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
     protected function buildAvailability(Mage_Catalog_Model_Product $product)
     {
         $availability = self::OUT_OF_STOCK;
-        if(!$product->isVisibleInSiteVisibility()) {
+        if (!$product->isVisibleInSiteVisibility()) {
             $availability = self::INVISIBLE;
         } elseif ($product->isAvailable()) {
             $availability = self::IN_STOCK;
@@ -174,7 +178,8 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
      * @param Mage_Catalog_Model_Product $product the product model.
      *
      */
-    protected function amendInventoryLevel(Mage_Catalog_Model_Product $product) {
+    protected function amendInventoryLevel(Mage_Catalog_Model_Product $product) 
+    {
         /* @var Nosto_Tagging_Helper_Stock $stockHelper */
         $stockHelper = Mage::helper('nosto_tagging/stock');
         try {
@@ -202,7 +207,8 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
     protected function amendAlternativeImages(
         Mage_Catalog_Model_Product $product,
         Mage_Core_Model_Store $store
-    ) {
+    ) 
+    {
         /* @var Mage_Catalog_Model_Product_Attribute_Media_Api $mediaApi */
         $mediaApi = Mage::getModel('catalog/product_attribute_media_api');
         $mediaItems = $mediaApi->items($product->getId(), $store);
@@ -267,14 +273,14 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
      */
     protected function amendCustomizableAttributes(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
-        /* @var Nosto_Tagging_Helper_Data $nosto_helper */
-        $nosto_helper = Mage::helper("nosto_tagging");
+        /* @var Nosto_Tagging_Helper_Data $nostoHelper */
+        $nostoHelper = Mage::helper("nosto_tagging");
 
         foreach (self::$customizableAttributes as $mageAttr => $nostoAttr) {
-            $mapped = $nosto_helper->getMappedAttribute($mageAttr, $store);
+            $mapped = $nostoHelper->getMappedAttribute($mageAttr, $store);
             if ($mapped) {
                 $value = $this->getAttributeValue($product, $mapped);
-                if(!empty($value)) {
+                if (!empty($value)) {
                     $this->$nostoAttr = $value;
                 }
             }
@@ -291,30 +297,30 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
      */
     protected function amendAttributeTags(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
-        $product_attributes = $product->getAttributes();
-        /* @var Nosto_Tagging_Helper_Data $nosto_helper */
-        $nosto_helper = Mage::helper("nosto_tagging");
+        $productAttributes = $product->getAttributes();
+        /* @var Nosto_Tagging_Helper_Data $nostoHelper */
+        $nostoHelper = Mage::helper("nosto_tagging");
 
-        foreach (Nosto_Tagging_Helper_Data::$validTags as $tag_id) {
-            $attributes_to_tag = $nosto_helper->getAttributesToTag($tag_id, $store->getId());
-            if (empty($attributes_to_tag) || !is_array($attributes_to_tag)) {
+        foreach (Nosto_Tagging_Helper_Data::$validTags as $tagId) {
+            $attributesToTag = $nostoHelper->getAttributesToTag($tagId, $store->getId());
+            if (empty($attributesToTag) || !is_array($attributesToTag)) {
                 continue;
             }
-            /* @var Mage_Catalog_Model_Resource_Eav_Attribute $product_attribute*/
-            foreach ($product_attributes as $key=>$product_attribute) {
-                if (in_array($key, $attributes_to_tag)) {
+            /* @var Mage_Catalog_Model_Resource_Eav_Attribute $productAttribute*/
+            foreach ($productAttributes as $key=>$productAttribute) {
+                if (in_array($key, $attributesToTag)) {
                     try {
-                        $attribute_value = $this->getAttributeValue($product, $key);
-                        if (!empty($attribute_value)) {
-                            switch ($tag_id) {
+                        $attributeValue = $this->getAttributeValue($product, $key);
+                        if (!empty($attributeValue)) {
+                            switch ($tagId) {
                                 case Nosto_Tagging_Helper_Data::TAG1:
-                                    $this->addTag1(sprintf('%s:%s', $key, $attribute_value));
+                                    $this->addTag1(sprintf('%s:%s', $key, $attributeValue));
                                     break;
                                 case Nosto_Tagging_Helper_Data::TAG2:
-                                    $this->addTag2(sprintf('%s:%s', $key, $attribute_value));
+                                    $this->addTag2(sprintf('%s:%s', $key, $attributeValue));
                                     break;
                                 case Nosto_Tagging_Helper_Data::TAG3:
-                                    $this->addTag3(sprintf('%s:%s', $key, $attribute_value));
+                                    $this->addTag3(sprintf('%s:%s', $key, $attributeValue));
                                     break;
                             }
                         }
@@ -348,10 +354,10 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
      */
     protected function buildUrl(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
-        /** @var Nosto_Tagging_Helper_Url $url_helper */
-        $url_helper = Mage::helper('nosto_tagging/url');
-        $product_url = $url_helper->generateProductUrl($product, $store);
-        return $product_url;
+        /** @var Nosto_Tagging_Helper_Url $urlHelper */
+        $urlHelper = Mage::helper('nosto_tagging/url');
+        $productUrl = $urlHelper->generateProductUrl($product, $store);
+        return $productUrl;
     }
 
     /**
@@ -433,20 +439,20 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
      * @param string $attributeName
      * @return string
      */
-    private function getAttributeValue(Mage_Catalog_Model_Product $product, $attributeName)
+    protected function getAttributeValue(Mage_Catalog_Model_Product $product, $attributeName)
     {
         $attribute = $product->getResource()->getAttribute($attributeName);
         if ($attribute instanceof Mage_Catalog_Model_Resource_Eav_Attribute) {
-            $attribute_data = $product->getData($attributeName);
+            $attributeData = $product->getData($attributeName);
             /** @noinspection PhpParamsInspection */
-            $attribute_value = $product->getAttributeText($attributeName);
-            if (empty($attribute_value) && is_scalar($attribute_data)) {
-                $attribute_value = $attribute_data;
+            $attributeValue = $product->getAttributeText($attributeName);
+            if (empty($attributeValue) && is_scalar($attributeData)) {
+                $attributeValue = $attributeData;
             }
         } else {
-            $attribute_value = null;
+            $attributeValue = null;
         }
 
-        return trim($attribute_value);
+        return trim($attributeValue);
     }
 }

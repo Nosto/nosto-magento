@@ -67,7 +67,7 @@ class Nosto_Tagging_Model_Meta_Order extends NostoOrder
                 $orderStatus = new NostoOrderStatus();
                 $orderStatus->setCode($status->getStatus());
                 $orderStatus->setLabel($status->getStatusLabel());
-                // 'createdAt' => $item->getCreatedAt() TODO:
+                $orderStatus->setDate($status->getCreatedAt());
                 $this->addOrderStatus($orderStatus);
             }
         }
@@ -129,7 +129,7 @@ class Nosto_Tagging_Model_Meta_Order extends NostoOrder
                     $appliedRules[$ruleId] = $rule->getName();
                 }
             }
-            if (count($appliedRules) == 0) {
+            if (empty($appliedRules)) {
                 $appliedRules[] = 'unknown rule';
             }
             $discountTxt = sprintf(
@@ -167,7 +167,7 @@ class Nosto_Tagging_Model_Meta_Order extends NostoOrder
             // If the product has a configurable parent, we assume we should tag
             // the parent. If there are many parent IDs, we are safer to tag the
             // products own ID.
-            if (count($parentIds) === 1 && !empty($attributes)) {
+            if (!empty($parentIds) === 1 && !empty($attributes)) {
                 return $parentIds[0];
             }
         }
@@ -197,13 +197,12 @@ class Nosto_Tagging_Model_Meta_Order extends NostoOrder
             // If the product has a configurable parent, we assume we should tag
             // the parent. If there are many parent IDs, we are safer to tag the
             // products own name alone.
-            if (count($parentIds) === 1) {
+            if (!empty($parentIds)) {
                 $attributes = $item->getBuyRequest()->getData('super_attribute');
                 if (is_array($attributes)) {
                     foreach ($attributes as $id => $value) {
                         /** @var Mage_Catalog_Model_Resource_Eav_Attribute $attribute */
-                        $attribute = Mage::getModel('catalog/resource_eav_attribute')
-                            ->load($id);
+                        $attribute = Mage::getModel('catalog/resource_eav_attribute')->load($id);
                         $label = $attribute->getSource()->getOptionText($value);
                         if (!empty($label)) {
                             $optNames[] = $label;
@@ -250,9 +249,7 @@ class Nosto_Tagging_Model_Meta_Order extends NostoOrder
             }
         }
 
-        if (!empty($optNames)) {
-            $name .= ' (' . implode(', ', $optNames) . ')';
-        }
+        $name .= !empty($optNames) ? ' (' . implode(', ', $optNames) . ')' : '';
 
         return $name;
     }

@@ -60,13 +60,15 @@ class Nosto_Tagging_Model_Meta_Account extends NostoSignup
         $helper = Mage::helper('nosto_tagging');
         /* @var Nosto_Tagging_Helper_Url $helperUrl */
         $helperUrl = Mage::helper('nosto_tagging/url');
-        $this->setTitle($helper->cleanUpAccountTitle(
-            $store->getWebsite()->getName()
-            . ' - '
-            . $store->getGroup()->getName()
-            . ' - '
-            . $store->getName()
-        ));
+        $this->setTitle(
+            $helper->cleanUpAccountTitle(
+                $store->getWebsite()->getName()
+                . ' - '
+                . $store->getGroup()->getName()
+                . ' - '
+                . $store->getName()
+            )
+        );
         $this->setName(substr(sha1(rand()), 0, 8));
         $this->setFrontPageUrl($helperUrl->getFrontPageUrl($store));
         $this->setCurrencyCode($store->getBaseCurrencyCode());
@@ -89,12 +91,13 @@ class Nosto_Tagging_Model_Meta_Account extends NostoSignup
 
         $storeLocale = $store->getConfig('general/locale/code');
         $currencyCodes = $store->getAvailableCurrencyCodes(true);
-        if (is_array($currencyCodes) && count($currencyCodes) > 0) {
+        if (is_array($currencyCodes) && !empty($currencyCodes)) {
             /** @var Nosto_Tagging_Helper_Currency $currencyHelper */
             $currencyHelper = Mage::helper('nosto_tagging/currency');
             foreach ($currencyCodes as $currencyCode) {
-                $this->addCurrency($currencyCode,
-                    $currencyHelper->getCurrencyObject($storeLocale, $currencyCode));
+                $this->addCurrency(
+                    $currencyCode, $currencyHelper->getCurrencyObject($storeLocale, $currencyCode)
+                );
             }
         }
     }

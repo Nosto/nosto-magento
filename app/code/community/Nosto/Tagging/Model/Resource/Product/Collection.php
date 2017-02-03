@@ -48,7 +48,8 @@ class Nosto_Tagging_Model_Resource_Product_Collection extends Mage_Catalog_Model
      * Returns the name of model(s) in collection
      * @return string
      */
-    public function getModelName() {
+    public function getModelName()
+    {
         return "nosto_tagging/product";
     }
 }

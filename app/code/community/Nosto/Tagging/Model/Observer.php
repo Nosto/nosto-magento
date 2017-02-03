@@ -25,7 +25,7 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-require_once __DIR__ . '/../bootstrap.php';
+require_once __DIR__ . '/../bootstrap.php'; // @codingStandardsIgnoreLine
 
 /**
  * Event observer model.
@@ -100,7 +100,7 @@ class Nosto_Tagging_Model_Observer
                 /** @noinspection PhpUndefinedMethodInspection */
                 $product = $catalog
                     ->setStoreId($store->getId())
-                    ->load($product->getId());
+                    ->load($product->getId()); // @codingStandardsIgnoreLine
                 if (is_null($product)) {
                     continue;
                 }
@@ -246,7 +246,7 @@ class Nosto_Tagging_Model_Observer
                     continue;
                 }
                 $account = $accountHelper->find($store);
-                if (is_null($account)) {
+                if ($account === null) {
                     continue;
                 }
                 if (!$accountHelper->updateCurrencyExchangeRates($account, $store)) {
@@ -272,7 +272,7 @@ class Nosto_Tagging_Model_Observer
      *
      * @return Nosto_Tagging_Model_Observer
      */
-    public function syncNostoAccount(/** @noinspection PhpUnusedParameterInspection */
+    public function syncNostoAccount(/** @noinspection PhpUnusedParameterInspection */ // @codingStandardsIgnoreLine
         Varien_Event_Observer $observer)
     {
         /** @var Nosto_Tagging_Helper_Data $helper */

@@ -71,7 +71,8 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         $product,
         $finalPrice = false,
         $inclTax = true
-    ) {
+    ) 
+    {
         $price = 0;
 
         switch ($product->getTypeId()) {
@@ -102,7 +103,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
                     ->addMinimalPrice()
                     ->addTaxPercents()
                     ->load()
-                    ->getFirstItem();
+                    ->getFirstItem(); // @codingStandardsIgnoreLine
                 if ($tmpProduct) {
                     /** @var Mage_Tax_Helper_Data $helper */
                     $helper = Mage::helper('tax');
@@ -169,7 +170,8 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         Mage_Catalog_Model_Product $product,
         $finalPrice = false,
         $inclTax = true
-    ) {
+    ) 
+    {
         /** @var Mage_Tax_Helper_Data $helper */
         $helper = Mage::helper('tax');
         $price = $finalPrice
@@ -223,7 +225,8 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         /** @var Mage_Directory_Helper_Data $helper */
         $helper = Mage::helper('directory');
         $quantity = (double)$item->getQtyOrdered();
-        $basePrice = $item->getBaseRowTotal() + $item->getBaseTaxAmount() + $item->getBaseHiddenTaxAmount() - $item->getBaseDiscountAmount();
+        $basePrice = $item->getBaseRowTotal() + $item->getBaseTaxAmount()
+            + $item->getBaseHiddenTaxAmount() - $item->getBaseDiscountAmount();
         $orderCurrencyCode = $item->getOrder()->getOrderCurrencyCode();
         $baseCurrencyCode = $item->getOrder()->getBaseCurrencyCode();
         if ($orderCurrencyCode != $baseCurrencyCode) {

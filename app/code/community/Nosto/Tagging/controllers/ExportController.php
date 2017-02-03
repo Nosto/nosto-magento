@@ -25,7 +25,7 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-require_once __DIR__ . '/../bootstrap.php';
+require_once __DIR__ . '/../bootstrap.php'; // @codingStandardsIgnoreLine
 
 /**
  * History data export controller.
@@ -44,7 +44,7 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
     const OFFSET = 'offset';
     const CREATED_AT = 'created_at';
 
-    private static $searchableFields = array(
+    protected static $_searchableFields = array(
         'sales/order' => array(
             self::ID => 'entity_id'
         ),
@@ -53,23 +53,24 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
         )
     );
 
-    protected function applyIdFilters(&$collection) {
+    protected function applyIdFilters(&$collection) 
+    {
         /** @var Mage_Sales_Model_Resource_Collection_Abstract $collection */
         if ($id = $this->getRequest()->getParam(self::ID)) {
             /** @var string $collectionModel */
             $collectionModel = $collection->getModelName();
             if (
-                !empty(self::$searchableFields[$collectionModel])
-                && !empty(self::$searchableFields[$collectionModel][self::ID])
+                !empty(self::$_searchableFields[$collectionModel])
+                && !empty(self::$_searchableFields[$collectionModel][self::ID])
             ) {
-                $filterByField = self::$searchableFields[$collectionModel][self::ID];
+                $filterByField = self::$_searchableFields[$collectionModel][self::ID];
                 if (!is_array($id)) {
                     $ids = explode(',', $id);
-                    if (count($ids) > 0) {
+                    if (!empty($ids)) {
                         $id = $ids;
                     }
                 }
-                if (is_array($id) && count($id) > 0) {
+                if (is_array($id) && !empty($id)) {
                     $collection->addFieldToFilter($filterByField, array('in' => $id));
                 } else {
                     $collection->addFieldToFilter($filterByField, $id);
@@ -168,8 +169,8 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
         $account = $helper->find();
         if ($account !== null) {
             $cipherText = NostoHelperExporter::export($account, $collection);
-            echo $cipherText;
+            echo $cipherText; // @codingStandardsIgnoreLine
         }
-        die();
+        die(); // @codingStandardsIgnoreLine
     }
 }
