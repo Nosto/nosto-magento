@@ -37,12 +37,12 @@ class Nosto_Tagging_Helper_Setup extends Mage_Core_Helper_Abstract
     /**
      * Adds nosto_customer_reference as to the Customer entity
      *
-     * @param $installer Nosto_Tagging_Model_Resource_Setup
+     * @param $installer Mage_Eav_Model_Entity_Setup
      * @param $reset bool if set to true the existing nosto_customer_ref is removed
      *
      * @return void
      */
-    public function addNostoCustomerReferenceEav(Nosto_Tagging_Model_Resource_Setup $installer, $reset = false)
+    public function addNostoCustomerReferenceEav(Mage_Eav_Model_Entity_Setup $installer, $reset = false)
     {
         $installer->startSetup();
         $entity = 'customer';
@@ -95,11 +95,11 @@ class Nosto_Tagging_Helper_Setup extends Mage_Core_Helper_Abstract
     /**
      * Changes the nosto_customer_reference frontend input type to text
      *
-     * @param $installer Nosto_Tagging_Model_Resource_Setup
+     * @param $installer Mage_Eav_Model_Entity_Setup
      *
      * @return void
      */
-    public function alterCustomerReferenceInputType(Nosto_Tagging_Model_Resource_Setup $installer)
+    public function alterCustomerReferenceInputType(Mage_Eav_Model_Entity_Setup $installer)
     {
         $installer->updateAttribute(
             'customer',
