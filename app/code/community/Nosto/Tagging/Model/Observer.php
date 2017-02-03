@@ -83,7 +83,7 @@ class Nosto_Tagging_Model_Observer
                 $service = Mage::getModel('nosto_tagging/service_product');
                 $service->updateProduct($product);
             } catch (NostoException $e) {
-                Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
+                Mage::log("\n" . $e, Zend_Log::ERR, Nosto_Tagging_Model_Base::LOG_FILE_NAME);
             }
         }
 
@@ -126,7 +126,7 @@ class Nosto_Tagging_Model_Observer
                     $service->addProduct($model);
                     $service->delete();
                 } catch (NostoException $e) {
-                    Mage::log("\n" . $e, Zend_Log::ERR, 'nostotagging.log');
+                    Mage::log("\n" . $e, Zend_Log::ERR, Nosto_Tagging_Model_Base::LOG_FILE_NAME);
                 }
                 $emulation->stopEnvironmentEmulation($env);
             }
@@ -174,7 +174,7 @@ class Nosto_Tagging_Model_Observer
                 Mage::log(
                     "\n" . $e->__toString(),
                     Zend_Log::ERR,
-                    'nostotagging.log'
+                    Nosto_Tagging_Model_Base::LOG_FILE_NAME
                 );
             }
         }
@@ -216,7 +216,10 @@ class Nosto_Tagging_Model_Observer
             if ($error) {
                 throw Mage::exception(
                     'Mage_Cron',
-                    'There was an error updating the exchange rates. More info in "var/log/nostotagging.log".'
+                    sprintf(
+                        'There was an error updating the exchange rates. More info in "%".',
+                        Nosto_Tagging_Model_Base::LOG_FILE_NAME
+                    )
                 );
             }
         }
