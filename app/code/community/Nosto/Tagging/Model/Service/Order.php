@@ -37,6 +37,13 @@
 class Nosto_Tagging_Model_Service_Order
 {
     /**
+     * Flag for disabling inventory sync for slow connections
+     *
+     * @var bool
+     */
+    public static $syncInventoriesAfterOrder = true;
+
+    /**
      * Sends an order confirmation to Nosto and also batch updates all products
      * that were included in the order.
      *
@@ -53,6 +60,7 @@ class Nosto_Tagging_Model_Service_Order
         if ($response->getCode() !== 200) {
             Nosto::throwHttpException('Failed to send order confirmation to Nosto.', $request, $response);
         }
+
         try {
             $this->syncInventoryLevel($order);
         } catch (NostoException $e) {
@@ -65,6 +73,7 @@ class Nosto_Tagging_Model_Service_Order
                 Nosto_Tagging_Model_Base::LOG_FILE_NAME
             );
         }
+
         return true;
     }
 
@@ -75,23 +84,25 @@ class Nosto_Tagging_Model_Service_Order
      */
     public function syncInventoryLevel(Nosto_Tagging_Model_Meta_Order $order)
     {
-        $purchasedtems = $order->getPurchasedItems();
-        $products = array();
-        /* @var Nosto_Tagging_Model_Meta_Order_Item $item */
-        foreach ($purchasedtems as $item) {
-            $productId = $item->getProductId();
-            if (empty($productId) || $productId < 0) {
-                continue;
+        if (self::$syncInventoriesAfterOrder === true) {
+            $purchasedtems = $order->getPurchasedItems();
+            $products = array();
+            /* @var Nosto_Tagging_Model_Meta_Order_Item $item */
+            foreach ($purchasedtems as $item) {
+                $productId = $item->getProductId();
+                if (empty($productId) || $productId < 0) {
+                    continue;
+                }
+                $product= Mage::getModel('catalog/product')->load($productId);
+                if ($product instanceof Mage_Catalog_Model_Product) {
+                    $products[] = $product;
+                }
             }
-            $product= Mage::getModel('catalog/product')->load($productId);
-            if ($product instanceof Mage_Catalog_Model_Product) {
-                $products[] = $product;
+            if(count($products) > 0) {
+                /* @var Nosto_Tagging_Model_Service_Product $productService */
+                $productService = Mage::getModel('nosto_tagging/service_product');
+                $productService->updateBatch($products);
             }
-        }
-        if(count($products) > 0) {
-            /* @var Nosto_Tagging_Model_Service_Product $productService */
-            $productService = Mage::getModel('nosto_tagging/service_product');
-            $productService->updateBatch($products);
         }
     }
 
