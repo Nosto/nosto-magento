@@ -63,6 +63,7 @@ class Nosto_Tagging_Block_Order_Vaimo_Klarna_Checkout extends Mage_Checkout_Bloc
     {
         $nostoOrder = null;
         try {
+            /** @noinspection PhpUndefinedMethodInspection */
             $checkoutId = Mage::getSingleton('checkout/session')->getKlarnaCheckoutPrevId();
             /* @var Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout $nostoOrder */
             $nostoOrder = Mage::getModel('nosto_tagging/meta_order_vaimo_klarna_checkout');

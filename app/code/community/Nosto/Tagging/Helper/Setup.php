@@ -72,10 +72,9 @@ class Nosto_Tagging_Helper_Setup extends Mage_Core_Helper_Abstract
                 Nosto_Tagging_Helper_Data::NOSTO_CUSTOMER_REFERENCE_ATTRIBUTE_NAME,
                 $attributeDefinition
             );
-
-            /** @var Mage_Eav_Model_Config $eavHelper */
-            $eavHelper = Mage::getSingleton("eav/config");
-            $attribute = $eavHelper->getAttribute(
+            /* @var Mage_Eav_Model_Config $eavConfig */
+            $eavConfig = Mage::getSingleton("eav/config");
+            $attribute = $eavConfig->getAttribute(
                 $entity,
                 Nosto_Tagging_Helper_Data::NOSTO_CUSTOMER_REFERENCE_ATTRIBUTE_NAME
             );

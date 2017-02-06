@@ -186,7 +186,6 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         $store = $this->getSelectedStore();
         if ($this->getRequest()->isPost() && $store !== null) {
             try {
-
                 $signupDetails = $this->getRequest()->getPost('details');
                 if (!empty($signupDetails)) {
                     $signupDetails = json_decode($signupDetails, true);

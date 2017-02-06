@@ -485,6 +485,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         foreach (Mage::app()->getWebsites() as $website) {
             /** @var Mage_Core_Model_Store_Group $group */
             foreach ($website->getGroups() as $group) {
+                /** @noinspection PhpUndefinedMethodInspection */
                 $stores = $group->getStores();
                 foreach ($stores as $store) {
                     $response[] = $store;
@@ -505,6 +506,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     {
         $stores = $this->getAllStoreViews();
         $values = array();
+        /* @var Mage_Core_Model_Store $store */
         foreach ($stores as $store) {
             /** @noinspection PhpUndefinedMethodInspection */
             $storeId = $store->getStoreId();

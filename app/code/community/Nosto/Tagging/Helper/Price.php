@@ -68,7 +68,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
      * @return float
      */
     protected function _getProductPrice(
-        $product,
+        Mage_Catalog_Model_Product $product,
         $finalPrice = false,
         $inclTax = true
     ) 
