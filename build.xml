@@ -143,7 +143,7 @@
         </exec>
     </target>
 
-    <target name="dist" depends="phpcs, phan, phpmd, phpcpd, build">
+    <target name="dist" depends="phpcbf, phpcs, phan, phpmd, phpcpd, build">
         <echo msg="All done" />
     </target>
 </project>
