@@ -462,7 +462,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Return the retings and reviews provider
+     * Return the ratings and reviews provider
      *
      * @param Mage_Core_Model_Store|null $store the store model or null.
      *

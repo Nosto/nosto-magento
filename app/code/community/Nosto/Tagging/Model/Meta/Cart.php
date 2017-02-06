@@ -47,14 +47,14 @@ class Nosto_Tagging_Model_Meta_Cart extends NostoCart
             switch ($item->getProductType()) {
                 case Mage_Catalog_Model_Product_Type::TYPE_SIMPLE:
                     /** @var Nosto_Tagging_Model_Meta_Cart_Item_Simple $simpleItem */
-                    $simpleItem = Mage::getModel('nosto_tagging/meta_order_item_simple');
+                    $simpleItem = Mage::getModel('nosto_tagging/meta_cart_item_simple');
                     $simpleItem->loadData($item, $currencyCode);
                     $this->addItem($simpleItem);
                     break;
 
                 case Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE:
                     /** @var Nosto_Tagging_Model_Meta_Cart_Item_Configurable $configurableItem */
-                    $configurableItem = Mage::getModel('nosto_tagging/meta_order_item_simple');
+                    $configurableItem = Mage::getModel('nosto_tagging/meta_cart_item_simple');
                     $configurableItem->loadData($item, $currencyCode);
                     $this->addItem($configurableItem);
                     break;

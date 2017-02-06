@@ -260,7 +260,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         $adminSession = Mage::getSingleton('adminhtml/session');
         if (empty($storeId)) {
             $adminSession->addError(
-                'Nosto account could not be resetted due to a missing store'
+                'Nosto account could not be reset due to a missing store'
             );
             $this->_redirect('*/*/index');
 
@@ -273,7 +273,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         $store = Mage::getModel('core/store')->load($storeId);
         if ($store instanceof Mage_Core_Model_Store === false) {
             $adminSession->addError(
-                'Nosto account could not be resetted due to a invalid store id'
+                'Nosto account could not be reset due to an invalid store id'
             );
             $this->_redirect('*/*/index');
 
@@ -291,7 +291,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
 
         $accountHelper->resetAccountSettings($store);
         $adminSession->addSuccess(
-            'Nosto account settings successfully resetted. Please create new account or connect with exising Nosto account' // @codingStandardsIgnoreLine
+            'Nosto account settings successfully reset. Please create new account or connect with existing Nosto account' // @codingStandardsIgnoreLine
         );
         $this->_redirect(
             'adminhtml/nosto/index/',
