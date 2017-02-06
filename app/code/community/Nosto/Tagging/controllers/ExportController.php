@@ -107,7 +107,7 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
                 /** @var Nosto_Tagging_Model_Meta_Order $meta */
                 $meta = $helper->getOrderClass($order);
                 $meta->loadData($order);
-                $collection->append($order);
+                $collection->append($meta);
             }
             $this->export($collection);
         }
@@ -151,7 +151,7 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
                 /** @var Nosto_Tagging_Model_Meta_Product $meta */
                 $meta = Mage::getModel('nosto_tagging/meta_product');
                 $meta->loadData($product);
-                $collection->append($product);
+                $collection->append($meta);
             }
             $this->export($collection);
         }
