@@ -40,6 +40,6 @@ class Nosto_Tagging_Model_Product extends Mage_Catalog_Model_Product
      */
     protected function _construct()
     {
-        $this->_init('nosto_tagging/product');
+        parent::_init('nosto_tagging/product');
     }
 }
