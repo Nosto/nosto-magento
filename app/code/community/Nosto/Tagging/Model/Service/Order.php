@@ -86,22 +86,30 @@ class Nosto_Tagging_Model_Service_Order
     {
         if (self::$syncInventoriesAfterOrder === true) {
             $purchasedtems = $order->getPurchasedItems();
-            $products = array();
+            $productIds = array();
             /* @var Nosto_Tagging_Model_Meta_Order_Item $item */
             foreach ($purchasedtems as $item) {
                 $productId = $item->getProductId();
                 if (empty($productId) || $productId < 0) {
                     continue;
                 }
-                $product= Mage::getModel('catalog/product')->load($productId);
-                if ($product instanceof Mage_Catalog_Model_Product) {
-                    $products[] = $product;
-                }
+                $productIds[] = $productId;
             }
-            if(count($products) > 0) {
-                /* @var Nosto_Tagging_Model_Service_Product $productService */
-                $productService = Mage::getModel('nosto_tagging/service_product');
-                $productService->updateBatch($products);
+            if (count($productIds) > 0) {
+                /* @var Nosto_Tagging_Model_Resource_Product_Collection $productIds*/
+                $products= Mage::getModel('nosto_tagging/product')
+                    ->getCollection()
+                    ->addAttributeToSelect('*')
+                    ->addIdFilter($productIds);
+
+                if(
+                    $products instanceof Nosto_Tagging_Model_Resource_Product_Collection
+                    && count($products) > 0
+                ) {
+                    /* @var Nosto_Tagging_Model_Service_Product $productService */
+                    $productService = Mage::getModel('nosto_tagging/service_product');
+                    $productService->updateBatch($products);
+                }
             }
         }
     }

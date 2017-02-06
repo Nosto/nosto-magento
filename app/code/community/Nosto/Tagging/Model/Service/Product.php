@@ -120,12 +120,13 @@ class Nosto_Tagging_Model_Service_Product
     /**
      * Updates a batch of products to Nosto
      *
-     * @param Mage_Catalog_Model_Product[] $products
+     * @param Nosto_Tagging_Model_Resource_Product_Collection $products
      * @return true
      */
-    public function updateBatch(array $products)
+    public function updateBatch(Nosto_Tagging_Model_Resource_Product_Collection $products)
     {
-        return $this->update($products);
+        $productsArray = iterator_to_array($products);
+        return $this->update($productsArray);
     }
 
     /**
