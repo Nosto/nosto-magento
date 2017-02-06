@@ -58,11 +58,6 @@ class Nosto_Tagging_Model_System_Config_Source_Ratings_Provider
                 'value' => $key,
                 'label' => $ratingProvider[RatingHelper::FIELD_DESCRIPTION]
             );
-            if (!empty($ratingProvider[RatingHelper::FIELD_IMAGE_URL])){
-                $option[RatingHelper::FIELD_IMAGE_URL] = $ratingProvider[RatingHelper::FIELD_IMAGE_URL];
-            } else {
-                $option[RatingHelper::FIELD_IMAGE_URL] = null;
-            }
             $options[] = $option;
         }
 

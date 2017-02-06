@@ -50,8 +50,12 @@ class Nosto_Tagging_Block_Pagetype extends Mage_Core_Block_Template
      */
     protected function _toHtml()
     {
-        if (!Mage::helper('nosto_tagging')->isModuleEnabled()
-            || !Mage::helper('nosto_tagging/account')->existsAndIsConnected()
+        /* @var Nosto_Tagging_Helper_Data $dataHelper */
+        $dataHelper = Mage::helper('nosto_tagging');
+        /* @var Nosto_Tagging_Helper_Account $accountHelper */
+        $accountHelper = Mage::helper('nosto_tagging/account');
+        if (!$dataHelper->isModuleEnabled()
+            || !$accountHelper->existsAndIsConnected()
         ) {
             return '';
         }

@@ -71,6 +71,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
     public function loadDataFromQuote(Mage_Sales_Model_Quote $quote)
     {
         $vaimoKlarnaOrder = null;
+        /** @noinspection PhpUndefinedMethodInspection */
         $checkoutId = $quote->getKlarnaCheckoutId();
         $this->_orderNumber = $checkoutId;
         $this->_externalOrderRef = null;
@@ -103,6 +104,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
             'email' => ''
         );
         $klarna->setQuote($quote, Vaimo_Klarna_Helper_Data::KLARNA_METHOD_CHECKOUT);
+        /** @noinspection PhpUndefinedMethodInspection */
         $vaimoKlarnaOrder = $klarna->getKlarnaOrderRaw($quote->getKlarnaCheckoutId());
         try {
             self::validateKlarnaOrder($vaimoKlarnaOrder);
@@ -236,6 +238,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
             if ($quote instanceof Mage_Sales_Model_Quote) {
                 /* @var $order Mage_Sales_Model_Order */
                 $salesOrderModel = Mage::getModel('sales/order');
+                /** @noinspection PhpUndefinedMethodInspection */
                 $order = $salesOrderModel->loadByAttribute(
                     'quote_id',
                     $quote->getId()
@@ -260,10 +263,14 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
     public function loadData(Mage_Sales_Model_Order $order)
     {
         $store = Mage::getSingleton('core/store')->load($order->store_id);
-        $quote = Mage::getModel('sales/quote')->setStore($store)->load($order->getQuoteId());
+        /* @var Mage_Sales_Model_Quote $quoteModel */
+        $quoteModel = Mage::getModel('sales/quote');
+        $quote = $quoteModel->setStore($store)->load($order->getQuoteId());
         parent::loadData($order);
+        /** @noinspection PhpUndefinedMethodInspection */
         $klarnaCheckoutId = $quote->getKlarnaCheckoutId();
         if (empty($klarnaCheckoutId)) {
+            /** @noinspection PhpUndefinedMethodInspection */
             Mage::log(
                 sprintf(
                     'Could not find klarnaCheckoutId from quote #%d',
@@ -304,6 +311,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
                 is_object($entity)
             ) {
                 if (get_class($entity) === 'Varien_Object') {
+                    /** @noinspection PhpUndefinedMethodInspection */
                     $val = $entity->get($field);
                     if (empty($val)) {
                         $empty = true;
