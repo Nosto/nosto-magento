@@ -294,7 +294,6 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
      *
      * @param Mage_Catalog_Model_Product $product the product model.
      * @param Mage_Core_Model_Store $store the store model.
-     *
      */
     protected function amendAttributeTags(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
@@ -307,35 +306,40 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
             if (empty($attributesToTag) || !is_array($attributesToTag)) {
                 continue;
             }
+
             /* @var Mage_Catalog_Model_Resource_Eav_Attribute $productAttribute */
             foreach ($productAttributes as $key => $productAttribute) {
-                if (in_array($key, $attributesToTag)) {
-                    try {
-                        $attributeValue = $this->getAttributeValue($product, $key);
-                        if (!empty($attributeValue)) {
-                            switch ($tagId) {
-                                case Nosto_Tagging_Helper_Data::TAG1:
-                                    $this->addTag1(sprintf('%s:%s', $key, $attributeValue));
-                                    break;
-                                case Nosto_Tagging_Helper_Data::TAG2:
-                                    $this->addTag2(sprintf('%s:%s', $key, $attributeValue));
-                                    break;
-                                case Nosto_Tagging_Helper_Data::TAG3:
-                                    $this->addTag3(sprintf('%s:%s', $key, $attributeValue));
-                                    break;
-                            }
-                        }
-                    } catch (Exception $e) {
-                        Mage::log(
-                            sprintf(
-                                'Failed to add attribute %s to tags. Error message was: %s',
-                                $key,
-                                $e->getMessage()
-                            ),
-                            Zend_Log::WARN,
-                            Nosto_Tagging_Model_Base::LOG_FILE_NAME
-                        );
+                if (!in_array($key, $attributesToTag)) {
+                    continue;
+                }
+
+                try {
+                    $attributeValue = $this->getAttributeValue($product, $key);
+                    if (empty($attributeValue)) {
+                        continue;
                     }
+
+                    switch ($tagId) {
+                        case Nosto_Tagging_Helper_Data::TAG1:
+                            $this->addTag1(sprintf('%s:%s', $key, $attributeValue));
+                            break;
+                        case Nosto_Tagging_Helper_Data::TAG2:
+                            $this->addTag2(sprintf('%s:%s', $key, $attributeValue));
+                            break;
+                        case Nosto_Tagging_Helper_Data::TAG3:
+                            $this->addTag3(sprintf('%s:%s', $key, $attributeValue));
+                            break;
+                    }
+                } catch (Exception $e) {
+                    Mage::log(
+                        sprintf(
+                            'Failed to add attribute %s to tags. Error message was: %s',
+                            $key,
+                            $e->getMessage()
+                        ),
+                        Zend_Log::WARN,
+                        Nosto_Tagging_Model_Base::LOG_FILE_NAME
+                    );
                 }
             }
         }
