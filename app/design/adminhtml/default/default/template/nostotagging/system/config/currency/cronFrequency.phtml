@@ -32,6 +32,7 @@
  */
 ?>
 
+<!--suppress HtmlFormInputWithoutLabel -->
 <select id="<?php echo $this->getSelectId(); ?>" name="<?php echo $this->getSelectName(); ?>" class="select" onchange="nostoHandleCronSettings()">
     <?php foreach ($this->getOptions() as $idx => $option): ?>
         <?php

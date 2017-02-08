@@ -41,12 +41,12 @@ class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
     /**
      * @var string the iframe url if SSO to Nosto can be made.
      */
-    private $_iframeUrl;
+    protected $_iframeUrl;
 
     /**
      * @var Mage_Core_Model_Store the currently selected store view.
      */
-    private $_store;
+    protected $_store;
 
     /**
      * Gets the iframe url for the account settings page from Nosto.

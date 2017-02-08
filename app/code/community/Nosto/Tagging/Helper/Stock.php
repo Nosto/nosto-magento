@@ -89,16 +89,16 @@ class Nosto_Tagging_Helper_Stock extends Mage_Core_Helper_Abstract
     /**
      * Searches the minimum quantity from the products collection
      *
-     * @param array|Mage_Catalog_Model_Product[] $productCollcetion
+     * @param array|Mage_Catalog_Model_Product[] $productCollection
 
      * @return int|mixed
      */
-    private function getMinQty(array $productCollcetion)
+    protected function getMinQty(array $productCollection)
     {
         $quantities = array();
         $minQty = 0;
         /* @var Mage_Catalog_Model_Product $product */
-        foreach ($productCollcetion as $product) {
+        foreach ($productCollection as $product) {
             $quantities[] = $this->getQty($product);
         }
         if(!empty($quantities)) {
@@ -112,14 +112,14 @@ class Nosto_Tagging_Helper_Stock extends Mage_Core_Helper_Abstract
     /*
      * Sums quantities for all products in array
      *
-     * @param array|Mage_Catalog_Model_Product[] $productCollcetion
+     * @param array|Mage_Catalog_Model_Product[] $productCollection
      * @return int
      */
-    private function getQtySum(array $productCollcetion)
+    protected function getQtySum(array $productCollection)
     {
         $qty = 0;
         /* @var Mage_Catalog_Model_Product $product */
-        foreach ($productCollcetion as $product) {
+        foreach ($productCollection as $product) {
             $qty += $this->getQty($product);
         }
 

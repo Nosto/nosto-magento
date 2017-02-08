@@ -63,7 +63,7 @@ class Nosto_Tagging_Helper_Rating extends Mage_Core_Helper_Abstract
      * Note that these modules need to be enabled also
      * @var array
      */
-    private static $ratingProviders = array(
+    protected static $ratingProviders = array(
         self::RATING_PROVIDER_YOTPO => array(
             self::FIELD_DESCRIPTION => 'Yotpo Product Reviews',
             self::FIELD_MODULE => 'Yotpo_Yotpo'

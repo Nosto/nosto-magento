@@ -41,7 +41,7 @@ class Nosto_Tagging_Model_Meta_Rating_Yotpo_Yotpo extends Nosto_Tagging_Model_Me
      *
      * @var Mage_Catalog_Model_Product|null
      */
-    private $originalRegistryProduct;
+    protected $originalRegistryProduct;
 
     /**
      * The name of the registry entry for product
@@ -88,7 +88,7 @@ class Nosto_Tagging_Model_Meta_Rating_Yotpo_Yotpo extends Nosto_Tagging_Model_Me
      *
      * @param Mage_Catalog_Model_Product $product
      */
-    private function setRegistryProduct(Mage_Catalog_Model_Product $product)
+    protected function setRegistryProduct(Mage_Catalog_Model_Product $product)
     {
         $this->originalRegistryProduct = Mage::registry(self::REGISTRY_PRODUCT);
         Mage::unregister(self::REGISTRY_PRODUCT);
@@ -98,7 +98,7 @@ class Nosto_Tagging_Model_Meta_Rating_Yotpo_Yotpo extends Nosto_Tagging_Model_Me
     /**
      * Resets the product to Mage registry
      */
-    private function resetRegistryProduct()
+    protected function resetRegistryProduct()
     {
         Mage::unregister(self::REGISTRY_PRODUCT);
         Mage::register(self::REGISTRY_PRODUCT, $this->originalRegistryProduct);

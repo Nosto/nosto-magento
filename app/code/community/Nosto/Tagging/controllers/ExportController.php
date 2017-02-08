@@ -44,7 +44,7 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
     const OFFSET = 'offset';
     const CREATED_AT = 'created_at';
 
-    private static $searchableFields = array(
+    protected static $searchableFields = array(
         'sales/order' => array(
             self::ID => 'entity_id'
         ),
@@ -104,7 +104,7 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
             foreach ($orders as $order) {
                 /** @var Nosto_Tagging_Helper_Class $helper */
                 $helper = Mage::helper('nosto_tagging/class');
-                /** @var Nosto_Tagging_Model_Meta_Order $order */
+                /** @var Nosto_Tagging_Model_Meta_Order $meta */
                 $meta = $helper->getOrderClass($order);
                 $meta->includeSpecialItems = true;
                 $meta->loadData($order);

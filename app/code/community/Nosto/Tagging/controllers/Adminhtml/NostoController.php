@@ -274,7 +274,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
 
         $accountHelper->resetAccountSettings($nostoAccount, $store);
         $adminSession->addSuccess(
-            'Nosto account settings successfully resetted. Please create new account or connect with exising Nosto account'
+            'Nosto account settings successfully resetted. Please create new account or connect with existing Nosto account'
         );
         $this->_redirect(
             'adminhtml/nosto/index/',
