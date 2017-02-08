@@ -258,7 +258,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
      * @param Mage_Core_Model_Store $store
      * @return array
      */
-    private function getUrlOptionsWithNoSid(Mage_Core_Model_Store $store)
+    protected function getUrlOptionsWithNoSid(Mage_Core_Model_Store $store)
     {
         /* @var Nosto_Tagging_Helper_Data $nosto_helper */
         $nosto_helper = Mage::helper('nosto_tagging');
@@ -281,7 +281,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
      * @param Mage_Core_Model_Store $store
      * @return array
      */
-    private function getUrlOptionsWithSid(Mage_Core_Model_Store $store)
+    protected function getUrlOptionsWithSid(Mage_Core_Model_Store $store)
     {
         $params = $this->getUrlOptionsWithNoSid($store);
         $params[self::MAGENTO_URL_OPTION_NOSID] = false;
@@ -397,7 +397,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
      *
      * @return string
      */
-    private function addNostoPreviewParameter($url)
+    protected function addNostoPreviewParameter($url)
     {
         return NostoHttpRequest::replaceQueryParamInUrl(
             self::NOSTO_URL_DEBUG_PARAMETER,

@@ -45,14 +45,14 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Currency_CronFrequency
      *
      * @var array
      */
-    private $options;
+    protected $options;
 
     /**
      * Form element to be rendered
      *
      * @var Varien_Data_Form_Element_Abstract
      */
-    private $element;
+    protected $element;
 
     /**
      * @inheritdoc

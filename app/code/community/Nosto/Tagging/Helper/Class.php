@@ -26,7 +26,7 @@
  */
 
 /**
- * Helper class for loading pluggable classes.
+ * Helper class for loading plugable classes.
  *
  * @category Nosto
  * @package  Nosto_Tagging
@@ -102,7 +102,7 @@ class Nosto_Tagging_Helper_Class extends Mage_Core_Helper_Abstract
      * @param $identifier
      * @return string
      */
-    private static function createClassId($classString, $identifier)
+    protected static function createClassId($classString, $identifier)
     {
         $classId = sprintf(
             'nosto_tagging/' . $classString,
@@ -115,12 +115,12 @@ class Nosto_Tagging_Helper_Class extends Mage_Core_Helper_Abstract
     /**
      * Tries to find class by given attributes
      *
-     * @param $classId
-     * @param $expected
+     * @param string $classId
+     * @param string $expected
      * @param bool $fallback
      * @return false|Mage_Core_Model_Abstract|null
      */
-    private function getClass($classId, $expected, $fallback = false) {
+    protected function getClass($classId, $expected, $fallback = false) {
         $class = null;
         try {
             if (is_string($classId)) {

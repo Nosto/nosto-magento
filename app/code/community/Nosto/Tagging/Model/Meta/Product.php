@@ -769,11 +769,12 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
      * @param string $attributeName
      * @return string
      */
-    private function getAttributeValue(Mage_Catalog_Model_Product $product, $attributeName)
+    protected function getAttributeValue(Mage_Catalog_Model_Product $product, $attributeName)
     {
         $attribute = $product->getResource()->getAttribute($attributeName);
         if ($attribute instanceof Mage_Catalog_Model_Resource_Eav_Attribute) {
             $attribute_data = $product->getData($attributeName);
+            /** @noinspection PhpParamsInspection */
             $attribute_value = $product->getAttributeText($attributeName);
             if (empty($attribute_value) && is_scalar($attribute_data)) {
                 $attribute_value = $attribute_data;

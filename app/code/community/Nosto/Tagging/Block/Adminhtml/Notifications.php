@@ -36,7 +36,7 @@
 class Nosto_Tagging_Block_Adminhtml_Notifications extends Mage_Adminhtml_Block_Template
 {
     /**
-     * The id for the a tag where echange rate cron is configured
+     * The id for the a tag where exchange rate cron is configured
      *
      * @var string
      */
@@ -109,7 +109,7 @@ class Nosto_Tagging_Block_Adminhtml_Notifications extends Mage_Adminhtml_Block_T
 
     /**
      * Checks if any of the Nosto accounts where previously installed into a
-     * different store or magento installtion. This would happen mostly when
+     * different store or magento installation. This would happen mostly when
      * development/staging setup is deployed to the production or vice versa.
      *
      * Return array structure

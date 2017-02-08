@@ -85,10 +85,10 @@ class Nosto_Tagging_Model_Service_Order
     public function syncInventoryLevel(Nosto_Tagging_Model_Meta_Order $order)
     {
         if (self::$syncInventoriesAfterOrder === true) {
-            $purchasedtems = $order->getPurchasedItems();
+            $purchasedItems = $order->getPurchasedItems();
             $productIds = array();
             /* @var Nosto_Tagging_Model_Meta_Order_Item $item */
-            foreach ($purchasedtems as $item) {
+            foreach ($purchasedItems as $item) {
                 $productId = $item->getProductId();
                 if (empty($productId) || $productId < 0) {
                     continue;
