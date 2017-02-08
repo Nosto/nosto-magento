@@ -185,8 +185,8 @@ class Nosto_Tagging_Block_Adminhtml_Notifications extends Mage_Adminhtml_Block_T
         $mageUrl = Mage::getSingleton('core/url');
         $installedModel = clone $mageUrl->parseUrl($installedUrl);;
         $currentModel = $mageUrl->parseUrl($currentUrl);
-        $concatInstalled = $installedModel->getHost(). $installedModel->getPath();
-        $concatCurrent= $currentModel->getHost(). $currentModel->getPath();
+        $concatInstalled = $installedModel->getHost() . $installedModel->getPath();
+        $concatCurrent= $currentModel->getHost() . $currentModel->getPath();
         if ($concatCurrent != $concatInstalled) {
             $match = false;
         }
