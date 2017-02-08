@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file. This projec
  * alternative images
  * inventory level
  * supplier cost
+* Improve the comparison of original installed store url and the current one
 * Send integrated modules info to Nosto
 * Technical improvements
  * Send inventory level to Nosto after purchase
