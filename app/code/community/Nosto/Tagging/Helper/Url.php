@@ -21,7 +21,7 @@
  * @category  Nosto
  * @package   Nosto_Tagging
  * @author    Nosto Solutions Ltd <magento@nosto.com>
- * @copyright Copyright (c) 2013-2016 Nosto Solutions Ltd (http://www.nosto.com)
+ * @copyright Copyright (c) 2013-2017 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -129,6 +129,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
     public function getPreviewUrlProduct(Mage_Core_Model_Store $store)
     {
         $productUrl = '';
+        /** @var Mage_Catalog_Model_Resource_Product_Collection $collection */
         $collection = Mage::getModel('catalog/product')
             ->getCollection()
             ->addStoreFilter($store->getId())
@@ -166,6 +167,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
     {
         $rootCategoryId = (int)$store->getRootCategoryId();
         $categoryUrl = '';
+        /** @var Mage_Catalog_Model_Resource_Product_Collection $collection */
         $collection = Mage::getModel('catalog/category')
             ->getCollection()
             ->addFieldToFilter('is_active', 1)
@@ -256,7 +258,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
      * @param Mage_Core_Model_Store $store
      * @return array
      */
-    private function getUrlOptionsWithNoSid(Mage_Core_Model_Store $store)
+    protected function getUrlOptionsWithNoSid(Mage_Core_Model_Store $store)
     {
         /* @var Nosto_Tagging_Helper_Data $nosto_helper */
         $nosto_helper = Mage::helper('nosto_tagging');
@@ -279,7 +281,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
      * @param Mage_Core_Model_Store $store
      * @return array
      */
-    private function getUrlOptionsWithSid(Mage_Core_Model_Store $store)
+    protected function getUrlOptionsWithSid(Mage_Core_Model_Store $store)
     {
         $params = $this->getUrlOptionsWithNoSid($store);
         $params[self::MAGENTO_URL_OPTION_NOSID] = false;
@@ -395,7 +397,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
      *
      * @return string
      */
-    private function addNostoPreviewParameter($url)
+    protected function addNostoPreviewParameter($url)
     {
         return NostoHttpRequest::replaceQueryParamInUrl(
             self::NOSTO_URL_DEBUG_PARAMETER,

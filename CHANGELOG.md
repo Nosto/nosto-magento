@@ -1,10 +1,22 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 2.10.0
+* Add support for sending following attributes to Nosto
+ * rating and reviews data to Nosto (Magento native ratings and Yotpo)
+ * alternative images
+ * inventory level
+ * supplier cost
+* Send integrated modules info to Nosto
+* Technical improvements
+ * Send inventory level to Nosto after purchase
+ * Create product service and refactor order services
+ * Add support for sending batch updates via product service
+
 ### 2.9.0
 * Add support for Vaimo Klarna checkout extension
 * Add support for new product attributes
 * Add "js stub" for Nosto javascript
-* Add possilibity to run Nosto exchange rate cron hourly
+* Add possibility to run Nosto exchange rate cron hourly
 * Fix issue with configurable product visibility
 * Fix oauth redirection URL issue when store codes are added to URLs
 * Display applicable Nosto settings in all configuration scopes

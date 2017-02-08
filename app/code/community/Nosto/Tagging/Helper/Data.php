@@ -21,7 +21,7 @@
  * @category  Nosto
  * @package   Nosto_Tagging
  * @author    Nosto Solutions Ltd <magento@nosto.com>
- * @copyright Copyright (c) 2013-2016 Nosto Solutions Ltd (http://www.nosto.com)
+ * @copyright Copyright (c) 2013-2017 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -89,7 +89,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      */
     const XML_PATH_USE_PRODUCT_API = 'nosto_tagging/general/use_product_api';
 
-    /*
+    /**
      * @var boolean the path for setting for product urls
      */
     const XML_PATH_PRETTY_URL = 'nosto_tagging/pretty_url/in_use';
@@ -104,20 +104,25 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      */
     const XML_PATH_STORE_FRONT_PAGE_URL = 'nosto_tagging/settings/front_page_url';
 
-    /*
-     * @var int the product attribute type id
-     */
-    const PRODUCT_TYPE_ATTRIBUTE_ID = 4;
-
-    /*
+    /**
      * @var string Nosto customer reference attribute name
      */
     const NOSTO_CUSTOMER_REFERENCE_ATTRIBUTE_NAME = 'nosto_customer_reference';
 
-    /*
+    /**
      * @var string Nosto customer reference attribute name
      */
     const XML_PATH_EXCHANGE_RATE_CRON_FREQUENCY = 'nosto_tagging/scheduled_currency_exchange_rate_update/frequency';
+
+    /**
+     * Path to store attribute map
+     */
+    const XML_PATH_ATTRIBUTE_MAP = 'nosto_tagging/attribute_map';
+
+    /**
+     * Path to store rating provider
+     */
+    const XML_PATH_RATING_PROVIDER = 'nosto_tagging/ratings_and_reviews/provider';
 
     /**
      * List of strings to remove from the default Nosto account title
@@ -137,18 +142,6 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         'tag1',
         'tag2',
         'tag3'
-    );
-
-    /**
-     * List of attributes that cannot be added to tags due to data type and
-     * Magento's internal processing of attributes
-     *
-     * @var array
-     */
-    public static $notValidAttributesForTags = array(
-        'group_price',
-        'tier_price',
-        'media_gallery',
     );
 
     /**
@@ -255,7 +248,22 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getBrandAttribute($store = null)
     {
-        return Mage::getStoreConfig(self::XML_PATH_BRAND_ATTRIBUTE, $store);
+        return Mage::getStoreConfig(
+            self::XML_PATH_BRAND_ATTRIBUTE, $store
+        );
+    }
+
+    /**
+     * Returns the mapped attribute
+     *
+     * @param string $attribute
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     * @return string
+     */
+    public function getMappedAttribute($attribute, $store = null)
+    {
+        $xmlPath = self::XML_PATH_ATTRIBUTE_MAP . "/" . $attribute;
+        return Mage::getStoreConfig($xmlPath, $store);
     }
 
     /**
@@ -431,48 +439,6 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Returns the product attributes that can be used in Nosto tags
-     *
-     * @return array  ['value' => $code, 'label' => $label]
-     */
-    public function getProductAttributeOptions()
-    {
-        $resourceModel = Mage::getResourceModel(
-            'catalog/product_attribute_collection'
-        );
-        $attributes = $resourceModel
-            ->addFieldToFilter(
-                'entity_type_id',
-                self::PRODUCT_TYPE_ATTRIBUTE_ID
-            )
-            ->setOrder(
-                'attribute_code',
-                Varien_Data_Collection::SORT_ORDER_ASC
-            );
-        // Add single empty option as a first option. Otherwise multiselect
-        // cannot not be unset in Magento.
-        $attributeArray = array(
-            array(
-                'value' => 0,
-                'label' => 'None'
-            )
-        );
-        foreach($attributes as $attribute) {
-            $code = $attribute->getData('attribute_code');
-            if (in_array($code, self::$notValidAttributesForTags)) {
-                continue;
-            }
-            $label = $attribute->getData('frontend_label');
-            $attributeArray[] = array(
-                'value' => $code,
-                'label' => sprintf('%s (%s)', $code, $label)
-            );
-        }
-
-        return $attributeArray;
-    }
-
-    /**
      * Return the attributes to be tagged in Nosto tags
      *
      * @param string $tag_id the name / identifier of the tag (e.g. tag1, tag2).
@@ -493,4 +459,61 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         $tags = Mage::getStoreConfig($tag_path, $store);
         return explode(',', $tags);
     }
+
+    /**
+     * Return the ratings and reviews provider
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     *
+     * @return string
+     */
+    public function getRatingsAndReviewsProvider($store = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_RATING_PROVIDER, $store);
+    }
+
+    /**
+     * Returns all store views for the installation
+     *
+     * @return Store[]
+     */
+    public function getAllStoreViews()
+    {
+        $response = array();
+        foreach (Mage::app()->getWebsites() as $website) {
+            /** @noinspection PhpUndefinedMethodInspection */
+            foreach ($website->getGroups() as $group) {
+                /** @noinspection PhpUndefinedMethodInspection */
+                $stores = $group->getStores();
+                foreach ($stores as $store) {
+                    $response[] = $store;
+                }
+            }
+        }
+
+        return $response;
+    }
+
+    /**
+     * Returns an array of store config in each store view
+     *
+     * @param $path
+     * @return array
+     */
+    public function getConfigInAllStores($path)
+    {
+        $stores = $this->getAllStoreViews();
+        $values = array();
+        /* @var Mage_Core_Model_Store $store */
+        foreach ($stores as $store) {
+            /** @noinspection PhpUndefinedMethodInspection */
+            $storeId = $store->getStoreId();
+            if ($storeId) {
+                $values[$storeId] = Mage::getStoreConfig($path, $store);
+            }
+        }
+
+        return $values;
+    }
 }
+

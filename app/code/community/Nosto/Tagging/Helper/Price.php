@@ -21,7 +21,7 @@
  * @category  Nosto
  * @package   Nosto_Tagging
  * @author    Nosto Solutions Ltd <magento@nosto.com>
- * @copyright Copyright (c) 2013-2016 Nosto Solutions Ltd (http://www.nosto.com)
+ * @copyright Copyright (c) 2013-2017 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -83,7 +83,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
      * @return float
      */
     protected function _getProductPrice(
-        $product,
+        Mage_Catalog_Model_Product $product,
         $finalPrice = false,
         $inclTax = true
     ) {
@@ -138,10 +138,12 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
                     $inclTax
                 );
                 if (!$price) {
+                    /** @noinspection PhpUndefinedMethodInspection */
                     $associatedProducts = Mage::getModel(
                         'catalog/product_type_configurable'
                     )->getUsedProducts(null, $product);
                     $lowestPrice = false;
+                    /* @var Mage_Catalog_Model_Product $associatedProduct */
                     foreach ($associatedProducts as $associatedProduct) {
                         /* @var Mage_Catalog_Model_Product $productModel */
                         $productModel = Mage::getModel('catalog/product')->load(
@@ -174,13 +176,13 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
     /**
      * Returns the price from product
      *
-     * @param $product
+     * @param Mage_Catalog_Model_Product $product
      * @param bool $finalPrice
      * @param bool $inclTax
      * @return float
      */
     protected function _getDefaultFromProduct(
-        $product,
+        Mage_Catalog_Model_Product $product,
         $finalPrice = false,
         $inclTax = true
     ) {
@@ -272,7 +274,9 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         $baseCurrencyCode = $store->getBaseCurrencyCode();
         $taggingPrice = $basePrice;
         if ($helper->multiCurrencyDisabled($store) && $currentCurrencyCode !== $store->getBaseCurrencyCode()) {
-            $taggingPrice = Mage::helper('directory')->currencyConvert(
+            /* @var Mage_Directory_Helper_Data $directory */
+            $directory = Mage::helper('directory');
+            $taggingPrice = $directory->currencyConvert(
                 $basePrice,
                 $baseCurrencyCode,
                 $currentCurrencyCode

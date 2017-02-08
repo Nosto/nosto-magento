@@ -21,14 +21,14 @@
   ~ @category  Nosto
   ~ @package   Nosto_Tagging
   ~ @author    Nosto Solutions Ltd <magento@nosto.com>
-  ~ @copyright Copyright (c) 2013-2016 Nosto Solutions Ltd (http://www.nosto.com)
+  ~ @copyright Copyright (c) 2013-2017 Nosto Solutions Ltd (http://www.nosto.com)
   ~ @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
   -->
 <!--suppress XmlUnboundNsPrefix -->
 <config>
     <modules>
         <Nosto_Tagging>
-            <version>2.9.0</version>
+            <version>2.10.0</version>
         </Nosto_Tagging>
     </modules>
     <global>
@@ -36,13 +36,13 @@
             <tagging_setup>
                 <setup>
                     <module>Nosto_Tagging</module>
-                    <class>Nosto_Tagging_Model_Resource_Setup</class>
+                    <class>Mage_Eav_Model_Entity_Setup</class>
                 </setup>
             </tagging_setup>
             <nosto_customer_reference_setup>
                 <setup>
                     <module>Nosto_Tagging</module>
-                    <class>Nosto_Tagging_Model_Resource_Setup</class>
+                    <class>Mage_Eav_Model_Entity_Setup</class>
                 </setup>
                 <connection>
                     <use>core_setup</use>
@@ -194,6 +194,13 @@
             <brand_attribute>
                 <tag>manufacturer</tag>
             </brand_attribute>
+            <attribute_map>
+                <gtin>0</gtin>
+                <supplier_cost>cost</supplier_cost>
+            </attribute_map>
+            <ratings_and_reviews>
+                <provider>0</provider>
+            </ratings_and_reviews>
         </nosto_tagging>
     </default>
     <crontab>

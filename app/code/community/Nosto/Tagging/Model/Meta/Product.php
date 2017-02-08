@@ -21,7 +21,7 @@
  * @category  Nosto
  * @package   Nosto_Tagging
  * @author    Nosto Solutions Ltd <magento@nosto.com>
- * @copyright Copyright (c) 2013-2016 Nosto Solutions Ltd (http://www.nosto.com)
+ * @copyright Copyright (c) 2013-2017 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -204,6 +204,17 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         );
     }
 
+    /**
+     * Array of attributes that can be customized from Nosto's store admin
+     * settings
+     *
+     * @var array
+     */
+    public static $customizableAttributes = array(
+        'gtin' => '_gtin',
+        'supplier_cost' => '_supplierCost',
+    );
+
     public function __construct()
     {
         parent::__construct();
@@ -269,6 +280,10 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         }
 
         $this->amendAttributeTags($product, $store);
+        $this->amendReviews($product, $store);
+        $this->amendCustomizableAttributes($product, $store);
+        $this->amendAlternativeImages($product, $store);
+        $this->amendInventoryLevel($product);
     }
 
     /**
@@ -329,8 +344,115 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
             $tags[] = self::ADD_TO_CART;
         }
 
-
         return $tags;
+    }
+
+    /**
+     * Adds the stock level / inventory level
+     *
+     * @param Mage_Catalog_Model_Product $product the product model.
+     *
+     */
+    protected function amendInventoryLevel(
+        Mage_Catalog_Model_Product $product
+    ) {
+        /* @var Nosto_Tagging_Helper_Stock $stockHelper */
+        $stockHelper = Mage::helper('nosto_tagging/stock');
+        try {
+            $this->_inventoryLevel = $stockHelper->getQty($product);
+        } catch (Exception $e) {
+            Mage::log(
+                sprintf(
+                    'Failed to resolve inventory level for product %d to tags. Error message was: %s',
+                    $product->getId(),
+                    $e->getMessage()
+                ),
+                Zend_Log::WARN,
+                Nosto_Tagging_Model_Base::LOG_FILE_NAME
+            );
+        }
+    }
+
+    /**
+     * Adds the alternative image urls
+     *
+     * @param Mage_Catalog_Model_Product $product the product model.
+     * @param Mage_Core_Model_Store      $store the store model.
+     *
+     */
+    protected function amendAlternativeImages(
+        Mage_Catalog_Model_Product $product,
+        Mage_Core_Model_Store $store
+    ) {
+        /* @var Mage_Catalog_Model_Product_Attribute_Media_Api $mediaApi */
+        $mediaApi = Mage::getModel('catalog/product_attribute_media_api');
+        $mediaItems = $mediaApi->items($product->getId(), $store);
+        if (is_array($mediaItems)) {
+            foreach ($mediaItems as $image) {
+                $this->addAlternateImage($image);
+            }
+        }
+    }
+
+    /**
+     * Amends the product reviews product
+     *
+     * @param Mage_Catalog_Model_Product $product the product model.
+     * @param Mage_Core_Model_Store      $store the store model.
+     *
+     */
+    protected function amendReviews(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
+    {
+        /* @var Nosto_Tagging_Helper_Data $dataHelper*/
+        $dataHelper = Mage::helper('nosto_tagging');
+        $ratingProvider = $dataHelper->getRatingsAndReviewsProvider($store);
+        if ($ratingProvider) {
+            /* @var Nosto_Tagging_Helper_Class $classHelper */
+            $classHelper = Mage::helper('nosto_tagging/class');
+            /* @var Nosto_Tagging_Model_Meta_Rating $ratingClass */
+            $ratingClass = $classHelper->getRatingClass($store);
+            if ($ratingClass instanceof Nosto_Tagging_Model_Meta_Rating_Interface) {
+                $ratingClass->init($product, $store);
+                if ($ratingClass->getRating()) {
+                    $this->_ratingValue = $ratingClass->getRating();
+                }
+                if ($ratingClass->getReviewCount()) {
+                    $this->_reviewCount = $ratingClass->getReviewCount();
+                }
+            } else {
+                Mage::log(
+                    sprintf(
+                        'No rating class implementation found for %s',
+                        $ratingProvider
+                    ),
+                    Zend_Log::WARN,
+                    Nosto_Tagging_Model_Base::LOG_FILE_NAME
+                );
+            }
+        }
+    }
+
+    /**
+     * Amends the customizable attributes
+     *
+     * @param Mage_Catalog_Model_Product $product the product model.
+     * @param Mage_Core_Model_Store      $store the store model.
+     *
+     */
+    protected function amendCustomizableAttributes(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
+    {
+        /* @var Nosto_Tagging_Helper_Data $nosto_helper */
+        $nosto_helper = Mage::helper("nosto_tagging");
+
+        foreach (self::$customizableAttributes as $mageAttr => $nostoAttr) {
+            $mapped = $nosto_helper->getMappedAttribute($mageAttr, $store);
+            if ($mapped) {
+                $value = $this->getAttributeValue($product, $mapped);
+                if(!empty($value)) {
+                    $this->$nostoAttr = $value;
+                }
+            }
+        }
     }
 
     /**
@@ -640,11 +762,19 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         return $this->_variationId;
     }
 
-    private function getAttributeValue(Mage_Catalog_Model_Product $product, $attributeName)
+    /**
+     * Fetches the value of a product attribute
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @param string $attributeName
+     * @return string
+     */
+    protected function getAttributeValue(Mage_Catalog_Model_Product $product, $attributeName)
     {
         $attribute = $product->getResource()->getAttribute($attributeName);
         if ($attribute instanceof Mage_Catalog_Model_Resource_Eav_Attribute) {
             $attribute_data = $product->getData($attributeName);
+            /** @noinspection PhpParamsInspection */
             $attribute_value = $product->getAttributeText($attributeName);
             if (empty($attribute_value) && is_scalar($attribute_data)) {
                 $attribute_value = $attribute_data;
@@ -758,5 +888,17 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     public function getUnitPricingUnit()
     {
         return $this->_unitPricingUnit;
+    }
+
+    public function addAlternateImage(array $image)
+    {
+        if (
+            isset($image['url'])
+            && (isset($image['exclude']) && empty($image['exclude']))
+            && !in_array($image['url'], $this->_alternateImageUrls)
+            && $image['url'] != $this->_imageUrl
+        ) {
+            $this->_alternateImageUrls[] = $image['url'];
+        }
     }
 }

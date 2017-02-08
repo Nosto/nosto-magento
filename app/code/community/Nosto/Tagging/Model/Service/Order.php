@@ -21,7 +21,7 @@
  * @category  Nosto
  * @package   Nosto_Tagging
  * @author    Nosto Solutions Ltd <magento@nosto.com>
- * @copyright Copyright (c) 2013-2016 Nosto Solutions Ltd (http://www.nosto.com)
+ * @copyright Copyright (c) 2013-2017 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -37,7 +37,15 @@
 class Nosto_Tagging_Model_Service_Order
 {
     /**
-     * Sends an order confirmation to Nosto.
+     * Flag for disabling inventory sync for slow connections
+     *
+     * @var bool
+     */
+    public static $syncInventoriesAfterOrder = true;
+
+    /**
+     * Sends an order confirmation to Nosto and also batch updates all products
+     * that were included in the order.
      *
      * @param Nosto_Tagging_Model_Meta_Order $order the order to confirm.
      * @param NostoAccount $account the Nosto account object.
@@ -52,7 +60,58 @@ class Nosto_Tagging_Model_Service_Order
         if ($response->getCode() !== 200) {
             Nosto::throwHttpException('Failed to send order confirmation to Nosto.', $request, $response);
         }
+
+        try {
+            $this->syncInventoryLevel($order);
+        } catch (NostoException $e) {
+            Mage::log(
+                sprintf(
+                    'Failed to sync inventory level to Nosto. Error was %s',
+                    $e->getMessage()
+                ),
+                Zend_Log::ERR,
+                Nosto_Tagging_Model_Base::LOG_FILE_NAME
+            );
+        }
+
         return true;
+    }
+
+    /**
+     * Sends product updates to Nosto to keep up with the inventory level
+     *
+     * @param Nosto_Tagging_Model_Meta_Order $order
+     */
+    public function syncInventoryLevel(Nosto_Tagging_Model_Meta_Order $order)
+    {
+        if (self::$syncInventoriesAfterOrder === true) {
+            $purchasedItems = $order->getPurchasedItems();
+            $productIds = array();
+            /* @var Nosto_Tagging_Model_Meta_Order_Item $item */
+            foreach ($purchasedItems as $item) {
+                $productId = $item->getProductId();
+                if (empty($productId) || $productId < 0) {
+                    continue;
+                }
+                $productIds[] = $productId;
+            }
+            if (count($productIds) > 0) {
+                /* @var Nosto_Tagging_Model_Resource_Product_Collection $productIds*/
+                $products= Mage::getModel('nosto_tagging/product')
+                    ->getCollection()
+                    ->addAttributeToSelect('*')
+                    ->addIdFilter($productIds);
+
+                if(
+                    $products instanceof Nosto_Tagging_Model_Resource_Product_Collection
+                    && count($products) > 0
+                ) {
+                    /* @var Nosto_Tagging_Model_Service_Product $productService */
+                    $productService = Mage::getModel('nosto_tagging/service_product');
+                    $productService->updateBatch($products);
+                }
+            }
+        }
     }
 
     /**

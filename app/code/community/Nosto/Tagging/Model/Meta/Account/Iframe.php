@@ -21,7 +21,7 @@
  * @category  Nosto
  * @package   Nosto_Tagging
  * @author    Nosto Solutions Ltd <magento@nosto.com>
- * @copyright Copyright (c) 2013-2016 Nosto Solutions Ltd (http://www.nosto.com)
+ * @copyright Copyright (c) 2013-2017 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -101,6 +101,11 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
     protected $_shopName;
 
     /**
+     * @var array the name of modules / extensions
+     */
+    protected $_modules = array();
+
+    /**
      * @inheritdoc
      */
     protected function _construct()
@@ -122,6 +127,8 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
         $urlHelper = Mage::helper('nosto_tagging/url');
         /** @var Nosto_Tagging_Helper_Data $dataHelper */
         $dataHelper = Mage::helper('nosto_tagging/data');
+        /** @var Nosto_Tagging_Helper_Module $moduleHelper */
+        $moduleHelper = Mage::helper('nosto_tagging/module');
         $this->_firstName = $user->getFirstname();
         $this->_lastName = $user->getLastname();
         $this->_email = $user->getEmail();
@@ -138,6 +145,7 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
         $this->_previewUrlCart = $urlHelper->getPreviewUrlCart($store);
         $this->_previewUrlFront = $urlHelper->getPreviewUrlFront($store);
         $this->_shopName = $store->getName();
+        $this->_modules = $moduleHelper->getModulesForIntegration();
     }
 
     /**
@@ -317,5 +325,13 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Mage_Core_Model_Abstract i
     public function getShopName()
     {
         return $this->_shopName;
+    }
+
+    /*
+     * @inheritdoc
+     */
+    public function getModules()
+    {
+        return $this->_modules;
     }
 }

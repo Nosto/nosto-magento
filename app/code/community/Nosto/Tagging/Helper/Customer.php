@@ -21,7 +21,7 @@
  * @category  Nosto
  * @package   Nosto_Tagging
  * @author    Nosto Solutions Ltd <magento@nosto.com>
- * @copyright Copyright (c) 2013-2016 Nosto Solutions Ltd (http://www.nosto.com)
+ * @copyright Copyright (c) 2013-2017 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -96,6 +96,7 @@ class Nosto_Tagging_Helper_Customer extends Mage_Core_Helper_Abstract
      */
     public function generateCustomerReference(Mage_Customer_Model_Customer $customer)
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         $hash = md5($customer->getId().$customer->getEmail());
         $uuid = uniqid(
             substr($hash, 0, 8),

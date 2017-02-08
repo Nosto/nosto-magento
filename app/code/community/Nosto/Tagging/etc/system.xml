@@ -21,7 +21,7 @@
   ~ @category  Nosto
   ~ @package   Nosto_Tagging
   ~ @author    Nosto Solutions Ltd <magento@nosto.com>
-  ~ @copyright Copyright (c) 2013-2016 Nosto Solutions Ltd (http://www.nosto.com)
+  ~ @copyright Copyright (c) 2013-2017 Nosto Solutions Ltd (http://www.nosto.com)
   ~ @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
   -->
 <!--suppress XmlUnboundNsPrefix -->
@@ -167,7 +167,7 @@
                             <label>Nosto brand attribute</label>
                             <comment>Choose attribute that will be used as a brand attribute for Nosto product tagging</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>nosto_tagging/system_config_source_brand</source_model>
+                            <source_model>nosto_tagging/system_config_source_product_attribute</source_model>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -175,6 +175,36 @@
                         </tag>
                     </fields>
                 </brand_attribute>
+                <attribute_map translate="label">
+                    <label>Optional attributes</label>
+                    <sort_order>60</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>0</expanded>
+                    <fields>
+                        <gtin translate="label">
+                            <label>GTIN / barcode attribute</label>
+                            <comment>Choose attribute that will be used as GTIN / barcode attribute for Nosto product tagging</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>nosto_tagging/system_config_source_product_attribute</source_model>
+                            <sort_order>80</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </gtin>
+                        <supplier_cost translate="label">
+                            <label>Supplier cost</label>
+                            <comment>Choose attribute that will be used as a supplier cost for Nosto product. Please note that this field will not be tagged into the html source. It will be only sent via API to Nosto.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>nosto_tagging/system_config_source_price_attribute</source_model>
+                            <sort_order>90</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </supplier_cost>
+                    </fields>
+                </attribute_map>
                 <multi_currency translate="label">
                     <label>Multi Currency</label>
                     <frontend_type>text</frontend_type>
@@ -237,6 +267,27 @@
                         </frequency>
                     </fields>
                 </scheduled_currency_exchange_rate_update>
+                <ratings_and_reviews translate="label">
+                    <label>Ratings &amp; Reviews</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>80</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <fields>
+                        <provider translate="label">
+                            <label>Ratings source</label>
+                            <comment>Select source for product ratings and reviews.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>nosto_tagging/system_config_source_ratings_provider</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </provider>
+                    </fields>
+                </ratings_and_reviews>
             </groups>
         </nosto_tagging>
     </sections>

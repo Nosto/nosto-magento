@@ -21,7 +21,7 @@
  * @category  Nosto
  * @package   Nosto_Tagging
  * @author    Nosto Solutions Ltd <magento@nosto.com>
- * @copyright Copyright (c) 2013-2016 Nosto Solutions Ltd (http://www.nosto.com)
+ * @copyright Copyright (c) 2013-2017 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -41,12 +41,12 @@ class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
     /**
      * @var string the iframe url if SSO to Nosto can be made.
      */
-    private $_iframeUrl;
+    protected $_iframeUrl;
 
     /**
      * @var Mage_Core_Model_Store the currently selected store view.
      */
-    private $_store;
+    protected $_store;
 
     /**
      * Gets the iframe url for the account settings page from Nosto.

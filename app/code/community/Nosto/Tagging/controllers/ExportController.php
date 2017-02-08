@@ -21,7 +21,7 @@
  * @category  Nosto
  * @package   Nosto_Tagging
  * @author    Nosto Solutions Ltd <magento@nosto.com>
- * @copyright Copyright (c) 2013-2016 Nosto Solutions Ltd (http://www.nosto.com)
+ * @copyright Copyright (c) 2013-2017 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -44,7 +44,7 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
     const OFFSET = 'offset';
     const CREATED_AT = 'created_at';
 
-    private static $searchableFields = array(
+    protected static $searchableFields = array(
         'sales/order' => array(
             self::ID => 'entity_id'
         ),
@@ -104,7 +104,7 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
             foreach ($orders as $order) {
                 /** @var Nosto_Tagging_Helper_Class $helper */
                 $helper = Mage::helper('nosto_tagging/class');
-                /** @var Nosto_Tagging_Model_Meta_Order $order */
+                /** @var Nosto_Tagging_Model_Meta_Order $meta */
                 $meta = $helper->getOrderClass($order);
                 $meta->includeSpecialItems = true;
                 $meta->loadData($order);

@@ -21,9 +21,11 @@
  * @category  Nosto
  * @package   Nosto_Tagging
  * @author    Nosto Solutions Ltd <magento@nosto.com>
- * @copyright Copyright (c) 2013-2016 Nosto Solutions Ltd (http://www.nosto.com)
+ * @copyright Copyright (c) 2013-2017 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+
+use Nosto_Tagging_Helper_Rating as RatingHelper;
 
 /**
  * Extension system setting source model for choosing which attributes should
@@ -33,7 +35,7 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_System_Config_Source_Brand
+class Nosto_Tagging_Model_System_Config_Source_Ratings_Provider
 {
     /**
      * Returns all available product attributes
@@ -42,8 +44,23 @@ class Nosto_Tagging_Model_System_Config_Source_Brand
      */
     public function toOptionArray()
     {
-        /* @var Nosto_Tagging_Helper_Data $nosto_helper */
-        $nosto_helper = Mage::helper('nosto_tagging');
-        return $nosto_helper->getProductAttributeOptions();
+        /* @var Nosto_Tagging_Helper_Rating $nostoHelperRatings */
+        $nostoHelperRatings = Mage::helper('nosto_tagging/rating');
+        $ratingProviders = $nostoHelperRatings->getActiveRatingProviders();
+        $options = array(
+            array(
+                'value' => 0,
+                'label' => 'Not in use'
+            )
+        );
+        foreach ($ratingProviders as $key=>$ratingProvider) {
+            $option = array(
+                'value' => $key,
+                'label' => $ratingProvider[RatingHelper::FIELD_DESCRIPTION]
+            );
+            $options[] = $option;
+        }
+
+        return $options;
     }
 }

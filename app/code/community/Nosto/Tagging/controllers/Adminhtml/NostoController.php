@@ -21,7 +21,7 @@
  * @category  Nosto
  * @package   Nosto_Tagging
  * @author    Nosto Solutions Ltd <magento@nosto.com>
- * @copyright Copyright (c) 2013-2016 Nosto Solutions Ltd (http://www.nosto.com)
+ * @copyright Copyright (c) 2013-2017 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 require_once __DIR__ . '/../../bootstrap.php';
@@ -148,7 +148,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         if ($this->getRequest()->isPost() && !is_null($store) && !is_null($account)) {
             /** @var Nosto_Tagging_Model_Meta_Oauth $meta */
             $meta = new Nosto_Tagging_Model_Meta_Oauth();
-            $meta->loadData($store, $account);
+            $meta->loadData($store);
             $client = new NostoOAuthClient($meta);
             $responseBody = array(
                 'success' => true,
@@ -188,6 +188,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                 $details = $this->getRequest()->getPost('details');
                 $meta = $accountHelper->getMetaData($store);
                 if (Zend_Validate::is($email, 'EmailAddress')) {
+                    /** @noinspection PhpUndefinedMethodInspection */
                     $meta->getOwner()->setEmail($email);
                 }
                 if (!empty($details)) {
@@ -273,7 +274,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
 
         $accountHelper->resetAccountSettings($nostoAccount, $store);
         $adminSession->addSuccess(
-            'Nosto account settings successfully resetted. Please create new account or connect with exising Nosto account'
+            'Nosto account settings successfully resetted. Please create new account or connect with existing Nosto account'
         );
         $this->_redirect(
             'adminhtml/nosto/index/',
