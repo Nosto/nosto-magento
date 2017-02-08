@@ -143,8 +143,14 @@ class Nosto_Tagging_Block_Adminhtml_Notifications extends Mage_Adminhtml_Block_T
             ) {
                 continue;
             }
+
             $currentFrontPageUrl = $urlHelper->getFrontPageUrl($store);
-            if ($savedFrontPageUrl != $currentFrontPageUrl) {
+            if (
+                !self::storeUrlsMatch(
+                    $savedFrontPageUrl,
+                    $currentFrontPageUrl
+                )
+            ) {
                 $invalidConfig = array(
                     'savedUrl' => $savedFrontPageUrl,
                     'currentUrl' => $currentFrontPageUrl,
@@ -161,5 +167,30 @@ class Nosto_Tagging_Block_Adminhtml_Notifications extends Mage_Adminhtml_Block_T
         }
 
         return $result;
+    }
+
+    /**
+     * Compares two URLs with host and path part
+     * @param string $installedUrl
+     * @param string $currentUrl
+     * @return bool
+     */
+    protected static function storeUrlsMatch(
+        $installedUrl,
+        $currentUrl
+    )
+    {
+        $match = true;
+        /* @var Mage_Core_Model_Url $mageUrl */
+        $mageUrl = Mage::getSingleton('core/url');
+        $installedModel = clone $mageUrl->parseUrl($installedUrl);;
+        $currentModel = $mageUrl->parseUrl($currentUrl);
+        $concatInstalled = $installedModel->getHost(). $installedModel->getPath();
+        $concatCurrent= $currentModel->getHost(). $currentModel->getPath();
+        if ($concatCurrent != $concatInstalled) {
+            $match = false;
+        }
+
+        return $match;
     }
 }
