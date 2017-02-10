@@ -33,7 +33,7 @@ $helper = Mage::helper('nosto_tagging');
 $priceHelper = Mage::helper('nosto_tagging/price');
 ?>
 
-<?php if ($order->getPurchasedItems() !== array()): ?>
+<?php if ($order != null && $order->getPurchasedItems() !== array()): ?>
 <!-- Nosto Order Tagging -->
 <div class="nosto_purchase_order" style="display:none">
     <span class="hcid"><?php echo $this->getVisitorChecksum(); ?></span>

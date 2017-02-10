@@ -289,6 +289,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
      * @param $entity
      * @return bool
      * @throws Exception
+     * @suppress PhanTypeArraySuspicious
      */
     public static function validateKlarnaEntity($type, $entity)
     {

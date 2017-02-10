@@ -96,6 +96,7 @@ class Nosto_Tagging_Helper_Class extends Mage_Core_Helper_Abstract
      * @param string $expected
      * @param string $fallback
      * @return mixed
+     * @suppress PhanTypeMismatchArgument
      */
     protected function getClass($classId, $expected, $fallback = null)
     {
