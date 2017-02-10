@@ -37,6 +37,12 @@
 abstract class Nosto_Tagging_Model_Meta_Cart_Item extends NostoLineItem
 {
 
+    /**
+     * Populates the model
+     *
+     * @param Mage_Sales_Model_Quote_Item $item
+     * @param string $currencyCode
+     */
     public function loadData(Mage_Sales_Model_Quote_Item $item, $currencyCode)
     {
         parent::setProductId($this->buildItemProductId($item));
@@ -46,6 +52,12 @@ abstract class Nosto_Tagging_Model_Meta_Cart_Item extends NostoLineItem
         parent::setPriceCurrencyCode($currencyCode);
     }
 
+    /**
+     * Builds the item name
+     *
+     * @param Mage_Sales_Model_Quote_Item $item
+     * @return mixed
+     */
     abstract public function buildItemName(Mage_Sales_Model_Quote_Item $item);
 
     /**

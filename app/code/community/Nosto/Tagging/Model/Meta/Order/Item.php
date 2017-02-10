@@ -36,12 +36,16 @@
  */
 abstract class Nosto_Tagging_Model_Meta_Order_Item extends NostoLineItem
 {
-
+    /**
+     * Populates the model
+     *
+     * @param Mage_Sales_Model_Order_Item $item
+     * @param $currencyCode
+     */
     public function loadData(Mage_Sales_Model_Order_Item $item, $currencyCode)
     {
         /* @var Nosto_Tagging_Helper_Price $nostoPriceHelper */
         $nostoPriceHelper = Mage::helper('nosto_tagging/price');
-
         parent::setProductId($this->buildItemProductId($item));
         parent::setQuantity((int)$item->getQtyOrdered());
         parent::setName($this->buildItemName($item));
@@ -49,6 +53,12 @@ abstract class Nosto_Tagging_Model_Meta_Order_Item extends NostoLineItem
         parent::setPriceCurrencyCode($currencyCode);
     }
 
+    /**
+     * Builds the item name
+     *
+     * @param Mage_Sales_Model_Order_Item $item
+     * @return mixed
+     */
     abstract public function buildItemName(Mage_Sales_Model_Order_Item $item);
 
     /**

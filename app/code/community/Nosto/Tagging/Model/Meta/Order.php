@@ -25,6 +25,8 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+use Nosto_Tagging_Model_Meta_Order_Builder as OrderBuilder;
+
 /**
  * Meta data class which holds information about an order.
  * This is used during the order confirmation API request and the order
@@ -80,35 +82,8 @@ class Nosto_Tagging_Model_Meta_Order extends NostoOrder
 
         /** @var Mage_Sales_Model_Order_Item $item */
         foreach ($order->getAllVisibleItems() as $item) {
-            switch ($item->getProductType()) {
-                case Mage_Catalog_Model_Product_Type::TYPE_SIMPLE:
-                    /** @var Nosto_Tagging_Model_Meta_Order_Item_Simple $simpleItem */
-                    $simpleItem = Mage::getModel('nosto_tagging/meta_order_item_simple');
-                    $simpleItem->loadData($item, $order->getOrderCurrencyCode());
-                    $this->addPurchasedItems($simpleItem);
-                    break;
-
-                case Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE:
-                    /** @var Nosto_Tagging_Model_Meta_Order_Item_Configurable $configurableItem */
-                    $configurableItem = Mage::getModel('nosto_tagging/meta_order_item_simple');
-                    $configurableItem->loadData($item, $order->getOrderCurrencyCode());
-                    $this->addPurchasedItems($configurableItem);
-                    break;
-
-                case Mage_Catalog_Model_Product_Type::TYPE_GROUPED:
-                    /** @var Nosto_Tagging_Model_Meta_Order_Item_Grouped $groupedItem */
-                    $groupedItem = Mage::getModel('nosto_tagging/meta_order_item_grouped');
-                    $groupedItem->loadData($item, $order->getOrderCurrencyCode());
-                    $this->addPurchasedItems($groupedItem);
-                    break;
-
-                case Mage_Catalog_Model_Product_Type::TYPE_BUNDLE:
-                    /** @var Nosto_Tagging_Model_Meta_Order_Item_Bundled $bundledItem */
-                    $bundledItem = Mage::getModel('nosto_tagging/meta_order_item_bundled');
-                    $bundledItem->loadData($item, $order->getOrderCurrencyCode());
-                    $this->addPurchasedItems($bundledItem);
-                    break;
-            }
+            $nostoItem = OrderBuilder::buildItem($item, $order);
+            $this->addPurchasedItems($nostoItem);
         }
 
         if (($discountAmount = $order->getDiscountAmount()) < 0) {

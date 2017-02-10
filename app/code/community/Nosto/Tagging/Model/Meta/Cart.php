@@ -25,6 +25,8 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+use Nosto_Tagging_Model_Meta_Cart_Builder as CartBuilder;
+
 /**
  * Meta data class which holds information about an cart.
  *
@@ -34,6 +36,7 @@
  */
 class Nosto_Tagging_Model_Meta_Cart extends NostoCart
 {
+
     /**
      * Loads the order info from a Magento quote model.
      *
@@ -44,35 +47,8 @@ class Nosto_Tagging_Model_Meta_Cart extends NostoCart
         $currencyCode = Mage::app()->getStore()->getCurrentCurrencyCode();
         /** @var Mage_Sales_Model_Quote_Item $item */
         foreach ($quote->getAllVisibleItems() as $item) {
-            switch ($item->getProductType()) {
-                case Mage_Catalog_Model_Product_Type::TYPE_SIMPLE:
-                    /** @var Nosto_Tagging_Model_Meta_Cart_Item_Simple $simpleItem */
-                    $simpleItem = Mage::getModel('nosto_tagging/meta_cart_item_simple');
-                    $simpleItem->loadData($item, $currencyCode);
-                    $this->addItem($simpleItem);
-                    break;
-
-                case Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE:
-                    /** @var Nosto_Tagging_Model_Meta_Cart_Item_Configurable $configurableItem */
-                    $configurableItem = Mage::getModel('nosto_tagging/meta_cart_item_simple');
-                    $configurableItem->loadData($item, $currencyCode);
-                    $this->addItem($configurableItem);
-                    break;
-
-                case Mage_Catalog_Model_Product_Type::TYPE_GROUPED:
-                    /** @var Nosto_Tagging_Model_Meta_Cart_Item_Grouped $groupedItem */
-                    $groupedItem = Mage::getModel('nosto_tagging/meta_cart_item_grouped');
-                    $groupedItem->loadData($item, $currencyCode);
-                    $this->addItem($groupedItem);
-                    break;
-
-                case Mage_Catalog_Model_Product_Type::TYPE_BUNDLE:
-                    /** @var Nosto_Tagging_Model_Meta_Cart_Item_Bundled $bundledItem */
-                    $bundledItem = Mage::getModel('nosto_tagging/meta_cart_item_bundled');
-                    $bundledItem->loadData($item, $currencyCode);
-                    $this->addItem($bundledItem);
-                    break;
-            }
+            $nostoItem = CartBuilder::buildItem($item, $currencyCode);
+            $this->addItem($nostoItem);
         }
     }
 }
