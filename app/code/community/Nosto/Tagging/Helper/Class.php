@@ -40,12 +40,7 @@ class Nosto_Tagging_Helper_Class extends Mage_Core_Helper_Abstract
      * Loads correct / pluggable order class based on payment provider
      *
      * @param Mage_Sales_Model_Order $order
-     *
      * @return NostoOrderInterface
-     */
-    /**
-     * @param Mage_Sales_Model_Order $order
-     * @return false|Mage_Core_Model_Abstract|null
      */
     public function getOrderClass(Mage_Sales_Model_Order $order)
     {
@@ -54,15 +49,8 @@ class Nosto_Tagging_Helper_Class extends Mage_Core_Helper_Abstract
         if (is_object($payment)) {
             $paymentProvider = $payment->getMethod();
         }
-        $classId = sprintf(
-            'nosto_tagging/meta_order_%s',
-            $paymentProvider
-        );
-        return $this->getClass(
-            $classId,
-            'NostoOrderInterface',
-            'nosto_tagging/meta_order'
-        );
+        $classId = sprintf('nosto_tagging/meta_order_%s', $paymentProvider);
+        return $this->getClass($classId, 'NostoOrderInterface', 'nosto_tagging/meta_order');
     }
 
     /**
@@ -83,10 +71,7 @@ class Nosto_Tagging_Helper_Class extends Mage_Core_Helper_Abstract
             $providerName = $ratingHelper->getModuleNameByProvider($provider);
 
             $classId = self::createClassId('meta_rating_%s', $providerName);
-            $class = $this->getClass(
-                $classId,
-                'Nosto_Tagging_Model_Meta_Rating_Interface'
-            );
+            $class = $this->getClass($classId, 'Nosto_Tagging_Model_Meta_Rating_Interface');
         }
 
         return $class;
@@ -101,12 +86,7 @@ class Nosto_Tagging_Helper_Class extends Mage_Core_Helper_Abstract
      */
     protected static function createClassId($classString, $identifier)
     {
-        $classId = sprintf(
-            'nosto_tagging/' . $classString,
-            $identifier
-        );
-
-        return strtolower($classId);
+        return strtolower(sprintf('nosto_tagging/' . $classString, $identifier));
     }
 
     /**
@@ -114,10 +94,11 @@ class Nosto_Tagging_Helper_Class extends Mage_Core_Helper_Abstract
      *
      * @param string $classId
      * @param string $expected
-     * @param bool $fallback
-     * @return false|Mage_Core_Model_Abstract|null
+     * @param string $fallback
+     * @return mixed
+     * @suppress PhanTypeMismatchArgument
      */
-    protected function getClass($classId, $expected, $fallback = false)
+    protected function getClass($classId, $expected, $fallback = null)
     {
         $class = null;
         try {
@@ -132,7 +113,7 @@ class Nosto_Tagging_Helper_Class extends Mage_Core_Helper_Abstract
                 $class = Mage::getModel($fallback);
             }
         } catch (Exception $e) {
-            if ($fallback !== false) {
+            if ($fallback !== null) {
                 $class = Mage::getModel($fallback);
             }
         }

@@ -66,9 +66,10 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
     /**
      * Loads the order data from a Magento quote model.
      *
-     * @throws NostoException
-     * @return bool
+     *
      * @param Mage_Sales_Model_Quote $quote the order model.
+     * @return bool
+     * @throws Exception
      */
     public function loadDataFromQuote(Mage_Sales_Model_Quote $quote)
     {
@@ -95,7 +96,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
         /* @var Vaimo_Klarna_Model_Klarnacheckout $klarna */
         $klarna = Mage::getModel('klarna/klarnacheckout');
         if ($klarna instanceof Vaimo_Klarna_Model_Klarnacheckout === false) {
-            Nosto::throwException('No Vaimo_Klarna_Model_Klarnacheckout found');
+            Mage::throwException('No Vaimo_Klarna_Model_Klarnacheckout found');
         }
         $klarna->setQuote($quote, Vaimo_Klarna_Helper_Data::KLARNA_METHOD_CHECKOUT);
         /** @noinspection PhpUndefinedMethodInspection */
@@ -172,8 +173,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
                         'Discount (%s)',
                         $discountRule->getName()
                     );
-
-                    $discountItem = new NostoLineItem();
+                   $discountItem = new NostoLineItem();
                     $discountItem->loadSpecialItemData($name, 0, $currencyCode);
                     $this->addPurchasedItems($discountItem);
                 }
@@ -276,6 +276,8 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
      * @param $type
      * @param $entity
      * @return bool
+     * @throws Exception
+     * @suppress PhanTypeArraySuspicious
      */
     public static function validateKlarnaEntity($type, $entity)
     {
@@ -301,12 +303,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
                 }
             }
             if ($empty === true) {
-                Nosto::throwException(
-                    sprintf(
-                        'Cannot create item - empty %s',
-                        $field
-                    )
-                );
+                Mage::throwException(sprintf('Cannot create item - empty %s', $field));
             }
         }
 

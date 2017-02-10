@@ -59,7 +59,7 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends NostoIframe
         $this->setLastName($user->getLastname());
         $this->setEmail($user->getEmail());
         $this->setPlatform(Nosto_Tagging_Model_Meta_Account_Iframe::PLATFORM);
-        $this->setVersionModule(Mage::getConfig()->getNode('modules/Nosto_Tagging/version'));
+        $this->setVersionModule((string) Mage::getConfig()->getNode('modules/Nosto_Tagging/version'));
         $this->setVersionPlatform(Mage::getVersion());
         $this->setLanguageIsoCode(substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2));
         $this->setLanguageIsoCodeShop(substr($store->getConfig('general/locale/code'), 0, 2));

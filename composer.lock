@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9573a28fdeff43d86d5e11144aa7cb1a",
-    "content-hash": "d042f416c1ea1c81ad490500da46e168",
+    "hash": "fa2cf6e0449e538d1a802873934c7d78",
+    "content-hash": "4aa97418cc99213f736a3c65bfafccb9",
     "packages": [
         {
             "name": "codeception/c3",
-            "version": "2.0.9",
+            "version": "2.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/c3.git",
-                "reference": "85c8e405a03c1d5055f1977673b20377aaa0bd22"
+                "reference": "47842d23030638237fd3306657c5fe998273fc18"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/c3/zipball/85c8e405a03c1d5055f1977673b20377aaa0bd22",
-                "reference": "85c8e405a03c1d5055f1977673b20377aaa0bd22",
+                "url": "https://api.github.com/repos/Codeception/c3/zipball/47842d23030638237fd3306657c5fe998273fc18",
+                "reference": "47842d23030638237fd3306657c5fe998273fc18",
                 "shasum": ""
             },
             "require": {
@@ -55,26 +55,7 @@
                 "code coverage",
                 "codecoverage"
             ],
-            "time": "2017-01-21 00:34:49"
-        },
-        {
-            "name": "magento/marketplace-eqp",
-            "version": "1.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/magento/marketplace-eqp",
-                "reference": "bf22e38539cc4752696b8b65131e132e590e0faf"
-            },
-            "require": {
-                "php": ">=5.6.0",
-                "squizlabs/php_codesniffer": ">= 2.3.1"
-            },
-            "type": "library",
-            "license": [
-                "MIT"
-            ],
-            "description": "A set of PHP_CodeSniffer rules and sniffs.",
-            "time": "2016-09-29 15:14:39"
+            "time": "2017-02-04 01:52:32"
         },
         {
             "name": "nosto/php-sdk",
@@ -263,86 +244,8 @@
             "time": "2016-10-04 00:57:04"
         },
         {
-            "name": "squizlabs/php_codesniffer",
-            "version": "2.7.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "9b324f3a1132459a7274a0ace2e1b766ba80930f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/9b324f3a1132459a7274a0ace2e1b766ba80930f",
-                "reference": "9b324f3a1132459a7274a0ace2e1b766ba80930f",
-                "shasum": ""
-            },
-            "require": {
-                "ext-simplexml": "*",
-                "ext-tokenizer": "*",
-                "ext-xmlwriter": "*",
-                "php": ">=5.1.2"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.0"
-            },
-            "bin": [
-                "scripts/phpcs",
-                "scripts/phpcbf"
-            ],
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.x-dev"
-                }
-            },
-            "autoload": {
-                "classmap": [
-                    "CodeSniffer.php",
-                    "CodeSniffer/CLI.php",
-                    "CodeSniffer/Exception.php",
-                    "CodeSniffer/File.php",
-                    "CodeSniffer/Fixer.php",
-                    "CodeSniffer/Report.php",
-                    "CodeSniffer/Reporting.php",
-                    "CodeSniffer/Sniff.php",
-                    "CodeSniffer/Tokens.php",
-                    "CodeSniffer/Reports/",
-                    "CodeSniffer/Tokenizers/",
-                    "CodeSniffer/DocGenerators/",
-                    "CodeSniffer/Standards/AbstractPatternSniff.php",
-                    "CodeSniffer/Standards/AbstractScopeSniff.php",
-                    "CodeSniffer/Standards/AbstractVariableSniff.php",
-                    "CodeSniffer/Standards/IncorrectPatternException.php",
-                    "CodeSniffer/Standards/Generic/Sniffs/",
-                    "CodeSniffer/Standards/MySource/Sniffs/",
-                    "CodeSniffer/Standards/PEAR/Sniffs/",
-                    "CodeSniffer/Standards/PSR1/Sniffs/",
-                    "CodeSniffer/Standards/PSR2/Sniffs/",
-                    "CodeSniffer/Standards/Squiz/Sniffs/",
-                    "CodeSniffer/Standards/Zend/Sniffs/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Greg Sherwood",
-                    "role": "lead"
-                }
-            ],
-            "description": "PHP_CodeSniffer tokenizes PHP, JavaScript and CSS files and detects violations of a defined set of coding standards.",
-            "homepage": "http://www.squizlabs.com/php-codesniffer",
-            "keywords": [
-                "phpcs",
-                "standards"
-            ],
-            "time": "2016-11-30 04:02:31"
-        },
-        {
             "name": "symfony/inflector",
-            "version": "v3.2.2",
+            "version": "v3.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/inflector.git",
@@ -458,16 +361,16 @@
         },
         {
             "name": "symfony/property-access",
-            "version": "v3.2.2",
+            "version": "v3.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/property-access.git",
-                "reference": "370a5276e00885648f6dde3cabc7c61eaab57bd8"
+                "reference": "dba6dcd9876bb1bba8fd38e23f311301e6ef385f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/property-access/zipball/370a5276e00885648f6dde3cabc7c61eaab57bd8",
-                "reference": "370a5276e00885648f6dde3cabc7c61eaab57bd8",
+                "url": "https://api.github.com/repos/symfony/property-access/zipball/dba6dcd9876bb1bba8fd38e23f311301e6ef385f",
+                "reference": "dba6dcd9876bb1bba8fd38e23f311301e6ef385f",
                 "shasum": ""
             },
             "require": {
@@ -522,7 +425,7 @@
                 "property path",
                 "reflection"
             ],
-            "time": "2017-01-02 20:32:22"
+            "time": "2017-02-02 13:47:35"
         },
         {
             "name": "symfony/serializer",
@@ -735,6 +638,25 @@
             "description": "A set of PHP_CodeSniffer rules and sniffs.",
             "homepage": "https://github.com/magento-ecg/coding-standard",
             "time": "2015-12-18 16:52:59"
+        },
+        {
+            "name": "magento/marketplace-eqp",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/magento/marketplace-eqp",
+                "reference": "bf22e38539cc4752696b8b65131e132e590e0faf"
+            },
+            "require": {
+                "php": ">=5.6.0",
+                "squizlabs/php_codesniffer": ">= 2.3.1"
+            },
+            "type": "library",
+            "license": [
+                "MIT"
+            ],
+            "description": "A set of PHP_CodeSniffer rules and sniffs.",
+            "time": "2016-09-29 15:14:39"
         },
         {
             "name": "mridang/magazine",
@@ -1120,25 +1042,24 @@
         },
         {
             "name": "sebastian/phpcpd",
-            "version": "2.0.4",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpcpd.git",
-                "reference": "24d9a880deadb0b8c9680e9cfe78e30b704225db"
+                "reference": "d7006078b75a34c9250831c3453a2e256a687615"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpcpd/zipball/24d9a880deadb0b8c9680e9cfe78e30b704225db",
-                "reference": "24d9a880deadb0b8c9680e9cfe78e30b704225db",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpcpd/zipball/d7006078b75a34c9250831c3453a2e256a687615",
+                "reference": "d7006078b75a34c9250831c3453a2e256a687615",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3",
-                "phpunit/php-timer": ">=1.0.6",
-                "sebastian/finder-facade": "~1.1",
-                "sebastian/version": "~1.0|~2.0",
-                "symfony/console": "~2.7|^3.0",
-                "theseer/fdomdocument": "~1.4"
+                "php": "^5.6|^7.0",
+                "phpunit/php-timer": "^1.0.6",
+                "sebastian/finder-facade": "^1.1",
+                "sebastian/version": "^2.0",
+                "symfony/console": "^3.0"
             },
             "bin": [
                 "phpcpd"
@@ -1146,7 +1067,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.0-dev"
+                    "dev-master": "3.0-dev"
                 }
             },
             "autoload": {
@@ -1167,7 +1088,7 @@
             ],
             "description": "Copy/Paste Detector (CPD) for PHP code.",
             "homepage": "https://github.com/sebastianbergmann/phpcpd",
-            "time": "2016-04-17 19:32:49"
+            "time": "2017-02-05 07:48:01"
         },
         {
             "name": "sebastian/version",
@@ -1213,17 +1134,95 @@
             "time": "2016-10-03 07:35:21"
         },
         {
-            "name": "symfony/config",
-            "version": "v3.2.2",
+            "name": "squizlabs/php_codesniffer",
+            "version": "2.8.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/config.git",
-                "reference": "c5ea878b5a7f6a01b9a2f182f905831711b9ff3f"
+                "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
+                "reference": "86dd55a522238211f9f3631e3361703578941d9a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/config/zipball/c5ea878b5a7f6a01b9a2f182f905831711b9ff3f",
-                "reference": "c5ea878b5a7f6a01b9a2f182f905831711b9ff3f",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/86dd55a522238211f9f3631e3361703578941d9a",
+                "reference": "86dd55a522238211f9f3631e3361703578941d9a",
+                "shasum": ""
+            },
+            "require": {
+                "ext-simplexml": "*",
+                "ext-tokenizer": "*",
+                "ext-xmlwriter": "*",
+                "php": ">=5.1.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "bin": [
+                "scripts/phpcs",
+                "scripts/phpcbf"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.x-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "CodeSniffer.php",
+                    "CodeSniffer/CLI.php",
+                    "CodeSniffer/Exception.php",
+                    "CodeSniffer/File.php",
+                    "CodeSniffer/Fixer.php",
+                    "CodeSniffer/Report.php",
+                    "CodeSniffer/Reporting.php",
+                    "CodeSniffer/Sniff.php",
+                    "CodeSniffer/Tokens.php",
+                    "CodeSniffer/Reports/",
+                    "CodeSniffer/Tokenizers/",
+                    "CodeSniffer/DocGenerators/",
+                    "CodeSniffer/Standards/AbstractPatternSniff.php",
+                    "CodeSniffer/Standards/AbstractScopeSniff.php",
+                    "CodeSniffer/Standards/AbstractVariableSniff.php",
+                    "CodeSniffer/Standards/IncorrectPatternException.php",
+                    "CodeSniffer/Standards/Generic/Sniffs/",
+                    "CodeSniffer/Standards/MySource/Sniffs/",
+                    "CodeSniffer/Standards/PEAR/Sniffs/",
+                    "CodeSniffer/Standards/PSR1/Sniffs/",
+                    "CodeSniffer/Standards/PSR2/Sniffs/",
+                    "CodeSniffer/Standards/Squiz/Sniffs/",
+                    "CodeSniffer/Standards/Zend/Sniffs/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Greg Sherwood",
+                    "role": "lead"
+                }
+            ],
+            "description": "PHP_CodeSniffer tokenizes PHP, JavaScript and CSS files and detects violations of a defined set of coding standards.",
+            "homepage": "http://www.squizlabs.com/php-codesniffer",
+            "keywords": [
+                "phpcs",
+                "standards"
+            ],
+            "time": "2017-02-02 03:30:00"
+        },
+        {
+            "name": "symfony/config",
+            "version": "v3.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/config.git",
+                "reference": "2ffa7b84d647b8be1788d46b44e438cb3d62056c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/config/zipball/2ffa7b84d647b8be1788d46b44e438cb3d62056c",
+                "reference": "2ffa7b84d647b8be1788d46b44e438cb3d62056c",
                 "shasum": ""
             },
             "require": {
@@ -1266,20 +1265,20 @@
             ],
             "description": "Symfony Config Component",
             "homepage": "https://symfony.com",
-            "time": "2017-01-02 20:32:22"
+            "time": "2017-02-06 12:04:21"
         },
         {
             "name": "symfony/console",
-            "version": "v3.2.2",
+            "version": "v3.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "4f9e449e76996adf310498a8ca955c6deebe29dd"
+                "reference": "7a8405a9fc175f87fed8a3c40856b0d866d61936"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/4f9e449e76996adf310498a8ca955c6deebe29dd",
-                "reference": "4f9e449e76996adf310498a8ca955c6deebe29dd",
+                "url": "https://api.github.com/repos/symfony/console/zipball/7a8405a9fc175f87fed8a3c40856b0d866d61936",
+                "reference": "7a8405a9fc175f87fed8a3c40856b0d866d61936",
                 "shasum": ""
             },
             "require": {
@@ -1329,20 +1328,20 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2017-01-08 20:47:33"
+            "time": "2017-02-06 12:04:21"
         },
         {
             "name": "symfony/debug",
-            "version": "v3.2.2",
+            "version": "v3.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/debug.git",
-                "reference": "810ba5c1c5352a4ddb15d4719e8936751dff0b05"
+                "reference": "b4d9818f127c60ce21ed62c395da7df868dc8477"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/debug/zipball/810ba5c1c5352a4ddb15d4719e8936751dff0b05",
-                "reference": "810ba5c1c5352a4ddb15d4719e8936751dff0b05",
+                "url": "https://api.github.com/repos/symfony/debug/zipball/b4d9818f127c60ce21ed62c395da7df868dc8477",
+                "reference": "b4d9818f127c60ce21ed62c395da7df868dc8477",
                 "shasum": ""
             },
             "require": {
@@ -1386,20 +1385,20 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "https://symfony.com",
-            "time": "2017-01-02 20:32:22"
+            "time": "2017-01-28 02:37:08"
         },
         {
             "name": "symfony/dependency-injection",
-            "version": "v3.2.2",
+            "version": "v3.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dependency-injection.git",
-                "reference": "22b2c97cffc6a612db82084f9e7823b095958751"
+                "reference": "388d368887f128ff3e47654718e29c5011601dce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/22b2c97cffc6a612db82084f9e7823b095958751",
-                "reference": "22b2c97cffc6a612db82084f9e7823b095958751",
+                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/388d368887f128ff3e47654718e29c5011601dce",
+                "reference": "388d368887f128ff3e47654718e29c5011601dce",
                 "shasum": ""
             },
             "require": {
@@ -1449,11 +1448,11 @@
             ],
             "description": "Symfony DependencyInjection Component",
             "homepage": "https://symfony.com",
-            "time": "2017-01-10 14:21:25"
+            "time": "2017-01-28 02:37:08"
         },
         {
             "name": "symfony/filesystem",
-            "version": "v3.2.2",
+            "version": "v3.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
@@ -1502,7 +1501,7 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v3.2.2",
+            "version": "v3.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
@@ -1610,16 +1609,16 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v3.2.2",
+            "version": "v3.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "50eadbd7926e31842893c957eca362b21592a97d"
+                "reference": "e1718c6bf57e1efbb8793ada951584b2ab27775b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/50eadbd7926e31842893c957eca362b21592a97d",
-                "reference": "50eadbd7926e31842893c957eca362b21592a97d",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/e1718c6bf57e1efbb8793ada951584b2ab27775b",
+                "reference": "e1718c6bf57e1efbb8793ada951584b2ab27775b",
                 "shasum": ""
             },
             "require": {
@@ -1661,7 +1660,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2017-01-03 13:51:32"
+            "time": "2017-01-21 17:06:35"
         },
         {
             "name": "theseer/fdomdocument",

@@ -39,8 +39,8 @@ class Nosto_Tagging_Helper_Stock extends Mage_Core_Helper_Abstract
      * the sum of associated products will be calculated.
      *
      * @param Mage_Catalog_Model_Product $product
-     *
      * @return int
+     * @suppress PhanUndeclaredMethod
      */
     public function getQty(Mage_Catalog_Model_Product $product)
     {

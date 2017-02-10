@@ -69,8 +69,7 @@ abstract class Nosto_Tagging_Model_Meta_Cart_Item extends NostoLineItem
      * product page that is used to generate recommendations and email content.
      *
      * @param Mage_Sales_Model_Quote_Item $item the sales item model.
-     *
-     * @return int
+     * @return string
      */
     protected function buildItemProductId(Mage_Sales_Model_Quote_Item $item)
     {

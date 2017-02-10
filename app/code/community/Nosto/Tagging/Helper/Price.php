@@ -64,8 +64,8 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
      * @param Mage_Catalog_Model_Product $product the product model.
      * @param bool $finalPrice if final price.
      * @param bool $inclTax if tax is to be included.
-     *
      * @return float
+     * @suppress PhanUndeclaredMethod
      */
     protected function _getProductPrice(
         Mage_Catalog_Model_Product $product,

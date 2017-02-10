@@ -69,7 +69,7 @@ class Nosto_Tagging_Model_Meta_Account extends NostoSignup
                 . $store->getName()
             )
         );
-        $this->setName(substr(sha1(rand()), 0, 8));
+        $this->setName(substr(sha1((string) rand()), 0, 8));
         $this->setFrontPageUrl($helperUrl->getFrontPageUrl($store));
         $this->setCurrencyCode($store->getBaseCurrencyCode());
         $this->setLanguageCode(substr($store->getConfig('general/locale/code'), 0, 2));

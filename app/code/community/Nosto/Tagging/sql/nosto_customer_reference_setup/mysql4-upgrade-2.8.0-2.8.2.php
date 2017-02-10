@@ -29,9 +29,8 @@
  * This upgrade script will run when upgrading from 2.8.0 or 2.8.1 to 2.8.2
  *
  * Changes the attribute `nosto_customer_reference` frontend type to be text
- *
  */
 
-/* @var $setupHelper Nosto_Tagging_Helper_Setup */
+/** @var $setupHelper Nosto_Tagging_Helper_Setup */
 $setupHelper = Mage::helper('nosto_tagging/setup');
 $setupHelper->alterCustomerReferenceInputType($this);

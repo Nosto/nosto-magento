@@ -96,8 +96,8 @@ class Nosto_Tagging_Helper_Setup extends Mage_Core_Helper_Abstract
      * Changes the nosto_customer_reference frontend input type to text
      *
      * @param $installer Mage_Eav_Model_Entity_Setup
-     *
      * @return void
+     * @suppress PhanTypeMismatchArgument
      */
     public function alterCustomerReferenceInputType(Mage_Eav_Model_Entity_Setup $installer)
     {

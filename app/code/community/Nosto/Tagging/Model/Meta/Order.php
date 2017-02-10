@@ -66,18 +66,16 @@ class Nosto_Tagging_Model_Meta_Order extends NostoOrder
         foreach ($order->getAllStatusHistory() as $status) {
             /** @var Mage_Sales_Model_Order_Status_History $status */
             if ($status->getStatus()) {
-                $orderStatus = new NostoOrderStatus();
-                $orderStatus->setCode($status->getStatus());
-                $orderStatus->setLabel($status->getStatusLabel());
-                $orderStatus->setDate($status->getCreatedAt());
+                /** @var Nosto_Tagging_Model_Meta_Order_Status $orderStatus */
+                $orderStatus = Mage::getModel('nosto_tagging/meta_order_status');
+                $orderStatus->loadData($status);
                 $this->addOrderStatus($orderStatus);
             }
         }
 
-        $orderBuyer = new NostoOrderBuyer();
-        $orderBuyer->setFirstName($order->getCustomerFirstname());
-        $orderBuyer->setLastName($order->getCustomerLastname());
-        $orderBuyer->setEmail($order->getCustomerEmail());
+        /** @var Nosto_Tagging_Model_Meta_Order_Buyer $orderBuyer */
+        $orderBuyer = Mage::getModel('nosto_tagging/meta_order_buyer');
+        $orderBuyer->loadData($order);
         $this->setCustomer($orderBuyer);
 
         /** @var Mage_Sales_Model_Order_Item $item */
