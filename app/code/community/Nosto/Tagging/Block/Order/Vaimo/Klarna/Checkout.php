@@ -25,6 +25,8 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+use Nosto_Tagging_Helper_Log as NostoLog;
+
 /**
  * Order tagging block.
  * Adds meta-data to the HTML document for successful orders.
@@ -69,14 +71,7 @@ class Nosto_Tagging_Block_Order_Vaimo_Klarna_Checkout extends Mage_Checkout_Bloc
             $nostoOrder = Mage::getModel('nosto_tagging/meta_order_vaimo_klarna_checkout');
             $nostoOrder->loadOrderByKlarnaCheckoutId($checkoutId);
         } catch (Exception $e) {
-            Mage::log(
-                sprintf(
-                    'Could not create Nosto order from Klarna order. Error was: %s',
-                    $e->getMessage()
-                ),
-                Zend_Log::ERR,
-                Nosto_Tagging_Model_Base::LOG_FILE_NAME
-            );
+            NostoLog::exception($e);
         }
 
         return $nostoOrder;

@@ -25,6 +25,8 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+use Nosto_Tagging_Helper_Log as NostoLog;
+
 /**
  * Customer info tagging block.
  * Adds meta-data to the HTML document for logged in customer.
@@ -89,15 +91,7 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
                 return $ref;
             }
         } catch (\Exception $e) {
-            Mage::log(
-                sprintf(
-                    'Could not get customer reference. Error was: %s',
-                    $e->getMessage()
-                ),
-                Zend_Log::ERR,
-                Nosto_Tagging_Model_Base::LOG_FILE_NAME
-            );
-            $ref = null;
+            NostoLog::exception($e);
         }
 
         return $ref;

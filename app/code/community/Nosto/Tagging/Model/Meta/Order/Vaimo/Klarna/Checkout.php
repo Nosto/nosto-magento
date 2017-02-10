@@ -26,6 +26,7 @@
  */
 
 use Nosto_Tagging_Model_Meta_Cart_Builder as CartBuilder;
+use Nosto_Tagging_Helper_Log as NostoLog;
 
 /**
  * Meta data class which holds information about an order.
@@ -104,13 +105,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
         try {
             self::validateKlarnaOrder($vaimoKlarnaOrder);
         } catch (NostoException $e) {
-            Mage::log(
-                sprintf(
-                    'Failed to validate VaimoKlarnaOrder. Error was %s',
-                    $e->getMessage()
-                )
-            );
-
+            NostoLog::exception($e);
             return false;
         }
         $vaimoKlarnaBilling = $vaimoKlarnaOrder['billing_address'];
@@ -128,14 +123,9 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
         try {
             $this->buildItemsFromQuote($quote);
         } catch (Exception $e) {
-            Mage::log(
-                sprintf(
-                    'Could not find klarnaCheckoutId from quote #%d. Error: %s',
-                    $quote->getId(),
-                    $e->getMessage()
-                ),
-                Zend_Log::ERR,
-                Nosto_Tagging_Model_Base::LOG_FILE_NAME
+            NostoLog::error(
+                'Could not find klarnaCheckoutId from quote #%d. Error: %s',
+                array($quote->getId(), $e->getMessage())
             );
         }
 
@@ -246,13 +236,9 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
         $klarnaCheckoutId = $quote->getKlarnaCheckoutId();
         if (empty($klarnaCheckoutId)) {
             /** @noinspection PhpUndefinedMethodInspection */
-            Mage::log(
-                sprintf(
-                    'Could not find klarnaCheckoutId from quote #%d',
-                    $order->quoteId()
-                ),
-                Zend_Log::ERR,
-                Nosto_Tagging_Model_Base::LOG_FILE_NAME
+            NostoLog::error(
+                'Could not find klarnaCheckoutId from quote #%d',
+                array($order->quoteId())
             );
         } else {
             $this->setOrderNumber($klarnaCheckoutId);

@@ -26,6 +26,7 @@
  */
 
 require_once __DIR__ . '/../../bootstrap.php'; // @codingStandardsIgnoreLine
+use Nosto_Tagging_Helper_Log as NostoLog;
 
 /**
  * Nosto admin controller.
@@ -226,9 +227,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                     );
                 }
             } catch (NostoException $e) {
-                Mage::log(
-                    "\n" . $e->__toString(), Zend_Log::ERR, Nosto_Tagging_Model_Base::LOG_FILE_NAME
-                );
+                NostoLog::exception($e);
             }
         }
 

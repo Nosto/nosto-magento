@@ -26,6 +26,7 @@
  */
 
 require_once __DIR__ . '/../bootstrap.php'; // @codingStandardsIgnoreLine
+use Nosto_Tagging_Helper_Log as NostoLog;
 
 /**
  * Helper class for managing Nosto accounts.
@@ -112,11 +113,7 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
                 $operation->delete($currentUser);
             } catch (NostoException $e) {
                 // Failures are logged but not shown to the user.
-                Mage::log(
-                    "\n" . $e->__toString(),
-                    Zend_Log::ERR,
-                    Nosto_Tagging_Model_Base::LOG_FILE_NAME
-                );
+                NostoLog::exception($e);
             }
         } else {
             $success = false;
@@ -210,14 +207,11 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
         /** @var Nosto_Tagging_Helper_Data $helper */
         $helper = Mage::helper('nosto_tagging');
         if (!$helper->isMultiCurrencyMethodExchangeRate($store)) {
-            Mage::log(
-                sprintf(
-                    'Currency update called without exchange method enabled for account %s',
-                    $account->getName()
-                ),
-                Zend_Log::DEBUG,
-                Nosto_Tagging_Model_Base::LOG_FILE_NAME
+            NostoLog::error(
+                'Currency update called without exchange method enabled for account %s',
+                array($account->getName())
             );
+
             return false;
         }
 
@@ -225,12 +219,12 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
             /** @var Nosto_Tagging_Model_Collection_Rates $collection */
             $collection = Mage::getModel('nosto_tagging/collection_rates');
             $collection->loadData($store);
-
             $service = new NostoOperationExchangeRate($account);
             return $service->update($collection);
         } catch (NostoException $e) {
-            Mage::log("\n" . $e, Zend_Log::ERR, Nosto_Tagging_Model_Base::LOG_FILE_NAME);
+            NostoLog::exception($e);
         }
+
         return false;
     }
 
@@ -255,11 +249,9 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
             $operation = new NostoOperationSettings($account);
             return $operation->update($settings);
         } catch (NostoException $e) {
-            Mage::log(
-                "\n" . $e, Zend_Log::ERR,
-                Nosto_Tagging_Model_Base::LOG_FILE_NAME
-            );
+            NostoLog::exception($e);
         }
+
         return false;
     }
 

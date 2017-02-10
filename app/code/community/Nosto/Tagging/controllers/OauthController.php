@@ -26,6 +26,7 @@
  */
 
 require_once __DIR__ . '/../bootstrap.php'; // @codingStandardsIgnoreLine
+use Nosto_Tagging_Helper_Log as NostoLog;
 
 /**
  * OAuth2 controller.
@@ -86,9 +87,7 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
                     throw new NostoException('Failed to connect account');
                 }
             } catch (NostoException $e) {
-                Mage::log(
-                    "\n" . $e->__toString(), Zend_Log::ERR, Nosto_Tagging_Model_Base::LOG_FILE_NAME
-                );
+                NostoLog::exception($e);
                 $params = array(
                     'message_type' => NostoMessage::TYPE_ERROR,
                     'message_code' => NostoMessage::CODE_ACCOUNT_CONNECT,
@@ -106,7 +105,7 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
             if (($desc = $request->getParam('error_description')) !== null) {
                 $logMsg .= ' - ' . $desc;
             }
-            Mage::log("\n" . $logMsg, Zend_Log::ERR, Nosto_Tagging_Model_Base::LOG_FILE_NAME);
+            NostoLog::error($logMsg);
             $this->_redirect(
                 'adminhtml/nosto/redirectProxy', array(
                     'message_type' => NostoMessage::TYPE_ERROR,

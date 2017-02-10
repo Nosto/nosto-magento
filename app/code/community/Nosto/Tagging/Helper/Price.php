@@ -25,6 +25,8 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+use Nosto_Tagging_Helper_Log as NostoLog;
+
 /**
  * Helper class for common price operations.
  *
@@ -192,14 +194,9 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
     public function convertToDefaultCurrency($price, Mage_Core_Model_Store $store)
     {
         if (!is_numeric($price)) {
-            Mage::log(
-                sprintf(
-                    'price must be a numeric value in %s, got %s.',
-                    __CLASS__,
-                    $price
-                ),
-                Zend_Log::WARN,
-                Nosto_Tagging_Model_Base::LOG_FILE_NAME
+            NostoLog::error(
+                'price must be a numeric value in %s, got %s.',
+                array(__CLASS__, $price)
             );
             $price = 0;
         }

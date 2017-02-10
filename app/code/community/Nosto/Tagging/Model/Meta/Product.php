@@ -25,6 +25,8 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+use Nosto_Tagging_Helper_Log as NostoLog;
+
 /**
  * Meta data class which holds information about a product.
  * This is used during the order confirmation API request and the product
@@ -184,14 +186,12 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
         try {
             $this->setInventoryLevel($stockHelper->getQty($product));
         } catch (Exception $e) {
-            Mage::log(
-                sprintf(
-                    'Failed to resolve inventory level for product %d to tags. Error message was: %s',
+            NostoLog::error(
+                'Failed to resolve inventory level for product %d to tags. Error message was: %s',
+                array(
                     $product->getId(),
                     $e->getMessage()
-                ),
-                Zend_Log::WARN,
-                Nosto_Tagging_Model_Base::LOG_FILE_NAME
+                )
             );
         }
     }
@@ -200,7 +200,7 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
      * Adds the alternative image urls
      *
      * @param Mage_Catalog_Model_Product $product the product model.
-     * @param Mage_Core_Model_Store $store the store model.
+     * @param Mage_Core_Model_Store $store the store model.d
      *
      */
     protected function amendAlternativeImages(
@@ -251,13 +251,9 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
                     $this->setReviewCount($ratingClass->getReviewCount());
                 }
             } else {
-                Mage::log(
-                    sprintf(
-                        'No rating class implementation found for %s',
-                        $ratingProvider
-                    ),
-                    Zend_Log::WARN,
-                    Nosto_Tagging_Model_Base::LOG_FILE_NAME
+                NostoLog::error(
+                    'No rating class implementation found for %s',
+                    array($ratingProvider)
                 );
             }
         }
@@ -329,15 +325,7 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
                             break;
                     }
                 } catch (Exception $e) {
-                    Mage::log(
-                        sprintf(
-                            'Failed to add attribute %s to tags. Error message was: %s',
-                            $key,
-                            $e->getMessage()
-                        ),
-                        Zend_Log::WARN,
-                        Nosto_Tagging_Model_Base::LOG_FILE_NAME
-                    );
+                    NostoLog::exception($e);
                 }
             }
         }

@@ -25,6 +25,8 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+use Nosto_Tagging_Helper_Log as NostoLog;
+
 /**
  * Block for editing Nosto's currency exchange cron frequency
  *
@@ -75,11 +77,7 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Currency_CronFrequency
         if (isset($data['values']) && is_array($data['values'])) {
             $this->_options = $data['values'];
         } else {
-            Mage::log(
-                'Could not find any options for cron frequency',
-                Zend_Log::ERR,
-                Nosto_Tagging_Model_Base::LOG_FILE_NAME
-            );
+            NostoLog::error('Could not find any options for cron frequency');
         }
 
         return $this->_toHtml();

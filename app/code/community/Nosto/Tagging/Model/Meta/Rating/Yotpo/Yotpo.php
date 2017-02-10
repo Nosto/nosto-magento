@@ -25,6 +25,8 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+use Nosto_Tagging_Helper_Log as NostoLog;
+
 /**
  * Meta data class which holds information about an order.
  * This is used during the order confirmation API request and the order
@@ -68,13 +70,9 @@ class Nosto_Tagging_Model_Meta_Rating_Yotpo_Yotpo extends Nosto_Tagging_Model_Me
                 }
             }
         } catch (Exception $e) {
-            Mage::log(
-                sprintf(
-                    'Could not find Yotpo helper. Error was: %s',
-                    $e->getMessage()
-                ),
-                Zend_Log::ERR,
-                Nosto_Tagging_Model_Base::LOG_FILE_NAME
+            NostoLog::error(
+                'Could not find Yotpo helper. Error was: %s',
+                array($e->getMessage())
             );
         }
         $this->resetRegistryProduct();

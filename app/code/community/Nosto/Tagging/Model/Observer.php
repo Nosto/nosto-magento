@@ -84,7 +84,7 @@ class Nosto_Tagging_Model_Observer
                 $service = Mage::getModel('nosto_tagging/service_product');
                 $service->updateProduct($product);
             } catch (NostoException $e) {
-                Mage::log("\n" . $e, Zend_Log::ERR, Nosto_Tagging_Model_Base::LOG_FILE_NAME);
+                NostoLog::exception($e);
             }
         }
 
@@ -127,7 +127,7 @@ class Nosto_Tagging_Model_Observer
                     $service->addProduct($model);
                     $service->upsert();
                 } catch (NostoException $e) {
-                    Mage::log("\n" . $e, Zend_Log::ERR, Nosto_Tagging_Model_Base::LOG_FILE_NAME);
+                    NostoLog::exception($e);
                 }
                 $emulation->stopEnvironmentEmulation($env);
             }
@@ -234,31 +234,28 @@ class Nosto_Tagging_Model_Observer
                 $emulation = Mage::getSingleton('core/app_emulation');
                 $env = $emulation->startEnvironmentEmulation($store->getId());
                 if (!$accountHelper->updateAccount($account, $store)) {
-                    Mage::log(
-                        sprintf(
-                            'Failed sync account #%s for store #%s in class %s',
+                    NostoLog::error(
+                        'Failed sync account #%s for store #%s in class %s',
+                        array(
                             $account->getName(),
                             $store->getName(),
                             __CLASS__
-                        ),
-                        Zend_Log::WARN,
-                        Nosto_Tagging_Model_Base::LOG_FILE_NAME
+                        )
                     );
                 }
                 if ($helper->isMultiCurrencyMethodExchangeRate($store)) {
-                    if (!$accountHelper->updateCurrencyExchangeRates(
-                        $account, $store
-                    )
+                    if (
+                        !$accountHelper->updateCurrencyExchangeRates(
+                            $account, $store
+                        )
                     ) {
-                        Mage::log(
-                            sprintf(
-                                'Failed sync currency rates #%s for store #%s in class %s',
+                        NostoLog::error(
+                            'Failed sync currency rates #%s for store #%s in class %s',
+                            array(
                                 $account->getName(),
                                 $store->getName(),
                                 __CLASS__
-                            ),
-                            Zend_Log::WARN,
-                            Nosto_Tagging_Model_Base::LOG_FILE_NAME
+                            )
                         );
                     }
                 }
