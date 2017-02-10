@@ -76,13 +76,15 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
         $checkoutId = $quote->getKlarnaCheckoutId();
         $this->setOrderNumber($checkoutId);
         $this->setCreatedDate($quote->getCreatedAt());
-        $this->setOrderStatus(Mage::getModel(
-            'nosto_tagging/meta_order_status',
-            array(
+        $this->setOrderStatus(
+            Mage::getModel(
+                'nosto_tagging/meta_order_status',
+                array(
                 'code' => self::DEFAULT_ORDER_STATUS,
                 'label' => self::DEFAULT_ORDER_STATUS
+                )
             )
-        ));
+        );
 
         $payment = $quote->getPayment();
         if ($payment instanceof Mage_Sales_Model_Quote_Payment && $payment->getMethod()) {
@@ -93,7 +95,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
         /* @var Vaimo_Klarna_Model_Klarnacheckout $klarna */
         $klarna = Mage::getModel('klarna/klarnacheckout');
         if ($klarna instanceof Vaimo_Klarna_Model_Klarnacheckout === false) {
-            throw new Exception('No Vaimo_Klarna_Model_Klarnacheckout found');
+            Mage::throwException('No Vaimo_Klarna_Model_Klarnacheckout found');
         }
         $buyerAttributes = array(
             'firstName' => '',
@@ -315,7 +317,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
                 }
             }
             if ($empty === true) {
-                throw new Exception(sprintf('Cannot create item - empty %s', $field));
+                Mage::throwException(sprintf('Cannot create item - empty %s', $field));
             }
         }
 
