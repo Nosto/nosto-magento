@@ -100,6 +100,6 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
             $ref = null;
         }
 
-        return null;
+        return $ref;
     }
 }
