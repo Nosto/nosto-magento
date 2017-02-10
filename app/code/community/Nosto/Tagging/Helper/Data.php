@@ -146,14 +146,18 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     public static $validTags = array(self::TAG1, self::TAG2, self::TAG3);
 
     /**
-     * @inheritdoc
+     * Escape quotes inside html attributes.
+     *
+     * @param string $data the data to be escaped
+     * @param bool $addSlashes false for escaping js that inside html attribute
+     * @return string the escaped data
      */
     public function quoteEscape($data, $addSlashes = false)
     {
         if ($addSlashes === true) {
             $data = addslashes($data); //@codingStandardsIgnoreLine
         }
-        return htmlspecialchars($data, ENT_QUOTES, null, false);
+        return htmlspecialchars($data, ENT_QUOTES, 'UTF-8', false);
     }
 
     /**
@@ -327,7 +331,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Return the checksum for visitor
      *
-     * @return string
+     * @return string|null
      */
     public function getVisitorChecksum()
     {

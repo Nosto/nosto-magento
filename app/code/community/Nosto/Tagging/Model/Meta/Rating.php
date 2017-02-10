@@ -32,8 +32,7 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-abstract class Nosto_Tagging_Model_Meta_Rating
-    implements Nosto_Tagging_Model_Meta_Rating_Interface
+abstract class Nosto_Tagging_Model_Meta_Rating implements Nosto_Tagging_Model_Meta_Rating_Interface
 {
     /**
      * @var int
@@ -54,7 +53,7 @@ abstract class Nosto_Tagging_Model_Meta_Rating
     }
 
     /**
-     * @inheritdoc
+     * @param int $reviewCount
      */
     public function setReviewCount($reviewCount)
     {
@@ -70,7 +69,7 @@ abstract class Nosto_Tagging_Model_Meta_Rating
     }
 
     /**
-     * @inheritdoc
+     * @param float $rating
      */
     public function setRating($rating)
     {
@@ -80,8 +79,5 @@ abstract class Nosto_Tagging_Model_Meta_Rating
     /**
      * @inheritdoc
      */
-    abstract public function init(
-        Mage_Catalog_Model_Product $product,
-        Mage_Core_Model_Store $store
-    );
+    abstract public function init(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store);
 }

@@ -86,8 +86,6 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
         $this->setAvailability($this->buildAvailability($product));
         $this->setCategories($this->buildCategories($product));
 
-        // Optional properties.
-
         if ($product->hasData('short_description')) {
             $this->setDescription($product->getData('short_description'));
         }

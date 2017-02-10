@@ -14,8 +14,7 @@
         }
     },
     "require": {
-        "nosto/php-sdk": "dev-feature/refactor-and-improve-sdk",
-        "magento/marketplace-eqp": "^1.0"
+        "nosto/php-sdk": "dev-feature/refactor-and-improve-sdk"
     },
     "require-dev": {
         "mridang/magazine": "0.1",
@@ -24,7 +23,8 @@
         "phpmd/phpmd": "^2.5",
         "squizlabs/php_codesniffer": "2.*",
         "sebastian/phpcpd": "*",
-        "magento-ecg/coding-standard": "*"
+        "magento-ecg/coding-standard": "*",
+        "magento/marketplace-eqp": "^1.0"
     },
     "config": {
         "vendor-dir": "lib"

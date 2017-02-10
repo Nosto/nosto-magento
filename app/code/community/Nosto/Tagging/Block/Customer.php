@@ -46,8 +46,7 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
         /** @var Nosto_Tagging_Helper_Account $helper */
         $helper = Mage::helper('nosto_tagging/account');
         /** @noinspection PhpUndefinedMethodInspection */
-        if (!Mage::helper('nosto_tagging')->isModuleEnabled()
-            || !$helper->existsAndIsConnected()
+        if (!Mage::helper('nosto_tagging')->isModuleEnabled() || !$helper->existsAndIsConnected()
             || !$this->helper('customer')->isLoggedIn()
         ) {
             return '';
@@ -87,6 +86,7 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
                     $ref
                 );
                 $customer->save();
+                return $ref;
             }
         } catch (\Exception $e) {
             Mage::log(
@@ -100,6 +100,6 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
             $ref = null;
         }
 
-        return $ref;
+        return null;
     }
 }

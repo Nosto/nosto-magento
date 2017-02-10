@@ -39,10 +39,7 @@ class Nosto_Tagging_Model_Meta_Rating_Mage_Rating extends Nosto_Tagging_Model_Me
     /**
      * @inheritdoc
      */
-    public function init(
-        Mage_Catalog_Model_Product $product,
-        Mage_Core_Model_Store $store
-    )
+    public function init(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
         /* @var Mage_Rating_Model_Rating $review_summary */
         /** @noinspection PhpUndefinedMethodInspection */
@@ -53,15 +50,7 @@ class Nosto_Tagging_Model_Meta_Rating_Mage_Rating extends Nosto_Tagging_Model_Me
             $ratingSummary instanceof Mage_Review_Model_Review_Summary
             && $ratingSummary->getRatingSummary()
         ) {
-            $this->setRating(
-                number_format(
-                    round(
-                        $ratingSummary->getRatingSummary() / 20,
-                        1
-                    ),
-                    1
-                )
-            );
+            $this->setRating(round($ratingSummary->getRatingSummary() / 20, 1));
             $this->setReviewCount($ratingSummary->getReviewsCount());
         }
     }

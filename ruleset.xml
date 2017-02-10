@@ -28,6 +28,7 @@
 <!--suppress XmlUnboundNsPrefix -->
 <ruleset name="Magento">
     <exclude-pattern>*.js</exclude-pattern>
+    <config name="installed_paths" value="lib/magento-ecg/coding-standard/,lib/magento/marketplace-eqp/" />
     <description>The Magento coding standard.</description>
     <rule ref="./lib/magento-ecg/coding-standard/Ecg">
         <exclude name="Ecg.PHP.PrivateClassMember"/>

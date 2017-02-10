@@ -59,9 +59,7 @@ class Nosto_Tagging_Block_Meta extends Mage_Core_Block_Template
      */
     public function getVersionModule()
     {
-        // Path is hard-coded to be like in "etc/config.xml".
-        return (string)Mage::getConfig()
-            ->getNode('modules/Nosto_Tagging/version');
+        return (string)Mage::getConfig()->getNode('modules/Nosto_Tagging/version');
     }
 
     /**
@@ -71,8 +69,6 @@ class Nosto_Tagging_Block_Meta extends Mage_Core_Block_Template
      */
     public function getLanguageIsoCode()
     {
-        return substr(
-            Mage::app()->getStore()->getConfig('general/locale/code'), 0, 2
-        );
+        return substr(Mage::app()->getStore()->getConfig('general/locale/code'), 0, 2);
     }
 }

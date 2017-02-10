@@ -40,7 +40,6 @@ class Nosto_Tagging_Model_Container_Customer extends Enterprise_PageCache_Model_
     /**
      * Get identifier from cookies.
      *
-     * @deprecated since 1.12.0.0
      * @return string
      */
     protected function _getIdentifier()
@@ -65,8 +64,7 @@ class Nosto_Tagging_Model_Container_Customer extends Enterprise_PageCache_Model_
         /** @noinspection PhpDeprecationInspection */
         return 'CONTAINER_NOSTO_TAGGING_CUSTOMER_'
         . md5( // @codingStandardsIgnoreLine
-            $this->_placeholder->getAttribute('cache_id')
-            . $this->_getIdentifier()
+            $this->_placeholder->getAttribute('cache_id') . $this->_getIdentifier()
         );
     }
 

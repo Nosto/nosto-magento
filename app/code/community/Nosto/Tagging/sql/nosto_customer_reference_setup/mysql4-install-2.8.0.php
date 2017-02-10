@@ -29,9 +29,8 @@
  * This install script will run only when installing the version 2.8.0 or above
  *
  * Adds custom attribute `nosto_customer_reference` for the Customer object
- *
  */
 
-/* @var $setupHelper Nosto_Tagging_Helper_Setup */
+/** @var $setupHelper Nosto_Tagging_Helper_Setup */
 $setupHelper = Mage::helper('nosto_tagging/setup');
 $setupHelper->addNostoCustomerReferenceEav($this);

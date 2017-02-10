@@ -29,11 +29,18 @@ ini_set('xdebug.max_nesting_level', 5120);
 
 return [
     'directory_list' => [
-         '.',
-        '/Applications/MAMP/htdocs/magento/1910/includes/src'
+         'app',
+         '.phan/stubs',
+         'lib/vlucas',
+         'lib/nosto/php-sdk',
+         'lib/phpseclib',
+         '/Applications/MAMP/htdocs/magento/1910/app/code/core/',
+         '/Applications/MAMP/htdocs/magento/1910/includes/'
     ],
     "exclude_analysis_directory_list" => [
         'lib/',
-        'magento'
+        '.phan/stubs',
+        '/Applications/MAMP/htdocs/magento/1910/app/code/core/',
+        '/Applications/MAMP/htdocs/magento/1910/includes/'
     ],
 ];

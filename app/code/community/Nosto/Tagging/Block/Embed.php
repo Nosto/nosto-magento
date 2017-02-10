@@ -48,9 +48,7 @@ class Nosto_Tagging_Block_Embed extends Mage_Core_Block_Template
     {
         /** @var Nosto_Tagging_Helper_Account $helper */
         $helper = Mage::helper('nosto_tagging/account');
-        if (!Mage::helper('nosto_tagging')->isModuleEnabled()
-            || !$helper->existsAndIsConnected()
-        ) {
+        if (!Mage::helper('nosto_tagging')->isModuleEnabled() || !$helper->existsAndIsConnected()) {
             return '';
         }
 
@@ -67,10 +65,8 @@ class Nosto_Tagging_Block_Embed extends Mage_Core_Block_Template
         /** @var Nosto_Tagging_Helper_Account $helper */
         $helper = Mage::helper('nosto_tagging/account');
         $account = $helper->find();
-        if ($account !== null) {
-            return $account->name;
-        }
-        return '';
+
+        return $account !== null ? $account->name : '';
     }
 
     /**
@@ -82,9 +78,6 @@ class Nosto_Tagging_Block_Embed extends Mage_Core_Block_Template
      */
     public function getServerAddress()
     {
-        return Mage::app()->getRequest()->getEnv(
-            'NOSTO_SERVER_URL',
-            self::DEFAULT_SERVER_ADDRESS
-        );
+        return Mage::app()->getRequest()->getEnv('NOSTO_SERVER_URL', self::DEFAULT_SERVER_ADDRESS);
     }
 }

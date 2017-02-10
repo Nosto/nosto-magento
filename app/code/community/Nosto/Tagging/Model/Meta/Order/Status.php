@@ -37,55 +37,14 @@
 class Nosto_Tagging_Model_Meta_Order_Status extends NostoOrderStatus
 {
     /**
-     * Constructor. Sets up this Value Object.
+     * Loads the order buyer from the given order.
      *
-     * @param array $args the object data.
+     * @param Mage_Sales_Model_Order_Status_History $status the status from which to load the status
      */
-    public function __construct(array $args)
+    public function loadData(Mage_Sales_Model_Order_Status_History $status)
     {
-        parent::__construct();
-        if (!isset($args['code']) || !is_string($args['code'])) {
-            Mage::log(
-                sprintf(
-                    '%s.code must be a non-empty string value',
-                    __CLASS__
-                ),
-                Zend_Log::WARN,
-                Nosto_Tagging_Model_Base::LOG_FILE_NAME
-            );
-            $args['code'] = '';
-        }
-
-        if (!isset($args['label'])) {
-            Mage::log(
-                sprintf(
-                    '%s.label is not set',
-                    __CLASS__
-                ),
-                Zend_Log::WARN,
-                Nosto_Tagging_Model_Base::LOG_FILE_NAME
-            );
-            $args['label'] = $args['code'];
-        }
-
-        if (isset($args['createdAt'])) {
-            if (empty($args['createdAt'])) {
-                Mage::log(
-                    sprintf(
-                        '%s.createdAt is not set',
-                        __CLASS__
-                    ),
-                    Zend_Log::WARN,
-                    Nosto_Tagging_Model_Base::LOG_FILE_NAME
-                );
-                $args['createdAt'] = '';
-            }
-        } else {
-            $args['createdAt'] = '';
-        }
-
-        $this->setCode($args['code']);
-        $this->setLabel($args['label']);
-        $this->setDate($args['createdAt']);
+        $this->setCode($status->getStatus());
+        $this->setLabel($status->getStatusLabel());
+        $this->setDate($status->getCreatedAt());
     }
 }

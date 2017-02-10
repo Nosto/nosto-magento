@@ -118,7 +118,7 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Currency_CronFrequency
     /**
      * Returns the name of the hour select field
      *
-     * @return array
+     * @return string
      */
     public function getHourSelectName()
     {
