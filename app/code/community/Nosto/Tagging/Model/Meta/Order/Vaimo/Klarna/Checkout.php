@@ -78,7 +78,6 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
         /** @noinspection PhpUndefinedMethodInspection */
         $checkoutId = $quote->getKlarnaCheckoutId();
         $this->setOrderNumber($checkoutId);
-        $this->setExternalOrderRef(null);
         $this->setCreatedDate($quote->getCreatedAt());
         $orderStatus = new NostoOrderStatus();
         $orderStatus->setCode(self::DEFAULT_ORDER_STATUS);
@@ -149,7 +148,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
             } else {
                 $itemPrice = $quoteItem->getPriceInclTax();
             }
-            $nostoItem->getUnitPrice($itemPrice);
+            $nostoItem->setPrice($itemPrice);
             $this->addPurchasedItems($nostoItem);
         }
         $appliedRuleIds = $quote->getAppliedRuleIds();
@@ -163,7 +162,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
                         'Discount (%s)',
                         $discountRule->getName()
                     );
-                   $discountItem = new NostoLineItem();
+                    $discountItem = new NostoLineItem();
                     $discountItem->loadSpecialItemData($name, 0, $currencyCode);
                     $this->addPurchasedItems($discountItem);
                 }

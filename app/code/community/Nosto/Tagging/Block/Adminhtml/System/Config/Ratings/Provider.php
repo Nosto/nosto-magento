@@ -32,6 +32,7 @@
  * @category Nosto
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
+ * @suppress PhanUnreferencedClass
  */
 class Nosto_Tagging_Block_Adminhtml_System_Config_Ratings_Provider
     extends Mage_Adminhtml_Block_System_Config_Form_Field
