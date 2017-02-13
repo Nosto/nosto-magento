@@ -139,6 +139,7 @@
             <arg value="--progress-bar"/>
             <arg value="--signature-compatibility"/>
             <arg value="--config-file=phan.php"/>
+            <arg value="--dead-code-detection"/>
             <arg value="."/>
         </exec>
     </target>
