@@ -26,6 +26,7 @@
  */
 
 use Nosto_Tagging_Helper_Log as NostoLog;
+use Nosto_Tagging_Helper_Data as NostoHelper;
 
 /**
  * Meta data class which holds information about a product.
@@ -38,6 +39,16 @@ use Nosto_Tagging_Helper_Log as NostoLog;
  */
 class Nosto_Tagging_Model_Meta_Product extends NostoProduct
 {
+
+    /**
+     * Backwards compatibility for product customizations
+     *
+     * @deprecated Use setters instead of direct assignment. This attribute will
+     * be removed in future release.
+     * @var array
+     */
+    public $_tags = array();
+
     /**
      * Array of attributes that can be customized from Nosto's store admin
      * settings
@@ -45,9 +56,30 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
      * @var array
      */
     public static $customizableAttributes = array(
-        'gtin' => '_gtin',
-        'supplier_cost' => '_supplierCost',
+        'gtin' => 'gtin',
+        'supplier_cost' => 'supplierCost',
     );
+
+    /**
+     * Array of deprecated direct attribute assignments
+     *
+     * @var array
+     */
+    public static $deprecatedAttributeMap = array(
+        '_supplierCost' => 'supplierCost',
+        '_tags' => 'tags',
+    );
+
+    /**
+     * Nosto_Tagging_Model_Meta_Product constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        foreach (NostoHelper::$validTags as $validTag) {
+            $this->_tags[$validTag] = array();
+        }
+    }
 
     /**
      * Loads the product info from a Magento product model.
@@ -276,7 +308,8 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
             if ($mapped) {
                 $value = $this->getAttributeValue($product, $mapped);
                 if (!empty($value)) {
-                    $this->$nostoAttr = $value;
+                    $method = sprintf('set%s', ucfirst($nostoAttr));
+                    $this->$method($value);
                 }
             }
         }
@@ -446,5 +479,98 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
         }
 
         return trim($attributeValue);
+    }
+
+    public function __call($method, $args) {
+        NostoLog::deprecated(
+            'Deprecated call %s with attributes %s',
+            array($method, implode(',', $args))
+        );
+
+        $compatibilityMethod = sprintf('__%s', $method);
+        if (method_exists($this, $compatibilityMethod)) {
+            return $this->$compatibilityMethod($args);
+        }
+    }
+
+    public function __set($attribute, $value) {
+        NostoLog::deprecated(
+            'Deprecated direct assignment %s with attributes %s',
+            array($attribute, $value)
+        );
+
+        $trimmedAttribute = trim($attribute, '_');
+        $setter = sprintf('set%s', ucfirst($trimmedAttribute));
+        if (method_exists($this, $setter)) {
+            try {
+                $this->$setter($value);
+            } catch (Exception $e) {
+                NostoLog::exception($e);
+            }
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getTag1()
+    {
+        if (!empty($this->_tags[NostoHelper::TAG1])) {
+//            NostoLog::deprecated(
+//                'Deprecated tag usage for tag1 in class %s',
+//                array(get_class_methods($this))
+//            );
+            $tags = $this->_tags[NostoHelper::TAG1];
+        } else {
+          $tags = parent::getTag1();
+        }
+
+        return $tags;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getTag2()
+    {
+        if (!empty($this->_tags[NostoHelper::TAG2])) {
+//            NostoLog::deprecated(
+//                'Deprecated tag usage for tag2 in class %s',
+//                array(get_class_methods($this))
+//            );
+            $tags = $this->_tags[NostoHelper::TAG2];
+        } else {
+            $tags = parent::getTag2();
+        }
+
+        return $tags;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getTag3()
+    {
+        if (!empty($this->_tags[NostoHelper::TAG3])) {
+//            NostoLog::deprecated(
+//                'Deprecated tag usage for tag3 in class %s',
+//                array(get_class_methods($this))
+//            );
+            $tags = $this->_tags[NostoHelper::TAG3];
+        } else {
+            $tags = parent::getTag3();
+        }
+
+        return $tags;
+    }
+
+    /**
+     * Backwards compatibility method only accessible via magic method
+     *
+     * @return array
+     */
+    private function __getTags()
+    {
+        return $this->_tags;
     }
 }
