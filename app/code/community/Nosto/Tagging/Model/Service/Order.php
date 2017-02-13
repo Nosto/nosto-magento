@@ -91,15 +91,15 @@ class Nosto_Tagging_Model_Service_Order
                 }
                 $productIds[] = $productId;
             }
-            if (count($productIds) > 0) {
+            if (!empty($productIds)) {
                 /* @var Nosto_Tagging_Model_Resource_Product_Collection $productIds*/
                 $products= Mage::getModel('nosto_tagging/product')
                     ->getCollection()
                     ->addAttributeToSelect('*')
                     ->addIdFilter($productIds);
-                if(
+                if (
                     $products instanceof Nosto_Tagging_Model_Resource_Product_Collection
-                    && count($products) > 0
+                    && !empty($products)
                 ) {
                     /* @var Nosto_Tagging_Model_Service_Product $productService */
                     $productService = Mage::getModel('nosto_tagging/service_product');
