@@ -47,7 +47,7 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
      * be removed in future release.
      * @var array
      */
-    public $_tags = array();
+    protected $_tags = array();
 
     /**
      * Backwards compatibility for categories
@@ -56,7 +56,7 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
      * be removed in future release.
      * @var array
      */
-    public $_categories = array();
+    protected $_categories = array();
 
     /**
      * Array of attributes that can be customized from Nosto's store admin
@@ -498,7 +498,8 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
      * @param $args
      * @return mixed
      */
-    public function __call($method, $args) {
+    public function __call($method, $args) 
+    {
         NostoLog::deprecated(
             'Deprecated call %s with attributes %s',
             array($method, implode(',', $args))
@@ -517,7 +518,8 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
      * @param $attribute
      * @param $value
      */
-    public function __set($attribute, $value) {
+    public function __set($attribute, $value) 
+    {
         NostoLog::deprecated(
             'Deprecated direct assignment %s with attributes %s',
             array($attribute, $value)
@@ -541,7 +543,8 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
      * @param string $attribute
      * @return null
      */
-    public function __get($attribute) {
+    public function __get($attribute) 
+    {
         NostoLog::deprecated(
             'Deprecated direct access for attribute %s',
             array($attribute)
@@ -591,7 +594,8 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
      * @param $tag
      * @return array
      */
-    private function mergeDeprecatedTags($tag) {
+    protected function mergeDeprecatedTags($tag)
+    {
         $parentMethod = sprintf('get%s', ucfirst($tag));
         $tags = parent::$parentMethod();
         if (!empty($this->_tags[$tag])) {
@@ -623,7 +627,7 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
      *
      * @return array
      */
-    private function __getTags()
+    protected function __getTags()
     {
         return $this->_tags;
     }
