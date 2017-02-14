@@ -55,7 +55,15 @@ class Nosto_Tagging_Helper_Log extends Mage_Core_Helper_Abstract
     protected static function write($message, $level, $log, array $attributes = null)
     {
         if (is_array($attributes) && !empty($attributes)) {
-            $message = vsprintf($message, $attributes);
+            $strippedAttributes = array();
+            foreach ($attributes as $attribute) {
+                if (is_scalar($attribute)) {
+                    $strippedAttributes[] = $attribute;
+                } elseif (is_array($attribute)) {
+                    $strippedAttributes[] = implode(',', $attribute);
+                }
+            }
+            $message = vsprintf($message, $strippedAttributes);
         }
         Mage::log(
             $message,
@@ -108,6 +116,22 @@ class Nosto_Tagging_Helper_Log extends Mage_Core_Helper_Abstract
             $message,
             Zend_Log::ERR,
             self::MAGENTO_EXCEPTION_LOG_FILE,
+            $attributes
+        );
+    }
+
+    /**
+     * Writes deperecated info into the log
+     *
+     * @param string $message
+     * @param array|null $attributes
+     */
+    public static function deprecated($message, array $attributes = null)
+    {
+        return self::write(
+            $message,
+            Zend_Log::INFO,
+            self::NOSTO_LOG_FILE,
             $attributes
         );
     }
