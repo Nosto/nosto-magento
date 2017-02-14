@@ -35,6 +35,7 @@
  */
 class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
 {
+    use NostoIframeMixin;
     const DEFAULT_IFRAME_ORIGIN_REGEXP = '(https:\/\/(.*)\.hub\.nosto\.com)|(https:\/\/my\.nosto\.com)';
     const IFRAME_VERSION = 1;
 
@@ -78,10 +79,7 @@ class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
         /* @var Mage_Core_Model_App_Emulation $emulation */
         $emulation = Mage::getSingleton('core/app_emulation');
         $env = $emulation->startEnvironmentEmulation($store->getId());
-        /** @var Nosto_Tagging_Helper_Account $helper */
-        $helper = Mage::helper('nosto_tagging/account');
-        $account = $helper->find($store);
-        $this->_iframeUrl = $helper->getIframeUrl($store, $account, $params);
+        $this->_iframeUrl = self::buildURL();
         $emulation->stopEnvironmentEmulation($env);
 
         return $this->_iframeUrl;
@@ -120,5 +118,38 @@ class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
     {
         return (string)Mage::app()->getRequest()
             ->getEnv('NOSTO_IFRAME_ORIGIN_REGEXP', self::DEFAULT_IFRAME_ORIGIN_REGEXP);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getIframe()
+    {
+        /** @var Nosto_Tagging_Model_Meta_Account_Iframe $iframeParams */
+        $iframeParams = Mage::getModel('nosto_tagging/meta_account_iframe');
+        $iframeParams->loadData($this->getSelectedStore());
+        return $iframeParams;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getUser()
+    {
+        /** @var Nosto_Tagging_Model_Meta_User $currentUser */
+        $currentUser = Mage::getModel('nosto_tagging/meta_user');
+        $currentUser->loadData();
+        return $currentUser;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAccount()
+    {
+        /** @var Nosto_Tagging_Helper_Account $helper */
+        $helper = Mage::helper('nosto_tagging/account');
+        $account = $helper->find($this->getSelectedStore());
+        return $account;
     }
 }
