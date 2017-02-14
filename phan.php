@@ -34,14 +34,11 @@ return [
          'lib/vlucas',
          'lib/nosto/php-sdk',
          'lib/phpseclib',
-         '/Applications/MAMP/htdocs/magento/1910/app/code/core/',
-         '/Applications/MAMP/htdocs/magento/1910/includes/'
+         'lib/openmage'
     ],
     "exclude_analysis_directory_list" => [
         'lib/',
         '.phan/stubs',
-        'app/code/community/Nosto/Tagging/sql/tagging_setup/',
-        '/Applications/MAMP/htdocs/magento/1910/app/code/core/',
-        '/Applications/MAMP/htdocs/magento/1910/includes/'
+        'app/code/community/Nosto/Tagging/sql/tagging_setup/'
     ],
 ];

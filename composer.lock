@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "fa2cf6e0449e538d1a802873934c7d78",
-    "content-hash": "4aa97418cc99213f736a3c65bfafccb9",
+    "hash": "ffa9ae0cea5dbc36fae4689e65396cec",
+    "content-hash": "fd2e2743bb15df791947c13babf00fc6",
     "packages": [
         {
             "name": "codeception/c3",
@@ -710,6 +710,16 @@
                 "source": "https://github.com/mridang/magazine/tree/0.1"
             },
             "time": "2016-10-07 08:04:43"
+        },
+        {
+            "name": "openmage/magento-mirror",
+            "version": "1.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/openMage/magento-mirror",
+                "reference": "origin/magento-1.9"
+            },
+            "type": "library"
         },
         {
             "name": "pdepend/pdepend",
