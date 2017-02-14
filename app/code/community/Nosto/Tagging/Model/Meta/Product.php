@@ -26,6 +26,7 @@
  */
 
 use Nosto_Tagging_Helper_Log as NostoLog;
+use Nosto_Tagging_Helper_Data as NostoHelper;
 
 /**
  * Meta data class which holds information about a product.
@@ -38,6 +39,25 @@ use Nosto_Tagging_Helper_Log as NostoLog;
  */
 class Nosto_Tagging_Model_Meta_Product extends NostoProduct
 {
+
+    /**
+     * Backwards compatibility for tags
+     *
+     * @deprecated Use setters instead of direct assignment. This attribute will
+     * be removed in future release.
+     * @var array
+     */
+    protected $_tags = array();
+
+    /**
+     * Backwards compatibility for categories
+     *
+     * @deprecated Use setters instead of direct assignment. This attribute will
+     * be removed in future release.
+     * @var array
+     */
+    protected $_categories = array();
+
     /**
      * Array of attributes that can be customized from Nosto's store admin
      * settings
@@ -45,9 +65,30 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
      * @var array
      */
     public static $customizableAttributes = array(
-        'gtin' => '_gtin',
-        'supplier_cost' => '_supplierCost',
+        'gtin' => 'gtin',
+        'supplier_cost' => 'supplierCost',
     );
+
+    /**
+     * Array of deprecated direct attribute assignments
+     *
+     * @var array
+     */
+    public static $deprecatedAttributeMap = array(
+        '_supplierCost' => 'supplierCost',
+        '_tags' => 'tags',
+    );
+
+    /**
+     * Nosto_Tagging_Model_Meta_Product constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        foreach (NostoHelper::$validTags as $validTag) {
+            $this->_tags[$validTag] = array();
+        }
+    }
 
     /**
      * Loads the product info from a Magento product model.
@@ -276,7 +317,8 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
             if ($mapped) {
                 $value = $this->getAttributeValue($product, $mapped);
                 if (!empty($value)) {
-                    $this->$nostoAttr = $value;
+                    $method = sprintf('set%s', ucfirst($nostoAttr));
+                    $this->$method($value);
                 }
             }
         }
@@ -446,5 +488,147 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
         }
 
         return trim($attributeValue);
+    }
+
+    /**
+     * Backwards compatibility method to make the extension work with
+     * old customisations
+     *
+     * @param $method
+     * @param $args
+     * @return mixed
+     */
+    public function __call($method, $args) 
+    {
+        NostoLog::deprecated(
+            'Deprecated call %s with attributes %s',
+            array($method, implode(',', $args))
+        );
+
+        $compatibilityMethod = sprintf('__%s', $method);
+        if (method_exists($this, $compatibilityMethod)) {
+            return $this->$compatibilityMethod($args);
+        }
+    }
+
+    /**
+     * Backwards compatibility method to make the extension work with
+     * old customisations
+     *
+     * @param $attribute
+     * @param $value
+     */
+    public function __set($attribute, $value) 
+    {
+        NostoLog::deprecated(
+            'Deprecated direct assignment %s with attributes %s',
+            array($attribute, $value)
+        );
+
+        $trimmedAttribute = trim($attribute, '_');
+        $setter = sprintf('set%s', ucfirst($trimmedAttribute));
+        if (method_exists($this, $setter)) {
+            try {
+                $this->$setter($value);
+            } catch (Exception $e) {
+                NostoLog::exception($e);
+            }
+        }
+    }
+
+    /**
+     * Backwards compatibility method to make the extension work with
+     * old customisations
+     *
+     * @param string $attribute
+     * @return null
+     */
+    public function __get($attribute) 
+    {
+        NostoLog::deprecated(
+            'Deprecated direct access for attribute %s',
+            array($attribute)
+        );
+
+        $trimmedAttribute = trim($attribute, '_');
+        $getter = sprintf('get%s', ucfirst($trimmedAttribute));
+        $value = null;
+        if (method_exists($this, $getter)) {
+            try {
+                $value = $this->$getter();
+            } catch (Exception $e) {
+                NostoLog::exception($e);
+            }
+        }
+
+        return $value;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getTag1()
+    {
+        return $this->mergeDeprecatedTags(NostoHelper::TAG1);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getTag2()
+    {
+        return $this->mergeDeprecatedTags(NostoHelper::TAG2);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getTag3()
+    {
+        return $this->mergeDeprecatedTags(NostoHelper::TAG3);
+    }
+
+    /**
+     * Merges directly accessed tags with the getTags method
+     *
+     * @param $tag
+     * @return array
+     */
+    protected function mergeDeprecatedTags($tag)
+    {
+        $parentMethod = sprintf('get%s', ucfirst($tag));
+        $tags = parent::$parentMethod();
+        if (!empty($this->_tags[$tag])) {
+            NostoLog::deprecated(
+                'Deprecated tag usage for %s in class %s',
+                array($tag, get_class_methods($this))
+            );
+            $tags = array_merge($tags, $this->_tags[$tag]);
+        }
+
+        return $tags;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getCategories()
+    {
+        $categories = parent::getCategories();
+        if (!empty($this->_categories)) {
+            $categories = array_merge($categories, $this->_categories);
+        }
+
+        return $categories;
+    }
+
+    /**
+     * Backwards compatibility method only accessible via magic method
+     *
+     * @return array
+     */
+    protected function __getTags()
+    {
+        return $this->_tags;
     }
 }
