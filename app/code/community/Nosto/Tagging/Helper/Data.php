@@ -217,6 +217,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
             $helper = Mage::helper('nosto_tagging/cache');
             $helper->flushConfigCache();
         }
+
         return $installationId;
     }
 
