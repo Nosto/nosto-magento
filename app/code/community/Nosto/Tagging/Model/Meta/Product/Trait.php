@@ -138,7 +138,7 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
 
     protected function buildProductListPrice(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
-        return $this->buildPrice($product, $store, 'price');
+        return $this->buildPrice($product, $store, 'listPrice');
     }
 
     /**
@@ -197,6 +197,5 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
 
         return trim($attributeValue);
     }
-
 
 }

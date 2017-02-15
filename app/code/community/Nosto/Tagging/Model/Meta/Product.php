@@ -161,7 +161,6 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
                 $mageSku = Mage::getModel('catalog/product')->load(
                     $associatedProduct->getId()
                 );
-
                 try {
                     /* @var Nosto_Tagging_Model_Meta_Sku $skuModel */
                     $skuModel = Mage::getModel('nosto_tagging/meta_sku');
