@@ -125,7 +125,15 @@ class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
      */
     public function getIframeOrigin()
     {
-        return (string)Mage::app()->getRequest()
-            ->getEnv('NOSTO_IFRAME_ORIGIN_REGEXP', self::DEFAULT_IFRAME_ORIGIN_REGEXP);
+        $orig = Mage::app()->getRequest()
+            ->getEnv('NOSTO_IFRAME_ORIGIN_REGEXP');
+        if (empty($orig)) {
+            $orig = getenv('NOSTO_IFRAME_ORIGIN_REGEXP');
+        }
+        if (empty($orig)) {
+            $orig = self::DEFAULT_IFRAME_ORIGIN_REGEXP;
+        }
+
+        return $orig;
     }
 }

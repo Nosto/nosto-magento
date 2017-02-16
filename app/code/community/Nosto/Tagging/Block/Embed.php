@@ -82,9 +82,16 @@ class Nosto_Tagging_Block_Embed extends Mage_Core_Block_Template
      */
     public function getServerAddress()
     {
-        return Mage::app()->getRequest()->getEnv(
-            'NOSTO_SERVER_URL',
-            self::DEFAULT_SERVER_ADDRESS
+        $url = Mage::app()->getRequest()->getEnv(
+            'NOSTO_SERVER_URL'
         );
+        if (empty($url)) {
+            $url = getenv('NOSTO_SERVER_URL');
+        }
+        if (empty($url)) {
+            $url = self::DEFAULT_SERVER_ADDRESS;
+        }
+
+        return $url;
     }
 }
