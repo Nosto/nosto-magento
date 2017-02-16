@@ -1,5 +1,8 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 2.11.0
+* Refactor the extension to meet Magento Extension Quality Program Coding Standard (MEQP1)
+
 ### 2.10.0
 * Add support for sending following attributes to Nosto
  * rating and reviews data to Nosto (Magento native ratings and Yotpo)
