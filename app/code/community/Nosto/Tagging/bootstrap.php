@@ -26,7 +26,7 @@
  */
 
 /** @noinspection PhpIncludeInspection */
-require_once Mage::getBaseDir('lib') . '/nosto/php-sdk/dependencies.php'; // @codingStandardsIgnoreLine
+require_once Mage::getBaseDir('lib') . '/nosto/php-sdk/src/dependencies.php'; // @codingStandardsIgnoreLine
 includeDependencies(Mage::getBaseDir('lib'));
 
 $version = (string)Mage::getConfig()->getNode('modules/Nosto_Tagging/version');

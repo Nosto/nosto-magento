@@ -47,7 +47,9 @@
       "app/etc/modules/Nosto_Tagging.xml"
     ],
     "magelib": [
-      "lib/nosto/php-sdk/src/*"
+      "lib/nosto/php-sdk/src/*",
+      "lib/phpseclib/phpseclib/phpseclib/*",
+      "lib/vlucas/phpdotenv/src/*"
     ],
     "magelocale": [],
     "magemedia": [],
