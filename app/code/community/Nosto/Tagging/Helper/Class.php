@@ -36,6 +36,12 @@ require_once __DIR__ . '/../bootstrap.php'; // @codingStandardsIgnoreLine
  */
 class Nosto_Tagging_Helper_Class extends Mage_Core_Helper_Abstract
 {
+    public static $customPaymentProviders = array(
+        'vaimo_klarna_checkout'
+    );
+
+    const DEFAULT_ORDER_CLASS = 'nosto_tagging/meta_order';
+
     /**
      * Loads correct / pluggable order class based on payment provider
      *
@@ -49,8 +55,13 @@ class Nosto_Tagging_Helper_Class extends Mage_Core_Helper_Abstract
         if (is_object($payment)) {
             $paymentProvider = $payment->getMethod();
         }
-        $classId = sprintf('nosto_tagging/meta_order_%s', $paymentProvider);
-        return $this->getClass($classId, 'NostoOrderInterface', 'nosto_tagging/meta_order');
+        if (in_array($paymentProvider, $this->getCustomPaymentProviders())) {
+            $classId = sprintf('nosto_tagging/meta_order_%s', $paymentProvider);
+        } else {
+            $classId = self::DEFAULT_ORDER_CLASS;
+        }
+
+        return $this->getClass($classId, 'NostoOrderInterface', self::DEFAULT_ORDER_CLASS);
     }
 
     /**
@@ -119,5 +130,10 @@ class Nosto_Tagging_Helper_Class extends Mage_Core_Helper_Abstract
         }
 
         return $class;
+    }
+
+    protected function getCustomPaymentProviders()
+    {
+        return self::$customPaymentProviders;
     }
 }

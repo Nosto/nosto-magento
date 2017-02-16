@@ -49,11 +49,9 @@ class Nosto_Tagging_Model_Meta_Order extends NostoOrder
         $this->setExternalOrderRef($order->getRealOrderId());
         $this->setCreatedDate($order->getCreatedAt());
         $payment = $order->getPayment();
+        $this->setPaymentProvider('unknown');
         if (is_object($payment)) {
             $this->setPaymentProvider($payment->getMethod());
-        }
-        if (empty($this->_paymentProvider)) {
-            $this->setPaymentProvider('unknown');
         }
 
         if ($order->getStatus()) {
