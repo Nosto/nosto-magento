@@ -1,5 +1,8 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 2.11.1
+* Add support for Magento core modules version 1.9.3.2
+
 ### 2.11.0
 * Refactor the extension to meet Magento Extension Quality Program Coding Standard (MEQP1)
 
