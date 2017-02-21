@@ -79,7 +79,9 @@ class Nosto_Tagging_Model_Meta_Order extends NostoOrder
         /** @var Mage_Sales_Model_Order_Item $item */
         foreach ($order->getAllVisibleItems() as $item) {
             $nostoItem = OrderBuilder::buildItem($item, $order);
-            $this->addPurchasedItems($nostoItem);
+            if ($nostoItem instanceof NostoLineItemInterface) {
+                $this->addPurchasedItems($nostoItem);
+            }
         }
 
         if (($discountAmount = $order->getDiscountAmount()) < 0) {
