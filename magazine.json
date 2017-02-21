@@ -48,6 +48,7 @@
     ],
     "magelib": [
       "lib/nosto/php-sdk/src/*",
+      "lib/nosto/php-sdk/src/.env",
       "lib/phpseclib/phpseclib/phpseclib/*",
       "lib/vlucas/phpdotenv/src/*"
     ],

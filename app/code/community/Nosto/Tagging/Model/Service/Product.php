@@ -74,14 +74,23 @@ class Nosto_Tagging_Model_Service_Product
                     )
                 );
             }
-            foreach ($product->getStoreIds() as $storeId) {
-                if (!isset($productsInStore[$storeId])) {
-                    $productsInStore[$storeId] = array();
+
+            $parentProducts = $this->buildParentProducts($product);
+            if (!empty($parentProducts)) {
+                $productsToUpdate = $parentProducts;
+            } else {
+                $productsToUpdate = array($product);
+            }
+            foreach ($productsToUpdate as $productToUpdate) {
+                foreach ($product->getStoreIds() as $storeId) {
+                    if (!isset($productsInStore[$storeId])) {
+                        $productsInStore[$storeId] = array();
+                    }
+                    if (!isset($productsInStore[$storeId][$batch])) {
+                        $productsInStore[$storeId][$batch] = array();
+                    }
+                    $productsInStore[$storeId][$batch][] = $productToUpdate;
                 }
-                if (!isset($productsInStore[$storeId][$batch])) {
-                    $productsInStore[$storeId][$batch] = array();
-                }
-                $productsInStore[$storeId][$batch][] = $product;
             }
         }
         foreach ($productsInStore as $storeId => $productBatches) {
@@ -139,5 +148,30 @@ class Nosto_Tagging_Model_Service_Product
     {
         return $this->update(array($product));
     }
+
+    /**
+     * Helper method to check if simple product has multiple parent products
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @return array
+     */
+    public function buildParentProducts(Mage_Catalog_Model_Product $product)
+    {
+        $parents = array();
+        if ($product->getTypeId() === Mage_Catalog_Model_Product_Type::TYPE_SIMPLE) {
+            /** @var Mage_Catalog_Model_Product_Type_Configurable $model */
+            $model = Mage::getModel('catalog/product_type_configurable');
+            $parentIds = $model->getParentIdsByChild($product->getId());
+            if (!empty($parentIds)) {
+                foreach ($parentIds as $productId) {
+                    $configurable = Mage::getModel('catalog/product')->load($productId);
+                    $parents[] = $configurable;
+                }
+            }
+        }
+
+        return $parents;
+    }
+
 }
 
