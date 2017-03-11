@@ -34,7 +34,7 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-abstract class Nosto_Tagging_Model_Meta_Order_Item extends NostoLineItem
+abstract class Nosto_Tagging_Model_Meta_Order_Item extends Nosto_Object_Cart_LineItem
 {
     /**
      * Populates the model

@@ -46,7 +46,7 @@ class Nosto_Tagging_Helper_Class extends Mage_Core_Helper_Abstract
      * Loads correct / pluggable order class based on payment provider
      *
      * @param Mage_Sales_Model_Order $order
-     * @return NostoOrderInterface
+     * @return Nosto_Types_Order_OrderInterface
      */
     public function getOrderClass(Mage_Sales_Model_Order $order)
     {

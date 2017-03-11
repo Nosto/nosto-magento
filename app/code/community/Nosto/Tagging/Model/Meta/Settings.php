@@ -33,7 +33,7 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Settings extends NostoSettings
+class Nosto_Tagging_Model_Meta_Settings extends Nosto_Object_Settings
 {
     /**
      * Loads the meta data for the given store.

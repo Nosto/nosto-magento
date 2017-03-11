@@ -32,7 +32,7 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Oauth extends NostoOAuth
+class Nosto_Tagging_Model_Meta_Oauth extends Nosto_Object_OAuth
 {
     /**
      * Loads the meta data for the given store.
@@ -47,6 +47,6 @@ class Nosto_Tagging_Model_Meta_Oauth extends NostoOAuth
         $this->setLanguageIsoCode(substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2));
         $this->setClientId('magento');
         $this->setClientSecret('magento');
-        $this->setScopes(NostoApiToken::$tokenNames);
+        $this->setScopes(Nosto_Request_Api_Token::$tokenNames);
     }
 }

@@ -181,7 +181,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
             /* @var Nosto_Tagging_Helper_Data $helper */
             $helper = Mage::helper('nosto_tagging');
             if (!$helper->getUsePrettyProductUrls($store)) {
-                $url = NostoHttpRequest::replaceQueryParamInUrl(
+                $url = Nosto_Request_Http_HttpRequest::replaceQueryParamInUrl(
                     self::MAGENTO_URL_PARAMETER_STORE, $store->getCode(), $url
                 );
             }
@@ -214,7 +214,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
             self::MAGENTO_PATH_SEARCH,
             $this->getUrlOptionsWithNoSid($store)
         );
-        $url = NostoHttpRequest::replaceQueryParamInUrl('q', 'nosto', $url);
+        $url = Nosto_Request_Http_HttpRequest::replaceQueryParamInUrl('q', 'nosto', $url);
 
         return $this->addNostoPreviewParameter($url);
     }
@@ -331,12 +331,12 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
     public function removeQueryParamFromUrl($url, $param)
     {
         $modifiedUrl = $url;
-        $urlParts = NostoHttpRequest::parseUrl($url);
+        $urlParts = Nosto_Request_Http_HttpRequest::parseUrl($url);
         if (
             $urlParts !== false
             && isset($urlParts['query'])
         ) {
-            $queryArray = NostoHttpRequest::parseQueryString($urlParts['query']);
+            $queryArray = Nosto_Request_Http_HttpRequest::parseQueryString($urlParts['query']);
             if (isset($queryArray[$param])) {
                 unset($queryArray[$param]);
                 if (empty($queryArray)) {
@@ -344,7 +344,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
                 } else {
                     $urlParts['query'] = http_build_query($queryArray);
                 }
-                $modifiedUrl = NostoHttpRequest::buildUrl($urlParts);
+                $modifiedUrl = Nosto_Request_Http_HttpRequest::buildUrl($urlParts);
             }
         }
 
@@ -378,7 +378,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
         /* @var Nosto_Tagging_Helper_Data $helper */
         $helper = Mage::helper('nosto_tagging');
         if (!$helper->getUsePrettyProductUrls($store)) {
-            $url = NostoHttpRequest::replaceQueryParamInUrl(
+            $url = Nosto_Request_Http_HttpRequest::replaceQueryParamInUrl(
                 self::MAGENTO_URL_PARAMETER_STORE,
                 $store->getCode(),
                 $store->getBaseUrl(self::$urlType)
@@ -399,7 +399,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
      */
     protected function addNostoPreviewParameter($url)
     {
-        return NostoHttpRequest::replaceQueryParamInUrl(
+        return Nosto_Request_Http_HttpRequest::replaceQueryParamInUrl(
             self::NOSTO_URL_DEBUG_PARAMETER,
             'true',
             $url

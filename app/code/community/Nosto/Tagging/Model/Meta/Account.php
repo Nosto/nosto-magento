@@ -33,7 +33,7 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Account extends NostoSignup
+class Nosto_Tagging_Model_Meta_Account extends Nosto_Object_Signup
 {
     CONST /** @noinspection SpellCheckingInspection */
         SIGNUP_TOKEN = 'YBDKYwSqTCzSsU8Bwbg4im2pkHMcgTy9cCX7vevjJwON1UISJIwXOLMM0a8nZY7h';
@@ -52,9 +52,9 @@ class Nosto_Tagging_Model_Meta_Account extends NostoSignup
      *
      * @param Mage_Core_Model_Store $store the store view to load the data for.
      * @param $signupDetails array the details of the signup qualification
-     * @param NostoSignupOwnerInterface $owner the details of the signup owner
+     * @param Nosto_Types_Signup_OwnerInterface $owner the details of the signup owner
      */
-    public function loadData(Mage_Core_Model_Store $store, $signupDetails, NostoSignupOwnerInterface $owner)
+    public function loadData(Mage_Core_Model_Store $store, $signupDetails, Nosto_Types_Signup_OwnerInterface $owner)
     {
         /* @var Nosto_Tagging_Helper_Data $helper */
         $helper = Mage::helper('nosto_tagging');

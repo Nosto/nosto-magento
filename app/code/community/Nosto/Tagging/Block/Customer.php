@@ -68,11 +68,13 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
         return $helper->getVisitorChecksum();
     }
 
-    /*
+    /**
      * Returns the customer reference of the customer
      */
     protected function getCustomerReference()
     {
+        $ref = '';
+
         try {
             /* @var $customerHelper Nosto_Tagging_Helper_Customer */
             $customerHelper = Mage::helper('nosto_tagging/customer');

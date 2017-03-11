@@ -99,7 +99,7 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
             if ($currentPage > $orders->getLastPageNumber()) {
                 $orders = array();
             }
-            $collection = new NostoOrderCollection();
+            $collection = new Nosto_Object_Order_OrderCollection();
             /* @var Mage_Sales_Model_Order $order */
             foreach ($orders as $order) {
                 /** @var Nosto_Tagging_Helper_Class $helper */
@@ -145,7 +145,7 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
             if ($currentPage > $products->getLastPageNumber()) {
                 $products = array();
             }
-            $collection = new NostoProductCollection();
+            $collection = new Nosto_Object_Product_ProductCollection();
             /** @var Mage_Catalog_Model_Product $product */
             foreach ($products as $product) {
                 /** @var Nosto_Tagging_Model_Meta_Product $meta */
@@ -160,15 +160,15 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
     /**
      * Encrypts the export collection and outputs it to the browser.
      *
-     * @param NostoCollection $collection the data collection to export.
+     * @param Nosto_Object_Collection_AbstractCollection $collection the data collection to export.
      */
-    protected function export(NostoCollection $collection)
+    protected function export(Nosto_Object_Collection_AbstractCollection $collection)
     {
         /** @var Nosto_Tagging_Helper_Account $helper */
         $helper = Mage::helper('nosto_tagging/account');
         $account = $helper->find();
         if ($account !== null) {
-            $cipherText = NostoHelperExporter::export($account, $collection);
+            $cipherText = Nosto_Helper_ExportHelper::export($account, $collection);
             echo $cipherText; // @codingStandardsIgnoreLine
         }
         die(); // @codingStandardsIgnoreLine

@@ -39,7 +39,7 @@ class Nosto_Tagging_Helper_Currency extends Mage_Core_Helper_Abstract
      *
      * @param string $locale the locale to get the currency format in.
      * @param string $currencyCode the currency ISO 4217 code to get the currency in.
-     * @return NostoCurrencyFormat the parsed currency.
+     * @return Nosto_Object_Format the parsed currency.
      */
     public function getCurrencyObject($locale, $currencyCode)
     {
@@ -74,7 +74,7 @@ class Nosto_Tagging_Helper_Currency extends Mage_Core_Helper_Abstract
             $currencySymbol = $currencyCode;
         }
 
-        return new NostoCurrencyFormat(
+        return new Nosto_Object_Format(
             $symbolPosition,
             $currencySymbol,
             $symbols['decimal'],

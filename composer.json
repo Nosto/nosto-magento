@@ -38,8 +38,5 @@
         "magento-ecg/coding-standard": "*",
         "magento/marketplace-eqp": "^1.0",
         "openmage/magento-mirror": "1.9"
-    },
-    "config": {
-        "vendor-dir": "lib"
     }
 }

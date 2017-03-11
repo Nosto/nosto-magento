@@ -33,7 +33,7 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Account_Owner extends NostoSignupOwner
+class Nosto_Tagging_Model_Meta_Account_Owner extends Nosto_Object_Signup_Owner
 {
     /**
      * Loads the user data from the active session.

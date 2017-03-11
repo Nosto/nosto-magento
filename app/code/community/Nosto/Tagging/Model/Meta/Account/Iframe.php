@@ -33,7 +33,7 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Account_Iframe extends NostoIframe
+class Nosto_Tagging_Model_Meta_Account_Iframe extends Nosto_Object_Iframe
 {
 
     const PLATFORM = 'magento';

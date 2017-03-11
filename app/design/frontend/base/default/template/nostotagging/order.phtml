@@ -34,7 +34,7 @@ $priceHelper = Mage::helper('nosto_tagging/price');
 ?>
 
 <?php if (
-    $order instanceof NostoOrderInterface
+    $order instanceof Nosto_Types_Order_OrderInterface
     && $order->getPurchasedItems() !== array()
 ): ?>
 <!-- Nosto Order Tagging -->

@@ -33,7 +33,7 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Collection_Rates extends NostoExchangeRateCollection
+class Nosto_Tagging_Model_Collection_Rates extends Nosto_Object_ExchangeRateCollection
 {
     /**
      * Loads the currencies and exchange rates from a store
@@ -52,7 +52,7 @@ class Nosto_Tagging_Model_Collection_Rates extends NostoExchangeRateCollection
             if ($baseCurrencyCode === $code) {
                 continue; // Skip base currency.
             }
-            parent::addRate($code, new NostoExchangeRate($code, $rate));
+            parent::addRate($code, new Nosto_Object_ExchangeRate($code, $rate));
         }
     }
 }

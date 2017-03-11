@@ -47,7 +47,7 @@ class Nosto_Tagging_Model_Base extends Mage_Core_Model_Abstract
      *
      * @param string $name the property name.
      * @return mixed the property value.
-     * @throws NostoException if public getter does not exist.
+     * @throws Nosto_Exception_NostoException if public getter does not exist.
      */
     public function __get($name)
     {
@@ -55,6 +55,6 @@ class Nosto_Tagging_Model_Base extends Mage_Core_Model_Abstract
         if (method_exists($this, $getter)) {
             return $this->{$getter}();
         }
-        throw new NostoException(sprintf('Property `%s.%s` is not defined.', get_class($this), $name));
+        throw new Nosto_Exception_NostoException(sprintf('Property `%s.%s` is not defined.', get_class($this), $name));
     }
 }

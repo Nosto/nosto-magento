@@ -36,7 +36,7 @@ use Nosto_Tagging_Model_Meta_Order_Builder as OrderBuilder;
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Order extends NostoOrder
+class Nosto_Tagging_Model_Meta_Order extends Nosto_Object_Order_Order
 {
     /**
      * Loads the order info from a Magento order model.
@@ -55,7 +55,7 @@ class Nosto_Tagging_Model_Meta_Order extends NostoOrder
         }
 
         if ($order->getStatus()) {
-            $orderStatus = new NostoOrderStatus();
+            $orderStatus = new Nosto_Object_Order_OrderStatus();
             $orderStatus->setCode($order->getStatus());
             $orderStatus->setLabel($order->getStatusLabel());
             $this->setOrderStatus($orderStatus);
@@ -83,14 +83,14 @@ class Nosto_Tagging_Model_Meta_Order extends NostoOrder
         }
 
         if (($discountAmount = $order->getDiscountAmount()) < 0) {
-            $discountItem = new NostoLineItem();
+            $discountItem = new Nosto_Object_Cart_LineItem();
             $discountName = $this->buildDiscountRuleDescription($order);
             $discountItem->loadSpecialItemData($discountName, $discountAmount, $order->getOrderCurrencyCode());
             $this->addPurchasedItems($discountItem);
         }
 
         if (($shippingAmount = $order->getShippingInclTax()) > 0) {
-            $shippingItem = new NostoLineItem();
+            $shippingItem = new Nosto_Object_Cart_LineItem();
             $shippingName = 'Shipping and handling';
             $shippingItem->loadSpecialItemData($shippingName, $shippingAmount, $order->getOrderCurrencyCode());
             $this->addPurchasedItems($shippingItem);

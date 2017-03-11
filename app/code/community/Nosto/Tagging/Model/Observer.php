@@ -83,7 +83,7 @@ class Nosto_Tagging_Model_Observer
                 /* @var Nosto_Tagging_Model_Service_Product $service */
                 $service = Mage::getModel('nosto_tagging/service_product');
                 $service->updateProduct($product);
-            } catch (NostoException $e) {
+            } catch (Nosto_Exception_NostoException$e) {
                 NostoLog::exception($e);
             }
         }
@@ -123,10 +123,10 @@ class Nosto_Tagging_Model_Observer
                 $model = Mage::getModel('nosto_tagging/meta_product');
                 $model->setProductId($product->getId());
                 try {
-                    $service = new NostoOperationProduct($account);
+                    $service = new Nosto_Operation_UpsertProduct($account);
                     $service->addProduct($model);
                     $service->upsert();
-                } catch (NostoException $e) {
+                } catch (Nosto_Exception_NostoException $e) {
                     NostoLog::exception($e);
                 }
                 $emulation->stopEnvironmentEmulation($env);
@@ -227,7 +227,7 @@ class Nosto_Tagging_Model_Observer
             /** @var Mage_Core_Model_Store $store */
             foreach (Mage::app()->getStores() as $store) {
                 $account = $accountHelper->find($store);
-                if ($account instanceof NostoAccount === false) {
+                if ($account instanceof Nosto_Object_Signup_Account === false) {
                     continue;
                 }
                 /* @var Mage_Core_Model_App_Emulation $emulation */

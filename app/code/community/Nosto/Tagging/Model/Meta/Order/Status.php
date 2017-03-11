@@ -34,8 +34,9 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Order_Status extends NostoOrderStatus
+class Nosto_Tagging_Model_Meta_Order_Status extends Nosto_Object_Order_OrderStatus
 {
+
     /**
      * Loads the order buyer from the given order.
      *

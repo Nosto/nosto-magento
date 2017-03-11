@@ -49,10 +49,10 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Currency_Method extends Mage_A
         if ($store instanceof Mage_Core_Model_Store) {
             /* @var Nosto_Tagging_Helper_Account $accountHelper */
             $accountHelper = Mage::helper('nosto_tagging/account');
-            /* @var NostoAccount $nostoAccount */
+            /* @var Nosto_Object_Signup_Account $nostoAccount */
             $nostoAccount = $accountHelper->find($store);
-            if ($nostoAccount instanceof NostoAccountInterface) {
-                foreach (NostoApiToken::getApiTokenNames() as $token) {
+            if ($nostoAccount instanceof Nosto_Types_Signup_AccountInterface) {
+                foreach (Nosto_Request_Api_Token::getApiTokenNames() as $token) {
                     if (!$nostoAccount->getApiToken($token)) {
                         $disabled = true;
                         break;
@@ -67,12 +67,12 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Currency_Method extends Mage_A
             $metaOauth = new Nosto_Tagging_Model_Meta_Oauth();
             /** @noinspection PhpUndefinedVariableInspection */
             $metaOauth->loadData($store);
-            $client = new NostoOAuthClient($metaOauth);
+
             $comment = sprintf(
                 'Your Nosto account is missing required tokens' .
                 ' for updating settings to Nosto. Please click <a href="%s">' .
                 ' here to re-connect</a> your account.',
-                $client->getAuthorizationUrl()
+                Nosto_Helper_OAuthHelper::getAuthorizationUrl($metaOauth)
             );
             $element->setData(
                 'comment', $comment

@@ -25,7 +25,6 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-use Nosto_Tagging_Helper_Log as NostoLog;
 /**
  * Handles sending the order confirmations to Nosto via the API.
  *
@@ -65,7 +64,7 @@ class Nosto_Tagging_Model_Service_Order
         $helper = Mage::helper('nosto_tagging/customer');
         $customerId = $helper->getNostoId($mageOrder);
         if ($account !== null && $account->isConnectedToNosto()) {
-            $operation = new NostoOperationOrder($account);
+            $operation = new Nosto_Operation_OrderConfirm($account);
             $operation->send($order, $customerId);
             $this->syncInventoryLevel($order);
         }

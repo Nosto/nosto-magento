@@ -71,26 +71,26 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
                 /** @var Nosto_Tagging_Model_Meta_Oauth $meta */
                 $meta = Mage::getModel('nosto_tagging/meta_oauth');
                 $meta->loadData($store);
-                $operation = new NostoOperationOauthSync($meta);
+                $operation = new Nosto_Operation_OAuth_ExchangeTokens($meta);
                 $account = $operation->exchange($code);
 
                 /** @var Nosto_Tagging_Helper_Account $accountHelper */
                 $accountHelper = Mage::helper('nosto_tagging/account');
                 if ($accountHelper->save($account, $store)) {
                     $params = array(
-                        'message_type' => NostoMessage::TYPE_SUCCESS,
-                        'message_code' => NostoMessage::CODE_ACCOUNT_CONNECT,
+                        'message_type' => Nosto_Nosto::TYPE_SUCCESS,
+                        'message_code' => Nosto_Nosto::CODE_ACCOUNT_CONNECT,
                         'store' => (int)$store->getId(),
                         '_store' => Mage_Core_Model_App::ADMIN_STORE_ID,
                     );
                 } else {
-                    throw new NostoException('Failed to connect account');
+                    throw new Nosto_Exception_NostoException('Failed to connect account');
                 }
-            } catch (NostoException $e) {
+            } catch (Nosto_Exception_NostoException$e) {
                 NostoLog::exception($e);
                 $params = array(
-                    'message_type' => NostoMessage::TYPE_ERROR,
-                    'message_code' => NostoMessage::CODE_ACCOUNT_CONNECT,
+                    'message_type' => Nosto_Nosto::TYPE_ERROR,
+                    'message_code' => Nosto_Nosto::CODE_ACCOUNT_CONNECT,
                     'message_text' => $e->getMessage(),
                     'store' => (int)$store->getId(),
                     '_store' => Mage_Core_Model_App::ADMIN_STORE_ID,
@@ -108,8 +108,8 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
             NostoLog::error($logMsg);
             $this->_redirect(
                 'adminhtml/nosto/redirectProxy', array(
-                    'message_type' => NostoMessage::TYPE_ERROR,
-                    'message_code' => NostoMessage::CODE_ACCOUNT_CONNECT,
+                    'message_type' => Nosto_Nosto::TYPE_ERROR,
+                    'message_code' => Nosto_Nosto::CODE_ACCOUNT_CONNECT,
                     'message_text' => $desc,
                     'store' => (int)$store->getId(),
                     '_store' => Mage_Core_Model_App::ADMIN_STORE_ID,

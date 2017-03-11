@@ -100,6 +100,6 @@ class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
      */
     public function formatNostoPrice($price)
     {
-        return NostoHelperPrice::format($price);
+        return Nosto_Helper_PriceHelper::format($price);
     }
 }

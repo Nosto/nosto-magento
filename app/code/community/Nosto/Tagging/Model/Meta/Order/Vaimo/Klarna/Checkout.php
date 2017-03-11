@@ -79,7 +79,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
         $checkoutId = $quote->getKlarnaCheckoutId();
         $this->setOrderNumber($checkoutId);
         $this->setCreatedDate($quote->getCreatedAt());
-        $orderStatus = new NostoOrderStatus();
+        $orderStatus = new Nosto_Object_Order_OrderStatus();
         $orderStatus->setCode(self::DEFAULT_ORDER_STATUS);
         $orderStatus->setLabel(self::DEFAULT_ORDER_STATUS);
         $this->setOrderStatus($orderStatus);
@@ -103,12 +103,12 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
         $vaimoKlarnaOrder = $klarna->getKlarnaOrderRaw($quote->getKlarnaCheckoutId());
         try {
             self::validateKlarnaOrder($vaimoKlarnaOrder);
-        } catch (NostoException $e) {
+        } catch (Nosto_Exception_NostoException $e) {
             NostoLog::exception($e);
             return false;
         }
         $vaimoKlarnaBilling = $vaimoKlarnaOrder['billing_address'];
-        $orderBuyer = new NostoOrderBuyer();
+        $orderBuyer = new Nosto_Object_Order_Buyer();
         if (!empty($vaimoKlarnaBilling['given_name'])) {
             $orderBuyer->setFirstName($vaimoKlarnaBilling['given_name']);
         }
@@ -162,7 +162,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
                         'Discount (%s)',
                         $discountRule->getName()
                     );
-                    $discountItem = new NostoLineItem();
+                    $discountItem = new Nosto_Object_Cart_LineItem();
                     $discountItem->loadSpecialItemData($name, 0, $currencyCode);
                     $this->addPurchasedItems($discountItem);
                 }

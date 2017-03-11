@@ -34,7 +34,7 @@ use Nosto_Tagging_Model_Meta_Cart_Builder as CartBuilder;
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Cart extends NostoCart
+class Nosto_Tagging_Model_Meta_Cart extends Nosto_Object_Cart_Cart
 {
 
     /**

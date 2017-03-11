@@ -88,6 +88,6 @@ class Nosto_Tagging_Block_Order extends Mage_Checkout_Block_Success
      */
     public function formatNostoPrice($price)
     {
-        return NostoHelperPrice::format($price);
+        return Nosto_Helper_PriceHelper::format($price);
     }
 }

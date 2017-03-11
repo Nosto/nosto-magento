@@ -34,7 +34,7 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Order_Buyer extends NostoOrderBuyer
+class Nosto_Tagging_Model_Meta_Order_Buyer extends Nosto_Object_Order_Buyer
 {
     /**
      * Loads the order buyer from the given order.

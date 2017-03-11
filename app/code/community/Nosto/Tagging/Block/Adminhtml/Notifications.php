@@ -56,7 +56,7 @@ class Nosto_Tagging_Block_Adminhtml_Notifications extends Mage_Adminhtml_Block_T
         /** @var Nosto_Tagging_Helper_Data $dataHelper */
         $dataHelper = Mage::helper('nosto_tagging/data');
         foreach (Mage::app()->getStores() as $store) {
-            /** @var NostoAccount $account */
+            /** @var Nosto_Object_Signup_Account $account */
             $account = $accountHelper->find($store);
             if ($account !== null
                 && $account->isConnectedToNosto()
@@ -137,11 +137,11 @@ class Nosto_Tagging_Block_Adminhtml_Notifications extends Mage_Adminhtml_Block_T
         /* @var $store Mage_Core_Model_Store */
         foreach (Mage::app()->getStores() as $store) {
             $savedFrontPageUrl = $dataHelper->getStoreFrontPageUrl($store);
-            /* @var $nostoAccount NostoAccount */
+            /* @var $nostoAccount Nosto_Object_Signup_Account */
             $nostoAccount = $accountHelper->find($store);
             if (
                 empty($savedFrontPageUrl)
-                || $nostoAccount instanceof NostoAccount == false
+                || $nostoAccount instanceof Nosto_Object_Signup_Account == false
             ) {
                 continue;
             }
@@ -187,7 +187,9 @@ class Nosto_Tagging_Block_Adminhtml_Notifications extends Mage_Adminhtml_Block_T
         $mageUrl = Mage::getSingleton('core/url');
         $installedModel = clone $mageUrl->parseUrl($installedUrl);;
         $currentModel = $mageUrl->parseUrl($currentUrl);
+        /** @noinspection PhpUndefinedMethodInspection */
         $concatInstalled = $installedModel->getHost(). $installedModel->getPath();
+        /** @noinspection PhpUndefinedMethodInspection */
         $concatCurrent= $currentModel->getHost(). $currentModel->getPath();
         if ($concatCurrent != $concatInstalled) {
             $match = false;

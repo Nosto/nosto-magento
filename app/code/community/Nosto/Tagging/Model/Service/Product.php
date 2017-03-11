@@ -52,11 +52,11 @@ class Nosto_Tagging_Model_Service_Product
      *
      * @param Mage_Catalog_Model_Product[] $products
      * @return bool
-     * @throws NostoException
+     * @throws Nosto_Exception_NostoException
      */
     protected function update(array $products)
     {
-        NostoHttpRequest::$responseTimeout = self::$apiWaitTimeout;
+        Nosto_Request_Http_HttpRequest::$responseTimeout = self::$apiWaitTimeout;
         $productsInStore = array();
         $counter = 0;
         $batch = 1;
@@ -102,7 +102,7 @@ class Nosto_Tagging_Model_Service_Product
             $emulation = Mage::getSingleton('core/app_emulation');
             $env = $emulation->startEnvironmentEmulation($store->getId());
             foreach ($productBatches as $productsInStore) {
-                $service = new NostoOperationProduct($account);
+                $service = new Nosto_Operation_UpsertProduct($account);
                 foreach ($productsInStore as $mageProduct) {
                     /** @var Nosto_Tagging_Model_Meta_Product $nostoProduct */
                     $nostoProduct = Mage::getModel('nosto_tagging/meta_product');

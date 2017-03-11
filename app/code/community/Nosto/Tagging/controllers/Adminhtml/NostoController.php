@@ -111,10 +111,9 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
             /** @var Nosto_Tagging_Model_Meta_Oauth $meta */
             $meta = Mage::getModel('nosto_tagging/meta_oauth');
             $meta->loadData($store);
-            $client = new NostoOAuthClient($meta);
             $responseBody = array(
                 'success' => true,
-                'redirect_url' => $client->getAuthorizationUrl(),
+                'redirect_url' => Nosto_Helper_OAuthHelper::getAuthorizationUrl($meta),
             );
         }
 
@@ -127,8 +126,8 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                     $store,
                     null, // connect attempt failed, so we have no account.
                     array(
-                        'message_type' => NostoMessage::TYPE_ERROR,
-                        'message_code' => NostoMessage::CODE_ACCOUNT_CONNECT,
+                        'message_type' => Nosto_Nosto::TYPE_ERROR,
+                        'message_code' => Nosto_Nosto::CODE_ACCOUNT_CONNECT,
                     )
                 )
             );
@@ -152,10 +151,9 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
             /** @var Nosto_Tagging_Model_Meta_Oauth $meta */
             $meta = Mage::getModel('nosto_tagging/meta_oauth');
             $meta->loadData($store);
-            $client = new NostoOAuthClient($meta);
             $responseBody = array(
                 'success' => true,
-                'redirect_url' => $client->getAuthorizationUrl(),
+                'redirect_url' => Nosto_Helper_OAuthHelper::getAuthorizationUrl($meta),
             );
         }
         if (!isset($responseBody)) {
@@ -165,8 +163,8 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                     $store,
                     $account,
                     array(
-                        'message_type' => NostoMessage::TYPE_ERROR,
-                        'message_code' => NostoMessage::CODE_ACCOUNT_CONNECT,
+                        'message_type' => Nosto_Nosto::TYPE_ERROR,
+                        'message_code' => Nosto_Nosto::CODE_ACCOUNT_CONNECT,
                     )
                 )
             );
@@ -202,7 +200,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                         $accountOwner->setLastName(null);
                         $accountOwner->setEmail($emailAddress);
                     } else {
-                        throw new NostoException("Invalid email address " . $emailAddress);
+                        throw new Nosto_Exception_NostoException("Invalid email address " . $emailAddress);
                     }
                 }
 
@@ -210,7 +208,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                 $signup = Mage::getModel('nosto_tagging/meta_account');
                 $signup->loadData($store, $signupDetails, $accountOwner);
 
-                $operation = new NostoOperationAccount($signup);
+                $operation = new Nosto_Operation_AccountSignup($signup);
                 $account = $operation->create();
                 if ($accountHelper->save($account, $store)) {
                     $accountHelper->updateCurrencyExchangeRates($account, $store);
@@ -220,13 +218,13 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                             $store,
                             $account,
                             array(
-                                'message_type' => NostoMessage::TYPE_SUCCESS,
-                                'message_code' => NostoMessage::CODE_ACCOUNT_CREATE,
+                                'message_type' => Nosto_Nosto::TYPE_SUCCESS,
+                                'message_code' => Nosto_Nosto::CODE_ACCOUNT_CREATE,
                             )
                         )
                     );
                 }
-            } catch (NostoException $e) {
+            } catch (Nosto_Exception_NostoException$e) {
                 NostoLog::exception($e);
             }
         }
@@ -238,8 +236,8 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                     $store,
                     null, // account creation failed, so we have none.
                     array(
-                        'message_type' => NostoMessage::TYPE_ERROR,
-                        'message_code' => NostoMessage::CODE_ACCOUNT_CREATE,
+                        'message_type' => Nosto_Nosto::TYPE_ERROR,
+                        'message_code' => Nosto_Nosto::CODE_ACCOUNT_CREATE,
                     )
                 )
             );
@@ -278,7 +276,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
             return;
         }
         $nostoAccount = $accountHelper->find($store);
-        if ($nostoAccount instanceof NostoAccount == false) {
+        if ($nostoAccount instanceof Nosto_Object_Signup_Account == false) {
             $adminSession->addError(
                 'No Nosto account found for this store'
             );
@@ -317,8 +315,8 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                         $store,
                         null, // we don't have an account anymore
                         array(
-                            'message_type' => NostoMessage::TYPE_SUCCESS,
-                            'message_code' => NostoMessage::CODE_ACCOUNT_DELETE,
+                            'message_type' => Nosto_Nosto::TYPE_SUCCESS,
+                            'message_code' => Nosto_Nosto::CODE_ACCOUNT_DELETE,
                         )
                     )
                 );
@@ -332,8 +330,8 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                     $store,
                     $accountHelper->find($store),
                     array(
-                        'message_type' => NostoMessage::TYPE_ERROR,
-                        'message_code' => NostoMessage::CODE_ACCOUNT_DELETE,
+                        'message_type' => Nosto_Nosto::TYPE_ERROR,
+                        'message_code' => Nosto_Nosto::CODE_ACCOUNT_DELETE,
                     )
                 )
             );

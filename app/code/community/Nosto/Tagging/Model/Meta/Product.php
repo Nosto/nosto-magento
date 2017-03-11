@@ -37,7 +37,7 @@ use Nosto_Tagging_Helper_Data as NostoHelper;
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Product extends NostoProduct
+class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
 {
 
     /**
@@ -86,6 +86,7 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
     {
         parent::__construct();
         foreach (NostoHelper::$validTags as $validTag) {
+            /** @noinspection PhpDeprecationInspection */
             $this->_tags[$validTag] = array();
         }
     }
@@ -508,6 +509,8 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
         $compatibilityMethod = sprintf('__%s', $method);
         if (method_exists($this, $compatibilityMethod)) {
             return $this->$compatibilityMethod($args);
+        } else {
+            return trigger_error('Call to undefined method '.__CLASS__.'::'.$method.'()', E_USER_ERROR);
         }
     }
 
@@ -598,11 +601,13 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
     {
         $parentMethod = sprintf('get%s', ucfirst($tag));
         $tags = parent::$parentMethod();
+        /** @noinspection PhpDeprecationInspection */
         if (!empty($this->_tags[$tag])) {
             NostoLog::deprecated(
                 'Deprecated tag usage for %s in class %s',
                 array($tag, get_class_methods($this))
             );
+            /** @noinspection PhpDeprecationInspection */
             $tags = array_merge($tags, $this->_tags[$tag]);
         }
 
@@ -615,7 +620,9 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
     public function getCategories()
     {
         $categories = parent::getCategories();
+        /** @noinspection PhpDeprecationInspection */
         if (!empty($this->_categories)) {
+            /** @noinspection PhpDeprecationInspection */
             $categories = array_merge($categories, $this->_categories);
         }
 
@@ -629,6 +636,7 @@ class Nosto_Tagging_Model_Meta_Product extends NostoProduct
      */
     protected function __getTags()
     {
+        /** @noinspection PhpDeprecationInspection */
         return $this->_tags;
     }
 }

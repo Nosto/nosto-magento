@@ -35,7 +35,7 @@
  */
 class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
 {
-    use NostoIframeMixin;
+    use Nosto_Mixins_IframeTrait;
     const DEFAULT_IFRAME_ORIGIN_REGEXP = '(https:\/\/(.*)\.hub\.nosto\.com)|(https:\/\/my\.nosto\.com)';
     const IFRAME_VERSION = 1;
 
@@ -116,8 +116,7 @@ class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
      */
     public function getIframeOrigin()
     {
-        return (string)Mage::app()->getRequest()
-            ->getEnv('NOSTO_IFRAME_ORIGIN_REGEXP', self::DEFAULT_IFRAME_ORIGIN_REGEXP);
+        return Nosto_Nosto::getEnvVariable('NOSTO_IFRAME_ORIGIN_REGEXP', self::DEFAULT_IFRAME_ORIGIN_REGEXP);
     }
 
     /**

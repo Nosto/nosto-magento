@@ -32,7 +32,7 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_User extends NostoCurrentUser
+class Nosto_Tagging_Model_Meta_User extends Nosto_Object_User
 {
     /**
      * Loads the user data from the active session.

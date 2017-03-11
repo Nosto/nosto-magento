@@ -33,7 +33,7 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Account_Billing extends NostoSignupBilling
+class Nosto_Tagging_Model_Meta_Account_Billing extends Nosto_Object_Signup_Billing
 {
     /**
      * Loads the meta data for the given store.

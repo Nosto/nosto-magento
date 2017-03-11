@@ -43,9 +43,14 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Ratings_Provider
     protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)
     {
 
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->setElement($element);
-        $data = $this->element->getData();
+        $data = $element->getData();
+        /** @noinspection PhpUndefinedMethodInspection */
+        /** @noinspection PhpUndefinedFieldInspection */
         if ($this->element->getInherit()) {
+            /** @noinspection PhpUndefinedMethodInspection */
+            /** @noinspection PhpUndefinedFieldInspection */
             $this->element->setDisabled(true);
         }
 
@@ -69,8 +74,10 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Ratings_Provider
     {
         $tdCss = 'vertical-align: middle; border-bottom: 1px gainsboro solid; padding: 4px 0 4px 0';
         $html = '';
+        /** @noinspection PhpUndefinedFieldInspection */
         $currentValue = $this->element->getEscapedValue();
         $disabled = '';
+        /** @noinspection PhpUndefinedFieldInspection */
         if ($this->element->getDisabled()) {
             $disabled = 'disabled="disabled"';
         }
@@ -78,6 +85,7 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Ratings_Provider
         $optionId = sprintf('nosto_tagging_ratings_and_reviews_provider_%s', $item['value']);
         $optionName = 'groups[ratings_and_reviews][fields][provider][value]';
         if (!empty($item['image_url'])) {
+            /** @noinspection HtmlUnknownTarget */
             $imageHtml = sprintf(
                 '<img src="%s" style="width: 50px; display: inline;"><br/>',
                 $item['image_url']
@@ -86,6 +94,7 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Ratings_Provider
             $imageHtml = null;
         }
         $html .= sprintf('<tr id="row_nosto_tagging_%s">', $optionId);
+        /** @noinspection HtmlUnknownAttribute */
         $html .= sprintf(
             '<td style="%s"><input id="%s" type="radio" name="%s" value="%s" %s %s> %s</input></td>',
             $tdCss,
