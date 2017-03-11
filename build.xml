@@ -77,7 +77,6 @@
             <exclude name="package.json*" />
             <exclude name="Gruntfile.js*" />
             <exclude name="*.tgz" />
-            <include name="lib/**" />
         </patternset>
     </fileset>
 

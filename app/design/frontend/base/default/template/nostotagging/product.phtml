@@ -43,9 +43,11 @@ $priceHelper = Mage::helper('nosto_tagging/price');
     <span class="price"><?php echo $this->formatNostoPrice($product->getPrice()); ?></span>
     <span class="price_currency_code"><?php echo $product->getPriceCurrencyCode(); ?></span>
     <span class="availability"><?php echo $product->getAvailability(); ?></span>
-    <?php foreach ($product->getCategories() as $category): ?>
-        <span class="category"><?php echo $helper->escapeHtml($category); ?></span>
-    <?php endforeach; ?>
+    <?php if (is_array($product->getTag1())): ?>
+        <?php foreach ($product->getCategories() as $category): ?>
+            <span class="category"><?php echo $helper->escapeHtml($category); ?></span>
+        <?php endforeach; ?>
+    <?php endif; ?>
     <?php if ($product->getDescription()): ?>
         <span class="description"><?php echo $helper->escapeHtml($product->getDescription()); ?></span>
     <?php endif; ?>
@@ -55,17 +57,17 @@ $priceHelper = Mage::helper('nosto_tagging/price');
     <?php if ($product->getBrand()): ?>
         <span class="brand"><?php echo $helper->escapeHtml($product->getBrand()); ?></span>
     <?php endif; ?>
-    <?php if ($product->getTag1() instanceof Traversable): ?>
+    <?php if (is_array($product->getTag1())): ?>
         <?php foreach ($product->getTag1() as $tag) : ?>
             <span class="tag1"><?php echo $this->escapeHtml($tag); ?></span>
         <?php endforeach; ?>
     <?php endif; ?>
-    <?php if ($product->getTag2() instanceof Traversable): ?>
+    <?php if (is_array($product->getTag2())): ?>
         <?php foreach ($product->getTag2() as $tag) : ?>
             <span class="tag2"><?php echo $this->escapeHtml($tag); ?></span>
         <?php endforeach; ?>
     <?php endif; ?>
-    <?php if ($product->getTag3() instanceof Traversable): ?>
+    <?php if (is_array($product->getTag3())): ?>
         <?php foreach ($product->getTag3() as $tag) : ?>
             <span class="tag3"><?php echo $this->escapeHtml($tag); ?></span>
         <?php endforeach; ?>
@@ -81,6 +83,28 @@ $priceHelper = Mage::helper('nosto_tagging/price');
     <?php endif; ?>
     <?php if ($product->getRatingValue()): ?>
         <span class="rating_value"><?php echo $helper->escapeHtml($product->getRatingValue()); ?></span>
+    <?php endif; ?>
+    <?php if (is_array($product->getSkus())) : ?>
+        <?php /* @var Nosto_Types_Product_SkuInterface $sku */ ?>
+        <?php foreach ($product->getSkus() as $sku) : ?>
+            <span class="nosto_sku">
+                <span class="id"><?php echo $helper->escapeHtml($sku->getId()); ?></span>
+                <span class="name"><?php echo $helper->escapeHtml($sku->getName()); ?></span>
+                <span class="price"><?php echo $helper->escapeHtml($sku->getPrice()); ?></span>
+                <span class="list_price"><?php echo $helper->escapeHtml($sku->getListPrice()); ?></span>
+                <span class="url"><?php echo $helper->escapeHtml($sku->getUrl()); ?></span>
+                <span class="image_url"><?php echo $helper->escapeHtml($sku->getImageUrl()); ?></span>
+                <span class="gtin"><?php echo $helper->escapeHtml($sku->getGtin()); ?></span>
+                <span class="availability"><?php echo $helper->escapeHtml($sku->getAvailability()); ?></span>
+                <span class="custom_attributes">
+                <?php if (is_array($sku->getCustomAttributes())) : ?>
+                    <?php foreach ($sku->getCustomAttributes() as $key=>$val) : ?>
+                        <span class="<?php echo $helper->escapeHtml($key); ?>"><?php echo $helper->escapeHtml($val); ?></span>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+                </span>
+            </span>
+        <?php endforeach; ?>
     <?php endif; ?>
 </div>
 <?php if ($this->getCurrentCategory()): ?>
