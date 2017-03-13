@@ -1,5 +1,8 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 2.11.2
+* Fixed a bug that caused issues when flat tables were enabled and a product was updated from the main store scope
+
 ### 2.11.1
 * Add support for Magento core modules version 1.9.3.2
 
@@ -8,7 +11,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ### 2.10.0
 * Add support for sending following attributes to Nosto
- * rating and reviews data to Nosto (Magento native ratings and Yotpo)
+ ``* rating and reviews data to Nosto (Magento native ratings and Yotpo)
  * alternative images
  * inventory level
  * supplier cost

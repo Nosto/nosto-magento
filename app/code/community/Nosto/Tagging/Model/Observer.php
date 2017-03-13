@@ -118,15 +118,17 @@ class Nosto_Tagging_Model_Observer
                 /* @var Mage_Core_Model_App_Emulation $emulation */
                 $emulation = Mage::getSingleton('core/app_emulation');
                 $env = $emulation->startEnvironmentEmulation($store->getId());
-                /** @var Nosto_Tagging_Model_Meta_Product $model */
-                $model = Mage::getModel('nosto_tagging/meta_product');
-                $model->setProductId($product->getId());
                 try {
+                    /** @var Nosto_Tagging_Model_Meta_Product $model */
+                    $model = Mage::getModel('nosto_tagging/meta_product');
+                    $model->setProductId($product->getId());
                     $service = new NostoOperationProduct($account);
                     $service->addProduct($model);
                     $service->delete();
                 } catch (NostoException $e) {
                     Mage::log("\n" . $e, Zend_Log::ERR, Nosto_Tagging_Model_Base::LOG_FILE_NAME);
+                } catch (Exception $e) {
+                    Mage::logException($e);
                 }
                 $emulation->stopEnvironmentEmulation($env);
             }

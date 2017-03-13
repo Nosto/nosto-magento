@@ -225,6 +225,17 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
     }
 
     /**
+     * Reloads the product info from a Magento product model.
+     *
+     * @param Mage_Catalog_Model_Product $product the product model to reload
+     * @param Mage_Core_Model_Store|null $store the store to get the product data for.
+     */
+    public function reloadData(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store = null)
+    {
+        $this->loadData(Mage::getModel('catalog/product')->load($product->getId()), $store);
+    }
+
+    /**
      * Loads the product info from a Magento product model.
      *
      * @param Mage_Catalog_Model_Product $product the product model.
