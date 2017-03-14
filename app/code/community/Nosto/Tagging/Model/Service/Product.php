@@ -111,11 +111,7 @@ class Nosto_Tagging_Model_Service_Product
                         // the admin store scope, then we should reload the product as the store
                         // code of the product refers to an pseudo store scope called "admin"
                         // which leads to issues when flat tables are enabled.
-                        if (Mage::app()->getStore() === Mage_Core_Model_App::ADMIN_STORE_ID) {
-                            $nostoProduct->reloadData($mageProduct, $store); // Note the reload
-                        } else {
-                            $nostoProduct->loadData($mageProduct, $store);
-                        }
+                        $nostoProduct->reloadData($mageProduct, $store); // Note the reload
                         $service->addProduct($nostoProduct);
                     }
                     $service->upsert();
