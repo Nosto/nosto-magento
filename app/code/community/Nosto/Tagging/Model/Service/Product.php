@@ -114,7 +114,7 @@ class Nosto_Tagging_Model_Service_Product
                         if (Mage::app()->getStore() === Mage_Core_Model_App::ADMIN_STORE_ID) {
                             $nostoProduct->reloadData($mageProduct, $store); // Note the reload
                         } else {
-                            $nostoProduct->load($mageProduct, $store);
+                            $nostoProduct->loadData($mageProduct, $store);
                         }
                         $service->addProduct($nostoProduct);
                     }

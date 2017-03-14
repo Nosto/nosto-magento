@@ -11,7 +11,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ### 2.10.0
 * Add support for sending following attributes to Nosto
- ``* rating and reviews data to Nosto (Magento native ratings and Yotpo)
+ * rating and reviews data to Nosto (Magento native ratings and Yotpo)
  * alternative images
  * inventory level
  * supplier cost
