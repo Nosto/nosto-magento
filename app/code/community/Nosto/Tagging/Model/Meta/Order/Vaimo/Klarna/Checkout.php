@@ -78,7 +78,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
         /** @noinspection PhpUndefinedMethodInspection */
         $checkoutId = $quote->getKlarnaCheckoutId();
         $this->setOrderNumber($checkoutId);
-        $this->setCreatedDate($quote->getCreatedAt());
+        $this->setCreatedAt($quote->getCreatedAt());
         $orderStatus = new Nosto_Object_Order_OrderStatus();
         $orderStatus->setCode(self::DEFAULT_ORDER_STATUS);
         $orderStatus->setLabel(self::DEFAULT_ORDER_STATUS);
