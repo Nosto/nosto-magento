@@ -28,13 +28,13 @@
 <!--suppress XmlUnboundNsPrefix -->
 <ruleset name="Magento">
     <exclude-pattern>*.js</exclude-pattern>
-    <config name="installed_paths" value="lib/magento-ecg/coding-standard/,lib/magento/marketplace-eqp/" />
+    <config name="installed_paths" value="vendor/magento-ecg/coding-standard/,vendor/magento/marketplace-eqp/" />
     <description>The Magento coding standard.</description>
-    <rule ref="./lib/magento-ecg/coding-standard/Ecg">
+    <rule ref="./vendor/magento-ecg/coding-standard/Ecg">
         <exclude name="Ecg.PHP.PrivateClassMember"/>
         <exclude name="Ecg.Performance.Loop"/>
     </rule>
-    <rule ref="./lib/magento/marketplace-eqp/MEQP1">
+    <rule ref="./vendor/magento/marketplace-eqp/MEQP1">
         <exclude name="Squiz.PHP.CommentedOutCode"/>
         <exclude name="Generic.Metrics.CyclomaticComplexity"/>
         <exclude name="MEQP1.Performance.Loop"/>

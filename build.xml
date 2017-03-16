@@ -85,7 +85,7 @@
     <!-- ============================================  -->
     <target name="build" depends="prepare">
         <echo msg="Building a package with magazine" />
-        <exec executable="./lib/bin/magazine" dir="${buildsrc}">
+        <exec executable="./vendor/bin/magazine" dir="${buildsrc}">
             <arg value="package"/>
             <arg value="magazine.json" />
             <arg value="${version}" />
@@ -96,7 +96,7 @@
     </target>
 
     <target name="phpmd">
-        <exec executable="./lib/bin/phpmd" passthru="true">
+        <exec executable="./vendor/bin/phpmd" passthru="true">
             <arg value="app"/>
             <arg value="--exclude"/>
             <arg value="vendor"/>
@@ -110,14 +110,14 @@
     </target>
 
     <target name="phpcpd">
-        <exec executable="./lib/bin/phpcpd" passthru="true">
+        <exec executable="./vendor/bin/phpcpd" passthru="true">
             <arg value="--min-lines=1"/>
             <arg value="app"/>
         </exec>
     </target>
 
     <target name="phpcbf">
-        <exec executable="./lib/bin/phpcbf" passthru="true">
+        <exec executable="./vendor/bin/phpcbf" passthru="true">
             <arg value="--colors"/>
             <arg value="--report-width=auto"/>
             <arg value="--standard=ruleset.xml"/>
@@ -126,16 +126,17 @@
     </target>
 
     <target name="phpcs">
-        <exec executable="./lib/bin/phpcs" passthru="true">
+        <exec executable="./vendor/bin/phpcs" passthru="true">
             <arg value="--colors"/>
             <arg value="--report-width=auto"/>
             <arg value="--standard=ruleset.xml"/>
             <arg value="app"/>
+            <arg value="lib"/>
         </exec>
     </target>
 
     <target name="phan">
-        <exec executable="./lib/bin/phan" passthru="true">
+        <exec executable="./vendor/bin/phan" passthru="true">
             <arg value="--progress-bar"/>
             <arg value="--signature-compatibility"/>
             <arg value="--config-file=phan.php"/>
