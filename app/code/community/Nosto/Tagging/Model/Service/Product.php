@@ -32,7 +32,7 @@
 class Nosto_Tagging_Model_Service_Product
 {
     /**
-     * Maxmium batch size. If exceeded the batches will be splitted into smaller
+     * Maximum batch size. If exceeded the batches will be splitted into smaller
      * ones.
      *
      * @var int

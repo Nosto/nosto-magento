@@ -28,7 +28,7 @@
 require_once __DIR__ . '/../bootstrap.php'; // @codingStandardsIgnoreLine
 
 /**
- * Helper class for loading pluggable classes.
+ * Helper class for loading plugable classes.
  *
  * @category Nosto
  * @package  Nosto_Tagging

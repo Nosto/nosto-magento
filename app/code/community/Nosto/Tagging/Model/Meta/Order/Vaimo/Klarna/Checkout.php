@@ -41,7 +41,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
 {
 
     /**
-     * Defaul order status for completed checkouts
+     * Default order status for completed checkouts
      */
     const DEFAULT_ORDER_STATUS = 'checkout_complete';
 
@@ -132,7 +132,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
     }
 
     /**
-     * Buils item array from quote (items in cart)
+     * Builds item array from quote (items in cart)
      *
      * @param Mage_Sales_Model_Quote $quote
      */

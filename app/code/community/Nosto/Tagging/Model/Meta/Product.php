@@ -25,9 +25,6 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-use Nosto_Tagging_Helper_Log as NostoLog;
-use Nosto_Tagging_Helper_Data as NostoHelper;
-
 /**
  * Meta data class which holds information about a product.
  * This is used during the order confirmation API request and the product
@@ -87,7 +84,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
     public function __construct()
     {
         parent::__construct();
-        foreach (NostoHelper::$validTags as $validTag) {
+        foreach (Nosto_Tagging_Helper_Data::$validTags as $validTag) {
             /** @noinspection PhpDeprecationInspection */
             $this->_tags[$validTag] = array();
         }
@@ -167,7 +164,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
                     $skuModel->loadData($mageSku, $product, $store);
                     $this->addSku($skuModel);
                 } catch (Nosto_Exception_NostoException $e) {
-                    NostoLog::exception($e);
+                    Nosto_Tagging_Helper_Log::exception($e);
                 }
             }
         }
@@ -227,7 +224,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         try {
             $this->setInventoryLevel($stockHelper->getQty($product));
         } catch (Exception $e) {
-            NostoLog::error(
+            Nosto_Tagging_Helper_Log::error(
                 'Failed to resolve inventory level for product %d to tags. Error message was: %s',
                 array(
                     $product->getId(),
@@ -292,7 +289,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
                     $this->setReviewCount($ratingClass->getReviewCount());
                 }
             } else {
-                NostoLog::error(
+                Nosto_Tagging_Helper_Log::error(
                     'No rating class implementation found for %s',
                     array($ratingProvider)
                 );
@@ -340,7 +337,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
                             break;
                     }
                 } catch (Exception $e) {
-                    NostoLog::exception($e);
+                    Nosto_Tagging_Helper_Log::exception($e);
                 }
             }
         }
@@ -387,7 +384,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      */
     public function __call($method, $args) 
     {
-        NostoLog::deprecated(
+        Nosto_Tagging_Helper_Log::deprecated(
             'Deprecated call %s with attributes %s',
             array($method, implode(',', $args))
         );
@@ -409,7 +406,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      */
     public function __set($attribute, $value) 
     {
-        NostoLog::deprecated(
+        Nosto_Tagging_Helper_Log::deprecated(
             'Deprecated direct assignment %s with attributes %s',
             array($attribute, $value)
         );
@@ -420,7 +417,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
             try {
                 $this->$setter($value);
             } catch (Exception $e) {
-                NostoLog::exception($e);
+                Nosto_Tagging_Helper_Log::exception($e);
             }
         }
     }
@@ -434,7 +431,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      */
     public function __get($attribute) 
     {
-        NostoLog::deprecated(
+        Nosto_Tagging_Helper_Log::deprecated(
             'Deprecated direct access for attribute %s',
             array($attribute)
         );
@@ -446,11 +443,33 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
             try {
                 $value = $this->$getter();
             } catch (Exception $e) {
-                NostoLog::exception($e);
+                Nosto_Tagging_Helper_Log::exception($e);
             }
         }
-
         return $value;
+    }
+
+    /**
+     * Fetches the value of a product attribute
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @param string $attributeName
+     * @return string
+     */
+    protected function getAttributeValue(Mage_Catalog_Model_Product $product, $attributeName)
+    {
+        $attribute = $product->getResource()->getAttribute($attributeName);
+        if ($attribute instanceof Mage_Catalog_Model_Resource_Eav_Attribute) {
+            $attribute_data = $product->getData($attributeName);
+            /** @noinspection PhpParamsInspection */
+            $attribute_value = $product->getAttributeText($attributeName);
+            if (empty($attribute_value) && is_scalar($attribute_data)) {
+                $attribute_value = $attribute_data;
+            }
+        } else {
+            $attribute_value = null;
+        }
+        return trim($attribute_value);
     }
 
     /**
@@ -458,7 +477,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      */
     public function getTag1()
     {
-        return $this->mergeDeprecatedTags(NostoHelper::TAG1);
+        return $this->mergeDeprecatedTags(Nosto_Tagging_Helper_Data::TAG1);
     }
 
     /**
@@ -466,7 +485,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      */
     public function getTag2()
     {
-        return $this->mergeDeprecatedTags(NostoHelper::TAG2);
+        return $this->mergeDeprecatedTags(Nosto_Tagging_Helper_Data::TAG2);
     }
 
     /**
@@ -474,7 +493,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      */
     public function getTag3()
     {
-        return $this->mergeDeprecatedTags(NostoHelper::TAG3);
+        return $this->mergeDeprecatedTags(Nosto_Tagging_Helper_Data::TAG3);
     }
 
     /**
@@ -489,7 +508,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         $tags = parent::$parentMethod();
         /** @noinspection PhpDeprecationInspection */
         if (!empty($this->_tags[$tag])) {
-            NostoLog::deprecated(
+            Nosto_Tagging_Helper_Log::deprecated(
                 'Deprecated tag usage for %s in class %s',
                 array($tag, get_class_methods($this))
             );

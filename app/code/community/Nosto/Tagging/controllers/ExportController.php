@@ -167,10 +167,12 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
         /** @var Nosto_Tagging_Helper_Account $helper */
         $helper = Mage::helper('nosto_tagging/account');
         $account = $helper->find();
+        $this->getResponse()->setHeader('Content-type', 'application/octet-stream');
         if ($account !== null) {
             $cipherText = Nosto_Helper_ExportHelper::export($account, $collection);
-            echo $cipherText; // @codingStandardsIgnoreLine
+            $this->getResponse()->setBody($cipherText);
+        } else {
+            $this->getResponse()->setBody('');
         }
-        die(); // @codingStandardsIgnoreLine
     }
 }
