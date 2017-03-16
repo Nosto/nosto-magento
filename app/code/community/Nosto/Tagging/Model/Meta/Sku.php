@@ -82,6 +82,7 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
         $this->setUrl($this->buildUrl($sku, $store));
         $this->amendCustomizableAttributes($sku, $store);
         $parentType = $parent->getTypeInstance();
+        /** @noinspection PhpUndefinedMethodInspection */
         $configurableAttributes = $parentType->getConfigurableAttributesAsArray($parent);
         foreach ($configurableAttributes as $configurableAttribute) {
             try {
@@ -89,10 +90,7 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
                     $sku,
                     $configurableAttribute['attribute_code']
                 );
-                if (
-                    !empty($attributeValue)
-                    && is_scalar($attributeValue)
-                ) {
+                if (!empty($attributeValue) && is_scalar($attributeValue)) {
                     $this->addCustomAttribute(
                         $configurableAttribute['attribute_code'],
                         $attributeValue

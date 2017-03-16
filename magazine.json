@@ -47,7 +47,7 @@
       "app/etc/modules/Nosto_Tagging.xml"
     ],
     "magelib": [
-      "lib/*",
+      "lib/*"
     ],
     "magelocale": [],
     "magemedia": [],
