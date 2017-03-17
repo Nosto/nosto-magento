@@ -79,7 +79,7 @@ class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
         /* @var Mage_Core_Model_App_Emulation $emulation */
         $emulation = Mage::getSingleton('core/app_emulation');
         $env = $emulation->startEnvironmentEmulation($store->getId());
-        $this->_iframeUrl = self::buildURL();
+        $this->_iframeUrl = self::buildURL($params);
         $emulation->stopEnvironmentEmulation($env);
 
         return $this->_iframeUrl;

@@ -54,9 +54,7 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
      *
      * @param Nosto_Types_Signup_AccountInterface $account the account to save.
      * @param Mage_Core_Model_Store|null $store the store view to save it for.
-     *
      * @return bool true on success, false otherwise.
-     *
      */
     public function save(
         Nosto_Types_Signup_AccountInterface $account,
@@ -71,17 +69,12 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
         }
         /** @var Mage_Core_Model_Config $config */
         $config = Mage::getModel('core/config');
-        $config->saveConfig(
-            self::XML_PATH_ACCOUNT, $account->getName(), 'stores', $store->getId()
-        );
+        $config->saveConfig(self::XML_PATH_ACCOUNT, $account->getName(), 'stores', $store->getId());
         $tokens = array();
         foreach ($account->getTokens() as $token) {
             $tokens[$token->getName()] = $token->getValue();
         }
-        $config->saveConfig(
-            self::XML_PATH_TOKENS, json_encode($tokens), 'stores',
-            $store->getId()
-        );
+        $config->saveConfig(self::XML_PATH_TOKENS, json_encode($tokens), 'stores', $store->getId());
         /* @var $helperData Nosto_Tagging_Helper_Data */
         $helperData = Mage::helper('nosto_tagging');
         $helperData->saveCurrentStoreFrontPageUrl($store);
