@@ -28,5 +28,5 @@
 $version = (string)Mage::getConfig()->getNode('modules/Nosto_Tagging/version');
 Nosto_Request_Http_HttpRequest::buildUserAgent('Magento', Mage::getVersion(), $version);
 
-$dotenv = new Dotenv_Dotenv(dirname(__FILE__));
+$dotenv = new Dotenv_Dotenv(dirname(__FILE__)); // @codingStandardsIgnoreLine
 $dotenv->load();

@@ -54,7 +54,11 @@ class Nosto_Tagging_Model_Meta_Account extends Nosto_Object_Signup
      * @param $signupDetails array the details of the signup qualification
      * @param Nosto_Types_Signup_OwnerInterface $owner the details of the signup owner
      */
-    public function loadData(Mage_Core_Model_Store $store, $signupDetails, Nosto_Types_Signup_OwnerInterface $owner)
+    public function loadData(
+        Mage_Core_Model_Store $store,
+        $signupDetails,
+        Nosto_Types_Signup_OwnerInterface $owner
+    )
     {
         /* @var Nosto_Tagging_Helper_Data $helper */
         $helper = Mage::helper('nosto_tagging');

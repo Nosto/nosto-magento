@@ -393,7 +393,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         if (method_exists($this, $compatibilityMethod)) {
             return $this->$compatibilityMethod($args);
         } else {
-            return trigger_error('Call to undefined method '.__CLASS__.'::'.$method.'()', E_USER_ERROR);
+            return trigger_error('Call to undefined method '.__CLASS__.'::'.$method.'()', E_USER_ERROR); // @codingStandardsIgnoreLine
         }
     }
 
@@ -460,16 +460,16 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
     {
         $attribute = $product->getResource()->getAttribute($attributeName);
         if ($attribute instanceof Mage_Catalog_Model_Resource_Eav_Attribute) {
-            $attribute_data = $product->getData($attributeName);
+            $attributeData = $product->getData($attributeName);
             /** @noinspection PhpParamsInspection */
-            $attribute_value = $product->getAttributeText($attributeName);
-            if (empty($attribute_value) && is_scalar($attribute_data)) {
-                $attribute_value = $attribute_data;
+            $attributeValue = $product->getAttributeText($attributeName);
+            if (empty($attributeValue) && is_scalar($attributeData)) {
+                $attributeValue = $attributeData;
             }
         } else {
-            $attribute_value = null;
+            $attributeValue = null;
         }
-        return trim($attribute_value);
+        return trim($attributeValue);
     }
 
     /**

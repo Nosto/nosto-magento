@@ -172,7 +172,10 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
      *
      * @return string the iframe url.
      */
-    public function getIframeUrl(Mage_Core_Model_Store $store, Nosto_Object_Signup_Account $account = null, array $params = array())
+    public function getIframeUrl(Mage_Core_Model_Store $store,
+        Nosto_Object_Signup_Account $account = null,
+        array $params = array()
+    )
     {
         /** @var Nosto_Tagging_Model_Meta_Account_Iframe $iframeParams */
         $iframeParams = Mage::getModel('nosto_tagging/meta_account_iframe');
@@ -195,7 +198,10 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
      *
      * @return bool
      */
-    public function updateCurrencyExchangeRates(Nosto_Types_Signup_AccountInterface $account, Mage_Core_Model_Store $store)
+    public function updateCurrencyExchangeRates(
+        Nosto_Types_Signup_AccountInterface $account,
+        Mage_Core_Model_Store $store
+    )
     {
         /** @var Nosto_Tagging_Helper_Data $helper */
         $helper = Mage::helper('nosto_tagging');
