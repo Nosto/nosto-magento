@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "007e800f745b05c528af768d1313b417",
-    "content-hash": "fd2e2743bb15df791947c13babf00fc6",
+    "hash": "286148e87df1cd9136c419989f4e59da",
+    "content-hash": "58e8f3a8e4ecfb57356b9e717a75dafa",
     "packages": [
         {
             "name": "nosto/php-sdk",
@@ -355,6 +355,58 @@
                 "source": "https://github.com/mridang/magazine/tree/0.1"
             },
             "time": "2016-10-07 08:04:43"
+        },
+        {
+            "name": "mridang/pearify",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mridang/pearify.git",
+                "reference": "88d47be6c011698b6aa1aff12fb1c92604b376e7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mridang/pearify/zipball/88d47be6c011698b6aa1aff12fb1c92604b376e7",
+                "reference": "88d47be6c011698b6aa1aff12fb1c92604b376e7",
+                "shasum": ""
+            },
+            "require": {
+                "symfony/console": "^2.5 || ^3.0"
+            },
+            "bin": [
+                "bin/pearify"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Mtibben\\PhpClassRename\\": [
+                        "src/",
+                        "tests/"
+                    ]
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mridang Agarwalla",
+                    "email": "mridang.agarwalla+pearify@gmail.com"
+                }
+            ],
+            "description": "Pearify converts PSR-4 Composer packages to PEAR compliant code.",
+            "homepage": "https://github.com/mridang/pearify",
+            "keywords": [
+                "magento",
+                "package",
+                "pear",
+                "psr-4"
+            ],
+            "support": {
+                "issues": "https://github.com/mridang/pearify/issues",
+                "source": "https://github.com/mridang/pearify/tree/master"
+            },
+            "time": "2017-03-17 14:09:23"
         },
         {
             "name": "openmage/magento-mirror",
@@ -1366,7 +1418,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "nosto/php-sdk": 20
+        "nosto/php-sdk": 20,
+        "mridang/pearify": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
