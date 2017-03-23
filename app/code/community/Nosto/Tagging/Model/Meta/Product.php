@@ -445,6 +445,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      * @param Mage_Catalog_Model_Product $product
      * @param string $attributeName
      * @return string
+     * @suppress PhanUndeclaredMethod
      */
     protected function getAttributeValue(Mage_Catalog_Model_Product $product, $attributeName)
     {

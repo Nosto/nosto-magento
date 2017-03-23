@@ -25,7 +25,6 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-use Nosto_Tagging_Helper_Log as NostoLog;
 /**
  * Meta data class which holds information about a product.
  * This is used during the order confirmation API request and the product
@@ -61,9 +60,9 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
         if ($sku->getTypeId() !== Mage_Catalog_Model_Product_Type::TYPE_SIMPLE) {
             throw new Nosto_Exception_NostoException(
                 sprintf(
-                    'Nosto SKU can be loaded only from single type product. %d given'
-                ),
-                $sku->getTypeId()
+                    'Nosto SKU can be loaded only from single type product. %d given',
+                    $sku->getTypeId()
+                )
             );
         }
         $this->setId($sku->getId());
@@ -74,23 +73,25 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
         $this->setAvailability($this->buildAvailability($sku));
         $this->setUrl($this->buildUrl($sku, $store));
         $this->amendCustomizableAttributes($sku, $store);
+        /** @var Mage_Catalog_Model_Product_Type_Configurable $parentType */
         $parentType = $parent->getTypeInstance();
-        /** @noinspection PhpUndefinedMethodInspection */
-        $configurableAttributes = $parentType->getConfigurableAttributesAsArray($parent);
-        foreach ($configurableAttributes as $configurableAttribute) {
-            try {
-                $attributeValue = $this->getAttributeValue(
-                    $sku,
-                    $configurableAttribute['attribute_code']
-                );
-                if (!empty($attributeValue) && is_scalar($attributeValue)) {
-                    $this->addCustomAttribute(
-                        $configurableAttribute['attribute_code'],
-                        $attributeValue
+        if ($parentType instanceof Mage_Catalog_Model_Product_Type_Configurable) {
+            $configurableAttributes = $parentType->getConfigurableAttributesAsArray($parent);
+            foreach ($configurableAttributes as $configurableAttribute) {
+                try {
+                    $attributeValue = $this->getAttributeValue(
+                        $sku,
+                        $configurableAttribute['attribute_code']
                     );
+                    if (!empty($attributeValue) && is_scalar($attributeValue)) {
+                        $this->addCustomAttribute(
+                            $configurableAttribute['attribute_code'],
+                            $attributeValue
+                        );
+                    }
+                } catch (Exception $e) {
+                    Nosto_Tagging_Helper_Log::exception($e);
                 }
-            } catch (Exception $e) {
-                NostoLog::exception($e);
             }
         }
     }
