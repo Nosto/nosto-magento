@@ -34,6 +34,9 @@
  */
 trait Nosto_Tagging_Model_Meta_Product_Trait
 {
+
+    protected abstract function getCustomisableAttributes();
+
     /**
      * Builds the availability for the product.
      *
@@ -153,7 +156,8 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
         /* @var Nosto_Tagging_Helper_Data $nostoHelper */
         $nostoHelper = Mage::helper("nosto_tagging");
 
-        if (!isset(self::$customizableAttributes)) {
+        $attributes = self::getCustomisableAttributes();
+        if (!isset($attributes)) {
             throw new Nosto_Exception_NostoException(
                 sprintf(
                     'Customizable attributes not defined for class %s',
@@ -161,7 +165,7 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
                 )
             );
         }
-        foreach (self::$customizableAttributes as $mageAttr => $nostoAttr) {
+        foreach ($attributes as $mageAttr => $nostoAttr) {
             $mapped = $nostoHelper->getMappedAttribute($mageAttr, $store);
             if ($mapped) {
                 $value = $this->getAttributeValue($product, $mapped);
@@ -197,5 +201,4 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
 
         return trim($attributeValue);
     }
-
 }

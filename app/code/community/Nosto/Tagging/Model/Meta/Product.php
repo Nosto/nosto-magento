@@ -58,17 +58,6 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
     protected $_categories = array();
 
     /**
-     * Array of attributes that can be customized from Nosto's store admin
-     * settings
-     *
-     * @var array
-     */
-    public static $customizableAttributes = array(
-        'gtin' => 'gtin',
-        'supplier_cost' => 'supplierCost',
-    );
-
-    /**
      * Array of deprecated direct attribute assignments
      *
      * @var array
@@ -80,6 +69,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
 
     /**
      * Nosto_Tagging_Model_Meta_Product constructor.
+     * @suppress PhanDeprecatedProperty
      */
     public function __construct()
     {
@@ -501,6 +491,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      *
      * @param $tag
      * @return array
+     * @suppress PhanDeprecatedProperty
      */
     protected function mergeDeprecatedTags($tag)
     {
@@ -521,6 +512,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
 
     /**
      * @inheritdoc
+     * @suppress PhanDeprecatedProperty
      */
     public function getCategories()
     {
@@ -538,10 +530,22 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      * Backwards compatibility method only accessible via magic method
      *
      * @return array
+     * @suppress PhanDeprecatedProperty
      */
     protected function __getTags()
     {
         /** @noinspection PhpDeprecationInspection */
         return $this->_tags;
+    }
+
+    /**
+     * Array of attributes that can be customized from Nosto's store admin
+     * settings
+     *
+     * @@return array
+     */
+    protected function getCustomisableAttributes()
+    {
+        return array('gtin' => 'gtin', 'supplier_cost' => 'supplierCost');
     }
 }

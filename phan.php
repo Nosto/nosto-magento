@@ -31,14 +31,13 @@ return [
     'directory_list' => [
          'app',
          '.phan/stubs',
-         'lib/vlucas',
-         'lib/nosto/php-sdk',
-         'lib/phpseclib',
-         'lib/openmage'
+         'lib',
+         'vendor'
     ],
     "exclude_analysis_directory_list" => [
-        'lib/',
         '.phan/stubs',
+        'lib',
+        'vendor',
         'app/code/community/Nosto/Tagging/sql/tagging_setup/'
     ],
 ];

@@ -41,17 +41,6 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
     use Nosto_Tagging_Model_Meta_Product_Trait;
 
     /**
-     * Array of attributes that can be customized from Nosto's store admin
-     * settings
-     *
-     * @var array
-     */
-    public static $customizableAttributes = array(
-        'gtin' => 'gtin',
-    );
-
-
-    /**
      * Loads the SKU info from a Magento product model.
      *
      * @param Mage_Catalog_Model_Product $sku the product model.
@@ -104,5 +93,16 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
                 NostoLog::exception($e);
             }
         }
+    }
+
+    /**
+     * Array of attributes that can be customized from Nosto's store admin
+     * settings
+     *
+     * @@return array
+     */
+    protected function getCustomisableAttributes()
+    {
+        return array('gtin' => 'gtin');
     }
 }

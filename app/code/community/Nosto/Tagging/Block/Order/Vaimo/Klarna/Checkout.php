@@ -96,7 +96,7 @@ class Nosto_Tagging_Block_Order_Vaimo_Klarna_Checkout extends Mage_Checkout_Bloc
      */
     public function formatNostoPrice($price)
     {
-        return NostoHelperPrice::format($price);
+        return Nosto_Helper_PriceHelper::format($price);
     }
 
 }
