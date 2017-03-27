@@ -35,6 +35,18 @@
 class Nosto_Tagging_Helper_Class extends Mage_Core_Helper_Abstract
 {
     /*
+     * Default class for order handling
+     */
+    const DEFAULT_ORDER_CLASS = 'nosto_tagging/meta_order';
+
+    /*
+     * Supported payment providers with custom order handling
+     */
+    public static $paymentProviderClasses = array(
+        'nosto_tagging/meta_order_vaimo_klarna_checkout'
+    );
+
+    /*
      * Loads correct / plugable order class based on payment provider
      *
      * @param Mage_Sales_Model_Order $order
@@ -52,15 +64,18 @@ class Nosto_Tagging_Helper_Class extends Mage_Core_Helper_Abstract
         if (is_object($payment)) {
             $paymentProvider = $payment->getMethod();
         }
-        $classId = sprintf(
-            'nosto_tagging/meta_order_%s',
-            $paymentProvider
-        );
-        return $this->getClass(
-            $classId,
-            'NostoOrderInterface',
-            'nosto_tagging/meta_order'
-        );
+        $classId = self::createClassId('meta_order_%s', $paymentProvider);
+        if (!in_array($classId, self::$paymentProviderClasses)) {
+            $class = Mage::getModel(self::DEFAULT_ORDER_CLASS);
+        } else {
+            $class = $this->getClass(
+                $classId,
+                'NostoOrderInterface',
+                self::DEFAULT_ORDER_CLASS
+            );
+        }
+
+        return $class;
     }
 
     /*
