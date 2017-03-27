@@ -104,10 +104,11 @@ class Nosto_Tagging_Model_Service_Product
             foreach ($productBatches as $productsInStore) {
                 try {
                     $service = new NostoOperationProduct($account);
+                    /* @var $mageProduct Mage_Catalog_Model_Product */
                     foreach ($productsInStore as $mageProduct) {
                         /** @var Nosto_Tagging_Model_Meta_Product $nostoProduct */
                         $nostoProduct = Mage::getModel('nosto_tagging/meta_product');
-                        // If the current store scope if the main store scope, also referred to as
+                        // If the current store scope is the main store scope, also referred to as
                         // the admin store scope, then we should reload the product as the store
                         // code of the product refers to an pseudo store scope called "admin"
                         // which leads to issues when flat tables are enabled.

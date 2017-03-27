@@ -230,9 +230,12 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
      * @param Mage_Catalog_Model_Product $product the product model to reload
      * @param Mage_Core_Model_Store|null $store the store to get the product data for.
      */
-    public function reloadData(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store = null)
+    public function reloadData(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
-        $this->loadData(Mage::getModel('catalog/product')->load($product->getId()), $store);
+        $reloadedProduct = Mage::getModel('catalog/product')
+            ->setStoreId($store->getId())
+            ->load($product->getId());
+        $this->loadData($reloadedProduct, $store);
     }
 
     /**
