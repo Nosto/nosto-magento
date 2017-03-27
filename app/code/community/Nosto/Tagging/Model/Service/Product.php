@@ -102,14 +102,23 @@ class Nosto_Tagging_Model_Service_Product
             $emulation = Mage::getSingleton('core/app_emulation');
             $env = $emulation->startEnvironmentEmulation($store->getId());
             foreach ($productBatches as $productsInStore) {
-                $service = new NostoOperationProduct($account);
-                foreach ($productsInStore as $mageProduct) {
-                    /** @var Nosto_Tagging_Model_Meta_Product $nostoProduct */
-                    $nostoProduct = Mage::getModel('nosto_tagging/meta_product');
-                    $nostoProduct->loadData($mageProduct, $store);
-                    $service->addProduct($nostoProduct);
+                try {
+                    $service = new NostoOperationProduct($account);
+                    /* @var $mageProduct Mage_Catalog_Model_Product */
+                    foreach ($productsInStore as $mageProduct) {
+                        /** @var Nosto_Tagging_Model_Meta_Product $nostoProduct */
+                        $nostoProduct = Mage::getModel('nosto_tagging/meta_product');
+                        // If the current store scope is the main store scope, also referred to as
+                        // the admin store scope, then we should reload the product as the store
+                        // code of the product refers to an pseudo store scope called "admin"
+                        // which leads to issues when flat tables are enabled.
+                        $nostoProduct->reloadData($mageProduct, $store); // Note the reload
+                        $service->addProduct($nostoProduct);
+                    }
+                    $service->upsert();
+                } catch (Exception $e) {
+                    Mage::logException($e);
                 }
-                $service->upsert();
             }
             $emulation->stopEnvironmentEmulation($env);
         }
