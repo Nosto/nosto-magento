@@ -2,6 +2,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ### 2.11.2
 * Fixed a bug that caused issues when flat tables were enabled and a product was updated from the main store scope
+* Check only certain payment providers for custom order handling to avoid warning about the not found file 
 
 ### 2.11.1
 * Add support for Magento core modules version 1.9.3.2
