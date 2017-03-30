@@ -254,18 +254,17 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         $priceHelper = Mage::helper('nosto_tagging/price');
         /** @var Nosto_Tagging_Helper_Data $dataHelper */
         $dataHelper = Mage::helper('nosto_tagging');
-
         $this->_url = $this->buildUrl($product, $store);
         $this->_productId = $product->getId();
         $this->_name = $product->getName();
         $this->_imageUrl = $this->buildImageUrl($product, $store);
         $currentCurrencyCode = $store->getCurrentCurrencyCode();
-        $this->_price = $priceHelper->getTaggingPrice(
+        $this->_price = (float)$priceHelper->getTaggingPrice(
             $priceHelper->getProductFinalPriceInclTax($product),
             $currentCurrencyCode,
             $store
         );
-        $this->_listPrice = $priceHelper->getTaggingPrice(
+        $this->_listPrice = (float)$priceHelper->getTaggingPrice(
             $priceHelper->getProductPriceInclTax($product),
             $currentCurrencyCode,
             $store
