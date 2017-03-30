@@ -91,28 +91,4 @@ class Nosto_Tagging_Helper_Currency extends Mage_Core_Helper_Abstract
             )
         );
     }
-
-    /**
-     * Returns a collection of currency exchange rates.
-     *
-     * @param string $baseCurrencyCode the currency code to base the rates on.
-     * @param array  $currencyCodes the currency codes to fetch the rates for.
-     *
-     * @return Nosto_Tagging_Model_Collection_Rates
-     */
-    public function getExchangeRateCollection($baseCurrencyCode, array $currencyCodes)
-    {
-        $collection = new Nosto_Tagging_Model_Collection_Rates();
-        /** @var Mage_Directory_Model_Currency $currency */
-        $currency = Mage::getModel('directory/currency');
-        $rates = $currency->getCurrencyRates($baseCurrencyCode, $currencyCodes);
-        foreach ($rates as $code => $rate) {
-            // Skip base currency.
-            if ($baseCurrencyCode === $code) {
-                continue;
-            }
-            $collection[] = new NostoExchangeRate($code, $code, $rate);
-        }
-        return $collection;
-    }
 }

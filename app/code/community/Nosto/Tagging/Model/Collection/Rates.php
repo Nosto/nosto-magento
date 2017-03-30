@@ -26,8 +26,31 @@
  */
 
 /**
- * Order collection for historical data exports.
+ * Collection for exchange rates
  */
 class Nosto_Tagging_Model_Collection_Rates extends NostoExchangeRateCollection
 {
+
+    /**
+     * Loads exchange rates to the collection for the given store
+     *
+     * @param Mage_Core_Model_Store $store
+     */
+    public function loadData(Mage_Core_Model_Store $store)
+    {
+        $currencyCodes = $store->getAvailableCurrencyCodes(true);
+        $baseCurrencyCode = $store->getBaseCurrencyCode();
+
+        /** @var Mage_Directory_Model_Currency $currency */
+        $currency = Mage::getModel('directory/currency');
+        $rates = $currency->getCurrencyRates($baseCurrencyCode, $currencyCodes);
+        foreach ($rates as $code => $rate) {
+            // Skip base currency.
+            if ($baseCurrencyCode === $code) {
+                continue;
+            }
+            $rate = new NostoExchangeRate($code, $code, $rate);
+            parent::append($rate);
+        }
+    }
 }
