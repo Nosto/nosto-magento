@@ -46,7 +46,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         /* @var $nostoPriceHelper NostoHelperPrice */
         $nostoPriceHelper = Nosto::helper('price');
 
-        return $nostoPriceHelper->format($price, 2, '.', '');
+        return $nostoPriceHelper->format($price, 4);
     }
 
     /**
