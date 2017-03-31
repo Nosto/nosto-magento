@@ -43,7 +43,7 @@ $dateHelper = Mage::helper('nosto_tagging/date');
     <span class="product_id"><?php echo $product->getProductId(); ?></span>
     <span class="name"><?php echo $helper->escapeHtml($product->getName()); ?></span>
     <span class="image_url"><?php echo $product->getImageUrl(); ?></span>
-    <span class="price"><?php echo $priceHelper->getFormattedPrice($product->getPrice()); ?></span>
+    <span class="price"><?php echo $product->getPrice(); ?></span>
     <span class="price_currency_code"><?php echo $product->getCurrencyCode(); ?></span>
     <span class="availability"><?php echo $product->getAvailability(); ?></span>
     <?php foreach ($product->getCategories() as $category): ?>
@@ -53,7 +53,7 @@ $dateHelper = Mage::helper('nosto_tagging/date');
         <span class="description"><?php echo $helper->escapeHtml($product->getFullDescription()); ?></span>
     <?php endif; ?>
     <?php if ($product->getListPrice()): ?>
-        <span class="list_price"><?php echo $priceHelper->getFormattedPrice($product->getListPrice()); ?></span>
+        <span class="list_price"><?php echo $product->getListPrice(); ?></span>
     <?php endif; ?>
     <?php if ($product->getBrand()): ?>
         <span class="brand"><?php echo $helper->escapeHtml($product->getBrand()); ?></span>
