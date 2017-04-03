@@ -83,8 +83,10 @@ class Nosto_Tagging_Helper_Customer extends Mage_Core_Helper_Abstract
                 $customer->setUpdatedAt($dateHelper->gmtDate());
                 $customer->save();
             } else {
+                $restoreCartHash = $this->generateRestoreCartHash();
                 $customer->setQuoteId($quoteId);
                 $customer->setNostoId($nostoId);
+                $customer->setRestoreCartHash($restoreCartHash);
                 $customer->setCreatedAt($dateHelper->gmtDate());
                 $customer->save();
             }
@@ -107,5 +109,32 @@ class Nosto_Tagging_Helper_Customer extends Mage_Core_Helper_Abstract
         );
 
         return $uuid;
+    }
+
+    /**
+     * Generate unique hash for restore cart
+     *
+     * @return string
+     */
+    public function generateRestoreCartHash()
+    {
+        $unique = false;
+        while ($unique === false) {
+            $hash = hash(
+                Nosto_Tagging_Helper_Data::VISITOR_HASH_ALGO,
+                uniqid('nostocartrestore')
+            );
+            $existing = Mage::getModel('nosto_tagging/customer')
+                ->getCollection()
+                ->addFieldToFilter('restore_cart_hash', $hash)
+                ->setPageSize(1)
+                ->setCurPage(1)
+                ->getFirstItem(); // @codingStandardsIgnoreLine
+            if (!$existing->getNostoId()) {
+                $unique = true;
+            }
+        }
+
+        return $hash;
     }
 }

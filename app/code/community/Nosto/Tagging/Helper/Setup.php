@@ -126,7 +126,7 @@ class Nosto_Tagging_Helper_Setup extends Mage_Core_Helper_Abstract
                 Nosto_Tagging_Helper_Data::NOSTO_TAGGING_RESTORE_CART_ATTRIBUTE,
                 array(
                     'type' => Varien_Db_Ddl_Table::TYPE_TEXT,
-                    'length' => 50,
+                    'length' => 64,
                     'nullable' => false,
                     'comment' => 'A field containing the restore cart hash',
                 )

@@ -39,13 +39,46 @@ require_once __DIR__ . '/../bootstrap.php'; // @codingStandardsIgnoreLine
  */
 class Nosto_Tagging_RestoreCartController extends Mage_Core_Controller_Front_Action
 {
+    const hashParam = 'h';
+
     /**
      * Restores a cart based on hash
      */
     public function indexAction()
     {
         if (Mage::helper('nosto_tagging')->isModuleEnabled()) {
-            // Implement restore cart logic here
+            $restoreCartHash = $this->getRequest()->getParam(self::hashParam);
+            if (!$restoreCartHash) {
+                Nosto_Tagging_Helper_Log::exception(
+                    new Nosto_Exception_NostoException('No hash provided for restore cart')
+                );
+                Mage::getSingleton('core/session')->addError('We could not find your cart');
+                $this->_redirect('/');
+            } else {
+                /* @var Nosto_Tagging_Model_Customer $nostoCustomer */
+                $nostoCustomer = Mage::getModel('nosto_tagging/customer')
+                    ->getCollection()
+                    ->addFieldToFilter('restore_cart_hash', $restoreCartHash)
+                    ->setPageSize(1)
+                    ->setCurPage(1)
+                    ->getFirstItem(); // @codingStandardsIgnoreLine
+
+                if ($nostoCustomer->getQuoteId()) {
+                    $quote = Mage::getModel('sales/quote')->load($nostoCustomer->getQuoteId());
+                    $quote->setIsActive(true)->save();
+                    #Mage::getSingleton('checkout/session')->setQuoteId($nostoCustomer->getQuoteId());
+                    /* @var Nosto_Tagging_Helper_Url $urlHelper */
+                    $urlHelper = Mage::helper('nosto_tagging/url');
+                    $cartUrl = $urlHelper->getUrlCart(Mage::app()->getStore());
+                    $this->_redirectUrl($cartUrl);
+
+                } else {
+                    Mage::getSingleton('core/session')->addError('We could not find your cart');
+                    $this->_redirect('/');
+                }
+            }
+        } else {
+            $this->_redirect('/');
         }
     }
 }

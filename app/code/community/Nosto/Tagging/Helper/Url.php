@@ -91,6 +91,11 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
     const MAGENTO_PATH_CART = 'checkout/cart';
 
     /**
+     * Path to Nosto's restore cart controller
+     */
+    const NOSTO_PATH_RESTORE_CART = 'nosto/restoreCart';
+
+    /**
      * The URL parameter to invoke Nosto debug mode in store
      */
     const NOSTO_URL_DEBUG_PARAMETER = 'nostodebug';
@@ -229,12 +234,24 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
      */
     public function getPreviewUrlCart(Mage_Core_Model_Store $store)
     {
-        $url = Mage::getUrl(
+        $url = $this->getUrlCart($store);
+
+        return $this->addNostoPreviewParameter($url);
+    }
+
+    /**
+     * Gets the absolute URL to the current store view cart page.
+     *
+     * @param Mage_Core_Model_Store $store the store to get the url for.
+     *
+     * @return string the url.
+     */
+    public function getUrlCart(Mage_Core_Model_Store $store)
+    {
+        return Mage::getUrl(
             self::MAGENTO_PATH_CART,
             $this->getUrlOptionsWithNoSid($store)
         );
-
-        return $this->addNostoPreviewParameter($url);
     }
 
     /**
@@ -405,4 +422,25 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
             $url
         );
     }
+
+    /**
+     * Returns restore cart url
+     *
+     * @param string $hash
+     * @param Mage_Core_Model_Store $store
+     * @return string
+     */
+    public function generateRestoreCartUrl($hash, Mage_Core_Model_Store $store)
+    {
+        $params = $this->getUrlOptionsWithNoSid($store);
+        $params['h'] = $hash;
+        $url = Mage::getUrl(
+            self::NOSTO_PATH_RESTORE_CART,
+            $params
+        );
+
+        return $url;
+    }
+
+
 }
