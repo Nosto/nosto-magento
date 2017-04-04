@@ -28,10 +28,7 @@
 require_once __DIR__ . '/../bootstrap.php'; // @codingStandardsIgnoreLine
 
 /**
- * History data export controller.
- * Handles the export of history data for orders and products that nosto can
- * call when a new account has been set up.
- * The exported data is encrypted with AES as the endpoint is public.
+ * Restores an abandoned cart
  *
  * @category Nosto
  * @package  Nosto_Tagging
