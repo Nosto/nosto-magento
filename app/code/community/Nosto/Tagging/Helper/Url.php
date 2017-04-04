@@ -264,7 +264,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
      */
     public function getPreviewUrlFront(Mage_Core_Model_Store $store)
     {
-        $url = $this->getFrontPageUrl($store);
+        $url = $this->getFrontPageUrl();
 
         return $this->addNostoPreviewParameter($url);
     }

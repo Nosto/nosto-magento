@@ -46,39 +46,54 @@ class Nosto_Tagging_RestoreCartController extends Mage_Core_Controller_Front_Act
      */
     public function indexAction()
     {
+        $store = Mage::app()->getStore();
+        /* @var Nosto_Tagging_Helper_Url $urlHelper */
+        $urlHelper = Mage::helper('nosto_tagging/url');
+        $frontPageUrl = $urlHelper->getFrontPageUrl($store);
+        $redirectUrl = $frontPageUrl;
         if (Mage::helper('nosto_tagging')->isModuleEnabled()) {
-            $restoreCartHash = $this->getRequest()->getParam(self::hashParam);
-            if (!$restoreCartHash) {
-                Nosto_Tagging_Helper_Log::exception(
-                    new Nosto_Exception_NostoException('No hash provided for restore cart')
-                );
-                Mage::getSingleton('core/session')->addError('We could not find your cart');
-                $this->_redirect('/');
-            } else {
-                /* @var Nosto_Tagging_Model_Customer $nostoCustomer */
-                $nostoCustomer = Mage::getModel('nosto_tagging/customer')
-                    ->getCollection()
-                    ->addFieldToFilter('restore_cart_hash', $restoreCartHash)
-                    ->setPageSize(1)
-                    ->setCurPage(1)
-                    ->getFirstItem(); // @codingStandardsIgnoreLine
-
-                if ($nostoCustomer->getQuoteId()) {
-                    $quote = Mage::getModel('sales/quote')->load($nostoCustomer->getQuoteId());
-                    $quote->setIsActive(true)->save();
-                    #Mage::getSingleton('checkout/session')->setQuoteId($nostoCustomer->getQuoteId());
-                    /* @var Nosto_Tagging_Helper_Url $urlHelper */
-                    $urlHelper = Mage::helper('nosto_tagging/url');
-                    $cartUrl = $urlHelper->getUrlCart(Mage::app()->getStore());
-                    $this->_redirectUrl($cartUrl);
-
+            /* @var Mage_Checkout_Model_Session $checkoutSession */
+            $checkoutSession = Mage::getSingleton('checkout/session');
+            if (!$checkoutSession->getQuoteId()) {
+                $restoreCartHash = $this->getRequest()->getParam(self::hashParam);
+                if (!$restoreCartHash) {
+                    Nosto_Tagging_Helper_Log::exception(
+                        new Nosto_Exception_NostoException(
+                            'No hash provided for restore cart'
+                        )
+                    );
                 } else {
-                    Mage::getSingleton('core/session')->addError('We could not find your cart');
-                    $this->_redirect('/');
+                    /* @var Nosto_Tagging_Model_Customer $nostoCustomer */
+                    $nostoCustomer = Mage::getModel('nosto_tagging/customer')
+                        ->getCollection()
+                        ->addFieldToFilter('restore_cart_hash', $restoreCartHash)
+                        ->setPageSize(1)
+                        ->setCurPage(1)
+                        ->getFirstItem(); // @codingStandardsIgnoreLine
+                    if ($nostoCustomer->getQuoteId()) {
+                        $quote = Mage::getModel('sales/quote')->load(
+                            $nostoCustomer->getQuoteId()
+                        );
+                        // ToDo - do we want to reactivate cart if it has been bought?
+                        if (!$quote->getIsActive()) {
+                            Mage::getSingleton(
+                                'core/session'
+                            )->addWarning('It seems that you have already bought items in this cart');
+                            $quote->setIsActive(1)->save();
+                        }
+                        $checkoutSession->setQuoteId($quote->getId());
+                        $redirectUrl = $urlHelper->getUrlCart($store);
+                    } else {
+                        /* @var Mage_Checkout_Model_Session $session */
+                        Mage::getSingleton(
+                            'core/session'
+                        )->addError('We could not find your cart');
+                    }
                 }
+            } else {
+                $redirectUrl = $urlHelper->getUrlCart($store);
             }
-        } else {
-            $this->_redirect('/');
         }
+        $this->_redirectUrl($redirectUrl);
     }
 }
