@@ -244,14 +244,31 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
      *
      * @param Mage_Core_Model_Store $store the store to get the url for.
      *
+     * @param array $additionalParams
      * @return string the url.
      */
-    public function getUrlCart(Mage_Core_Model_Store $store)
+    public function getUrlCart(
+        Mage_Core_Model_Store $store,
+        array $additionalParams = array()
+    )
     {
-        return Mage::getUrl(
+        $defaultParams = $this->getUrlOptionsWithNoSid($store);
+        $url = Mage::getUrl(
             self::MAGENTO_PATH_CART,
-            $this->getUrlOptionsWithNoSid($store)
+            $defaultParams
         );
+        if (count($additionalParams) > 0) {
+            foreach ($additionalParams as $key=>$val) {
+                $url = Nosto_Request_Http_HttpRequest::replaceQueryParamInUrl(
+                    $key,
+                    $val,
+                    $url
+                );
+            }
+
+        }
+
+        return $url;
     }
 
     /**

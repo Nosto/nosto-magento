@@ -44,9 +44,13 @@ class Nosto_Tagging_RestoreCartController extends Mage_Core_Controller_Front_Act
     public function indexAction()
     {
         $store = Mage::app()->getStore();
-        /* @var Nosto_Tagging_Helper_Url $urlHelper */
-        $urlHelper = Mage::helper('nosto_tagging/url');
-        $frontPageUrl = $urlHelper->getFrontPageUrl($store);
+        /* @var Mage_Core_Helper_Url $mageUrlHelper */
+        $currentUrl = Mage::helper('core/url')->getCurrentUrl();
+        $urlParts = Mage::getSingleton('core/url')->parseUrl($currentUrl);
+        parse_str($urlParts['query'], $urlParameters);
+        /* @var Nosto_Tagging_Helper_Url $nostoUrlHelper */
+        $nostoUrlHelper = Mage::helper('nosto_tagging/url');
+        $frontPageUrl = $nostoUrlHelper->getFrontPageUrl($store);
         $redirectUrl = $frontPageUrl;
         if (Mage::helper('nosto_tagging')->isModuleEnabled()) {
             /* @var Mage_Checkout_Model_Session $checkoutSession */
@@ -79,7 +83,10 @@ class Nosto_Tagging_RestoreCartController extends Mage_Core_Controller_Front_Act
                             $quote->setIsActive(1)->save();
                         }
                         $checkoutSession->setQuoteId($quote->getId());
-                        $redirectUrl = $urlHelper->getUrlCart($store);
+                        $redirectUrl = $nostoUrlHelper->getUrlCart(
+                            $store,
+                            $urlParameters
+                        );
                     } else {
                         /* @var Mage_Checkout_Model_Session $session */
                         Mage::getSingleton(
@@ -88,7 +95,10 @@ class Nosto_Tagging_RestoreCartController extends Mage_Core_Controller_Front_Act
                     }
                 }
             } else {
-                $redirectUrl = $urlHelper->getUrlCart($store);
+                $redirectUrl = $nostoUrlHelper->getUrlCart(
+                    $store,
+                    $urlParameters
+                );
             }
         }
         $this->_redirectUrl($redirectUrl);
