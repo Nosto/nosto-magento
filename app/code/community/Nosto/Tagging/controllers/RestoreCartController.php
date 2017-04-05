@@ -36,10 +36,14 @@ require_once __DIR__ . '/../bootstrap.php'; // @codingStandardsIgnoreLine
  */
 class Nosto_Tagging_RestoreCartController extends Mage_Core_Controller_Front_Action
 {
+    /**
+     * The name of the hash parameter to look from URL
+     */
     const hashParam = 'h';
 
     /**
-     * Restores a cart based on hash
+     * Restores a cart based on hash. On succesful restoration redirects user
+     * to the cart page
      */
     public function indexAction()
     {
@@ -55,6 +59,8 @@ class Nosto_Tagging_RestoreCartController extends Mage_Core_Controller_Front_Act
         if (Mage::helper('nosto_tagging')->isModuleEnabled()) {
             /* @var Mage_Checkout_Model_Session $checkoutSession */
             $checkoutSession = Mage::getSingleton('checkout/session');
+            /* @var Mage_Core_Model_Session $coreSession */
+            $coreSession = Mage::getSingleton('core/session');
             if (!$checkoutSession->getQuoteId()) {
                 $restoreCartHash = $this->getRequest()->getParam(self::hashParam);
                 if (!$restoreCartHash) {
@@ -64,34 +70,18 @@ class Nosto_Tagging_RestoreCartController extends Mage_Core_Controller_Front_Act
                         )
                     );
                 } else {
-                    /* @var Nosto_Tagging_Model_Customer $nostoCustomer */
-                    $nostoCustomer = Mage::getModel('nosto_tagging/customer')
-                        ->getCollection()
-                        ->addFieldToFilter('restore_cart_hash', $restoreCartHash)
-                        ->setPageSize(1)
-                        ->setCurPage(1)
-                        ->getFirstItem(); // @codingStandardsIgnoreLine
-                    if ($nostoCustomer->getQuoteId()) {
-                        $quote = Mage::getModel('sales/quote')->load(
-                            $nostoCustomer->getQuoteId()
-                        );
-                        // ToDo - do we want to reactivate cart if it has been bought?
-                        if (!$quote->getIsActive()) {
-                            Mage::getSingleton(
-                                'core/session'
-                            )->addWarning('It seems that you have already bought items in this cart');
-                            $quote->setIsActive(1)->save();
-                        }
+                    try {
+                        $quote = $this->resolveQuote($restoreCartHash);
                         $checkoutSession->setQuoteId($quote->getId());
                         $redirectUrl = $nostoUrlHelper->getUrlCart(
                             $store,
                             $urlParameters
                         );
-                    } else {
-                        /* @var Mage_Checkout_Model_Session $session */
-                        Mage::getSingleton(
-                            'core/session'
-                        )->addError('We could not find your cart');
+                    } catch (Exception $e) {
+                        Nosto_Tagging_Helper_Log::exception($e);
+                        $coreSession->addError(
+                            $this->__('Sorry, we could not find your cart')
+                        );
                     }
                 }
             } else {
@@ -101,6 +91,55 @@ class Nosto_Tagging_RestoreCartController extends Mage_Core_Controller_Front_Act
                 );
             }
         }
+
         $this->_redirectUrl($redirectUrl);
+    }
+
+    /**
+     * Resolves the cart (quote) by the given hash
+     *
+     * @param $restoreCartHash
+     * @return Mage_Sales_Model_Quote|null
+     * @throws Nosto_Exception_NostoException
+     */
+    protected function resolveQuote($restoreCartHash)
+    {
+        /* @var Nosto_Tagging_Model_Customer $nostoCustomer */
+        $nostoCustomer = Mage::getModel('nosto_tagging/customer')
+            ->getCollection()
+            ->addFieldToFilter('restore_cart_hash', $restoreCartHash)
+            ->setPageSize(1)
+            ->setCurPage(1)
+            ->getFirstItem(); // @codingStandardsIgnoreLine
+        $quoteId = $nostoCustomer->getQuoteId();
+
+        if (!$nostoCustomer->hasData() || !$quoteId) {
+            throw new Nosto_Exception_NostoException(
+                sprintf(
+                    'No nosto customer found for hash %s',
+                    $restoreCartHash
+                )
+            );
+        }
+
+        /* @var Mage_Sales_Model_Quote $quote */
+        $quote = Mage::getModel('sales/quote')->load(
+            $quoteId
+        );
+        if (!$quote->hasData()) {
+            throw new Nosto_Exception_NostoException(
+                sprintf(
+                    'No quote found for id %d',
+                    $quoteId
+                )
+            );
+        }
+        // Note - we reactivate the cart if it's not active.
+        // This would happen for example when the cart was bought.
+        if (!$quote->getIsActive()) {
+            $quote->setIsActive(1)->save();
+        }
+
+        return $quote;
     }
 }
