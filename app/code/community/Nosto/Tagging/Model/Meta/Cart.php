@@ -44,11 +44,41 @@ class Nosto_Tagging_Model_Meta_Cart extends Nosto_Object_Cart_Cart
      */
     public function loadData(Mage_Sales_Model_Quote $quote)
     {
-        $currencyCode = Mage::app()->getStore()->getCurrentCurrencyCode();
+        $store = Mage::app()->getStore();
+        $currencyCode = $store->getCurrentCurrencyCode();
         /** @var Mage_Sales_Model_Quote_Item $item */
         foreach ($quote->getAllVisibleItems() as $item) {
             $nostoItem = CartBuilder::buildItem($item, $currencyCode);
             $this->addItem($nostoItem);
+        }
+
+        $this->amendRestoreCartUrl($quote, $store);
+    }
+
+    /**
+     * Populates the restore cart link
+     *
+     * @param Mage_Sales_Model_Quote $quote the quote model.
+     * @param Mage_Core_Model_Store $store
+     */
+    public function amendRestoreCartUrl(Mage_Sales_Model_Quote $quote, Mage_Core_Model_Store $store)
+    {
+        /* @var Nosto_Tagging_Model_Customer $nostoCustomer */
+        $nostoCustomer = Mage::getModel('nosto_tagging/customer')
+            ->getCollection()
+            ->addFieldToFilter('quote_id', $quote->getId())
+            ->setPageSize(1)
+            ->setCurPage(1)
+            ->getFirstItem(); // @codingStandardsIgnoreLine
+
+        if ($nostoCustomer->getRestoreCartHash()) {
+            /* @var Nosto_Tagging_Helper_Url $urlHelper */
+            $urlHelper = Mage::helper('nosto_tagging/url');
+            $link = $urlHelper->generateRestoreCartUrl(
+                $nostoCustomer->getRestoreCartHash(),
+                $store
+            );
+            $this->setRestoreCartUrl($link);
         }
     }
 }

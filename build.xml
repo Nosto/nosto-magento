@@ -146,6 +146,10 @@
         </exec>
     </target>
 
+    <target name="validate" depends="phpcbf, phpcs, phan, phpmd, phpcpd">
+        <echo msg="All done" />
+    </target>
+
     <target name="dist" depends="phpcbf, phpcs, phan, phpmd, phpcpd, build">
         <echo msg="All done" />
     </target>
