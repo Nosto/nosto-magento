@@ -118,22 +118,10 @@ class Nosto_Tagging_Helper_Customer extends Mage_Core_Helper_Abstract
      */
     public function generateRestoreCartHash()
     {
-        $unique = false;
-        while ($unique === false) {
-            $hash = hash(
-                Nosto_Tagging_Helper_Data::VISITOR_HASH_ALGO,
-                uniqid('nostocartrestore')
-            );
-            $existing = Mage::getModel('nosto_tagging/customer')
-                ->getCollection()
-                ->addFieldToFilter('restore_cart_hash', $hash)
-                ->setPageSize(1)
-                ->setCurPage(1)
-                ->getFirstItem(); // @codingStandardsIgnoreLine
-            if (!$existing->getNostoId()) {
-                $unique = true;
-            }
-        }
+        $hash = hash(
+            Nosto_Tagging_Helper_Data::VISITOR_HASH_ALGO,
+            uniqid('nostocartrestore')
+        );
 
         return $hash;
     }

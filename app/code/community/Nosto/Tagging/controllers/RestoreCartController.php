@@ -39,7 +39,7 @@ class Nosto_Tagging_RestoreCartController extends Mage_Core_Controller_Front_Act
     /**
      * The name of the hash parameter to look from URL
      */
-    const hashParam = 'h';
+    const HASH_PARAM = 'h';
 
     /**
      * Restores a cart based on hash. On succesful restoration redirects user
@@ -49,8 +49,10 @@ class Nosto_Tagging_RestoreCartController extends Mage_Core_Controller_Front_Act
     {
         $store = Mage::app()->getStore();
         /* @var Mage_Core_Helper_Url $mageUrlHelper */
-        $currentUrl = Mage::helper('core/url')->getCurrentUrl();
-        $urlParts = Mage::getSingleton('core/url')->parseUrl($currentUrl);
+        $mageUrlHelper = Mage::helper('core/url');
+        $currentUrl = $mageUrlHelper->getCurrentUrl();
+        $mageUrlSingleton = Mage::getSingleton('core/url');
+        $urlParts = $mageUrlSingleton->parseUrl($currentUrl);
         parse_str($urlParts['query'], $urlParameters);
         /* @var Nosto_Tagging_Helper_Url $nostoUrlHelper */
         $nostoUrlHelper = Mage::helper('nosto_tagging/url');
@@ -62,7 +64,7 @@ class Nosto_Tagging_RestoreCartController extends Mage_Core_Controller_Front_Act
             /* @var Mage_Core_Model_Session $coreSession */
             $coreSession = Mage::getSingleton('core/session');
             if (!$checkoutSession->getQuoteId()) {
-                $restoreCartHash = $this->getRequest()->getParam(self::hashParam);
+                $restoreCartHash = $this->getRequest()->getParam(self::HASH_PARAM);
                 if (!$restoreCartHash) {
                     Nosto_Tagging_Helper_Log::exception(
                         new Nosto_Exception_NostoException(

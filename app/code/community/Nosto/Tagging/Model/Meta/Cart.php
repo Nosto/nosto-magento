@@ -52,16 +52,16 @@ class Nosto_Tagging_Model_Meta_Cart extends Nosto_Object_Cart_Cart
             $this->addItem($nostoItem);
         }
 
-        $this->amendAddToCartUrl($quote, $store);
+        $this->amendRestoreCartUrl($quote, $store);
     }
 
     /**
-     * Populates the
+     * Populates the restore cart link
      *
      * @param Mage_Sales_Model_Quote $quote the quote model.
      * @param Mage_Core_Model_Store $store
      */
-    public function amendAddToCartUrl(Mage_Sales_Model_Quote $quote, Mage_Core_Model_Store $store)
+    public function amendRestoreCartUrl(Mage_Sales_Model_Quote $quote, Mage_Core_Model_Store $store)
     {
         /* @var Nosto_Tagging_Model_Customer $nostoCustomer */
         $nostoCustomer = Mage::getModel('nosto_tagging/customer')
