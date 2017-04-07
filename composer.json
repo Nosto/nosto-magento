@@ -4,14 +4,6 @@
     "license": "OSL v3.0",
     "type": "magento-module",
     "repositories": {
-        "0": {
-            "type": "vcs",
-            "url": "https://github.com/mridang/magazine.git"
-        },
-        "pearify": {
-            "type": "vcs",
-            "url": "https://github.com/mridang/pearify.git"
-        },
         "magento-eqp": {
             "type": "git",
             "url": "https://github.com/magento/marketplace-eqp"
@@ -42,6 +34,6 @@
         "magento-ecg/coding-standard": "*",
         "magento/marketplace-eqp": "^1.0",
         "openmage/magento-mirror": "1.9",
-        "mridang/pearify": "dev-master"
+        "mridang/pearify": "0.1"
     }
 }
