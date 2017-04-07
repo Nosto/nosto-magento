@@ -76,7 +76,6 @@ class Nosto_Tagging_Model_Service_Product
             }
 
             $parentProducts = $this->buildParentProducts($product);
-
             if (!empty($parentProducts)) {
                 $productsToUpdate = $parentProducts;
             } else {
@@ -92,7 +91,7 @@ class Nosto_Tagging_Model_Service_Product
                     }
                     $productsInStore[$storeId][$batch][] = $productToUpdate;
                 }
-                $mageProduct = Mage::getModel('catalog/product')->load($product->getId());
+                $mageProduct = $this->reloadIfNeeded($product);
                 $productsInStore[$storeId][$batch][] = $mageProduct;
             }
         }
@@ -124,12 +123,12 @@ class Nosto_Tagging_Model_Service_Product
                         // the admin store scope, then we should reload the product as the store
                         // code of the product refers to an pseudo store scope called "admin"
                         // which leads to issues when flat tables are enabled.
-                        $nostoProduct->reloadData($mageProduct, $store); // Note the reload
+                        $nostoProduct->loadData($mageProduct, $store);
                         $operation->addProduct($nostoProduct);
                     }
                     $operation->upsert();
                 } catch (Exception $e) {
-                    Mage::logException($e);
+                    Nosto_Tagging_Helper_Log::logException($e);
                 }
             }
             $emulation->stopEnvironmentEmulation($env);
@@ -183,6 +182,13 @@ class Nosto_Tagging_Model_Service_Product
         }
 
         return $parents;
+    }
+
+    protected function reloadIfNeeded(Mage_Catalog_Model_Product $product)
+    {
+        $mageProduct= Mage::getModel('catalog/product')->load($product->getId());
+
+        return $mageProduct;
     }
 }
 

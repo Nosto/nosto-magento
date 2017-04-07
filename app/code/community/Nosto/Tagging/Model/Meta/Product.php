@@ -372,7 +372,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      * @param $args
      * @return mixed
      */
-    public function __call($method, $args) 
+    public function __call($method, $args)
     {
         if (!is_array($args)) {
             Nosto_Tagging_Helper_Log::deprecated(
@@ -396,7 +396,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      * @param $attribute
      * @param $value
      */
-    public function __set($attribute, $value) 
+    public function __set($attribute, $value)
     {
         Nosto_Tagging_Helper_Log::deprecated(
             'Deprecated direct assignment %s with attributes %s',
@@ -421,7 +421,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      * @param string $attribute
      * @return null
      */
-    public function __get($attribute) 
+    public function __get($attribute)
     {
         Nosto_Tagging_Helper_Log::deprecated(
             'Deprecated direct access for attribute %s',
