@@ -25,8 +25,6 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-require_once __DIR__ . '/../bootstrap.php'; // @codingStandardsIgnoreLine
-
 /**
  * Helper class for loading plugable classes.
  *
@@ -36,17 +34,28 @@ require_once __DIR__ . '/../bootstrap.php'; // @codingStandardsIgnoreLine
  */
 class Nosto_Tagging_Helper_Class extends Mage_Core_Helper_Abstract
 {
-    public static $customPaymentProviders = array(
-        'vaimo_klarna_checkout'
-    );
-
+    /*
+     * Default class for order handling
+     */
     const DEFAULT_ORDER_CLASS = 'nosto_tagging/meta_order';
 
-    /**
-     * Loads correct / pluggable order class based on payment provider
+    /*
+     * Supported payment providers with custom order handling
+     */
+    public static $paymentProviderClasses = array(
+        'nosto_tagging/meta_order_vaimo_klarna_checkout'
+    );
+
+    /*
+     * Loads correct / plugable order class based on payment provider
      *
      * @param Mage_Sales_Model_Order $order
-     * @return Nosto_Types_Order_OrderInterface
+     *
+     * @return NostoOrderInterface
+     */
+    /**
+     * @param Mage_Sales_Model_Order $order
+     * @return false|Mage_Core_Model_Abstract|null
      */
     public function getOrderClass(Mage_Sales_Model_Order $order)
     {
@@ -55,20 +64,30 @@ class Nosto_Tagging_Helper_Class extends Mage_Core_Helper_Abstract
         if (is_object($payment)) {
             $paymentProvider = $payment->getMethod();
         }
-        if (in_array($paymentProvider, $this->getCustomPaymentProviders())) {
-            $classId = sprintf('nosto_tagging/meta_order_%s', $paymentProvider);
+        $classId = self::createClassId('meta_order_%s', $paymentProvider);
+        if (!in_array($classId, self::$paymentProviderClasses)) {
+            $class = Mage::getModel(self::DEFAULT_ORDER_CLASS);
         } else {
-            $classId = self::DEFAULT_ORDER_CLASS;
+            $class = $this->getClass(
+                $classId,
+                'NostoOrderInterface',
+                self::DEFAULT_ORDER_CLASS
+            );
         }
 
-        return $this->getClass($classId, 'NostoOrderInterface', self::DEFAULT_ORDER_CLASS);
+        return $class;
     }
 
-    /**
-     * Loads correct / pluggable rating class
+    /*
+     * Loads correct / plugable rating class
+     *
      *
      * @param Mage_Core_Model_Store $store
      * @return Nosto_Tagging_Model_Meta_Rating|null
+     */
+    /**
+     * @param Mage_Core_Model_Store $store
+     * @return false|Mage_Core_Model_Abstract|null
      */
     public function getRatingClass(Mage_Core_Model_Store $store)
     {
@@ -82,7 +101,10 @@ class Nosto_Tagging_Helper_Class extends Mage_Core_Helper_Abstract
             $providerName = $ratingHelper->getModuleNameByProvider($provider);
 
             $classId = self::createClassId('meta_rating_%s', $providerName);
-            $class = $this->getClass($classId, 'Nosto_Tagging_Model_Meta_Rating_Interface');
+            $class = $this->getClass(
+                $classId,
+                'Nosto_Tagging_Model_Meta_Rating_Interface'
+            );
         }
 
         return $class;
@@ -97,7 +119,12 @@ class Nosto_Tagging_Helper_Class extends Mage_Core_Helper_Abstract
      */
     protected static function createClassId($classString, $identifier)
     {
-        return strtolower(sprintf('nosto_tagging/' . $classString, $identifier));
+        $classId = sprintf(
+            'nosto_tagging/' . $classString,
+            $identifier
+        );
+
+        return strtolower($classId);
     }
 
     /**
@@ -105,16 +132,13 @@ class Nosto_Tagging_Helper_Class extends Mage_Core_Helper_Abstract
      *
      * @param string $classId
      * @param string $expected
-     * @param string $fallback
-     * @return mixed
-     * @suppress PhanTypeMismatchArgument
+     * @param bool $fallback
+     * @return false|Mage_Core_Model_Abstract|null
      */
-    protected function getClass($classId, $expected, $fallback = null)
-    {
+    protected function getClass($classId, $expected, $fallback = false) {
         $class = null;
         try {
             if (is_string($classId)) {
-                /** @noinspection PhpParamsInspection */
                 $className = Mage::getConfig()->getModelClassName($classId);
                 if (class_exists($className)) {
                     $class = Mage::getModel($classId);
@@ -124,16 +148,11 @@ class Nosto_Tagging_Helper_Class extends Mage_Core_Helper_Abstract
                 $class = Mage::getModel($fallback);
             }
         } catch (Exception $e) {
-            if ($fallback !== null) {
+            if ($fallback !== false) {
                 $class = Mage::getModel($fallback);
             }
         }
 
         return $class;
-    }
-
-    protected function getCustomPaymentProviders()
-    {
-        return self::$customPaymentProviders;
     }
 }

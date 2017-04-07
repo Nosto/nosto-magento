@@ -213,7 +213,6 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
 
             return false;
         }
-
         try {
             /** @var Nosto_Tagging_Model_Collection_Rates $collection */
             $collection = Mage::getModel('nosto_tagging/collection_rates');
@@ -222,6 +221,8 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
             return $service->update($collection);
         } catch (Nosto_Exception_NostoException$e) {
             NostoLog::exception($e);
+        } catch (NostoException $e) {
+            Mage::log("\n" . $e, Zend_Log::ERR, Nosto_Tagging_Model_Base::LOG_FILE_NAME);
         }
 
         return false;

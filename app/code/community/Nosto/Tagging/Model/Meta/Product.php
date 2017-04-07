@@ -368,22 +368,24 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      * Backwards compatibility method to make the extension work with
      * old customisations
      *
-     * @param $method
+     * @param string $method
      * @param $args
      * @return mixed
      */
     public function __call($method, $args) 
     {
-        Nosto_Tagging_Helper_Log::deprecated(
-            'Deprecated call %s with attributes %s',
-            array($method, implode(',', $args))
-        );
+        if (!is_array($args)) {
+            Nosto_Tagging_Helper_Log::deprecated(
+                'Deprecated call %s with attributes %s',
+                array($method, implode(',', $args))
+            );
+        }
 
         $compatibilityMethod = sprintf('__%s', $method);
         if (method_exists($this, $compatibilityMethod)) {
             return $this->$compatibilityMethod($args);
         } else {
-            return trigger_error('Call to undefined method '.__CLASS__.'::'.$method.'()', E_USER_ERROR); // @codingStandardsIgnoreLine
+            trigger_error('Call to undefined method '.__CLASS__.'::'.$method.'()', E_USER_ERROR); // @codingStandardsIgnoreLine
         }
     }
 
@@ -548,5 +550,18 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
     protected function getCustomisableAttributes()
     {
         return array('gtin' => 'gtin', 'supplier_cost' => 'supplierCost');
+    }
+
+    /**
+     * Reloads the product info from a Magento product model.
+     *
+     * @param Mage_Catalog_Model_Product $product the product model to reload
+     * @param Mage_Core_Model_Store|null $store the store to get the product data for.
+     */
+    public function reloadData(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
+    {
+        $reloadedProduct = Mage::getModel('catalog/product')
+            ->load($product->getId());
+        $this->loadData($reloadedProduct, $store);
     }
 }

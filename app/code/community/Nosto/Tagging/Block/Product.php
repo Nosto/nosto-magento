@@ -91,15 +91,4 @@ class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
 
         return $helper->buildCategoryString($category);
     }
-
-    /**
-     * Formats a price e.g. "1234.56".
-     *
-     * @param int $price the price to format.
-     * @return string the formatted price.
-     */
-    public function formatNostoPrice($price)
-    {
-        return Nosto_Helper_PriceHelper::format($price);
-    }
 }

@@ -66,7 +66,7 @@ class Nosto_Tagging_Model_Service_Product
             }
             ++$counter;
             if ($product instanceof Mage_Catalog_Model_Product === false) {
-                Mage::throwException(
+                Nosto::throwException(
                     sprintf(
                         'Invalid data type, expecting Mage_Catalog_Model_Product' .
                         ', got %s',
@@ -76,6 +76,7 @@ class Nosto_Tagging_Model_Service_Product
             }
 
             $parentProducts = $this->buildParentProducts($product);
+
             if (!empty($parentProducts)) {
                 $productsToUpdate = $parentProducts;
             } else {
@@ -91,6 +92,8 @@ class Nosto_Tagging_Model_Service_Product
                     }
                     $productsInStore[$storeId][$batch][] = $productToUpdate;
                 }
+                $mageProduct = Mage::getModel('catalog/product')->load($product->getId());
+                $productsInStore[$storeId][$batch][] = $mageProduct;
             }
         }
         foreach ($productsInStore as $storeId => $productBatches) {
@@ -111,14 +114,23 @@ class Nosto_Tagging_Model_Service_Product
             $emulation = Mage::getSingleton('core/app_emulation');
             $env = $emulation->startEnvironmentEmulation($store->getId());
             foreach ($productBatches as $productsInStore) {
-                $service = new Nosto_Operation_UpsertProduct($account);
-                foreach ($productsInStore as $mageProduct) {
-                    /** @var Nosto_Tagging_Model_Meta_Product $nostoProduct */
-                    $nostoProduct = Mage::getModel('nosto_tagging/meta_product');
-                    $nostoProduct->loadData($mageProduct, $store);
-                    $service->addProduct($nostoProduct);
+                try {
+                    $operation = new Nosto_Operation_UpsertProduct($account);
+                    /* @var $mageProduct Mage_Catalog_Model_Product */
+                    foreach ($productsInStore as $mageProduct) {
+                        /** @var Nosto_Tagging_Model_Meta_Product $nostoProduct */
+                        $nostoProduct = Mage::getModel('nosto_tagging/meta_product');
+                        // If the current store scope is the main store scope, also referred to as
+                        // the admin store scope, then we should reload the product as the store
+                        // code of the product refers to an pseudo store scope called "admin"
+                        // which leads to issues when flat tables are enabled.
+                        $nostoProduct->reloadData($mageProduct, $store); // Note the reload
+                        $operation->addProduct($nostoProduct);
+                    }
+                    $operation->upsert();
+                } catch (Exception $e) {
+                    Mage::logException($e);
                 }
-                $service->upsert();
             }
             $emulation->stopEnvironmentEmulation($env);
         }
@@ -172,6 +184,5 @@ class Nosto_Tagging_Model_Service_Product
 
         return $parents;
     }
-
 }
 
