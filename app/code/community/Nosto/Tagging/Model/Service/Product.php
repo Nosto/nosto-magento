@@ -91,10 +91,9 @@ class Nosto_Tagging_Model_Service_Product
                     }
                     $productsInStore[$storeId][$batch][] = $productToUpdate;
                 }
-                $mageProduct = $this->reloadIfNeeded($product);
-                $productsInStore[$storeId][$batch][] = $mageProduct;
             }
         }
+        // Batch ready - process batches for each store
         foreach ($productsInStore as $storeId => $productBatches) {
             $store = Mage::app()->getStore($storeId);
             /** @var Nosto_Tagging_Helper_Account $helper */
@@ -117,18 +116,22 @@ class Nosto_Tagging_Model_Service_Product
                     $operation = new Nosto_Operation_UpsertProduct($account);
                     /* @var $mageProduct Mage_Catalog_Model_Product */
                     foreach ($productsInStore as $mageProduct) {
+                        if ($mageProduct instanceof Mage_Catalog_Model_Product === false) {
+                            continue;
+                        }
                         /** @var Nosto_Tagging_Model_Meta_Product $nostoProduct */
                         $nostoProduct = Mage::getModel('nosto_tagging/meta_product');
                         // If the current store scope is the main store scope, also referred to as
                         // the admin store scope, then we should reload the product as the store
                         // code of the product refers to an pseudo store scope called "admin"
                         // which leads to issues when flat tables are enabled.
-                        $nostoProduct->loadData($mageProduct, $store);
-                        $operation->addProduct($nostoProduct);
+                        if($nostoProduct->reloadData($mageProduct, $store)) {
+                            $operation->addProduct($nostoProduct);
+                        }
                     }
                     $operation->upsert();
                 } catch (Exception $e) {
-                    Nosto_Tagging_Helper_Log::logException($e);
+                    Nosto_Tagging_Helper_Log::exception($e);
                 }
             }
             $emulation->stopEnvironmentEmulation($env);
@@ -183,12 +186,4 @@ class Nosto_Tagging_Model_Service_Product
 
         return $parents;
     }
-
-    protected function reloadIfNeeded(Mage_Catalog_Model_Product $product)
-    {
-        $mageProduct= Mage::getModel('catalog/product')->load($product->getId());
-
-        return $mageProduct;
-    }
 }
-

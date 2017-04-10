@@ -452,17 +452,19 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
     protected function getAttributeValue(Mage_Catalog_Model_Product $product, $attributeName)
     {
         $attribute = $product->getResource()->getAttribute($attributeName);
+        $attributeValue = null;
         if ($attribute instanceof Mage_Catalog_Model_Resource_Eav_Attribute) {
             $attributeData = $product->getData($attributeName);
             /** @noinspection PhpParamsInspection */
             $attributeValue = $product->getAttributeText($attributeName);
             if (empty($attributeValue) && is_scalar($attributeData)) {
-                $attributeValue = $attributeData;
+                $attributeValue = trim($attributeData);
+            } elseif (is_array($attributeValue)) {
+                $attributeValue = implode(',', $attributeValue);
             }
-        } else {
-            $attributeValue = null;
         }
-        return trim($attributeValue);
+
+        return $attributeValue;
     }
 
     /**
@@ -557,11 +559,20 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      *
      * @param Mage_Catalog_Model_Product $product the product model to reload
      * @param Mage_Core_Model_Store|null $store the store to get the product data for.
+     *
+     * @return bool returns false if the product is not available in a given store
      */
     public function reloadData(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
+        $return = false;
         $reloadedProduct = Mage::getModel('catalog/product')
+            ->setStoreId($store->getId())
             ->load($product->getId());
-        $this->loadData($reloadedProduct, $store);
+        if ($reloadedProduct instanceof Mage_Catalog_Model_Product) {
+            $this->loadData($reloadedProduct, $store);
+            $return = true;
+        }
+
+        return $return;
     }
 }
