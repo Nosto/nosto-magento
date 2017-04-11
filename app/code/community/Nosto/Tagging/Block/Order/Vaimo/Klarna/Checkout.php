@@ -47,8 +47,10 @@ class Nosto_Tagging_Block_Order_Vaimo_Klarna_Checkout extends Mage_Checkout_Bloc
     {
         /** @var Nosto_Tagging_Helper_Account $helper */
         $helper = Mage::helper('nosto_tagging/account');
-        if (!Mage::helper('nosto_tagging')->isModuleEnabled()
+        $nostoHelper = Mage::helper('nosto_tagging');
+        if (!$nostoHelper->isModuleEnabled()
             || !$helper->existsAndIsConnected()
+            || !$nostoHelper->isModuleEnabled('Vaimo_Klarna')
         ) {
             return '';
         }
@@ -70,6 +72,10 @@ class Nosto_Tagging_Block_Order_Vaimo_Klarna_Checkout extends Mage_Checkout_Bloc
             /* @var Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout $nostoOrder */
             $nostoOrder = Mage::getModel('nosto_tagging/meta_order_vaimo_klarna_checkout');
             $nostoOrder->loadOrderByKlarnaCheckoutId($checkoutId);
+            // Double check that payment provider is vaimo_klarna_checkout
+            if ($nostoOrder->getPaymentProvider() !== 'vaimo_klarna_checkout') {
+                $nostoOrder = null;
+            }
         } catch (Exception $e) {
             NostoLog::exception($e);
         }
