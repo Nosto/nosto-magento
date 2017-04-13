@@ -49,7 +49,9 @@ class Nosto_Tagging_Model_Meta_Cart extends Nosto_Object_Cart_Cart
         /** @var Mage_Sales_Model_Quote_Item $item */
         foreach ($quote->getAllVisibleItems() as $item) {
             $nostoItem = CartBuilder::buildItem($item, $currencyCode);
-            $this->addItem($nostoItem);
+            if ($nostoItem instanceof Nosto_Types_LineItemInterface) {
+                $this->addItem($nostoItem);
+            }
         }
 
         $this->amendRestoreCartUrl($quote, $store);
