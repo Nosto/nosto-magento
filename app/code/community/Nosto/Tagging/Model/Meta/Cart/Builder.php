@@ -47,6 +47,8 @@ class Nosto_Tagging_Model_Meta_Cart_Builder
         /** @var Mage_Sales_Model_Quote_Item $item */
         switch ($item->getProductType()) {
             case Mage_Catalog_Model_Product_Type::TYPE_SIMPLE:
+            case Mage_Catalog_Model_Product_Type::TYPE_VIRTUAL:
+            case Mage_Downloadable_Model_Product_Type::TYPE_DOWNLOADABLE:
                 /** @var Nosto_Tagging_Model_Meta_Cart_Item_Simple $simpleItem */
                 $simpleItem = Mage::getModel(
                     'nosto_tagging/meta_cart_item_simple'
