@@ -50,6 +50,9 @@
         }, options);
         var $iframe = document.getElementById(settings.iframeId);
 
+        /**
+         * @param {{redirect_url:string, success}} response
+         */
         switch (data.type) {
             case TYPE_NEW_ACCOUNT:
                 var post_data = {email: data.params.email};

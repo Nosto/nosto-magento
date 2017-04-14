@@ -96,7 +96,7 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Currency_CronFrequency
     /**
      * Returns the id of the select id
      *
-     * @return array
+     * @return string
      */
     public function getSelectId()
     {
@@ -126,7 +126,7 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Currency_CronFrequency
     /**
      * Returns the current value
      *
-     * @return array
+     * @return string
      */
     public function getCurrentValue()
     {

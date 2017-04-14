@@ -144,16 +144,16 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
             $associatedProducts = $configurableProduct->getUsedProducts(null, $product);
             /** @var Mage_Catalog_Model_Product $associatedProduct */
             foreach ($associatedProducts as $associatedProduct) {
-                /* @var Mage_Catalog_Model_Product $productModel */
-                $mageSku = Mage::getModel('catalog/product')->load(
-                    $associatedProduct->getId()
-                );
+                /** @var Mage_Catalog_Model_Product $productModel */
+                $productModel = Mage::getModel('catalog/product');
+                /* @var Mage_Catalog_Model_Product $mageSku */
+                $mageSku = $productModel->load($associatedProduct->getId());
                 try {
                     /* @var Nosto_Tagging_Model_Meta_Sku $skuModel */
                     $skuModel = Mage::getModel('nosto_tagging/meta_sku');
                     $skuModel->loadData($mageSku, $product, $store);
                     $this->addSku($skuModel);
-                } catch (Nosto_Exception_NostoException $e) {
+                } catch (Nosto_NostoException $e) {
                     Nosto_Tagging_Helper_Log::exception($e);
                 }
             }
@@ -565,9 +565,10 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
     public function reloadData(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
         $return = false;
-        $reloadedProduct = Mage::getModel('catalog/product')
-            ->setStoreId($store->getId())
-            ->load($product->getId());
+        /** @var Mage_Catalog_Model_Product $productModel */
+        $productModel = Mage::getModel('catalog/product');
+        /** @noinspection PhpUndefinedMethodInspection */
+        $reloadedProduct = $productModel->setStoreId($store->getId())->load($product->getId());
         if ($reloadedProduct instanceof Mage_Catalog_Model_Product) {
             $this->loadData($reloadedProduct, $store);
             $return = true;

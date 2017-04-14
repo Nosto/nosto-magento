@@ -32,7 +32,7 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Oauth extends Nosto_Object_OAuth
+class Nosto_Tagging_Model_Meta_Oauth extends Nosto_OAuth
 {
     /**
      * Loads the meta data for the given store.

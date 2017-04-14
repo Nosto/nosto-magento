@@ -200,7 +200,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                         $accountOwner->setLastName(null);
                         $accountOwner->setEmail($emailAddress);
                     } else {
-                        throw new Nosto_Exception_NostoException("Invalid email address " . $emailAddress);
+                        throw new Nosto_NostoException("Invalid email address " . $emailAddress);
                     }
                 }
 
@@ -224,7 +224,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                         )
                     );
                 }
-            } catch (Nosto_Exception_NostoException$e) {
+            } catch (Nosto_NostoException$e) {
                 NostoLog::exception($e);
             }
         }

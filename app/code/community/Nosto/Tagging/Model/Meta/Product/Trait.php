@@ -149,7 +149,7 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
      *
      * @param Mage_Catalog_Model_Product $product the product model.
      * @param Mage_Core_Model_Store $store the store model.
-     * @throws Nosto_Exception_NostoException
+     * @throws Nosto_NostoException
      */
     protected function amendCustomizableAttributes(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
@@ -158,7 +158,7 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
 
         $attributes = self::getCustomisableAttributes();
         if (!isset($attributes)) {
-            throw new Nosto_Exception_NostoException(
+            throw new Nosto_NostoException(
                 sprintf(
                     'Customizable attributes not defined for class %s',
                     get_class($this)

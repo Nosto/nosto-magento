@@ -51,6 +51,7 @@ class Nosto_Tagging_RestoreCartController extends Mage_Core_Controller_Front_Act
         /* @var Mage_Core_Helper_Url $mageUrlHelper */
         $mageUrlHelper = Mage::helper('core/url');
         $currentUrl = $mageUrlHelper->getCurrentUrl();
+        /* @var Mage_Core_Model_Url $mageUrlSingleton */
         $mageUrlSingleton = Mage::getSingleton('core/url');
         $urlParts = $mageUrlSingleton->parseUrl($currentUrl);
         parse_str($urlParts['query'], $urlParameters);
@@ -67,7 +68,7 @@ class Nosto_Tagging_RestoreCartController extends Mage_Core_Controller_Front_Act
                 $restoreCartHash = $this->getRequest()->getParam(self::HASH_PARAM);
                 if (!$restoreCartHash) {
                     Nosto_Tagging_Helper_Log::exception(
-                        new Nosto_Exception_NostoException(
+                        new Nosto_NostoException(
                             'No hash provided for restore cart'
                         )
                     );
@@ -102,7 +103,7 @@ class Nosto_Tagging_RestoreCartController extends Mage_Core_Controller_Front_Act
      *
      * @param $restoreCartHash
      * @return Mage_Sales_Model_Quote|null
-     * @throws Nosto_Exception_NostoException
+     * @throws Nosto_NostoException
      */
     protected function resolveQuote($restoreCartHash)
     {
@@ -116,7 +117,7 @@ class Nosto_Tagging_RestoreCartController extends Mage_Core_Controller_Front_Act
         $quoteId = $nostoCustomer->getQuoteId();
 
         if (!$nostoCustomer->hasData() || !$quoteId) {
-            throw new Nosto_Exception_NostoException(
+            throw new Nosto_NostoException(
                 sprintf(
                     'No nosto customer found for hash %s',
                     $restoreCartHash
@@ -129,7 +130,7 @@ class Nosto_Tagging_RestoreCartController extends Mage_Core_Controller_Front_Act
             $quoteId
         );
         if (!$quote->hasData()) {
-            throw new Nosto_Exception_NostoException(
+            throw new Nosto_NostoException(
                 sprintf(
                     'No quote found for id %d',
                     $quoteId

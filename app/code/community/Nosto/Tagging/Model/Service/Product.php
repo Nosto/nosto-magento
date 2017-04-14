@@ -52,7 +52,7 @@ class Nosto_Tagging_Model_Service_Product
      *
      * @param Mage_Catalog_Model_Product[] $products
      * @return bool
-     * @throws Nosto_Exception_NostoException
+     * @throws Nosto_NostoException
      */
     protected function update(array $products)
     {

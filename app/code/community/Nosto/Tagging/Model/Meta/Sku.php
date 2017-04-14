@@ -45,7 +45,7 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
      * @param Mage_Catalog_Model_Product $sku the product model.
      * @param Mage_Catalog_Model_Product $parent
      * @param Mage_Core_Model_Store|null $store the store to get the product data for.
-     * @throws Nosto_Exception_NostoException
+     * @throws Nosto_NostoException
      */
     public function loadData(
         Mage_Catalog_Model_Product $sku,
@@ -58,7 +58,7 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
         }
 
         if ($sku->getTypeId() !== Mage_Catalog_Model_Product_Type::TYPE_SIMPLE) {
-            throw new Nosto_Exception_NostoException(
+            throw new Nosto_NostoException(
                 sprintf(
                     'Nosto SKU can be loaded only from single type product. %d given',
                     $sku->getTypeId()

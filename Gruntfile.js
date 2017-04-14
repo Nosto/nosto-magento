@@ -24,8 +24,10 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+//noinspection JSUnresolvedVariable
 module.exports = function(grunt) {
     // Project configuration.
+    //noinspection JSUnresolvedFunction
     grunt.initConfig({
       uglify: {
         my_target: {
@@ -37,8 +39,10 @@ module.exports = function(grunt) {
     });
 
     // Load the plugin that provides the "uglify" task.
+    //noinspection JSUnresolvedFunction
     grunt.loadNpmTasks('grunt-contrib-uglify');
 
     // Default task(s).
+    //noinspection JSUnresolvedFunction
     grunt.registerTask('default', ['uglify']);
 };

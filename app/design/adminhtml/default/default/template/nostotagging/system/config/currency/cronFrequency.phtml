@@ -53,7 +53,7 @@
         var frequencyField = document.getElementById("<?php echo $this->getSelectId(); ?>");
         if (frequencyField && hourField) {
             var frequencyValue = frequencyField.value;
-            if (frequencyValue == 'H') {
+            if (frequencyValue === 'H') {
                 var option = document.createElement("option");
                 option.value = '*';
                 option.text = '*';
@@ -62,7 +62,7 @@
                 hourField.setAttribute("disabled", "disabled");
             } else {
                 for (var i = 0; i < hourField.length; i++) {
-                    if (hourField.options[i].value == '*') {
+                    if (hourField.options[i].value === '*') {
                         hourField.remove(i);
                     }
                 }

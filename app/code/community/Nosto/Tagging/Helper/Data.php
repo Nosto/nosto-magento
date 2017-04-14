@@ -455,13 +455,13 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      * @param string $tagId the name / identifier of the tag (e.g. tag1, tag2).
      * @param Mage_Core_Model_Store|null $store the store model or null.
      *
-     * @throws Nosto_Exception_NostoException
+     * @throws Nosto_NostoException
      * @return array
      */
     public function getAttributesToTag($tagId, $store = null)
     {
         if (!in_array($tagId, self::$validTags)) {
-            throw new Nosto_Exception_NostoException(sprintf('Invalid tag identifier %s', $tagId));
+            throw new Nosto_NostoException(sprintf('Invalid tag identifier %s', $tagId));
         }
         $tagPath = self::XML_PATH_CUSTOM_TAGS . $tagId;
         $tags = Mage::getStoreConfig($tagPath, $store);

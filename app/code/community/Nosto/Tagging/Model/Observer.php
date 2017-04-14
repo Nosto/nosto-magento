@@ -83,7 +83,7 @@ class Nosto_Tagging_Model_Observer
                 /* @var Nosto_Tagging_Model_Service_Product $service */
                 $service = Mage::getModel('nosto_tagging/service_product');
                 $service->updateProduct($product);
-            } catch (Nosto_Exception_NostoException$e) {
+            } catch (Nosto_NostoException$e) {
                 NostoLog::exception($e);
             }
         }
@@ -126,7 +126,7 @@ class Nosto_Tagging_Model_Observer
                     $service = new Nosto_Operation_UpsertProduct($account);
                     $service->addProduct($model);
                     $service->upsert();
-                } catch (Nosto_Exception_NostoException $e) {
+                } catch (Nosto_NostoException $e) {
                     NostoLog::exception($e);
                 }
                 $emulation->stopEnvironmentEmulation($env);
