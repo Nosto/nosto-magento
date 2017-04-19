@@ -25,6 +25,8 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+use Nosto_Tagging_Helper_Log as NostoLog;
+
 /**
  * Order tagging block.
  * Adds meta-data to the HTML document for successful orders.
@@ -59,14 +61,33 @@ class Nosto_Tagging_Block_Order extends Mage_Checkout_Block_Success
      */
     public function getLastOrder()
     {
-        /** @noinspection PhpUndefinedMethodInspection */
-        $orderId = Mage::getSingleton('checkout/session')->getLastOrderId();
-        /** @var Mage_Sales_Model_Order $order */
-        $order = Mage::getModel('sales/order')->load($orderId);
-        /** @var Nosto_Tagging_Model_Meta_Order $meta */
-        $meta = Mage::getModel('nosto_tagging/meta_order');
-        $meta->loadData($order);
-        return $meta;
+        /** @var Nosto_Tagging_Helper_Account $helper */
+        $helper = Mage::helper('core');
+        try {
+            if($helper->isModuleEnabled('Vaimo_Klarna')) {
+                /** @noinspection PhpUndefinedMethodInspection */
+                $checkoutId = Mage::getSingleton('checkout/session')->getKlarnaCheckoutPrevId();
+                /* @var Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout $nostoOrder */
+                $nostoOrder = Mage::getModel('nosto_tagging/meta_order_vaimo_klarna_checkout');
+                $nostoOrder->loadOrderByKlarnaCheckoutId($checkoutId);
+                // Double check that payment provider is vaimo_klarna_checkout
+                if ($nostoOrder->getPaymentProvider() !== 'vaimo_klarna_checkout') {
+                    $nostoOrder = null;
+                }
+            } else {
+                /** @noinspection PhpUndefinedMethodInspection */
+                $orderId = Mage::getSingleton('checkout/session')->getLastOrderId();
+                /** @var Mage_Sales_Model_Order $order */
+                $order = Mage::getModel('sales/order')->load($orderId);
+                /** @var Nosto_Tagging_Model_Meta_Order $meta */
+                $nostoOrder = Mage::getModel('nosto_tagging/meta_order');
+                $nostoOrder->loadData($order);
+            }
+        } catch (Exception $e) {
+            NostoLog::exception($e);
+        }
+
+        return $nostoOrder;
     }
 
     /*
