@@ -27,6 +27,8 @@
 
 require_once __DIR__ . '/../bootstrap.php'; // @codingStandardsIgnoreLine
 
+use Nosto_Exception_NostoException as NostoException;
+
 /**
  * Restores an abandoned cart
  *
@@ -68,7 +70,7 @@ class Nosto_Tagging_RestoreCartController extends Mage_Core_Controller_Front_Act
                 $restoreCartHash = $this->getRequest()->getParam(self::HASH_PARAM);
                 if (!$restoreCartHash) {
                     Nosto_Tagging_Helper_Log::exception(
-                        new Nosto_NostoException(
+                        new NostoException(
                             'No hash provided for restore cart'
                         )
                     );
