@@ -47,7 +47,7 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Currency_Formats extends Mage_
     /**
      * @inheritdoc
      */
-    protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)
+    protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element) // @codingStandardsIgnoreLine
     {
         return $this->_toHtml();
     }
@@ -72,7 +72,7 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Currency_Formats extends Mage_
         foreach ($stores as $store) {
             $formats[$store->getName()] = array();
             $currencyCodes = $store->getAvailableCurrencyCodes(true);
-            if (is_array($currencyCodes) && count($currencyCodes) > 0) {
+            if (is_array($currencyCodes) && !empty($currencyCodes)) {
                 $locale = $store->getConfig('general/locale/code');
                 foreach ($currencyCodes as $currencyCode) {
                     try {

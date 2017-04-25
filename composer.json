@@ -2,21 +2,38 @@
     "name": "nosto/nosto-magento-extension",
     "description": "Nosto Magento extension",
     "license": "OSL v3.0",
-    "type":"magento-module",
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/mridang/magazine.git"
+    "type": "magento-module",
+    "repositories": {
+        "magento-eqp": {
+            "type": "git",
+            "url": "https://github.com/magento/marketplace-eqp"
+        },
+        "magento-mirror": {
+            "type": "package",
+            "package": {
+                "name": "openmage/magento-mirror",
+                "version": "1.9",
+                "source": {
+                    "url": "https://github.com/openMage/magento-mirror",
+                    "type": "git",
+                    "reference": "origin/magento-1.9"
+                }
+            }
         }
-    ],
+    },
     "require": {
-        "nosto/php-sdk": "1.16.3"
+        "nosto/php-sdk": "dev-feature/refactor-and-improve-sdk"
     },
     "require-dev": {
         "mridang/magazine": "0.1",
-        "phing/phing": "2.*"
-    },
-    "config": {
-        "vendor-dir": "lib"
+        "phing/phing": "2.*",
+        "etsy/phan": "0.8.0",
+        "phpmd/phpmd": "^2.5",
+        "squizlabs/php_codesniffer": "2.*",
+        "sebastian/phpcpd": "*",
+        "magento-ecg/coding-standard": "*",
+        "magento/marketplace-eqp": "^1.0",
+        "openmage/magento-mirror": "1.9",
+        "mridang/pearify": "0.1"
     }
 }

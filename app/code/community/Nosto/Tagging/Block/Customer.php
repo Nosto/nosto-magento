@@ -25,6 +25,8 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+use Nosto_Tagging_Helper_Log as NostoLog;
+
 /**
  * Customer info tagging block.
  * Adds meta-data to the HTML document for logged in customer.
@@ -46,8 +48,7 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
         /** @var Nosto_Tagging_Helper_Account $helper */
         $helper = Mage::helper('nosto_tagging/account');
         /** @noinspection PhpUndefinedMethodInspection */
-        if (!Mage::helper('nosto_tagging')->isModuleEnabled()
-            || !$helper->existsAndIsConnected()
+        if (!Mage::helper('nosto_tagging')->isModuleEnabled() || !$helper->existsAndIsConnected()
             || !$this->helper('customer')->isLoggedIn()
         ) {
             return '';
@@ -67,11 +68,13 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
         return $helper->getVisitorChecksum();
     }
 
-    /*
+    /**
      * Returns the customer reference of the customer
      */
     protected function getCustomerReference()
     {
+        $ref = '';
+
         try {
             /* @var $customerHelper Nosto_Tagging_Helper_Customer */
             $customerHelper = Mage::helper('nosto_tagging/customer');
@@ -87,17 +90,10 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
                     $ref
                 );
                 $customer->save();
+                return $ref;
             }
         } catch (\Exception $e) {
-            Mage::log(
-                sprintf(
-                    'Could not get customer reference. Error was: %s',
-                    $e->getMessage()
-                ),
-                Zend_Log::ERR,
-                Nosto_Tagging_Model_Base::LOG_FILE_NAME
-            );
-            $ref = null;
+            NostoLog::exception($e);
         }
 
         return $ref;

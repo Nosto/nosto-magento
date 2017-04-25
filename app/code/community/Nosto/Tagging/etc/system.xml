@@ -249,6 +249,7 @@
                             <label>Start Time</label>
                             <comment>The start time is entered in the default timezone configured for the installation.</comment>
                             <frontend_type>time</frontend_type>
+                            <backend_model>nosto_tagging/system_config_backend_currency_exchange_rate_time</backend_model>
                             <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>

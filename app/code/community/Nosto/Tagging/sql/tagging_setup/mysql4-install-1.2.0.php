@@ -30,10 +30,9 @@
  * i.e. when no "tagging_setup" entry is present in the `core_resource` table.
  *
  * Creates the db table for matching Magento cart quotes to nosto customer ids.
- *
- * @var Mage_Eav_Model_Entity_Setup $installer
  */
 
+/** @var Mage_Eav_Model_Entity_Setup $this */
 $installer = $this;
 $installer->startSetup();
 
