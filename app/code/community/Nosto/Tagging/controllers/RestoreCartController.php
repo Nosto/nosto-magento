@@ -27,7 +27,7 @@
 
 require_once __DIR__ . '/../bootstrap.php'; // @codingStandardsIgnoreLine
 
-use Nosto_Exception_NostoException as NostoException;
+use Nosto_NostoException as NostoException;
 
 /**
  * Restores an abandoned cart
