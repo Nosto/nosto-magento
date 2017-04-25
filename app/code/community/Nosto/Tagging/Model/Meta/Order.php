@@ -47,7 +47,15 @@ class Nosto_Tagging_Model_Meta_Order extends Nosto_Object_Order_Order
     {
         $this->setOrderNumber($order->getId());
         $this->setExternalOrderRef($order->getRealOrderId());
-        $this->setCreatedAt(DateTime::createFromFormat('Y-m-d', $order->getCreatedAtFormated('Y-m-d')));
+        $createdAt = \DateTime::createFromFormat(
+            'Y-m-d H:i:s',
+            $order->getCreatedAt()
+        );
+        if ($createdAt instanceof DateTimeInterface) {
+            $this->setCreatedAt(
+                $createdAt
+            );
+        }
         $payment = $order->getPayment();
         $this->setPaymentProvider('unknown');
         if (is_object($payment)) {
