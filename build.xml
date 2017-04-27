@@ -50,15 +50,6 @@
         <copy todir="${buildsrc}">
             <fileset refid="sourcefiles" />
         </copy>
-        <phingcall target="updatedependencies" />
-    </target>
-
-    <target name="updatedependencies">
-        <echo msg="Updating dependencies" />
-        <exec executable="composer" dir="${buildsrc}">
-            <arg value="install" />
-        </exec>
-        <echo msg="Dependencies updated" />
     </target>
 
     <fileset dir="${srcdir}" id="sourcefiles">
@@ -69,11 +60,12 @@
             <exclude name="**/tests/**" />
             <exclude name="**/phing/**" />
             <exclude name="**/build/**" />
+            <exclude name="**/vendor/**" />
+            <exclude name="**/phpseclib/**" />
             <exclude name="**/node_modules/**" />
             <exclude name="**/build.xml" />
             <exclude name="**/ruleset.xml" />
             <exclude name="**/*codeception*" />
-            <exclude name="lib/**" />
             <exclude name="package.json*" />
             <exclude name="Gruntfile.js*" />
             <exclude name="*.tgz" />
@@ -85,7 +77,7 @@
     <!-- ============================================  -->
     <target name="build" depends="prepare">
         <echo msg="Building a package with magazine" />
-        <exec executable="./vendor/bin/magazine" dir="${buildsrc}">
+        <exec executable="../../vendor/bin/magazine" dir="${buildsrc}">
             <arg value="package"/>
             <arg value="magazine.json" />
             <arg value="${version}" />
@@ -146,11 +138,29 @@
         </exec>
     </target>
 
+    <target name="update-lib">
+        <echo msg="Updating lib" />
+        <exec executable="composer" dir="${srcdir}">
+            <arg value="dump-autoload" />
+            <arg value="--optimize" />
+        </exec>
+        <exec executable="./vendor/bin/pearify" dir="${srcdir}" passthru="true">
+            <arg value="process" />
+            <arg value="-v" />
+            <arg value="." />
+        </exec>
+        <echo msg="Lib updated" />
+    </target>
+
     <target name="validate" depends="phpcbf, phpcs, phan, phpmd, phpcpd">
         <echo msg="All done" />
     </target>
 
     <target name="dist" depends="phpcbf, phpcs, phan, phpmd, phpcpd, build">
+        <echo msg="All done" />
+    </target>
+
+    <target name="quick-build" depends="build">
         <echo msg="All done" />
     </target>
 </project>
