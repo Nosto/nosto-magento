@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Nosto/nosto-php-sdk.git",
-                "reference": "04cad7bab7bdae9f91d7af4274f67b558913474c"
+                "reference": "842b6b7390fca072c542ecf54262454c94f374e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Nosto/nosto-php-sdk/zipball/04cad7bab7bdae9f91d7af4274f67b558913474c",
-                "reference": "04cad7bab7bdae9f91d7af4274f67b558913474c",
+                "url": "https://api.github.com/repos/Nosto/nosto-php-sdk/zipball/842b6b7390fca072c542ecf54262454c94f374e1",
+                "reference": "842b6b7390fca072c542ecf54262454c94f374e1",
                 "shasum": ""
             },
             "require": {
@@ -51,7 +51,7 @@
                 "BSD-3-Clause"
             ],
             "description": "PHP SDK for developing Nosto modules for e-commerce platforms",
-            "time": "2017-04-24 18:49:57"
+            "time": "2017-04-28 08:26:07"
         },
         {
             "name": "phpseclib/phpseclib",
