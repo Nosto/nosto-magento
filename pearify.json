@@ -1,0 +1,8 @@
+{
+  "replacements": [
+    {
+      "match": "/phpseclib_/",
+      "replace": "Nosto_Seclib_"
+    }
+  ]
+}
