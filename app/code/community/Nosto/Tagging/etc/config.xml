@@ -139,6 +139,17 @@
                 </Nosto_Tagging>
             </modules>
         </translate>
+        <events>
+            <controller_action_predispatch>
+                <observers>
+                    <nosto_tagging_controller_action_predispatch>
+                        <type>singleton</type>
+                        <class>Nosto_Tagging_Model_Feed</class>
+                        <method>observe</method>
+                    </nosto_tagging_controller_action_predispatch>
+                </observers>
+            </controller_action_predispatch>
+        </events>
     </adminhtml>
     <admin>
         <routers>

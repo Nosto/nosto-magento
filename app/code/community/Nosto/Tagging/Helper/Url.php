@@ -405,4 +405,17 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
             $url
         );
     }
+
+    /**
+     * Parses Nosto plug-in version from the url
+     * @param string $url
+     *
+     * @return string version.
+     */
+    public function parseExtensionVersionFromUrl($url)
+    {
+        $urlParts = parse_url($url);
+        $pathParts = explode('/', $urlParts['path']);
+        return array_pop($pathParts);
+    }
 }
