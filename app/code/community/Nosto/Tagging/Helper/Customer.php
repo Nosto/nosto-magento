@@ -48,6 +48,7 @@ class Nosto_Tagging_Helper_Customer extends Mage_Core_Helper_Abstract
         /** @var Nosto_Tagging_Model_Customer $customer */
         $customer = Mage::getModel('nosto_tagging/customer');
         $customer->load($order->getQuoteId(), 'quote_id');
+        /** @noinspection PhpUndefinedMethodInspection */
         return $customer->hasData('nosto_id') ? $customer->getNostoId() : false;
     }
 
@@ -58,6 +59,8 @@ class Nosto_Tagging_Helper_Customer extends Mage_Core_Helper_Abstract
      */
     public function updateNostoId()
     {
+        /** @var Mage_Core_Model_Date $dateHelper */
+        $dateHelper = Mage::getSingleton('core/date');
         /** @var Mage_Checkout_Model_Cart $cart */
         $cart = Mage::getModel('checkout/cart');
         /** @var Mage_Core_Model_Cookie $cookie */
@@ -74,14 +77,17 @@ class Nosto_Tagging_Helper_Customer extends Mage_Core_Helper_Abstract
                 ->addFieldToFilter('nosto_id', $nostoId)
                 ->setPageSize(1)
                 ->setCurPage(1)
-                ->getFirstItem();
+                ->getFirstItem(); // @codingStandardsIgnoreLine
+            /** @noinspection PhpUndefinedMethodInspection */
             if ($customer->hasData()) {
-                $customer->setUpdatedAt(date('Y-m-d H:i:s'));
+                $customer->setUpdatedAt($dateHelper->gmtDate());
                 $customer->save();
             } else {
+                $restoreCartHash = $this->generateRestoreCartHash();
                 $customer->setQuoteId($quoteId);
                 $customer->setNostoId($nostoId);
-                $customer->setCreatedAt(date('Y-m-d H:i:s'));
+                $customer->setRestoreCartHash($restoreCartHash);
+                $customer->setCreatedAt($dateHelper->gmtDate());
                 $customer->save();
             }
         }
@@ -91,18 +97,32 @@ class Nosto_Tagging_Helper_Customer extends Mage_Core_Helper_Abstract
      * Return the checksum / customer reference for customer
      *
      * @param Mage_Customer_Model_Customer $customer
-     *
      * @return string
      */
     public function generateCustomerReference(Mage_Customer_Model_Customer $customer)
     {
         /** @noinspection PhpUndefinedMethodInspection */
-        $hash = md5($customer->getId().$customer->getEmail());
+        $hash = md5($customer->getId() . $customer->getEmail()); // @codingStandardsIgnoreLine
         $uuid = uniqid(
             substr($hash, 0, 8),
             true
         );
 
         return $uuid;
+    }
+
+    /**
+     * Generate unique hash for restore cart
+     *
+     * @return string
+     */
+    public function generateRestoreCartHash()
+    {
+        $hash = hash(
+            Nosto_Tagging_Helper_Data::VISITOR_HASH_ALGO,
+            uniqid('nostocartrestore')
+        );
+
+        return $hash;
     }
 }

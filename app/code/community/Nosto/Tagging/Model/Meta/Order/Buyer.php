@@ -34,107 +34,17 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Order_Buyer extends Mage_Core_Model_Abstract implements NostoOrderBuyerInterface
+class Nosto_Tagging_Model_Meta_Order_Buyer extends Nosto_Object_Order_Buyer
 {
     /**
-     * @var string the first name of the user who placed the order.
-     */
-    protected $_firstName;
-
-    /**
-     * @var string the last name of the user who placed the order.
-     */
-    protected $_lastName;
-
-    /**
-     * @var string the email address of the user who placed the order.
-     */
-    protected $_email;
-
-    /**
-     * Constructor.
+     * Loads the order buyer from the given order.
      *
-     * Sets up this Value Object.
-     *
-     * @param array $args the object data.
+     * @param Mage_Sales_Model_Order $order the order from which to load the buyer
      */
-    public function __construct(array $args)
+    public function loadData(Mage_Sales_Model_Order $order)
     {
-        parent::__construct();
-        if (!isset($args['firstName']) || !is_string($args['firstName'])) {
-            Mage::log(
-                sprintf(
-                    '%s.firstName must be a string value',
-                    __CLASS__
-                ),
-                Zend_Log::WARN,
-                Nosto_Tagging_Model_Base::LOG_FILE_NAME
-            );
-            $args['firstName'] = '';
-        }
-        if (!isset($args['lastName']) || !is_string($args['lastName'])) {
-            Mage::log(
-                sprintf(
-                    '%s.lastName must be a string value',
-                    __CLASS__
-                ),
-                Zend_Log::WARN,
-                Nosto_Tagging_Model_Base::LOG_FILE_NAME
-            );
-            $args['lastName'] = '';
-        }
-        if (!isset($args['email']) || !is_string($args['email'])) {
-            Mage::log(
-                sprintf(
-                    '%s.email must be a string value',
-                    __CLASS__
-                ),
-                Zend_Log::WARN,
-                Nosto_Tagging_Model_Base::LOG_FILE_NAME
-            );
-            $args['email'] = '';
-        }
-
-        $this->_firstName = $args['firstName'];
-        $this->_lastName = $args['lastName'];
-        $this->_email = $args['email'];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function _construct()
-    {
-        $this->_init('nosto_tagging/meta_order_buyer');
-    }
-
-    /**
-     * Gets the first name of the user who placed the order.
-     *
-     * @return string the first name.
-     */
-    public function getFirstName()
-    {
-        return $this->_firstName;
-    }
-
-    /**
-     * Gets the last name of the user who placed the order.
-     *
-     * @return string the last name.
-     */
-    public function getLastName()
-    {
-        return $this->_lastName;
-    }
-
-    /**
-     * Gets the email address of the user who placed the order.
-     *
-     * @return string the email address.
-     */
-    public function getEmail()
-    {
-        return $this->_email;
+        $this->setFirstName($order->getCustomerFirstname());
+        $this->setLastName($order->getCustomerLastname());
+        $this->setEmail($order->getCustomerEmail());
     }
 }

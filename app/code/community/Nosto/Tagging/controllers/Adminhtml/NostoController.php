@@ -1,9 +1,9 @@
 <?php
 /**
  * Magento
- *  
+ *
  * NOTICE OF LICENSE
- *  
+ *
  * This source file is subject to the Open Software License (OSL 3.0)
  * that is bundled with this package in the file LICENSE.txt.
  * It is also available through the world-wide-web at this URL:
@@ -11,20 +11,22 @@
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
- *  
+ *
  * DISCLAIMER
- *  
+ *
  * Do not edit or add to this file if you wish to upgrade Magento to newer
  * versions in the future. If you wish to customize Magento for your
  * needs please refer to http://www.magentocommerce.com for more information.
- *  
+ *
  * @category  Nosto
  * @package   Nosto_Tagging
  * @author    Nosto Solutions Ltd <magento@nosto.com>
  * @copyright Copyright (c) 2013-2017 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-require_once __DIR__ . '/../../bootstrap.php';
+
+require_once __DIR__ . '/../../bootstrap.php'; // @codingStandardsIgnoreLine
+use Nosto_Tagging_Helper_Log as NostoLog;
 
 /**
  * Nosto admin controller.
@@ -58,11 +60,13 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
             $code = $this->getRequest()->getParam('message_code');
             $text = $this->getRequest()->getParam('message_text');
             if ($type !== null && $code !== null) {
-                $session->setData('nosto_message', array(
-                    'type' => $type,
-                    'code' => $code,
-                    'text' => $text,
-                ));
+                $session->setData(
+                    'nosto_message', array(
+                        'type' => $type,
+                        'code' => $code,
+                        'text' => $text,
+                    )
+                );
             }
         }
         $params = array();
@@ -104,14 +108,12 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
 
         $store = $this->getSelectedStore();
         if ($this->getRequest()->isPost() && $store !== null) {
-            /** @var Nosto_Tagging_Helper_Oauth $helper */
-            $helper = Mage::helper('nosto_tagging/oauth');
-            $client = new NostoOAuthClient(
-                $helper->getMetaData($store)
-            );
+            /** @var Nosto_Tagging_Model_Meta_Oauth $meta */
+            $meta = Mage::getModel('nosto_tagging/meta_oauth');
+            $meta->loadData($store);
             $responseBody = array(
                 'success' => true,
-                'redirect_url' => $client->getAuthorizationUrl(),
+                'redirect_url' => Nosto_Helper_OAuthHelper::getAuthorizationUrl($meta),
             );
         }
 
@@ -124,8 +126,8 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                     $store,
                     null, // connect attempt failed, so we have no account.
                     array(
-                        'message_type' => NostoMessage::TYPE_ERROR,
-                        'message_code' => NostoMessage::CODE_ACCOUNT_CONNECT,
+                        'message_type' => Nosto_Nosto::TYPE_ERROR,
+                        'message_code' => Nosto_Nosto::CODE_ACCOUNT_CONNECT,
                     )
                 )
             );
@@ -144,15 +146,14 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         /** @var Nosto_Tagging_Helper_Account $accountHelper */
         $accountHelper = Mage::helper('nosto_tagging/account');
         $store = $this->getSelectedStore();
-        $account = !is_null($store) ? $accountHelper->find($store) : null;
-        if ($this->getRequest()->isPost() && !is_null($store) && !is_null($account)) {
+        $account = $store !== null ? $accountHelper->find($store) : null;
+        if ($this->getRequest()->isPost() && $store !== null && $account !== null) {
             /** @var Nosto_Tagging_Model_Meta_Oauth $meta */
-            $meta = new Nosto_Tagging_Model_Meta_Oauth();
+            $meta = Mage::getModel('nosto_tagging/meta_oauth');
             $meta->loadData($store);
-            $client = new NostoOAuthClient($meta);
             $responseBody = array(
                 'success' => true,
-                'redirect_url' => $client->getAuthorizationUrl(),
+                'redirect_url' => Nosto_Helper_OAuthHelper::getAuthorizationUrl($meta),
             );
         }
         if (!isset($responseBody)) {
@@ -162,8 +163,8 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                     $store,
                     $account,
                     array(
-                        'message_type' => NostoMessage::TYPE_ERROR,
-                        'message_code' => NostoMessage::CODE_ACCOUNT_CONNECT,
+                        'message_type' => Nosto_Nosto::TYPE_ERROR,
+                        'message_code' => Nosto_Nosto::CODE_ACCOUNT_CONNECT,
                     )
                 )
             );
@@ -184,17 +185,31 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         $store = $this->getSelectedStore();
         if ($this->getRequest()->isPost() && $store !== null) {
             try {
-                $email = $this->getRequest()->getPost('email');
-                $details = $this->getRequest()->getPost('details');
-                $meta = $accountHelper->getMetaData($store);
-                if (Zend_Validate::is($email, 'EmailAddress')) {
-                    /** @noinspection PhpUndefinedMethodInspection */
-                    $meta->getOwner()->setEmail($email);
+                $signupDetails = $this->getRequest()->getPost('details');
+                if (!empty($signupDetails)) {
+                    $signupDetails = json_decode($signupDetails, true);
                 }
-                if (!empty($details)) {
-                   $meta->setDetails(json_decode($details));
+
+                $emailAddress = $this->getRequest()->getPost('email');
+                /** @var Nosto_Tagging_Model_Meta_Account_Owner $accountOwner */
+                $accountOwner = Mage::getModel('nosto_tagging/meta_account_owner');
+                $accountOwner->loadData();
+                if ($accountOwner->getEmail() !== $emailAddress) {
+                    if (\Zend_Validate::is($emailAddress, 'EmailAddress')) {
+                        $accountOwner->setFirstName(null);
+                        $accountOwner->setLastName(null);
+                        $accountOwner->setEmail($emailAddress);
+                    } else {
+                        throw new Nosto_NostoException("Invalid email address " . $emailAddress);
+                    }
                 }
-                $account = NostoAccount::create($meta);
+
+                /** @var Nosto_Tagging_Model_Meta_Account $signup */
+                $signup = Mage::getModel('nosto_tagging/meta_account');
+                $signup->loadData($store, $signupDetails, $accountOwner);
+
+                $operation = new Nosto_Operation_AccountSignup($signup);
+                $account = $operation->create();
                 if ($accountHelper->save($account, $store)) {
                     $accountHelper->updateCurrencyExchangeRates($account, $store);
                     $responseBody = array(
@@ -203,16 +218,14 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                             $store,
                             $account,
                             array(
-                                'message_type' => NostoMessage::TYPE_SUCCESS,
-                                'message_code' => NostoMessage::CODE_ACCOUNT_CREATE,
+                                'message_type' => Nosto_Nosto::TYPE_SUCCESS,
+                                'message_code' => Nosto_Nosto::CODE_ACCOUNT_CREATE,
                             )
                         )
                     );
                 }
-            } catch (NostoException $e) {
-                Mage::log(
-                    "\n" . $e->__toString(), Zend_Log::ERR, Nosto_Tagging_Model_Base::LOG_FILE_NAME
-                );
+            } catch (Nosto_NostoException$e) {
+                NostoLog::exception($e);
             }
         }
 
@@ -223,8 +236,8 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                     $store,
                     null, // account creation failed, so we have none.
                     array(
-                        'message_type' => NostoMessage::TYPE_ERROR,
-                        'message_code' => NostoMessage::CODE_ACCOUNT_CREATE,
+                        'message_type' => Nosto_Nosto::TYPE_ERROR,
+                        'message_code' => Nosto_Nosto::CODE_ACCOUNT_CREATE,
                     )
                 )
             );
@@ -243,7 +256,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         $adminSession = Mage::getSingleton('adminhtml/session');
         if (empty($storeId)) {
             $adminSession->addError(
-                'Nosto account could not be resetted due to a missing store'
+                'Nosto account could not be reset due to a missing store'
             );
             $this->_redirect('*/*/index');
 
@@ -254,16 +267,16 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         $accountHelper = Mage::helper('nosto_tagging/account');
         /* @var $store Mage_Core_Model_Store */
         $store = Mage::getModel('core/store')->load($storeId);
-        if ($store instanceof Mage_Core_Model_Store === false ) {
+        if ($store instanceof Mage_Core_Model_Store === false) {
             $adminSession->addError(
-                'Nosto account could not be resetted due to a invalid store id'
+                'Nosto account could not be reset due to an invalid store id'
             );
             $this->_redirect('*/*/index');
 
             return;
         }
         $nostoAccount = $accountHelper->find($store);
-        if ($nostoAccount instanceof NostoAccount == false) {
+        if ($nostoAccount instanceof Nosto_Object_Signup_Account == false) {
             $adminSession->addError(
                 'No Nosto account found for this store'
             );
@@ -272,16 +285,14 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
             return;
         }
 
-        $accountHelper->resetAccountSettings($nostoAccount, $store);
+        $accountHelper->resetAccountSettings($store);
         $adminSession->addSuccess(
-            'Nosto account settings successfully resetted. Please create new account or connect with existing Nosto account'
+            'Nosto account settings successfully reset. Please create new account or connect with existing Nosto account' // @codingStandardsIgnoreLine
         );
         $this->_redirect(
             'adminhtml/nosto/index/',
-            array('store'=>$store->getId())
+            array('store' => $store->getId())
         );
-
-        return;
     }
 
     /**
@@ -304,8 +315,8 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                         $store,
                         null, // we don't have an account anymore
                         array(
-                            'message_type' => NostoMessage::TYPE_SUCCESS,
-                            'message_code' => NostoMessage::CODE_ACCOUNT_DELETE,
+                            'message_type' => Nosto_Nosto::TYPE_SUCCESS,
+                            'message_code' => Nosto_Nosto::CODE_ACCOUNT_DELETE,
                         )
                     )
                 );
@@ -319,8 +330,8 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                     $store,
                     $accountHelper->find($store),
                     array(
-                        'message_type' => NostoMessage::TYPE_ERROR,
-                        'message_code' => NostoMessage::CODE_ACCOUNT_DELETE,
+                        'message_type' => Nosto_Nosto::TYPE_ERROR,
+                        'message_code' => Nosto_Nosto::CODE_ACCOUNT_DELETE,
                     )
                 )
             );
@@ -359,30 +370,30 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                 continue;
             }
             $account = $accountHelper->find($store);
-            if (is_null($account)) {
+            if ($account === null) {
                 continue;
             }
             if ($accountHelper->updateCurrencyExchangeRates($account, $store)) {
                 $responseBody['data'][] = array(
                     'type' => 'success',
-                    'message' => $helper->__(sprintf("The exchange rates have been updated for the %s store.", $store->getName()))
+                    'message' => $helper->__(sprintf("The exchange rates have been updated for the %s store.", $store->getName())) // @codingStandardsIgnoreLine
                 );
             } else {
                 $responseBody['data'][] = array(
                     'type' => 'error',
-                    'message' => $helper->__(sprintf("There was an error updating the exchange rates for the %s store.", $store->getName()))
+                    'message' => $helper->__(sprintf("There was an error updating the exchange rates for the %s store.", $store->getName())) // @codingStandardsIgnoreLine
                 );
             }
         }
         if ($countStores === $countStoresWithoutMultiCurrency) {
             $responseBody['data'][] = array(
                 'type' => 'error',
-                'message' => $helper->__("Failed to find any stores in the current scope with other currencies than the base currency configured.")
+                'message' => $helper->__("Failed to find any stores in the current scope with other currencies than the base currency configured.") // @codingStandardsIgnoreLine
             );
         } elseif (empty($responseBody['data'])) {
             $responseBody['data'][] = array(
                 'type' => 'error',
-                'message' => $helper->__("Nosto has not been installed in any of the stores in the current scope. Please make sure you have installed Nosto to at least one of your stores in the scope.")
+                'message' => $helper->__("Nosto has not been installed in any of the stores in the current scope. Please make sure you have installed Nosto to at least one of your stores in the scope.") // @codingStandardsIgnoreLine
             );
         }
         $this->getResponse()->setBody(json_encode($responseBody));
@@ -411,25 +422,26 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         $accountHelper = Mage::helper('nosto_tagging/account');
         foreach ($stores as $store) {
             $account = $accountHelper->find($store);
-            if (is_null($account)) {
+            if ($account === null) {
                 continue;
             }
+
             if ($accountHelper->updateAccount($account, $store)) {
                 $responseBody['data'][] = array(
                     'type' => 'success',
-                    'message' => $helper->__(sprintf("The account has been updated for the %s store.", $store->getName()))
+                    'message' => $helper->__(sprintf("The account has been updated for the %s store.", $store->getName()))// @codingStandardsIgnoreLine
                 );
             } else {
                 $responseBody['data'][] = array(
                     'type' => 'error',
-                    'message' => $helper->__(sprintf("There was an error updating the account for the %s store.", $store->getName()))
+                    'message' => $helper->__(sprintf("There was an error updating the account for the %s store.", $store->getName()))// @codingStandardsIgnoreLine
                 );
             }
         }
         if (empty($responseBody['data'])) {
             $responseBody['data'][] = array(
                 'type' => 'error',
-                'message' => $helper->__("Nosto has not been installed in any of the stores in the current scope. Please make sure you have installed Nosto to at least one of your stores in the scope.")
+                'message' => $helper->__("Nosto has not been installed in any of the stores in the current scope. Please make sure you have installed Nosto to at least one of your stores in the scope.")// @codingStandardsIgnoreLine
             );
         }
         $this->getResponse()->setBody(json_encode($responseBody));

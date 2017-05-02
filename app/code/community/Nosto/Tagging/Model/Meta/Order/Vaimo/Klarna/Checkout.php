@@ -25,6 +25,9 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+use Nosto_Tagging_Model_Meta_Cart_Builder as CartBuilder;
+use Nosto_Tagging_Helper_Log as NostoLog;
+
 /**
  * Meta data class which holds information about an order.
  * This is used during the order confirmation API request and the order
@@ -46,7 +49,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
      * Discount factor for the order
      * @var float
      */
-    protected $discountFactor;
+    protected $_discountFactor;
 
     /**
      * Required fields for Klarna order
@@ -64,85 +67,64 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
     /**
      * Loads the order data from a Magento quote model.
      *
-     * @throws NostoException
-     * @return bool
+     *
      * @param Mage_Sales_Model_Quote $quote the order model.
+     * @return bool
+     * @throws Exception
      */
     public function loadDataFromQuote(Mage_Sales_Model_Quote $quote)
     {
         $vaimoKlarnaOrder = null;
         /** @noinspection PhpUndefinedMethodInspection */
         $checkoutId = $quote->getKlarnaCheckoutId();
-        $this->_orderNumber = $checkoutId;
-        $this->_externalOrderRef = null;
-        $this->_createdDate = $quote->getCreatedAt();
-        $this->_orderStatus = Mage::getModel(
-            'nosto_tagging/meta_order_status',
-            array(
-                'code' => self::DEFAULT_ORDER_STATUS,
-                'label' => self::DEFAULT_ORDER_STATUS
-            )
-        );
+        $this->setOrderNumber($checkoutId);
+        $this->setCreatedAt(DateTime::createFromFormat('Y-m-d h:i:s', $quote->getCreatedAt()));
+        $orderStatus = new Nosto_Object_Order_OrderStatus();
+        $orderStatus->setCode(self::DEFAULT_ORDER_STATUS);
+        $orderStatus->setLabel(self::DEFAULT_ORDER_STATUS);
+        $this->setOrderStatus($orderStatus);
 
         $payment = $quote->getPayment();
         if (
             $payment instanceof Mage_Sales_Model_Quote_Payment
             && $payment->getMethod()
         ) {
-            $this->_paymentProvider = $payment->getMethod();
+            $this->setPaymentProvider($payment->getMethod());
         } else {
-            $this->_paymentProvider = 'unknown[from_vaimo_klarna_plugin]';
+            $this->setPaymentProvider('unknown[from_vaimo_klarna_plugin]');
         }
         /* @var Vaimo_Klarna_Model_Klarnacheckout $klarna */
         $klarna = Mage::getModel('klarna/klarnacheckout');
         if ($klarna instanceof Vaimo_Klarna_Model_Klarnacheckout === false) {
-            Nosto::throwException('No Vaimo_Klarna_Model_Klarnacheckout found');
+            Mage::throwException('No Vaimo_Klarna_Model_Klarnacheckout found');
         }
-        $buyer_attributes = array(
-            'firstName' => '',
-            'lastName' => '',
-            'email' => ''
-        );
         $klarna->setQuote($quote, Vaimo_Klarna_Helper_Data::KLARNA_METHOD_CHECKOUT);
         /** @noinspection PhpUndefinedMethodInspection */
         $vaimoKlarnaOrder = $klarna->getKlarnaOrderRaw($quote->getKlarnaCheckoutId());
         try {
             self::validateKlarnaOrder($vaimoKlarnaOrder);
-        } catch (NostoException $e) {
-            Mage::log(
-                sprintf(
-                    'Failed to validate VaimoKlarnaOrder. Error was %s',
-                    $e->getMessage()
-                )
-            );
-
+        } catch (Nosto_NostoException $e) {
+            NostoLog::exception($e);
             return false;
         }
         $vaimoKlarnaBilling = $vaimoKlarnaOrder['billing_address'];
+        $orderBuyer = new Nosto_Object_Order_Buyer();
         if (!empty($vaimoKlarnaBilling['given_name'])) {
-            $buyer_attributes['firstName'] = $vaimoKlarnaBilling['given_name'];
+            $orderBuyer->setFirstName($vaimoKlarnaBilling['given_name']);
         }
         if (!empty($vaimoKlarnaBilling['family_name'])) {
-            $buyer_attributes['lastName'] = $vaimoKlarnaBilling['family_name'];
+            $orderBuyer->setLastName($vaimoKlarnaBilling['family_name']);
         }
         if (!empty($vaimoKlarnaBilling['email'])) {
-            $buyer_attributes['email'] = $vaimoKlarnaBilling['email'];
+            $orderBuyer->setEmail($vaimoKlarnaBilling['email']);
         }
-        $this->_buyer = Mage::getModel(
-            'nosto_tagging/meta_order_buyer',
-            $buyer_attributes
-        );
+        $this->setCustomer($orderBuyer);
         try {
             $this->buildItemsFromQuote($quote);
         } catch (Exception $e) {
-            Mage::log(
-                sprintf(
-                    'Could not find klarnaCheckoutId from quote #%d. Error: %s',
-                    $quote->getId(),
-                    $e->getMessage()
-                ),
-                Zend_Log::ERR,
-                Nosto_Tagging_Model_Base::LOG_FILE_NAME
+            NostoLog::error(
+                'Could not find klarnaCheckoutId from quote #%d. Error: %s',
+                array($quote->getId(), $e->getMessage())
             );
         }
 
@@ -156,52 +138,33 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
      */
     public function buildItemsFromQuote(Mage_Sales_Model_Quote $quote)
     {
-        $discountFactor = $this->getDiscountFactor($quote);
+        $discountFactor = $this->calcDiscountFactor($quote);
+        $currencyCode = Mage::app()->getStore()->getCurrentCurrencyCode();
         /* @var Mage_Sales_Model_Quote_Item $quoteItem */
         foreach ($quote->getAllItems() as $quoteItem) {
+            $nostoItem = CartBuilder::buildItem($quoteItem, $currencyCode);
             if ($discountFactor && is_numeric($discountFactor)) {
-                $itemPrice = round($quoteItem->getPriceInclTax(),2)*$discountFactor;
+                $itemPrice = round($quoteItem->getPriceInclTax(), 2) * $discountFactor;
             } else {
                 $itemPrice = $quoteItem->getPriceInclTax();
             }
-            $itemArguments = array(
-                'productId' => $quoteItem->getProductId(),
-                'quantity' => $quoteItem->getQty(),
-                'name' => $quoteItem->getName(),
-                'unitPrice' => $itemPrice,
-                'currencyCode' => strtoupper($quote->getQuoteCurrencyCode())
-            );
-            $nostoItem = Mage::getModel(
-                'nosto_tagging/meta_order_item',
-                $itemArguments
-            );
-            $this->_items[] = $nostoItem;
+            $nostoItem->setPrice($itemPrice);
+            $this->addPurchasedItems($nostoItem);
         }
-        if ($this->includeSpecialItems) {
-            $appliedRuleIds = $quote->getAppliedRuleIds();
-            if ($appliedRuleIds) {
-                $ruleIds = explode(',',$quote->getAppliedRuleIds());
-                if (is_array($ruleIds)) {
-                    foreach ($ruleIds as $ruleId) {
-                        /* @var Mage_SalesRule_Model_Rule $discountRule */
-                        $discountRule = Mage::getModel('salesrule/rule')->load($ruleId);
-                        $name = sprintf(
-                            'Discount (%s)',
-                            $discountRule->getName()
-                        );
-                        $itemArguments = array(
-                            'productId' => -1,
-                            'quantity' => 1,
-                            'name' => $name,
-                            'unitPrice' => 0,
-                            'currencyCode' => strtoupper($quote->getQuoteCurrencyCode())
-                        );
-                        $nostoItem = Mage::getModel(
-                            'nosto_tagging/meta_order_item',
-                            $itemArguments
-                        );
-                        $this->_items[] = $nostoItem;
-                    }
+        $appliedRuleIds = $quote->getAppliedRuleIds();
+        if ($appliedRuleIds) {
+            $ruleIds = explode(',', $quote->getAppliedRuleIds());
+            if (is_array($ruleIds)) {
+                foreach ($ruleIds as $ruleId) {
+                    /* @var Mage_SalesRule_Model_Rule $discountRule */
+                    $discountRule = Mage::getModel('salesrule/rule')->load($ruleId); // @codingStandardsIgnoreLine
+                    $name = sprintf(
+                        'Discount (%s)',
+                        $discountRule->getName()
+                    );
+                    $discountItem = new Nosto_Object_Cart_LineItem();
+                    $discountItem->loadSpecialItemData($name, 0, $currencyCode);
+                    $this->addPurchasedItems($discountItem);
                 }
             }
         }
@@ -213,14 +176,15 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
      * @param Mage_Sales_Model_Quote $quote
      * @return float|int
      */
-    protected function getDiscountFactor(Mage_Sales_Model_Quote $quote) {
-        if (!$this->discountFactor) {
+    protected function calcDiscountFactor(Mage_Sales_Model_Quote $quote)
+    {
+        if (!$this->_discountFactor) {
             $totalPrice = $quote->getSubtotal();
             $discountedPrice = $quote->getSubtotalWithDiscount();
-            $this->discountFactor = $discountedPrice / $totalPrice;
+            $this->_discountFactor = $discountedPrice / $totalPrice;
         }
 
-        return $this->discountFactor;
+        return $this->_discountFactor;
     }
 
     /**
@@ -230,11 +194,11 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
      */
     public function loadOrderByKlarnaCheckoutId($klarnaCheckoutId)
     {
-        /* @var Vaimo_Klarna_Helper_Data $klarna_helper */
-        $klarna_helper = Mage::helper('klarna');
-        if ($klarna_helper instanceof Vaimo_Klarna_Helper_Data) {
+        /* @var Vaimo_Klarna_Helper_Data $klarnaHelper */
+        $klarnaHelper = Mage::helper('klarna');
+        if ($klarnaHelper instanceof Vaimo_Klarna_Helper_Data) {
             /* @var $quote Mage_Sales_Model_Quote */
-            $quote = $klarna_helper->findQuote($klarnaCheckoutId);
+            $quote = $klarnaHelper->findQuote($klarnaCheckoutId);
             if ($quote instanceof Mage_Sales_Model_Quote) {
                 /* @var $order Mage_Sales_Model_Order */
                 $salesOrderModel = Mage::getModel('sales/order');
@@ -262,7 +226,9 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
      */
     public function loadData(Mage_Sales_Model_Order $order)
     {
-        $store = Mage::getSingleton('core/store')->load($order->store_id);
+        /** @var Mage_Core_Model_Store $storeModel */
+        $storeModel = Mage::getSingleton('core/store');
+        $store = $storeModel->load($order->getStoreId());
         /* @var Mage_Sales_Model_Quote $quoteModel */
         $quoteModel = Mage::getModel('sales/quote');
         $quote = $quoteModel->setStore($store)->load($order->getQuoteId());
@@ -271,16 +237,12 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
         $klarnaCheckoutId = $quote->getKlarnaCheckoutId();
         if (empty($klarnaCheckoutId)) {
             /** @noinspection PhpUndefinedMethodInspection */
-            Mage::log(
-                sprintf(
-                    'Could not find klarnaCheckoutId from quote #%d',
-                    $order->quoteId()
-                ),
-                Zend_Log::ERR,
-                Nosto_Tagging_Model_Base::LOG_FILE_NAME
+            NostoLog::error(
+                'Could not find klarnaCheckoutId from quote #%d',
+                array($order->quoteId())
             );
         } else {
-            $this->_orderNumber = $klarnaCheckoutId;
+            $this->setOrderNumber($klarnaCheckoutId);
         }
     }
 
@@ -301,15 +263,15 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
      * @param $type
      * @param $entity
      * @return bool
+     * @throws Exception
+     * @suppress PhanTypeArraySuspicious
      */
     public static function validateKlarnaEntity($type, $entity)
     {
         $rules = sprintf('requiredFieldsFor%s', ucfirst($type));
         $empty = false;
         foreach (self::$$rules as $field) {
-            if (
-                is_object($entity)
-            ) {
+            if (is_object($entity)) {
                 if (get_class($entity) === 'Varien_Object') {
                     /** @noinspection PhpUndefinedMethodInspection */
                     $val = $entity->get($field);
@@ -328,12 +290,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
                 }
             }
             if ($empty === true) {
-                Nosto::throwException(
-                    sprintf(
-                        'Cannot create item - empty %s',
-                        $field
-                    )
-                );
+                Mage::throwException(sprintf('Cannot create item - empty %s', $field));
             }
         }
 

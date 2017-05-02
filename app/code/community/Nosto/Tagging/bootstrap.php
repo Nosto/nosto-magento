@@ -25,8 +25,12 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-/** @noinspection PhpIncludeInspection */
-require_once Mage::getBaseDir('lib') . '/nosto/php-sdk/src/config.inc.php';
-
 $version = (string)Mage::getConfig()->getNode('modules/Nosto_Tagging/version');
-NostoHttpRequest::buildUserAgent('Magento', Mage::getVersion(), $version);
+Nosto_Request_Http_HttpRequest::buildUserAgent('Magento', Mage::getVersion(), $version);
+
+if (file_exists(dirname(__FILE__) . DIRECTORY_SEPARATOR . '.env')) {
+    $dotenv = new Dotenv_Dotenv(
+        dirname(__FILE__)
+    ); // @codingStandardsIgnoreLine
+    $dotenv->load();
+}

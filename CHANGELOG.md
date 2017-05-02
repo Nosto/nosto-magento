@@ -1,5 +1,8 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.0.0
+* 
+
 ### 2.11.3
 * Remove price formatting from product prices
 * Implement method for loading exchange rates into the collection

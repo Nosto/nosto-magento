@@ -34,6 +34,7 @@ use Nosto_Tagging_Helper_Rating as RatingHelper;
  * @category Nosto
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
+ * @suppress PhanUnreferencedClass
  */
 class Nosto_Tagging_Model_System_Config_Source_Ratings_Provider
 {
@@ -53,7 +54,7 @@ class Nosto_Tagging_Model_System_Config_Source_Ratings_Provider
                 'label' => 'Not in use'
             )
         );
-        foreach ($ratingProviders as $key=>$ratingProvider) {
+        foreach ($ratingProviders as $key => $ratingProvider) {
             $option = array(
                 'value' => $key,
                 'label' => $ratingProvider[RatingHelper::FIELD_DESCRIPTION]

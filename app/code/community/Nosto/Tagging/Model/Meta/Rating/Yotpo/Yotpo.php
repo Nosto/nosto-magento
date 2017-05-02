@@ -25,6 +25,8 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+use Nosto_Tagging_Helper_Log as NostoLog;
+
 /**
  * Meta data class which holds information about an order.
  * This is used during the order confirmation API request and the order
@@ -41,7 +43,7 @@ class Nosto_Tagging_Model_Meta_Rating_Yotpo_Yotpo extends Nosto_Tagging_Model_Me
      *
      * @var Mage_Catalog_Model_Product|null
      */
-    protected $originalRegistryProduct;
+    protected $_originalRegistryProduct;
 
     /**
      * The name of the registry entry for product
@@ -51,10 +53,7 @@ class Nosto_Tagging_Model_Meta_Rating_Yotpo_Yotpo extends Nosto_Tagging_Model_Me
     /**
      * @inheritdoc
      */
-    public function init(
-        Mage_Catalog_Model_Product $product,
-        Mage_Core_Model_Store $store
-    ) {
+    public function init(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store) { // @codingStandardsIgnoreLine
         try {
             $this->setRegistryProduct($product);
             /* @var Yotpo_Yotpo_Helper_RichSnippets $yotpoHelper */
@@ -71,13 +70,9 @@ class Nosto_Tagging_Model_Meta_Rating_Yotpo_Yotpo extends Nosto_Tagging_Model_Me
                 }
             }
         } catch (Exception $e) {
-            Mage::log(
-                sprintf(
-                    'Could not find Yotpo helper. Error was: %s',
-                    $e->getMessage()
-                ),
-                Zend_Log::ERR,
-                Nosto_Tagging_Model_Base::LOG_FILE_NAME
+            NostoLog::error(
+                'Could not find Yotpo helper. Error was: %s',
+                array($e->getMessage())
             );
         }
         $this->resetRegistryProduct();
@@ -90,7 +85,7 @@ class Nosto_Tagging_Model_Meta_Rating_Yotpo_Yotpo extends Nosto_Tagging_Model_Me
      */
     protected function setRegistryProduct(Mage_Catalog_Model_Product $product)
     {
-        $this->originalRegistryProduct = Mage::registry(self::REGISTRY_PRODUCT);
+        $this->_originalRegistryProduct = Mage::registry(self::REGISTRY_PRODUCT);
         Mage::unregister(self::REGISTRY_PRODUCT);
         Mage::register(self::REGISTRY_PRODUCT, $product);
     }
@@ -101,6 +96,6 @@ class Nosto_Tagging_Model_Meta_Rating_Yotpo_Yotpo extends Nosto_Tagging_Model_Me
     protected function resetRegistryProduct()
     {
         Mage::unregister(self::REGISTRY_PRODUCT);
-        Mage::register(self::REGISTRY_PRODUCT, $this->originalRegistryProduct);
+        Mage::register(self::REGISTRY_PRODUCT, $this->_originalRegistryProduct);
     }
 }

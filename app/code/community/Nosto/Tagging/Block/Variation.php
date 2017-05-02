@@ -35,11 +35,6 @@
 class Nosto_Tagging_Block_Variation extends Mage_Core_Block_Template
 {
     /**
-     * @var string variationId
-     */
-    protected $_variationId;
-
-    /**
      * Render variation string as hidden meta data if the module is enabled for
      * the current store.
      *
@@ -65,8 +60,7 @@ class Nosto_Tagging_Block_Variation extends Mage_Core_Block_Template
      */
     public function getVariationId()
     {
-        $store = Mage::app()->getStore();
-        return $store->getCurrentCurrencyCode();
+        return Mage::app()->getStore()->getCurrentCurrencyCode();
     }
 
     /**
@@ -78,8 +72,7 @@ class Nosto_Tagging_Block_Variation extends Mage_Core_Block_Template
     {
         /** @var Nosto_Tagging_Helper_Data $helper */
         $helper = Mage::helper('nosto_tagging');
-        $store = Mage::app()->getStore();
 
-        return $helper->isMultiCurrencyMethodExchangeRate($store);
+        return $helper->isMultiCurrencyMethodExchangeRate(Mage::app()->getStore());
     }
 }
