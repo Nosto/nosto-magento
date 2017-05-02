@@ -69,6 +69,14 @@ if (!$installer->getConnection()->isTableExists($installer->getTable('nosto_tagg
                 'nullable' => true
             )
         )
+        ->addColumn(
+            Nosto_Tagging_Helper_Data::NOSTO_TAGGING_RESTORE_CART_ATTRIBUTE,
+            Varien_Db_Ddl_Table::TYPE_TEXT,
+            Nosto_Tagging_Helper_Data::NOSTO_TAGGING_RESTORE_CART_ATTRIBUTE_LENGTH,
+            array(
+                'nullable' => true
+            )
+        )
         ->addIndex(
             $installer->getIdxName(
                 'nosto_tagging/customer', array('quote_id', 'nosto_id'),

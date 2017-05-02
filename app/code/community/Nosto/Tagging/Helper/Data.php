@@ -116,6 +116,11 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const NOSTO_TAGGING_RESTORE_CART_ATTRIBUTE = 'restore_cart_hash';
 
     /**
+     * @var int The length of the restore cart attribute
+     */
+    const NOSTO_TAGGING_RESTORE_CART_ATTRIBUTE_LENGTH = 64;
+
+    /**
      * @var string Nosto customer reference attribute name
      */
     const XML_PATH_EXCHANGE_RATE_CRON_FREQUENCY = 'nosto_tagging/scheduled_currency_exchange_rate_update/frequency';
