@@ -140,6 +140,11 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_RATING_PROVIDER = 'nosto_tagging/ratings_and_reviews/provider';
 
     /**
+     * The release candidate version. Set to null for stable.
+     */
+    const NOSTO_RC_VERSION = 5;
+
+    /**
      * List of strings to remove from the default Nosto account title
      *
      * @var array
@@ -528,6 +533,21 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         }
 
         return $values;
+    }
+
+    /**
+     * Returns the version of Nosto extension
+     *
+     * @return string
+     */
+    public function getExtensionVersion()
+    {
+        $version = (string)Mage::getConfig()->getNode('modules/Nosto_Tagging/version');
+        if (self::NOSTO_RC_VERSION) {
+            $version .= sprintf('-RC%d', self::NOSTO_RC_VERSION);
+        }
+
+        return $version;
     }
 }
 

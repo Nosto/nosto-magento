@@ -59,7 +59,10 @@ class Nosto_Tagging_Block_Meta extends Mage_Core_Block_Template
      */
     public function getVersionModule()
     {
-        return (string)Mage::getConfig()->getNode('modules/Nosto_Tagging/version');
+        /* @var Nosto_Tagging_Helper_Data $nostoHelper */
+        $nostoHelper = Mage::helper('nosto_tagging');
+
+        return $nostoHelper->getExtensionVersion();
     }
 
     /**
