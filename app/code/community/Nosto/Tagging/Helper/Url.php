@@ -52,6 +52,11 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
     const MAGENTO_URL_OPTION_STORE = '_store';
 
     /**
+     * The array option key for using secure URLs in Magento
+     */
+    const MAGENTO_URL_OPTION_SECURE = '_secure';
+
+    /**
      * The array option key for store to url in Magento's URLs
      */
     const MAGENTO_URL_OPTION_STORE_TO_URL = '_store_to_url';
@@ -468,15 +473,13 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
      * Gets the absolute URL to the add to cart controller
      *
      * @param Mage_Core_Model_Store $store the store to get the url for.
+     * 
      * @return string the url.
-     * @internal param array $additionalParams
      */
-    public function getAddToCartUrl(
-        Mage_Core_Model_Store $store
-    )
+    public function getAddToCartUrl(Mage_Core_Model_Store $store)
     {
         $defaultParams = $this->getUrlOptionsWithNoSid($store);
-        $defaultParams['_secure'] = 1;
+        $defaultParams[self::MAGENTO_URL_OPTION_SECURE] = 1;
         $url = Mage::getUrl(
             self::MAGENTO_ADD_TO_CART_PATH,
             $defaultParams
