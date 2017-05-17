@@ -178,8 +178,8 @@ class Nosto_Tagging_Model_Observer
             /** @var Nosto_Tagging_Helper_Account $accountHelper */
             $accountHelper = Mage::helper('nosto_tagging/account');
             $error = false;
+            /** @var Mage_Core_Model_Store $store */
             foreach (Mage::app()->getStores() as $store) {
-                /** @var Mage_Core_Model_Store $store */
                 if (
                     !$helper->isScheduledCurrencyExchangeRateUpdateEnabled($store)
                     || !$helper->isMultiCurrencyMethodExchangeRate($store)

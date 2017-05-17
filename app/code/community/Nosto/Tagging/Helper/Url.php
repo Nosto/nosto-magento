@@ -91,6 +91,11 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
     const MAGENTO_PATH_CART = 'checkout/cart';
 
     /**
+     * Path to Magento's add to cart controller
+     */
+    const MAGENTO_ADD_TO_CART_PATH = 'checkout/cart/add';
+
+    /**
      * Path to Nosto's restore cart controller
      */
     const NOSTO_PATH_RESTORE_CART = 'nosto/restoreCart';
@@ -458,4 +463,26 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
 
         return $url;
     }
+
+    /**
+     * Gets the absolute URL to the add to cart controller
+     *
+     * @param Mage_Core_Model_Store $store the store to get the url for.
+     * @return string the url.
+     * @internal param array $additionalParams
+     */
+    public function getAddToCartUrl(
+        Mage_Core_Model_Store $store
+    )
+    {
+        $defaultParams = $this->getUrlOptionsWithNoSid($store);
+        $defaultParams['_secure'] = 1;
+        $url = Mage::getUrl(
+            self::MAGENTO_ADD_TO_CART_PATH,
+            $defaultParams
+        );
+
+        return $url;
+    }
+
 }
