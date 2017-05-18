@@ -8,6 +8,7 @@ Major changes
 * Introduce "pearify" to generate (rename) autoloadable classes from 3rd party libraries / composer packages
    
 Bugfixes and enhancements
+* Fix the add to cart function to respect the store's secure (https) settings
 * Fix the order handling to support multiple Klarna extensions
 * Fix custom attribute handling for arrays
 * Fix displaying the exchange rate cron drop down
