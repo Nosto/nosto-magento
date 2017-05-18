@@ -274,7 +274,6 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         $this->_categories = $this->buildCategories($product);
 
         // Optional properties.
-
         if ($product->hasData('short_description')) {
             $this->_shortDescription = $product->getData('short_description');
         }
@@ -585,14 +584,15 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Tagging_Model_Base implemen
         /** @var Nosto_Tagging_Helper_Data $helper */
         $helper = Mage::helper('nosto_tagging');
         $categoryCollection = $product->getCategoryCollection();
+        $categoryCollection->addAttributeToFilter('is_active', 1);
         foreach ($categoryCollection as $category) {
             $categoryString = $helper->buildCategoryString($category);
             if (!empty($categoryString)) {
                 $data[] = $categoryString;
             }
         }
-        
-        return array_unique($data);
+
+        return array_values(array_unique($data));
     }
 
     /**
