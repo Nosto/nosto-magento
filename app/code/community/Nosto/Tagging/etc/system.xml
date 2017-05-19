@@ -30,15 +30,15 @@
         <nosto_tagging translate="label">
             <label>Nosto</label>
             <tab>service</tab>
-            <sort_order>500</sort_order>
+            <sort_order>10</sort_order>
             <show_in_default>1</show_in_default>
             <show_in_website>1</show_in_website>
             <show_in_store>1</show_in_store>
             <groups>
                 <general>
-                    <label>General</label>
+                    <label>Advanced settings</label>
                     <frontend_type>text</frontend_type>
-                    <sort_order>10</sort_order>
+                    <sort_order>90</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
@@ -46,6 +46,7 @@
                     <fields>
                         <use_product_api translate="label">
                             <label>Real-time product updates to Nosto</label>
+                            <comment>Set this to no if you don't want to send real-time product updates to Nosto via API</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>10</sort_order>
@@ -53,6 +54,42 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </use_product_api>
+                    </fields>
+                    <fields>
+                        <use_skus translate="label">
+                            <label>Send SKU / variation data to Nosto</label>
+                            <comment>Set this to no if you don't need product variations in recommendations</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </use_skus>
+                    </fields>
+                    <fields>
+                        <use_alternate_images translate="label">
+                            <label>Send alternative images to Nosto</label>
+                            <comment>Set this to no if you don't need multiple image URLs in product recommendations</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </use_alternate_images>
+                    </fields>
+                    <fields>
+                        <use_inventory_level translate="label">
+                            <label>Send inventory level to Nosto (API only)</label>
+                            <comment>Set this to no if you don't need inventory level for product recommendation filtering. Please note that "Real-time product updates to Nosto" must be set to yes if you want to use inventory level.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </use_inventory_level>
                     </fields>
                 </general>
                 <currency_formats translate="label">

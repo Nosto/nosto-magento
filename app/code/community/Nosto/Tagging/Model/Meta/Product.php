@@ -125,9 +125,15 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         $this->amendAttributeTags($product, $store);
         $this->amendReviews($product, $store);
         $this->amendCustomizableAttributes($product, $store);
-        $this->amendAlternativeImages($product, $store);
-        $this->amendInventoryLevel($product);
-        $this->amendSkus($product, $store);
+        if ($dataHelper->getUseAlternateImages($store)) {
+            $this->amendAlternativeImages($product, $store);
+        }
+        if ($dataHelper->getUseInventoryLevel($store)) {
+            $this->amendInventoryLevel($product);
+        }
+        if ($dataHelper->getUseSkus($store)) {
+            $this->amendSkus($product, $store);
+        }
     }
 
     /**

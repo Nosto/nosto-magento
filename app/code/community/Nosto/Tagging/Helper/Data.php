@@ -86,9 +86,24 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const MULTI_CURRENCY_DISABLED = 'disabled';
 
     /**
-     * Path to store config for using the product API or not.
+     * Path to store config for using the product API or not
      */
     const XML_PATH_USE_PRODUCT_API = 'nosto_tagging/general/use_product_api';
+
+    /**
+     * Path to store config for using SKUs
+     */
+    const XML_PATH_USE_SKUS = 'nosto_tagging/general/use_skus';
+
+    /**
+     * Path to store config for alternate images
+     */
+    const XML_PATH_USE_ALTERNATE_IMAGES = 'nosto_tagging/general/use_alternate_images';
+
+    /**
+     * Path to store config for using inventory level
+     */
+    const XML_PATH_USE_INVENTORY_LEVEL = 'nosto_tagging/general/use_inventory_level';
 
     /**
      * @var boolean the path for setting for product urls
@@ -435,15 +450,47 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Returns product updates should be sent via API to Nosto
+     * Returns on/off setting for product API
      *
      * @param Mage_Core_Model_Store|null $store the store model or null.
      * @return boolean
      */
     public function getUseProductApi($store = null)
     {
-        $useApi = (bool)Mage::getStoreConfig(self::XML_PATH_USE_PRODUCT_API, $store);
-        return $useApi;
+        return (bool)Mage::getStoreConfig(self::XML_PATH_USE_PRODUCT_API, $store);
+    }
+
+    /**
+     * Returns on/off setting for SKUs
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     * @return boolean
+     */
+    public function getUseSkus($store = null)
+    {
+        return (bool)Mage::getStoreConfig(self::XML_PATH_USE_SKUS, $store);
+    }
+
+    /**
+     * Returns on/off setting for alternate image urls
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     * @return boolean
+     */
+    public function getUseAlternateImages($store = null)
+    {
+        return (bool)Mage::getStoreConfig(self::XML_PATH_USE_ALTERNATE_IMAGES, $store);
+    }
+
+    /**
+     * Returns on/off setting for inventory level
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     * @return boolean
+     */
+    public function getUseInventoryLevel($store = null)
+    {
+        return (bool)Mage::getStoreConfig(self::XML_PATH_USE_INVENTORY_LEVEL, $store);
     }
 
     /**

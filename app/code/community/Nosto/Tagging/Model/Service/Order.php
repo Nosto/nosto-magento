@@ -52,21 +52,26 @@ class Nosto_Tagging_Model_Service_Order
      */
     public function confirm(Mage_Sales_Model_Order $mageOrder)
     {
-        /** @var Nosto_Tagging_Helper_Class $helper */
-        $helper = Mage::helper('nosto_tagging/class');
+        /** @var Nosto_Tagging_Helper_Data $dataHelper */
+        $dataHelper = Mage::helper('nosto_tagging');
+        /** @var Nosto_Tagging_Helper_Class $classHelper */
+        $classHelper = Mage::helper('nosto_tagging/class');
         /** @var Nosto_Tagging_Model_Meta_Order $order */
-        $order = $helper->getOrderClass($mageOrder);
+        $order = $classHelper->getOrderClass($mageOrder);
         $order->loadData($mageOrder);
         /** @var Nosto_Tagging_Helper_Account $helper */
-        $helper = Mage::helper('nosto_tagging/account');
-        $account = $helper->find($mageOrder->getStore());
+        $classHelper = Mage::helper('nosto_tagging/account');
+        $store = $mageOrder->getStore();
+        $account = $classHelper->find($store);
         /** @var Nosto_Tagging_Helper_Customer $helper */
-        $helper = Mage::helper('nosto_tagging/customer');
-        $customerId = $helper->getNostoId($mageOrder);
+        $classHelper = Mage::helper('nosto_tagging/customer');
+        $customerId = $classHelper->getNostoId($mageOrder);
         if ($account !== null && $account->isConnectedToNosto()) {
             $operation = new Nosto_Operation_OrderConfirm($account);
             $operation->send($order, $customerId);
-            $this->syncInventoryLevel($order);
+            if ($dataHelper->getUseInventoryLevel($store)) {
+                $this->syncInventoryLevel($order);
+            }
         }
 
         return true;

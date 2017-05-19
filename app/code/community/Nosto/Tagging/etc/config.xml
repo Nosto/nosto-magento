@@ -184,6 +184,9 @@
         <nosto_tagging>
             <general>
                 <use_product_api>1</use_product_api>
+                <use_skus>1</use_skus>
+                <use_alternate_images>1</use_alternate_images>
+                <use_inventory_level>1</use_inventory_level>
             </general>
             <image_options>
                 <image_version>image</image_version>
