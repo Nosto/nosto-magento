@@ -5,6 +5,7 @@ Major changes
 * Refactor the codebase to use Nosto PHP SDK version 3.0.0
 * Add support for restore cart link and create cart restore functionality
 * Add support for product variations (SKUs)
+* Possibility to enable / disable Nosto features from advanced settings
 * Introduce "pearify" to generate (rename) autoloadable classes from 3rd party libraries / composer packages
    
 Bugfixes and enhancements
