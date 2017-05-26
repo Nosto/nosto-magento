@@ -15,6 +15,9 @@ Bugfixes and enhancements
 * Fix displaying the exchange rate cron drop down
 * Refactor signup and oauth to use ready implementations from SDK
 
+### 2.11.4
+* Fix the array keys in category building
+* Include only active categories into tagging
 
 ### 2.11.3
 * Remove price formatting from product prices
