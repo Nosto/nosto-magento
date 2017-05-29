@@ -37,6 +37,8 @@
  * @method string getUpdatedAt()
  * @method void setCreatedAt($createdAt)
  * @method string getCreatedAt()
+ * @method void setRestoreCartHash($restoreCartHash)
+ * @method string getRestoreCartHash()
  *
  * @category Nosto
  * @package  Nosto_Tagging

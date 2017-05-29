@@ -67,7 +67,8 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Path to store config scheduled currency exchange rate update enabled setting.
      */
-    const XML_PATH_SCHEDULED_CURRENCY_EXCHANGE_RATE_UPDATE_ENABLED = 'nosto_tagging/scheduled_currency_exchange_rate_update/enabled';
+    const XML_PATH_SCHEDULED_CURRENCY_EXCHANGE_RATE_UPDATE_ENABLED
+        = 'nosto_tagging/scheduled_currency_exchange_rate_update/enabled';
 
     /**
      * Multi currency method option for currency exchange rates.
@@ -85,9 +86,24 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const MULTI_CURRENCY_DISABLED = 'disabled';
 
     /**
-     * Path to store config for using the product API or not.
+     * Path to store config for using the product API or not
      */
     const XML_PATH_USE_PRODUCT_API = 'nosto_tagging/general/use_product_api';
+
+    /**
+     * Path to store config for using SKUs
+     */
+    const XML_PATH_USE_SKUS = 'nosto_tagging/general/use_skus';
+
+    /**
+     * Path to store config for alternate images
+     */
+    const XML_PATH_USE_ALTERNATE_IMAGES = 'nosto_tagging/general/use_alternate_images';
+
+    /**
+     * Path to store config for using inventory level
+     */
+    const XML_PATH_USE_INVENTORY_LEVEL = 'nosto_tagging/general/use_inventory_level';
 
     /**
      * @var boolean the path for setting for product urls
@@ -110,9 +126,23 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const NOSTO_CUSTOMER_REFERENCE_ATTRIBUTE_NAME = 'nosto_customer_reference';
 
     /**
+     * @var string Attribute name for restore cart hash
+     */
+    const NOSTO_TAGGING_RESTORE_CART_ATTRIBUTE = 'restore_cart_hash';
+
+    /**
+     * @var int The length of the restore cart attribute
+     */
+    const NOSTO_TAGGING_RESTORE_CART_ATTRIBUTE_LENGTH = 64;
+
+    /**
      * @var string Nosto customer reference attribute name
      */
     const XML_PATH_EXCHANGE_RATE_CRON_FREQUENCY = 'nosto_tagging/scheduled_currency_exchange_rate_update/frequency';
+
+    const TAG1 = 'tag1';
+    const TAG2 = 'tag2';
+    const TAG3 = 'tag3';
 
     /**
      * Path to store attribute map
@@ -123,6 +153,11 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      * Path to store rating provider
      */
     const XML_PATH_RATING_PROVIDER = 'nosto_tagging/ratings_and_reviews/provider';
+
+    /**
+     * The release candidate version. Set to null for stable.
+     */
+    const NOSTO_RC_VERSION = null;
 
     /**
      * List of strings to remove from the default Nosto account title
@@ -138,21 +173,21 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      *
      * @var array
      */
-    public static $validTags = array(
-        'tag1',
-        'tag2',
-        'tag3'
-    );
+    public static $validTags = array(self::TAG1, self::TAG2, self::TAG3);
 
     /**
-     * @inheritdoc
+     * Escape quotes inside html attributes.
+     *
+     * @param string $data the data to be escaped
+     * @param bool $addSlashes false for escaping js that inside html attribute
+     * @return string the escaped data
      */
     public function quoteEscape($data, $addSlashes = false)
     {
         if ($addSlashes === true) {
             $data = addslashes($data); //@codingStandardsIgnoreLine
         }
-        return htmlspecialchars($data, ENT_QUOTES, null, false);
+        return htmlspecialchars($data, ENT_QUOTES, 'UTF-8', false);
     }
 
     /**
@@ -201,7 +236,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         $installationId = Mage::getStoreConfig(self::XML_PATH_INSTALLATION_ID);
         if (empty($installationId)) {
             // Running bin2hex() will make the ID string length 64 characters.
-            $installationId = bin2hex(NostoCryptRandom::getRandomString(32));
+            $installationId = Mage::helper('core')->getRandomString($length = 64);
             /** @var Mage_Core_Model_Config $config */
             $config = Mage::getModel('core/config');
             $config->saveConfig(
@@ -212,6 +247,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
             $helper = Mage::helper('nosto_tagging/cache');
             $helper->flushConfigCache();
         }
+
         return $installationId;
     }
 
@@ -236,7 +272,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getUsePrettyProductUrls($store = null)
     {
-         return Mage::getStoreConfig(self::XML_PATH_PRETTY_URL, $store);
+        return Mage::getStoreConfig(self::XML_PATH_PRETTY_URL, $store);
     }
 
     /**
@@ -326,7 +362,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Return the checksum for visitor
      *
-     * @return string
+     * @return string|null
      */
     public function getVisitorChecksum()
     {
@@ -414,15 +450,47 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Returns product updates should be sent via API to Nosto
+     * Returns on/off setting for product API
      *
      * @param Mage_Core_Model_Store|null $store the store model or null.
      * @return boolean
      */
     public function getUseProductApi($store = null)
     {
-        $useApi = (bool)Mage::getStoreConfig(self::XML_PATH_USE_PRODUCT_API, $store);
-        return $useApi;
+        return (bool)Mage::getStoreConfig(self::XML_PATH_USE_PRODUCT_API, $store);
+    }
+
+    /**
+     * Returns on/off setting for SKUs
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     * @return boolean
+     */
+    public function getUseSkus($store = null)
+    {
+        return (bool)Mage::getStoreConfig(self::XML_PATH_USE_SKUS, $store);
+    }
+
+    /**
+     * Returns on/off setting for alternate image urls
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     * @return boolean
+     */
+    public function getUseAlternateImages($store = null)
+    {
+        return (bool)Mage::getStoreConfig(self::XML_PATH_USE_ALTERNATE_IMAGES, $store);
+    }
+
+    /**
+     * Returns on/off setting for inventory level
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     * @return boolean
+     */
+    public function getUseInventoryLevel($store = null)
+    {
+        return (bool)Mage::getStoreConfig(self::XML_PATH_USE_INVENTORY_LEVEL, $store);
     }
 
     /**
@@ -441,22 +509,19 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Return the attributes to be tagged in Nosto tags
      *
-     * @param string $tag_id the name / identifier of the tag (e.g. tag1, tag2).
+     * @param string $tagId the name / identifier of the tag (e.g. tag1, tag2).
      * @param Mage_Core_Model_Store|null $store the store model or null.
      *
-     * @throws NostoException
-     *
+     * @throws Nosto_NostoException
      * @return array
      */
-    public function getAttributesToTag($tag_id, $store = null)
+    public function getAttributesToTag($tagId, $store = null)
     {
-        if (!in_array($tag_id, self::$validTags)) {
-            throw new NostoException(
-                sprintf('Invalid tag identifier %s', $tag_id)
-            );
+        if (!in_array($tagId, self::$validTags)) {
+            throw new Nosto_NostoException(sprintf('Invalid tag identifier %s', $tagId));
         }
-        $tag_path = self::XML_PATH_CUSTOM_TAGS . $tag_id;
-        $tags = Mage::getStoreConfig($tag_path, $store);
+        $tagPath = self::XML_PATH_CUSTOM_TAGS . $tagId;
+        $tags = Mage::getStoreConfig($tagPath, $store);
         return explode(',', $tags);
     }
 
@@ -475,13 +540,14 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Returns all store views for the installation
      *
-     * @return Store[]
+     * @return Mage_Core_Model_Store[]
      */
     public function getAllStoreViews()
     {
         $response = array();
+        /** @var Mage_Core_Model_Website $website */
         foreach (Mage::app()->getWebsites() as $website) {
-            /** @noinspection PhpUndefinedMethodInspection */
+            /** @var Mage_Core_Model_Store_Group $group */
             foreach ($website->getGroups() as $group) {
                 /** @noinspection PhpUndefinedMethodInspection */
                 $stores = $group->getStores();
@@ -514,6 +580,21 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         }
 
         return $values;
+    }
+
+    /**
+     * Returns the version of Nosto extension
+     *
+     * @return string
+     */
+    public function getExtensionVersion()
+    {
+        $version = (string)Mage::getConfig()->getNode('modules/Nosto_Tagging/version');
+        if (self::NOSTO_RC_VERSION) {
+            $version .= sprintf('-RC%d', self::NOSTO_RC_VERSION);
+        }
+
+        return $version;
     }
 }
 

@@ -135,10 +135,12 @@ class Nosto_Tagging_Helper_Class extends Mage_Core_Helper_Abstract
      * @param bool $fallback
      * @return false|Mage_Core_Model_Abstract|null
      */
-    protected function getClass($classId, $expected, $fallback = false) {
+    protected function getClass($classId, $expected, $fallback = false) 
+    {
         $class = null;
         try {
             if (is_string($classId)) {
+                /** @noinspection PhpParamsInspection */
                 $className = Mage::getConfig()->getModelClassName($classId);
                 if (class_exists($className)) {
                     $class = Mage::getModel($classId);

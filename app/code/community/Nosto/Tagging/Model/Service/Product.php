@@ -52,11 +52,11 @@ class Nosto_Tagging_Model_Service_Product
      *
      * @param Mage_Catalog_Model_Product[] $products
      * @return bool
-     * @throws NostoException
+     * @throws Nosto_NostoException
      */
     protected function update(array $products)
     {
-        NostoHttpRequest::$responseTimeout = self::$apiWaitTimeout;
+        Nosto_Request_Http_HttpRequest::$responseTimeout = self::$apiWaitTimeout;
         $productsInStore = array();
         $counter = 0;
         $batch = 1;
@@ -74,16 +74,26 @@ class Nosto_Tagging_Model_Service_Product
                     )
                 );
             }
-            foreach ($product->getStoreIds() as $storeId) {
-                if (!isset($productsInStore[$storeId])) {
-                    $productsInStore[$storeId] = array();
+
+            $parentProducts = $this->buildParentProducts($product);
+            if (!empty($parentProducts)) {
+                $productsToUpdate = $parentProducts;
+            } else {
+                $productsToUpdate = array($product);
+            }
+            foreach ($productsToUpdate as $productToUpdate) {
+                foreach ($product->getStoreIds() as $storeId) {
+                    if (!isset($productsInStore[$storeId])) {
+                        $productsInStore[$storeId] = array();
+                    }
+                    if (!isset($productsInStore[$storeId][$batch])) {
+                        $productsInStore[$storeId][$batch] = array();
+                    }
+                    $productsInStore[$storeId][$batch][] = $productToUpdate;
                 }
-                if (!isset($productsInStore[$storeId][$batch])) {
-                    $productsInStore[$storeId][$batch] = array();
-                }
-                $productsInStore[$storeId][$batch][] = $product;
             }
         }
+        // Batch ready - process batches for each store
         foreach ($productsInStore as $storeId => $productBatches) {
             $store = Mage::app()->getStore($storeId);
             /** @var Nosto_Tagging_Helper_Account $helper */
@@ -103,21 +113,25 @@ class Nosto_Tagging_Model_Service_Product
             $env = $emulation->startEnvironmentEmulation($store->getId());
             foreach ($productBatches as $productsInStore) {
                 try {
-                    $service = new NostoOperationProduct($account);
+                    $operation = new Nosto_Operation_UpsertProduct($account);
                     /* @var $mageProduct Mage_Catalog_Model_Product */
                     foreach ($productsInStore as $mageProduct) {
+                        if ($mageProduct instanceof Mage_Catalog_Model_Product === false) {
+                            continue;
+                        }
                         /** @var Nosto_Tagging_Model_Meta_Product $nostoProduct */
                         $nostoProduct = Mage::getModel('nosto_tagging/meta_product');
                         // If the current store scope is the main store scope, also referred to as
                         // the admin store scope, then we should reload the product as the store
                         // code of the product refers to an pseudo store scope called "admin"
                         // which leads to issues when flat tables are enabled.
-                        $nostoProduct->reloadData($mageProduct, $store); // Note the reload
-                        $service->addProduct($nostoProduct);
+                        if($nostoProduct->reloadData($mageProduct, $store)) {
+                            $operation->addProduct($nostoProduct);
+                        }
                     }
-                    $service->upsert();
+                    $operation->upsert();
                 } catch (Exception $e) {
-                    Mage::logException($e);
+                    Nosto_Tagging_Helper_Log::exception($e);
                 }
             }
             $emulation->stopEnvironmentEmulation($env);
@@ -148,5 +162,28 @@ class Nosto_Tagging_Model_Service_Product
     {
         return $this->update(array($product));
     }
-}
 
+    /**
+     * Helper method to check if simple product has multiple parent products
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @return array
+     */
+    public function buildParentProducts(Mage_Catalog_Model_Product $product)
+    {
+        $parents = array();
+        if ($product->getTypeId() === Mage_Catalog_Model_Product_Type::TYPE_SIMPLE) {
+            /** @var Mage_Catalog_Model_Product_Type_Configurable $model */
+            $model = Mage::getModel('catalog/product_type_configurable');
+            $parentIds = $model->getParentIdsByChild($product->getId());
+            if (!empty($parentIds)) {
+                foreach ($parentIds as $productId) {
+                    $configurable = Mage::getModel('catalog/product')->load($productId);
+                    $parents[] = $configurable;
+                }
+            }
+        }
+
+        return $parents;
+    }
+}

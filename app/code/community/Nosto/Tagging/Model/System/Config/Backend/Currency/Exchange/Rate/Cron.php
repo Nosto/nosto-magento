@@ -51,7 +51,9 @@ class Nosto_Tagging_Model_System_Config_Backend_Currency_Exchange_Rate_Cron exte
      */
     protected function _afterSave()
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         $time = $this->getData('groups/scheduled_currency_exchange_rate_update/fields/time/value');
+        /** @noinspection PhpUndefinedMethodInspection */
         $frequency = $this->getData('groups/scheduled_currency_exchange_rate_update/fields/frequency/value');
 
         $weekly = Mage_Adminhtml_Model_System_Config_Source_Cron_Frequency::CRON_WEEKLY;
@@ -76,7 +78,7 @@ class Nosto_Tagging_Model_System_Config_Backend_Currency_Exchange_Rate_Cron exte
             $model = $model->setPath(self::CRON_STRING_PATH);
             $model->save();
         } catch (Exception $e) {
-            throw new Exception(Mage::helper('cron')->__('Unable to save the cron expression.'));
+            Mage::throwException(Mage::helper('cron')->__('Unable to save the cron expression.'));
         }
     }
 }

@@ -35,8 +35,8 @@
 class Nosto_Tagging_Helper_Cache extends Mage_Core_Helper_Abstract
 {
     /**
-     * Flushes the Magento caches, not all of them but some of them, normally
-     * after creating an account or connecting with nosto.
+     * Flushes the Magento caches, not all of them but some of them, normally after creating an
+     * account or connecting with nosto.
      */
     public function flushCache()
     {

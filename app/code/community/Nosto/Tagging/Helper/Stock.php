@@ -39,8 +39,8 @@ class Nosto_Tagging_Helper_Stock extends Mage_Core_Helper_Abstract
      * the sum of associated products will be calculated.
      *
      * @param Mage_Catalog_Model_Product $product
-     *
      * @return int
+     * @suppress PhanUndeclaredMethod
      */
     public function getQty(Mage_Catalog_Model_Product $product)
     {
@@ -49,15 +49,13 @@ class Nosto_Tagging_Helper_Stock extends Mage_Core_Helper_Abstract
         switch ($product->getTypeId()) {
             case Mage_Catalog_Model_Product_Type::TYPE_BUNDLE:
                 $bundledItemIds = Mage::getResourceSingleton('bundle/selection')
-                    ->getChildrenIds($product->getId(), $required=true);
+                    ->getChildrenIds($product->getId(), $required = true);
                 $products = array();
                 foreach ($bundledItemIds as $variants) {
-                    if (is_array($variants) && count($variants) > 0) {
+                    if (is_array($variants) && count($variants) > 0) { // @codingStandardsIgnoreLine
                         foreach ($variants as $variantId) {
                             /* @var Mage_Catalog_Model_Product $productModel */
-                            $productModel = Mage::getModel('catalog/product')->load(
-                                $variantId
-                            );
+                            $productModel = Mage::getModel('catalog/product')->load($variantId); // @codingStandardsIgnoreLine
                             $products[] = $productModel;
                         }
                     }
@@ -65,18 +63,19 @@ class Nosto_Tagging_Helper_Stock extends Mage_Core_Helper_Abstract
                 $qty = $this->getMinQty($products);
                 break;
             case Mage_Catalog_Model_Product_Type::TYPE_GROUPED:
-                /** @noinspection PhpUndefinedMethodInspection */
-                $products = $product->getTypeInstance(true)->getAssociatedProducts($product);
+                /** @var Mage_Catalog_Model_Product_Type_Grouped $productType */
+                $productType = $product->getTypeInstance(true);
+                $products = $productType->getAssociatedProducts($product);
                 $qty = $this->getMinQty($products);
                 break;
             case Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE:
-                /** @noinspection PhpUndefinedMethodInspection */
-                $products = Mage::getModel(
-                    'catalog/product_type_configurable'
-                )->getUsedProducts(null, $product);
+                /** @var Mage_Catalog_Model_Product_Type_Configurable $productType */
+                $productType = Mage::getModel('catalog/product_type_configurable');
+                $products = $productType->getUsedProducts(null, $product);
                 $qty = $this->getQtySum($products);
                 break;
             default:
+                /** @var Mage_CatalogInventory_Model_Stock_Item $stockItem */
                 $stockItem = Mage::getModel('cataloginventory/stock_item');
                 /** @noinspection PhpUndefinedMethodInspection */
                 $qty += $stockItem->loadByProduct($product)->getQty();
@@ -90,7 +89,6 @@ class Nosto_Tagging_Helper_Stock extends Mage_Core_Helper_Abstract
      * Searches the minimum quantity from the products collection
      *
      * @param array|Mage_Catalog_Model_Product[] $productCollection
-
      * @return int|mixed
      */
     protected function getMinQty(array $productCollection)
@@ -101,7 +99,7 @@ class Nosto_Tagging_Helper_Stock extends Mage_Core_Helper_Abstract
         foreach ($productCollection as $product) {
             $quantities[] = $this->getQty($product);
         }
-        if(!empty($quantities)) {
+        if (!empty($quantities)) {
             rsort($quantities, SORT_NUMERIC);
             $minQty = array_pop($quantities);
         }
@@ -109,7 +107,7 @@ class Nosto_Tagging_Helper_Stock extends Mage_Core_Helper_Abstract
         return $minQty;
     }
 
-    /*
+    /**
      * Sums quantities for all products in array
      *
      * @param array|Mage_Catalog_Model_Product[] $productCollection
