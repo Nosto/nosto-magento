@@ -63,7 +63,7 @@ class Nosto_Tagging_Helper_Rating extends Mage_Core_Helper_Abstract
      * Note that these modules need to be enabled also
      * @var array
      */
-    protected static $ratingProviders = array(
+    protected static $_ratingProviders = array(
         self::RATING_PROVIDER_YOTPO => array(
             self::FIELD_DESCRIPTION => 'Yotpo Product Reviews',
             self::FIELD_MODULE => 'Yotpo_Yotpo'
@@ -82,7 +82,7 @@ class Nosto_Tagging_Helper_Rating extends Mage_Core_Helper_Abstract
      */
     public function getSupportedRatingProviders()
     {
-        return self::$ratingProviders;
+        return self::$_ratingProviders;
     }
 
     /**
@@ -93,9 +93,9 @@ class Nosto_Tagging_Helper_Rating extends Mage_Core_Helper_Abstract
     public function getActiveRatingProviders()
     {
         $installed = array();
-        foreach ($this->getSupportedRatingProviders() as $provider=>$config) {
+        foreach ($this->getSupportedRatingProviders() as $provider => $config) {
             if (
-                Mage::helper('core')->isModuleEnabled($config[self::FIELD_MODULE])
+            Mage::helper('core')->isModuleEnabled($config[self::FIELD_MODULE])
             ) {
                 $installed[$provider] = $config;
             }
@@ -114,10 +114,10 @@ class Nosto_Tagging_Helper_Rating extends Mage_Core_Helper_Abstract
     {
         $module = null;
         if (
-            !empty(self::$ratingProviders[$provider])
-            && !empty(self::$ratingProviders[$provider][self::FIELD_MODULE])
+            !empty(self::$_ratingProviders[$provider])
+            && !empty(self::$_ratingProviders[$provider][self::FIELD_MODULE])
         ) {
-            $module = self::$ratingProviders[$provider][self::FIELD_MODULE];
+            $module = self::$_ratingProviders[$provider][self::FIELD_MODULE];
         }
         return $module;
     }
@@ -133,10 +133,10 @@ class Nosto_Tagging_Helper_Rating extends Mage_Core_Helper_Abstract
     {
         $module = null;
         if (
-            !empty(self::$ratingProviders[$provider])
-            && !empty(self::$ratingProviders[$provider][self::FIELD_MODULE])
+            !empty(self::$_ratingProviders[$provider])
+            && !empty(self::$_ratingProviders[$provider][self::FIELD_MODULE])
         ) {
-            $module = self::$ratingProviders[$provider][self::FIELD_MODULE];
+            $module = self::$_ratingProviders[$provider][self::FIELD_MODULE];
         }
         return $module;
     }

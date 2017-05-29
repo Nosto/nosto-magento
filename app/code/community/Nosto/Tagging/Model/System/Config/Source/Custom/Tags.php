@@ -32,6 +32,7 @@
  * @category Nosto
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
+ * @suppress PhanUnreferencedClass
  */
 class Nosto_Tagging_Model_System_Config_Source_Custom_Tags
     extends Nosto_Tagging_Model_System_Config_Source_Attribute

@@ -52,9 +52,7 @@ class Nosto_Tagging_Block_Element extends Mage_Core_Block_Template
     {
         /** @var Nosto_Tagging_Helper_Account $helper */
         $helper = Mage::helper('nosto_tagging/account');
-        if (!Mage::helper('nosto_tagging')->isModuleEnabled()
-            || !$helper->existsAndIsConnected()
-        ) {
+        if (!Mage::helper('nosto_tagging')->isModuleEnabled() || !$helper->existsAndIsConnected()) {
             return '';
         }
         return parent::_toHtml();

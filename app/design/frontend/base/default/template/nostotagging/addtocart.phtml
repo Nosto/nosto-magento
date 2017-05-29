@@ -25,18 +25,20 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-$formAction = Mage::getUrl('checkout/cart/add');
+/* @var $this Nosto_Tagging_Block_Addtocart */
+$formAction = $this->getAddToCartUrl();
 /** @var Mage_Core_Model_Session $session */
 $session = Mage::getSingleton('core/session');
 $formKey = $session->getFormKey();
 ?>
 <!-- Nosto `add-to-cart` Script -->
+<!--suppress JSUnresolvedFunction -->
 <script type="text/javascript">
     if (typeof Nosto === "undefined") {
         var Nosto = {};
     }
     Nosto.addProductToCart = function (productId, element) {
-        if (typeof nostojs !== 'undefined' && typeof element == 'object') {
+        if (typeof nostojs !== 'undefined' && typeof element === 'object') {
             var slotId = Nosto.resolveContextSlotId(element);
             if (slotId) {
                 nostojs(function (api) {
@@ -73,7 +75,7 @@ $formKey = $session->getFormKey();
         while (typeof e.parentElement !== "undefined" && e.parentElement) {
             ++n;
             e = e.parentElement;
-            if (e.getAttribute('class') == 'nosto_element' && e.getAttribute('id')) {
+            if (e.getAttribute('class') === 'nosto_element' && e.getAttribute('id')) {
                 return e.getAttribute('id');
             }
             if (n >= m) {

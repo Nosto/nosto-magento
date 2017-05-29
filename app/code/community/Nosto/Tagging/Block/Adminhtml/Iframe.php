@@ -35,6 +35,7 @@
  */
 class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
 {
+    use Nosto_Mixins_IframeTrait;
     const DEFAULT_IFRAME_ORIGIN_REGEXP = '(https:\/\/(.*)\.hub\.nosto\.com)|(https:\/\/my\.nosto\.com)';
     const IFRAME_VERSION = 1;
 
@@ -42,11 +43,6 @@ class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
      * @var string the iframe url if SSO to Nosto can be made.
      */
     protected $_iframeUrl;
-
-    /**
-     * @var Mage_Core_Model_Store the currently selected store view.
-     */
-    protected $_store;
 
     /**
      * Gets the iframe url for the account settings page from Nosto.
@@ -83,10 +79,7 @@ class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
         /* @var Mage_Core_Model_App_Emulation $emulation */
         $emulation = Mage::getSingleton('core/app_emulation');
         $env = $emulation->startEnvironmentEmulation($store->getId());
-        /** @var Nosto_Tagging_Helper_Account $helper */
-        $helper = Mage::helper('nosto_tagging/account');
-        $account = $helper->find($store);
-        $this->_iframeUrl = $helper->getIframeUrl($store, $account, $params);
+        $this->_iframeUrl = self::buildURL($params);
         $emulation->stopEnvironmentEmulation($env);
 
         return $this->_iframeUrl;
@@ -101,19 +94,17 @@ class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
      */
     public function getSelectedStore()
     {
-        if ($this->_store !== null) {
-            return $this->_store;
-        }
+        $store = null;
 
         if (Mage::app()->isSingleStoreMode()) {
             $store = Mage::app()->getStore(true);
         } elseif (($id = (int)$this->getRequest()->getParam('store')) !== 0) {
             $store = Mage::app()->getStore($id);
         } else {
-            throw new Exception('Failed to find currently selected store view.');
+            Mage::throwException('Failed to find currently selected store view.');
         }
 
-        return $this->_store = $store;
+        return $store;
     }
 
     /**
@@ -125,15 +116,39 @@ class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
      */
     public function getIframeOrigin()
     {
-        $orig = Mage::app()->getRequest()
-            ->getEnv('NOSTO_IFRAME_ORIGIN_REGEXP');
-        if (empty($orig)) {
-            $orig = getenv('NOSTO_IFRAME_ORIGIN_REGEXP');
-        }
-        if (empty($orig)) {
-            $orig = self::DEFAULT_IFRAME_ORIGIN_REGEXP;
-        }
+        return Nosto_Nosto::getEnvVariable('NOSTO_IFRAME_ORIGIN_REGEXP', self::DEFAULT_IFRAME_ORIGIN_REGEXP);
+    }
 
-        return $orig;
+    /**
+     * @inheritdoc
+     */
+    public function getIframe()
+    {
+        /** @var Nosto_Tagging_Model_Meta_Account_Iframe $iframeParams */
+        $iframeParams = Mage::getModel('nosto_tagging/meta_account_iframe');
+        $iframeParams->loadData($this->getSelectedStore());
+        return $iframeParams;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getUser()
+    {
+        /** @var Nosto_Tagging_Model_Meta_User $currentUser */
+        $currentUser = Mage::getModel('nosto_tagging/meta_user');
+        $currentUser->loadData();
+        return $currentUser;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAccount()
+    {
+        /** @var Nosto_Tagging_Helper_Account $helper */
+        $helper = Mage::helper('nosto_tagging/account');
+        $account = $helper->find($this->getSelectedStore());
+        return $account;
     }
 }

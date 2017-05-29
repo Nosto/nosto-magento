@@ -34,114 +34,18 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Order_Status extends Mage_Core_Model_Abstract implements NostoOrderStatusInterface
+class Nosto_Tagging_Model_Meta_Order_Status extends Nosto_Object_Order_OrderStatus
 {
-    /**
-     * @var string the order status code.
-     */
-    protected $_code;
 
     /**
-     * @var string the order status label.
-     */
-    protected $_label;
-
-    /**
-     * @var string the order status created at date.
-     */
-    protected $_createdAt;
-
-    /**
-     * Constructor.
+     * Loads the order buyer from the given order.
      *
-     * Sets up this Value Object.
-     *
-     * @param array $args the object data.
-     *
+     * @param Mage_Sales_Model_Order_Status_History $status the status from which to load the status
      */
-    public function __construct(array $args)
+    public function loadData(Mage_Sales_Model_Order_Status_History $status)
     {
-        parent::__construct();
-        if (!isset($args['code']) || !is_string($args['code'])) {
-            Mage::log(
-                sprintf(
-                    '%s.code must be a non-empty string value',
-                    __CLASS__
-                ),
-                Zend_Log::WARN,
-                Nosto_Tagging_Model_Base::LOG_FILE_NAME
-            );
-            $args['code'] = '';
-        }
-
-        if (!isset($args['label'])) {
-            Mage::log(
-                sprintf(
-                    '%s.label is not set',
-                    __CLASS__
-                ),
-                Zend_Log::WARN,
-                Nosto_Tagging_Model_Base::LOG_FILE_NAME
-            );
-            $args['label'] = $args['code'];
-        }
-
-        if (isset($args['createdAt'])) {
-            if (empty($args['createdAt'])) {
-                Mage::log(
-                    sprintf(
-                        '%s.createdAt is not set',
-                        __CLASS__
-                    ),
-                    Zend_Log::WARN,
-                    Nosto_Tagging_Model_Base::LOG_FILE_NAME
-                );
-                $args['createdAt'] = '';
-            }
-        } else {
-            $args['createdAt'] = '';
-        }
-
-        $this->_code = $args['code'];
-        $this->_label = $args['label'];
-        $this->_createdAt = $args['createdAt'];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function _construct()
-    {
-        $this->_init('nosto_tagging/meta_order_status');
-    }
-
-    /**
-     * Returns the order status code.
-     *
-     * @return string the code.
-     */
-    public function getCode()
-    {
-        return $this->_code;
-    }
-
-    /**
-     * Returns the order status label.
-     *
-     * @return string the label.
-     */
-    public function getLabel()
-    {
-        return $this->_label;
-    }
-
-    /**
-     * Returns the status created date.
-     *
-     * @return string the created date or null if not set.
-     */
-    public function getCreatedAt()
-    {
-        return $this->_createdAt;
+        $this->setCode($status->getStatus());
+        $this->setLabel($status->getStatusLabel());
+        $this->setDate($status->getCreatedAt());
     }
 }
