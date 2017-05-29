@@ -2,18 +2,19 @@ All notable changes to this project will be documented in this file. This projec
 
 ### 3.0.0
 Major changes
-* Refactor the codebase to use Nosto PHP SDK version 3.0.0
 * Add support for restore cart link and create cart restore functionality
 * Add support for product variations (SKUs)
 * Possibility to enable / disable Nosto features from advanced settings
 * Introduce "pearify" to generate (rename) autoloadable classes from 3rd party libraries / composer packages
+* Refactor the codebase to use Nosto PHP SDK version 3.0.0
+* Refactor signup and oauth to use ready implementations from SDK
    
 Bugfixes and enhancements
 * Fix the add to cart function to respect the store's secure (https) settings
 * Fix the order handling to support multiple Klarna extensions
 * Fix custom attribute handling for arrays
 * Fix displaying the exchange rate cron drop down
-* Refactor signup and oauth to use ready implementations from SDK
+* Introduce helper for logging
 
 ### 2.11.4
 * Fix the array keys in category building
