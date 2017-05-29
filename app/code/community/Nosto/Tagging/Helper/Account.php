@@ -219,7 +219,7 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
             $collection->loadData($store);
             $service = new Nosto_Operation_SyncRates($account);
             return $service->update($collection);
-        } catch (Nosto_NostoException$e) {
+        } catch (Nosto_NostoException $e) {
             NostoLog::exception($e);
         } catch (NostoException $e) {
             Mage::log("\n" . $e, Zend_Log::ERR, Nosto_Tagging_Model_Base::LOG_FILE_NAME);
