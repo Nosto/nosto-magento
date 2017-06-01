@@ -132,10 +132,11 @@ class Nosto_Tagging_Helper_Class extends Mage_Core_Helper_Abstract
      *
      * @param string $classId
      * @param string $expected
-     * @param bool $fallback
+     * @param string|null $fallback
      * @return false|Mage_Core_Model_Abstract|null
+     * @suppress PhanTypeMismatchArgument
      */
-    protected function getClass($classId, $expected, $fallback = false) 
+    protected function getClass($classId, $expected, $fallback = null)
     {
         $class = null;
         try {
@@ -146,7 +147,7 @@ class Nosto_Tagging_Helper_Class extends Mage_Core_Helper_Abstract
                     $class = Mage::getModel($classId);
                 }
             }
-            if ($class instanceof $expected == false && $fallback !== false) {
+            if ($class instanceof $expected == false && isset($fallback)) {
                 $class = Mage::getModel($fallback);
             }
         } catch (Exception $e) {

@@ -66,7 +66,7 @@ class Nosto_Tagging_Model_Service_Product
             }
             ++$counter;
             if ($product instanceof Mage_Catalog_Model_Product === false) {
-                Nosto::throwException(
+                Mage::throwException(
                     sprintf(
                         'Invalid data type, expecting Mage_Catalog_Model_Product' .
                         ', got %s',
