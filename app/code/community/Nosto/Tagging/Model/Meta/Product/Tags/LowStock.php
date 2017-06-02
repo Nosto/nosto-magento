@@ -38,6 +38,7 @@ class Nosto_Tagging_Model_Meta_Product_Tags_LowStock
         if ($product->getTypeId() === Mage_Catalog_Model_Product_Type::TYPE_SIMPLE) {
             /** @var Mage_CatalogInventory_Model_Stock_Item $stockItem */
             $stockItem = Mage::getModel('cataloginventory/stock_item');
+            $stockItem = $stockItem->loadByProduct($product);
             return $stockItem->verifyNotification();
         } else {
             return false;
