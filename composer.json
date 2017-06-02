@@ -22,7 +22,7 @@
         }
     },
     "require": {
-        "nosto/php-sdk": "3.0.5"
+        "nosto/php-sdk": "3.0.6"
     },
     "require-dev": {
         "mridang/magazine": "0.1",
@@ -35,10 +35,5 @@
         "magento/marketplace-eqp": "^1.0",
         "openmage/magento-mirror": "1.9",
         "mridang/pearify": "0.2"
-    },
-    "scripts": {
-        "post-install-cmd": [
-            "./vendor/bin/phing -verbose update-lib"
-        ]
     }
 }

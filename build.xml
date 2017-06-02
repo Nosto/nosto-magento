@@ -141,7 +141,7 @@
     <target name="update-lib">
         <echo msg="Updating lib" />
         <exec executable="composer" dir="${srcdir}">
-            <arg value="update" />
+            <arg value="install" />
         </exec>
         <exec executable="composer" dir="${srcdir}">
             <arg value="dump-autoload" />
