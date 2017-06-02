@@ -141,22 +141,24 @@
     <target name="update-lib">
         <echo msg="Updating lib" />
         <exec executable="composer" dir="${srcdir}">
+            <arg value="install" />
+        </exec>
+        <exec executable="composer" dir="${srcdir}">
             <arg value="dump-autoload" />
             <arg value="--optimize" />
         </exec>
         <exec executable="./vendor/bin/pearify" dir="${srcdir}" passthru="true">
             <arg value="process" />
-            <arg value="-v" />
             <arg value="." />
         </exec>
         <echo msg="Lib updated" />
     </target>
 
-    <target name="validate" depends="phpcbf, phpcs, phan, phpmd, phpcpd">
+    <target name="validate" depends="update-lib, phpcbf, phpcs, phan, phpmd, phpcpd">
         <echo msg="All done" />
     </target>
 
-    <target name="dist" depends="phpcbf, phpcs, phan, phpmd, phpcpd, build">
+    <target name="dist" depends="update-lib, phpcbf, phpcs, phan, phpmd, phpcpd, build">
         <echo msg="All done" />
     </target>
 

@@ -356,6 +356,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      * @param Mage_Catalog_Model_Product $product the product model.
      *
      * @return array
+     * @suppress PhanUndeclaredMethod
      */
     protected function buildCategories(Mage_Catalog_Model_Product $product)
     {
