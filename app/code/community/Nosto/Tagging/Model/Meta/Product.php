@@ -204,6 +204,10 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
             $tags[] = self::ADD_TO_CART;
         }
 
+        if (Nosto_Tagging_Model_Meta_Product_Tags_LowStock::build($product)) {
+            $tags[] = self::LOW_STOCK;
+        }
+
         return $tags;
     }
 
