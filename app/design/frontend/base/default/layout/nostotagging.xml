@@ -39,7 +39,7 @@
 
         <!-- Adds Nosto js stub to head -->
         <reference name="head">
-            <block type="core/template" name="nosto.js.stub" template="nostotagging/jsstub.phtml"/>
+            <block type="nosto_tagging/stub" name="nosto.js.stub" template="nostotagging/jsstub.phtml"/>
         </reference>
 
         <!-- Adds Nosto embed script to head -->
