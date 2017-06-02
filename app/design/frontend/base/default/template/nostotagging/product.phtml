@@ -84,6 +84,9 @@ $priceHelper = Mage::helper('nosto_tagging/price');
         <?php if ($product->getRatingValue()): ?>
             <span class="rating_value"><?php echo $helper->escapeHtml($product->getRatingValue()); ?></span>
         <?php endif; ?>
+        <?php if ($product->getThumbUrl()): ?>
+            <span class="thumb_url"><?php echo $helper->escapeHtml($product->getThumbUrl()); ?></span>
+        <?php endif; ?>
         <?php if ($product->getSkus() instanceof Nosto_Object_Product_SkuCollection) : ?>
             <?php /* @var Nosto_Types_Product_SkuInterface $sku */ ?>
             <?php foreach ($product->getSkus() as $sku) : ?>
