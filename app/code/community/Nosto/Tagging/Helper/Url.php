@@ -101,6 +101,11 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
     const MAGENTO_ADD_TO_CART_PATH = 'checkout/cart/add';
 
     /**
+     * Nosto's add to cart controller
+     */
+    const NOSTO_ADD_TO_CART_PATH = 'nosto/addToCart/add';
+
+    /**
      * Path to Nosto's restore cart controller
      */
     const NOSTO_PATH_RESTORE_CART = 'nosto/restoreCart';
@@ -488,4 +493,22 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
         return $url;
     }
 
+    /**
+     * Gets the absolute URL to the Nosto's add to cart controller
+     *
+     * @param Mage_Core_Model_Store $store the store to get the url for.
+     *
+     * @return string the url.
+     */
+    public function getNostoAddToCartUrl(Mage_Core_Model_Store $store)
+    {
+        $defaultParams = $this->getUrlOptionsWithNoSid($store);
+        $defaultParams[self::MAGENTO_URL_OPTION_SECURE] = 1;
+        $url = Mage::getUrl(
+            self::NOSTO_ADD_TO_CART_PATH,
+            $defaultParams
+        );
+
+        return $url;
+    }
 }
