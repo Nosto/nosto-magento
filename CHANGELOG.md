@@ -1,7 +1,7 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
 ### 3.0.2
-* Fix the class name for SKU attributes
+* Fix the attribute name for SKU custom fields
 
 ### 3.0.1
 * Update SDK to fix the missing of default nosto backend url issue
