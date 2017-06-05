@@ -96,7 +96,7 @@ $priceHelper = Mage::helper('nosto_tagging/price');
                 <span class="image_url"><?php echo $helper->escapeHtml($sku->getImageUrl()); ?></span>
                 <span class="gtin"><?php echo $helper->escapeHtml($sku->getGtin()); ?></span>
                 <span class="availability"><?php echo $helper->escapeHtml($sku->getAvailability()); ?></span>
-                <span class="custom_fields">
+                <span class="custom_attributes">
                 <?php if (is_array($sku->getCustomAttributes())) : ?>
                     <?php foreach ($sku->getCustomAttributes() as $key=>$val) : ?>
                         <span class="<?php echo $helper->escapeHtml($key); ?>"><?php echo $helper->escapeHtml($val); ?></span>
