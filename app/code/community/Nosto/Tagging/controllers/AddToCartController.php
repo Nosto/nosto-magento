@@ -90,7 +90,8 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
             $cart->save();
             $this->_getSession()->setCartWasUpdated(true);
 
-            Mage::dispatchEvent('checkout_cart_add_product_complete',
+            Mage::dispatchEvent(
+                'checkout_cart_add_product_complete',
                 array('product' => $product, 'request' => $this->getRequest(), 'response' => $this->getResponse())
             );
 

@@ -34,7 +34,8 @@ class Nosto_Tagging_Model_Meta_Product_Tags_LowStock
      * @param Mage_Catalog_Model_Product $product
      * @return bool
      */
-    public static function build(Mage_Catalog_Model_Product $product) {
+    public static function build(Mage_Catalog_Model_Product $product) 
+    {
         if ($product->getTypeId() === Mage_Catalog_Model_Product_Type::TYPE_SIMPLE) {
             /** @var Mage_CatalogInventory_Model_Stock_Item $stockItem */
             $stockItem = Mage::getModel('cataloginventory/stock_item');
