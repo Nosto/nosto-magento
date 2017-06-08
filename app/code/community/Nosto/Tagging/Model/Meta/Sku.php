@@ -84,7 +84,7 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
                         $configurableAttribute['attribute_code']
                     );
                     if (!empty($attributeValue) && is_scalar($attributeValue)) {
-                        $this->addCustomAttribute(
+                        $this->addCustomField(
                             $configurableAttribute['attribute_code'],
                             $attributeValue
                         );

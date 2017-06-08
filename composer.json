@@ -22,7 +22,7 @@
         }
     },
     "require": {
-        "nosto/php-sdk": "3.0.7"
+        "nosto/php-sdk": "3.0.8"
     },
     "require-dev": {
         "mridang/magazine": "0.1",
