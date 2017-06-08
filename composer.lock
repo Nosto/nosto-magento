@@ -4,20 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "27a7e7ca339b7edc56cc5614a6c07127",
+    "hash": "30a27420f918a3ab9624d107ccb3ebed",
+    "content-hash": "bc648b4b6170457ee39121784ad666cd",
     "packages": [
         {
             "name": "nosto/php-sdk",
-            "version": "3.0.7",
+            "version": "3.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Nosto/nosto-php-sdk.git",
-                "reference": "37425209a65063c1955cf2ddf566cf88bdd5e609"
+                "reference": "58c87cde1834c6ab9ce15b882b4bd3d172444e53"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Nosto/nosto-php-sdk/zipball/37425209a65063c1955cf2ddf566cf88bdd5e609",
-                "reference": "37425209a65063c1955cf2ddf566cf88bdd5e609",
+                "url": "https://api.github.com/repos/Nosto/nosto-php-sdk/zipball/58c87cde1834c6ab9ce15b882b4bd3d172444e53",
+                "reference": "58c87cde1834c6ab9ce15b882b4bd3d172444e53",
                 "shasum": ""
             },
             "require": {
@@ -50,7 +51,7 @@
                 "BSD-3-Clause"
             ],
             "description": "PHP SDK for developing Nosto modules for e-commerce platforms",
-            "time": "2017-06-02T11:28:49+00:00"
+            "time": "2017-06-07 08:37:50"
         },
         {
             "name": "phpseclib/phpseclib",
@@ -142,7 +143,7 @@
                 "x.509",
                 "x509"
             ],
-            "time": "2017-05-08T05:58:35+00:00"
+            "time": "2017-05-08 05:58:35"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -192,7 +193,7 @@
                 "env",
                 "environment"
             ],
-            "time": "2016-09-01T10:05:43+00:00"
+            "time": "2016-09-01 10:05:43"
         }
     ],
     "packages-dev": [
@@ -248,7 +249,7 @@
                 "php",
                 "static"
             ],
-            "time": "2017-01-24T16:41:51+00:00"
+            "time": "2017-01-24 16:41:51"
         },
         {
             "name": "magento-ecg/coding-standard",
@@ -281,7 +282,7 @@
             ],
             "description": "A set of PHP_CodeSniffer rules and sniffs.",
             "homepage": "https://github.com/magento-ecg/coding-standard",
-            "time": "2015-12-18T16:52:59+00:00"
+            "time": "2015-12-18 16:52:59"
         },
         {
             "name": "magento/marketplace-eqp",
@@ -300,7 +301,7 @@
                 "MIT"
             ],
             "description": "A set of PHP_CodeSniffer rules and sniffs.",
-            "time": "2016-09-29T15:14:39+00:00"
+            "time": "2016-09-29 15:14:39"
         },
         {
             "name": "mridang/magazine",
@@ -334,6 +335,7 @@
                     "Magazine\\": "src/Magazine"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -349,11 +351,7 @@
                 "magento",
                 "package"
             ],
-            "support": {
-                "issues": "https://github.com/mridang/magazine/issues",
-                "source": "https://github.com/mridang/magazine/tree/0.1"
-            },
-            "time": "2016-10-07T08:04:43+00:00"
+            "time": "2016-10-07 08:04:43"
         },
         {
             "name": "mridang/pearify",
@@ -399,7 +397,7 @@
                 "magento",
                 "package"
             ],
-            "time": "2017-05-02T06:36:20+00:00"
+            "time": "2017-05-02 06:36:20"
         },
         {
             "name": "openmage/magento-mirror",
@@ -449,7 +447,7 @@
                 "BSD-3-Clause"
             ],
             "description": "Official version of pdepend to be handled with Composer",
-            "time": "2017-01-19T14:23:36+00:00"
+            "time": "2017-01-19 14:23:36"
         },
         {
             "name": "phing/phing",
@@ -542,7 +540,7 @@
                 "task",
                 "tool"
             ],
-            "time": "2016-12-22T20:16:33+00:00"
+            "time": "2016-12-22 20:16:33"
         },
         {
             "name": "phpmd/phpmd",
@@ -608,7 +606,7 @@
                 "phpmd",
                 "pmd"
             ],
-            "time": "2017-01-20T14:41:10+00:00"
+            "time": "2017-01-20 14:41:10"
         },
         {
             "name": "phpunit/php-timer",
@@ -657,7 +655,7 @@
             "keywords": [
                 "timer"
             ],
-            "time": "2017-02-26T11:10:40+00:00"
+            "time": "2017-02-26 11:10:40"
         },
         {
             "name": "psr/container",
@@ -706,7 +704,7 @@
                 "container-interop",
                 "psr"
             ],
-            "time": "2017-02-14T16:28:37+00:00"
+            "time": "2017-02-14 16:28:37"
         },
         {
             "name": "psr/log",
@@ -753,7 +751,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2016-10-10T12:19:37+00:00"
+            "time": "2016-10-10 12:19:37"
         },
         {
             "name": "sebastian/finder-facade",
@@ -792,7 +790,7 @@
             ],
             "description": "FinderFacade is a convenience wrapper for Symfony's Finder component.",
             "homepage": "https://github.com/sebastianbergmann/finder-facade",
-            "time": "2016-02-17T07:02:23+00:00"
+            "time": "2016-02-17 07:02:23"
         },
         {
             "name": "sebastian/phpcpd",
@@ -842,7 +840,7 @@
             ],
             "description": "Copy/Paste Detector (CPD) for PHP code.",
             "homepage": "https://github.com/sebastianbergmann/phpcpd",
-            "time": "2017-02-05T07:48:01+00:00"
+            "time": "2017-02-05 07:48:01"
         },
         {
             "name": "sebastian/version",
@@ -885,7 +883,7 @@
             ],
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
             "homepage": "https://github.com/sebastianbergmann/version",
-            "time": "2016-10-03T07:35:21+00:00"
+            "time": "2016-10-03 07:35:21"
         },
         {
             "name": "squizlabs/php_codesniffer",
@@ -963,7 +961,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2017-05-22T02:43:20+00:00"
+            "time": "2017-05-22 02:43:20"
         },
         {
             "name": "symfony/config",
@@ -1023,7 +1021,7 @@
             ],
             "description": "Symfony Config Component",
             "homepage": "https://symfony.com",
-            "time": "2017-05-29T18:41:32+00:00"
+            "time": "2017-05-29 18:41:32"
         },
         {
             "name": "symfony/console",
@@ -1091,7 +1089,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2017-05-28T14:08:56+00:00"
+            "time": "2017-05-28 14:08:56"
         },
         {
             "name": "symfony/debug",
@@ -1147,7 +1145,7 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "https://symfony.com",
-            "time": "2017-05-27T16:02:27+00:00"
+            "time": "2017-05-27 16:02:27"
         },
         {
             "name": "symfony/dependency-injection",
@@ -1217,7 +1215,7 @@
             ],
             "description": "Symfony DependencyInjection Component",
             "homepage": "https://symfony.com",
-            "time": "2017-05-25T23:10:31+00:00"
+            "time": "2017-05-25 23:10:31"
         },
         {
             "name": "symfony/filesystem",
@@ -1266,7 +1264,7 @@
             ],
             "description": "Symfony Filesystem Component",
             "homepage": "https://symfony.com",
-            "time": "2017-05-28T14:08:56+00:00"
+            "time": "2017-05-28 14:08:56"
         },
         {
             "name": "symfony/finder",
@@ -1315,7 +1313,7 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
-            "time": "2017-05-25T23:10:31+00:00"
+            "time": "2017-05-25 23:10:31"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -1374,7 +1372,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-11-14T01:06:16+00:00"
+            "time": "2016-11-14 01:06:16"
         },
         {
             "name": "symfony/yaml",
@@ -1429,7 +1427,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2017-05-28T10:56:20+00:00"
+            "time": "2017-05-28 10:56:20"
         },
         {
             "name": "theseer/fdomdocument",
@@ -1469,7 +1467,7 @@
             ],
             "description": "The classes contained within this repository extend the standard DOM to use exceptions at all occasions of errors instead of PHP warnings or notices. They also add various custom methods and shortcuts for convenience and to simplify the usage of DOM.",
             "homepage": "https://github.com/theseer/fDOMDocument",
-            "time": "2017-04-21T14:50:31+00:00"
+            "time": "2017-04-21 14:50:31"
         }
     ],
     "aliases": [],
