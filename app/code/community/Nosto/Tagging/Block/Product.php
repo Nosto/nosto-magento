@@ -67,7 +67,8 @@ class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
      *
      * @return bool a boolean value indicating the state
      */
-    public function isOveridden() {
+    public function isOveridden() 
+    {
         return !(get_class($this->getMetaProduct()) === 'Nosto_Tagging_Model_Meta_Product');
     }
 
