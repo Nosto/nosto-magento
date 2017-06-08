@@ -1,5 +1,12 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.1.0
+* Add support for adding SKUs to cart from Nosto recommendations
+* Add low stock indication to product tag1 attribute
+* Add possibility to use custom thumbnail URL in recommendations
+* Render Nosto javascript stub only when Nosto account is installed
+* Add debug info if Nosto's product model has been overridden
+
 ### 3.0.2
 * Fix the attribute name for SKU custom fields
 

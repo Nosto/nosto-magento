@@ -26,16 +26,17 @@
  */
 
 /**
- * Adds the `add-to-cart` script.
+ * Nosto JS stub block
  *
  * @category Nosto
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Block_Addtocart extends Mage_Core_Block_Template
+class Nosto_Tagging_Block_Stub extends Mage_Core_Block_Template
 {
     /**
-     * Render script if the module is enabled for the current store.
+     * Render HTML for the page type if the module is enabled for the current
+     * store.
      *
      * @return string
      */
@@ -48,33 +49,5 @@ class Nosto_Tagging_Block_Addtocart extends Mage_Core_Block_Template
         }
 
         return parent::_toHtml();
-    }
-
-    /**
-     * Returns the url for add to cart controller
-     *
-     * @return string
-     */
-    public function getAddToCartUrl()
-    {
-        /** @var Nosto_Tagging_Helper_Url $urlHelper */
-        $urlHelper = Mage::helper('nosto_tagging/url');
-        $store = Mage::app()->getStore();
-
-        return $urlHelper->getAddToCartUrl($store);
-    }
-
-    /**
-     * Returns the url for add to cart controller
-     *
-     * @return string
-     */
-    public function getAddSkuToCartUrl()
-    {
-        /** @var Nosto_Tagging_Helper_Url $urlHelper */
-        $urlHelper = Mage::helper('nosto_tagging/url');
-        $store = Mage::app()->getStore();
-
-        return $urlHelper->getNostoAddToCartUrl($store);
     }
 }
