@@ -7,6 +7,9 @@ ENV TERM xterm
 RUN apt-get update && \
     apt-get -y -qq install nano tree git-core
 
+RUN git config --system user.name Docker && \
+    git config --system user.email docker@localhost
+
 RUN cd /tmp && \
     git clone https://github.com/nikic/php-ast.git && \
     cd php-ast && \
