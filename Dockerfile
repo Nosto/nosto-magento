@@ -19,5 +19,6 @@ RUN cd /tmp && \
     docker-php-ext-enable ast && \
     rm -rf /tmp/php-ast
 
-RUN useradd -ms /bin/bash plugin
-USER plugin
+RUN groupadd -r jenkins -g 113 
+RUN useradd -ms /bin/bash -u 113 -r -g jenkins jenkins
+USER jenkins
