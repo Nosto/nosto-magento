@@ -29,7 +29,7 @@ node {
 
             stage "Phan Analysis"
                 catchError {
-                    sh "./vendor/bin/phan --signature-compatibility --config-file=phan.php"
+                    sh "./vendor/bin/phan --signature-compatibility --config-file=phan.php --output-mode=checkstyle"
                 }
                 step([$class: 'hudson.plugins.checkstyle.CheckStylePublisher', pattern: 'phpcs.xml', unstableTotalAll:'0'])
 
