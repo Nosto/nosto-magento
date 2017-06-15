@@ -7,8 +7,12 @@ node {
 
         environment.inside {
             stage "Update Dependencies"
-                sh 'whoami'
                 sh "composer install"
+                sh "composer dump-autoload --optimize"
+                sh "./vendor/bin/pearify process ."
+
+            stage "Phan Analysis"
+                sh "./vendor/bin/phan --signature-compatibility --config-file=phan.php"
         }
 
     stage "Cleanup"
