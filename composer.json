@@ -5,7 +5,7 @@
     "type": "magento-module",
     "repositories": {
         "magento-eqp": {
-            "type": "git",
+            "type": "vcs",
             "url": "https://github.com/magento/marketplace-eqp"
         },
         "magento-mirror": {
