@@ -35,7 +35,7 @@ node {
 
             stage "Package"
                 sh "./vendor/bin/magazine package magazine.json ${env.GIT_COMMIT} -v"
-                archiveArtifacts "Nosto_Tagging-0.0.0.tgz"
+                archiveArtifacts "Nosto_Tagging-${env.GIT_COMMIT}.tgz"
         }
 
     stage "Cleanup"
