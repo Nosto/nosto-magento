@@ -35,6 +35,7 @@ node {
 
             stage "Package"
                 sh "./vendor/bin/magazine package magazine.json 0.0.0 -v"
+                archiveArtifacts "Nosto_Tagging-0.0.0.tgz"
         }
 
     stage "Cleanup"
