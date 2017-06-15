@@ -7,6 +7,7 @@ node {
 
         environment.inside {
             stage "Update Dependencies"
+                sh 'whoami'
                 sh "composer install"
         }
 
