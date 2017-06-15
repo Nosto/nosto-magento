@@ -25,7 +25,6 @@ node {
                 catchError {
                     sh "./vendor/bin/phpmd . xml codesize,naming,unusedcode,controversial,design --exclude vendor,var,build,tests --reportfile phpmd.xml"
                 }
-                sh 'cat phpmd.xml'
                 //step([$class: 'PmdPublisher', pattern: 'phpmd.xml', unstableTotalAll:'0'])
 
             stage "Phan Analysis"
