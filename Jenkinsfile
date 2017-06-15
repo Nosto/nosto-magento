@@ -34,8 +34,9 @@ node {
                 step([$class: 'hudson.plugins.checkstyle.CheckStylePublisher', pattern: 'phpcs.xml', unstableTotalAll:'0'])
 
             stage "Package"
-                sh "./vendor/bin/magazine package magazine.json ${env.GIT_COMMIT} -v"
-                archiveArtifacts "Nosto_Tagging-${env.GIT_COMMIT}.tgz"
+                version = env.GIT_COMMIT
+                sh "./vendor/bin/magazine package magazine.json ${version} -v"
+                archiveArtifacts "Nosto_Tagging-${version}.tgz"
         }
 
     stage "Cleanup"
