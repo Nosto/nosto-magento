@@ -18,3 +18,6 @@ RUN cd /tmp && \
     make install && \
     docker-php-ext-enable ast && \
     rm -rf /tmp/php-ast
+
+RUN useradd -ms /bin/bash plugin
+USER plugin
