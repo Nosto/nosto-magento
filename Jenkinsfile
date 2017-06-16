@@ -36,7 +36,7 @@ node {
             stage "Package"
                 version = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
                 sh "./vendor/bin/magazine package magazine.json ${version} -v"
-                archiveArtifacts "Nosto_Tagging-$version.tgz"
+                archiveArtifacts "Nosto_Tagging-${version}.tgz"
         }
 
     stage "Cleanup"
