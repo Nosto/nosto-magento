@@ -29,9 +29,9 @@ node {
 
             stage "Phan Analysis"
                 catchError {
-                    sh "./vendor/bin/phan --signature-compatibility --config-file=phan.php --output-mode=checkstyle || true"
+                    sh "./vendor/bin/phan --signature-compatibility --config-file=phan.php --output-mode=checkstyle --output=phan.xml || true"
                 }
-                step([$class: 'hudson.plugins.checkstyle.CheckStylePublisher', pattern: 'phpcs.xml', unstableTotalAll:'0'])
+                step([$class: 'hudson.plugins.checkstyle.CheckStylePublisher', pattern: 'phan.xml', unstableTotalAll:'0'])
 
             stage "Package"
                 version = env.GIT_COMMIT
