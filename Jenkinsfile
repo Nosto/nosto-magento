@@ -34,11 +34,13 @@ node {
                 step([$class: 'hudson.plugins.checkstyle.CheckStylePublisher', pattern: 'phan.xml', unstableTotalAll:'0'])
 
             stage "Package"
+                echo env.GIT_COMMIT
                 version = env.GIT_COMMIT
                 def username = 'Jenkins'
                 echo 'Hello Mr. ${username}'
                 echo "I said, Hello Mr. ${username}"
                 echo "I said, Hello Mr. ${version}"
+                echo "I said, Hello Mr. ${env.GIT_COMMIT}"
                 sh "./vendor/bin/magazine package magazine.json ${version} -v"
                 archiveArtifacts "Nosto_Tagging-$version.tgz"
         }
