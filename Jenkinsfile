@@ -13,7 +13,7 @@ node {
 
             stage "Code Sniffer"
                 catchError {
-                    sh "./vendor/bin/phpcbf --standard=ruleset.xml app"
+                    sh "./vendor/bin/phpcbf --standard=ruleset.xml app || true"
                     sh "./vendor/bin/phpcs --standard=ruleset.xml --severity=10 --report=checkstyle --report-file=phpcs.xml app lib || true"
                 }
                 step([$class: 'hudson.plugins.checkstyle.CheckStylePublisher', pattern: 'phpcs.xml', unstableTotalAll:'0'])
