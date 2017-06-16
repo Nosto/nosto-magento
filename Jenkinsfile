@@ -35,6 +35,10 @@ node {
 
             stage "Package"
                 version = env.GIT_COMMIT
+                def username = 'Jenkins'
+                echo 'Hello Mr. ${username}'
+                echo "I said, Hello Mr. ${username}"
+                echo "I said, Hello Mr. ${version}"
                 sh "./vendor/bin/magazine package magazine.json ${version} -v"
                 archiveArtifacts "Nosto_Tagging-$version.tgz"
         }
