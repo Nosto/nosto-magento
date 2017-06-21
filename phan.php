@@ -35,6 +35,12 @@ return [
          'lib',
          'vendor'
     ],
+    'exclude_file_list' => [
+        'vendor/openmage/magento-mirror/lib/Zend/Validate/Hostname/Biz.php',
+        'vendor/openmage/magento-mirror/lib/Zend/Validate/Hostname/Cn.php',
+        'vendor/openmage/magento-mirror/lib/Zend/Validate/Hostname/Com.php',
+        'vendor/openmage/magento-mirror/lib/Zend/Validate/Hostname/Jp.php',
+    ],
     "exclude_analysis_directory_list" => [
         '.phan/stubs',
         'lib',
