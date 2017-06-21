@@ -25,9 +25,10 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-ini_set('xdebug.max_nesting_level', 5120);
-
 return [
+    'backward_compatibility_checks' => false,
+    'signature-compatibility' => true,
+    'exclude_file_regex' => '@^vendor/.*/(tests|test|Tests|Test)/@',
     'directory_list' => [
          'app',
          '.phan/stubs',
