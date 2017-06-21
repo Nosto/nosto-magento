@@ -25,14 +25,21 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-ini_set('xdebug.max_nesting_level', 5120);
-
 return [
+    'analyze_signature_compatibility' => false,
+    'backward_compatibility_checks' => false,
+    'exclude_file_regex' => '@^vendor/.*/(tests|test|Tests|Test)/@',
     'directory_list' => [
          'app',
          '.phan/stubs',
          'lib',
          'vendor'
+    ],
+    'exclude_file_list' => [
+        'vendor/openmage/magento-mirror/lib/Zend/Validate/Hostname/Biz.php',
+        'vendor/openmage/magento-mirror/lib/Zend/Validate/Hostname/Cn.php',
+        'vendor/openmage/magento-mirror/lib/Zend/Validate/Hostname/Com.php',
+        'vendor/openmage/magento-mirror/lib/Zend/Validate/Hostname/Jp.php',
     ],
     "exclude_analysis_directory_list" => [
         '.phan/stubs',

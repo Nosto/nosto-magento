@@ -78,7 +78,7 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
             }
 
             if (empty($attributeOptions)) {
-                $this->_getSession()->addException($e, $this->__('Cannot add the item to shopping cart.'));
+                $this->_getSession()->addError($this->__('Cannot add the item to shopping cart.'));
                 $this->_goBack();
 
                 return;
