@@ -25,7 +25,7 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-class Nosto_Tagging_Model_Meta_Product_Tags_LowStock
+class Nosto_Tagging_Model_Meta_Product_Tags_Lowstock
 {
 
     /**

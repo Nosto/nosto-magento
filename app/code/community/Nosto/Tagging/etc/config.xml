@@ -28,7 +28,7 @@
 <config>
     <modules>
         <Nosto_Tagging>
-            <version>3.1.0</version>
+            <version>3.1.1</version>
         </Nosto_Tagging>
     </modules>
     <global>
@@ -187,6 +187,7 @@
                 <use_skus>0</use_skus>
                 <use_alternate_images>1</use_alternate_images>
                 <use_inventory_level>0</use_inventory_level>
+                <use_low_stock>0</use_low_stock>
             </general>
             <image_options>
                 <image_version>image</image_version>
