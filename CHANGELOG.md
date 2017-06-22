@@ -1,5 +1,9 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.1.1
+* Rename low stock builder class
+* Add possibility enable / disable low stock tagging
+
 ### 3.1.0
 * Add support for adding SKUs to cart from Nosto recommendations
 * Add low stock indication to product tag1 attribute

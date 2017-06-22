@@ -106,6 +106,11 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_USE_INVENTORY_LEVEL = 'nosto_tagging/general/use_inventory_level';
 
     /**
+     * Path to store config for tagging low stock
+     */
+    const XML_PATH_USE_LOW_STOCK = 'nosto_tagging/general/use_low_stock';
+
+    /**
      * @var boolean the path for setting for product urls
      */
     const XML_PATH_PRETTY_URL = 'nosto_tagging/pretty_url/in_use';
@@ -491,6 +496,17 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     public function getUseInventoryLevel($store = null)
     {
         return (bool)Mage::getStoreConfig(self::XML_PATH_USE_INVENTORY_LEVEL, $store);
+    }
+
+    /**
+     * Returns on/off setting for using low stock
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     * @return boolean
+     */
+    public function getUseLowStock($store = null)
+    {
+        return (bool)Mage::getStoreConfig(self::XML_PATH_USE_LOW_STOCK, $store);
     }
 
     /**

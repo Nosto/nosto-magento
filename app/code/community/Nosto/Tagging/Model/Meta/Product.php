@@ -199,12 +199,14 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
                 $tags[] = $tag->getName();
             }
         }
-
         if (!$product->canConfigure()) {
             $tags[] = self::ADD_TO_CART;
         }
-
-        if (Nosto_Tagging_Model_Meta_Product_Tags_LowStock::build($product)) {
+        /** @var Nosto_Tagging_Helper_Data $dataHelper */
+        $dataHelper = Mage::helper('nosto_tagging');
+        if ($dataHelper->getUseLowStock($store)
+            && Nosto_Tagging_Model_Meta_Product_Tags_Lowstock::build($product)
+        ) {
             $tags[] = self::LOW_STOCK;
         }
 
