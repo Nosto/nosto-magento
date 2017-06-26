@@ -305,19 +305,9 @@ class Nosto_Tagging_Model_Observer
                 sprintf(
                     'Nosto module\'s output has been disable. Nosto module needs it enabled to work properly. '
                     . 'Click here <a href="%s">Advanced Configuration</a> to enable it.',
-                    $this->getAdvancedConfigUrl()
+                    Mage::helper('adminhtml')->getUrl(self::ADVANCED_CONFIG_URL_PATH)
                 )
             );
         }
-    }
-
-    /**
-     * Get index management url
-     *
-     * @return string
-     */
-    public function getAdvancedConfigUrl()
-    {
-        return Mage::helper('adminhtml')->getUrl(self::ADVANCED_CONFIG_URL_PATH);
     }
 }
