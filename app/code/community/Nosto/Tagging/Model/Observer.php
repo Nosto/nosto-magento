@@ -300,7 +300,7 @@ class Nosto_Tagging_Model_Observer
         }
 
         $outputSettings = Mage::getStoreConfig(self::MODULE_OUTPUT_DISABLE_SETTING_PATH);
-        if ($outputSettings['Nosto_Tagging']) {
+        if ($outputSettings !== null && $outputSettings['Nosto_Tagging']) {
             Mage::getSingleton('core/session')->addError(
                 sprintf(
                     'Nosto module\'s output has been disable. Nosto module needs it enabled to work properly. '
