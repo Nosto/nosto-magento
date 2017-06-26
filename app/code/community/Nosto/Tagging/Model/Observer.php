@@ -1,9 +1,9 @@
 <?php
 /**
  * Magento
- *  
+ *
  * NOTICE OF LICENSE
- *  
+ *
  * This source file is subject to the Open Software License (OSL 3.0)
  * that is bundled with this package in the file LICENSE.txt.
  * It is also available through the world-wide-web at this URL:
@@ -11,13 +11,13 @@
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
- *  
+ *
  * DISCLAIMER
- *  
+ *
  * Do not edit or add to this file if you wish to upgrade Magento to newer
  * versions in the future. If you wish to customize Magento for your
  * needs please refer to http://www.magentocommerce.com for more information.
- *  
+ *
  * @category  Nosto
  * @package   Nosto_Tagging
  * @author    Nosto Solutions Ltd <magento@nosto.com>
@@ -39,9 +39,24 @@ use Nosto_Tagging_Helper_Log as NostoLog;
 class Nosto_Tagging_Model_Observer
 {
     /**
+     * URL path of advanced setting
+     */
+    const ADVANCED_CONFIG_URL_PATH = 'adminhtml/system_config/edit/section/advanced';
+
+    /**
+     * configuration path of advanced setting
+     */
+    const MODULE_OUTPUT_DISABLE_SETTING_PATH = 'advanced/modules_disable_output';
+    /**
      * Xml layout handle for the default page footer section.
      */
     const XML_LAYOUT_PAGE_DEFAULT_FOOTER_HANDLE = 'nosto_tagging_page_default_footer';
+
+    /**
+     * Check it once only
+     * @var bool
+     */
+    private static $hasModuleOutputChecked = false;
 
     /**
      * Adds Nosto footer block at the end of the content block.
@@ -264,5 +279,45 @@ class Nosto_Tagging_Model_Observer
         }
 
         return $this;
+    }
+
+    /**
+     * check if the nosto module output is disabled.
+     * @param Varien_Event_Observer $observer
+     */
+    public function checkIfModuleOutputDisabled(/** @noinspection PhpUnusedParameterInspection */ // @codingStandardsIgnoreLine
+        Varien_Event_Observer $observer)
+    {
+        if (self::$hasModuleOutputChecked) {
+            return;
+        }
+        self::$hasModuleOutputChecked = true;
+
+        /** @var Nosto_Tagging_Helper_Data $helper */
+        $helper = Mage::helper('nosto_tagging');
+        if (!$helper->isModuleEnabled()) {
+            return;
+        }
+
+        $outputSettings = Mage::getStoreConfig(self::MODULE_OUTPUT_DISABLE_SETTING_PATH);
+        if ($outputSettings['Nosto_Tagging']) {
+            Mage::getSingleton('core/session')->addError(
+                sprintf(
+                    'Nosto module\'s output has been disable. Nosto module needs it enabled to work properly. '
+                    . 'Click here <a href="%s">Advanced Configuration</a> to enable it.',
+                    $this->getAdvancedConfigUrl()
+                )
+            );
+        }
+    }
+
+    /**
+     * Get index management url
+     *
+     * @return string
+     */
+    public function getAdvancedConfigUrl()
+    {
+        return Mage::helper('adminhtml')->getUrl(self::ADVANCED_CONFIG_URL_PATH);
     }
 }
