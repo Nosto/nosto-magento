@@ -120,6 +120,15 @@
                     </nosto_tagging_custom>
                 </observers>
             </admin_system_config_changed_section_nosto_tagging>
+            <adminhtml_block_html_before>
+                <observers>
+                    <nosto_tagging_admin_logged_in>
+                        <type>singleton</type>
+                        <class>Nosto_Tagging_Model_Observer</class>
+                        <method>checkIfModuleOutputDisabled</method>
+                    </nosto_tagging_admin_logged_in>
+                </observers>
+            </adminhtml_block_html_before>
         </events>
     </global>
     <adminhtml>
