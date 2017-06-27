@@ -267,9 +267,10 @@ class Nosto_Tagging_Model_Observer
     }
 
     /**
-     * on review/rating changed
-     * @param Varien_Event_Observer $observer
-     * @return $this
+     * Update product after review/rating has been updated.
+     * On event: 'review_save_after'
+     * @param Varien_Event_Observer $observer the event observer.
+     * @return Nosto_Tagging_Model_Observer
      */
     public function reviewSaveAfter(Varien_Event_Observer $observer)
     {
