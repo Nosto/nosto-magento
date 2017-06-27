@@ -122,10 +122,11 @@
             </admin_system_config_changed_section_nosto_tagging>
             <review_save_after>
                 <observers>
-                    <rss>
+                    <nosto_tagging_custom>
+                        <type>singleton</type>
                         <class>Nosto_Tagging_Model_Observer</class>
                         <method>reviewSaveAfter</method>
-                    </rss>
+                    </nosto_tagging_custom>
                 </observers>
             </review_save_after>
         </events>
