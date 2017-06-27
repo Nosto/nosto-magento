@@ -120,6 +120,14 @@
                     </nosto_tagging_custom>
                 </observers>
             </admin_system_config_changed_section_nosto_tagging>
+            <review_save_after>
+                <observers>
+                    <rss>
+                        <class>Nosto_Tagging_Model_Observer</class>
+                        <method>reviewSaveAfter</method>
+                    </rss>
+                </observers>
+            </review_save_after>
         </events>
     </global>
     <adminhtml>

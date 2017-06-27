@@ -265,4 +265,30 @@ class Nosto_Tagging_Model_Observer
 
         return $this;
     }
+
+    /**
+     * on review/rating changed
+     * @param Varien_Event_Observer $observer
+     * @return $this
+     */
+    public function reviewSaveAfter(Varien_Event_Observer $observer)
+    {
+        if (Mage::helper('nosto_tagging')->isModuleEnabled()) {
+            $object = $observer->getEvent()->getObject();
+            /** @var Mage_Catalog_Model_Product $product */
+            $productId = $object->getEntityPkValue();
+            $product = Mage::getModel('catalog/product')->load($productId);
+            if ($product instanceof Mage_Catalog_Model_Product) {
+                try {
+                    /* @var Nosto_Tagging_Model_Service_Product $service */
+                    $service = Mage::getModel('nosto_tagging/service_product');
+                    $service->updateProduct($product);
+                } catch (\Exception $e) {
+                    NostoLog::exception($e);
+                }
+            }
+        }
+
+        return $this;
+    }
 }
