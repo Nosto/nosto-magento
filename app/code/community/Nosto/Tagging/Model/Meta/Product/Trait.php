@@ -41,13 +41,16 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
      * Builds the availability for the product.
      *
      * @param Mage_Catalog_Model_Product $product the product model.
-     *
+     * @param string|null $parentAvailability if there is no parent, pass null.
      * @return string
      */
-    protected function buildAvailability(Mage_Catalog_Model_Product $product)
+    protected function buildAvailability(Mage_Catalog_Model_Product $product, $parentAvailability = null)
     {
+        //if there is parent and parent is in stock then it doesn't matter if this product is available or not
+        $concernAboutVisibility = $parentAvailability === null
+            || $parentAvailability !== Nosto_Types_Product_ProductInterface::IN_STOCK;
         $availability = Nosto_Types_Product_ProductInterface::OUT_OF_STOCK;
-        if (!$product->isVisibleInSiteVisibility()) {
+        if ($concernAboutVisibility && !$product->isVisibleInSiteVisibility()) {
             $availability = Nosto_Types_Product_ProductInterface::INVISIBLE;
         } elseif ($product->isAvailable()) {
             $availability = Nosto_Types_Product_ProductInterface::IN_STOCK;

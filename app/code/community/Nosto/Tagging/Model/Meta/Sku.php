@@ -45,11 +45,13 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
      * @param Mage_Catalog_Model_Product $sku the product model.
      * @param Mage_Catalog_Model_Product $parent
      * @param Mage_Core_Model_Store|null $store the store to get the product data for.
+     * @param Nosto_Tagging_Model_Meta_Product $parentNostoProduct the parent product owns this sku
      * @throws Nosto_NostoException
      */
     public function loadData(
         Mage_Catalog_Model_Product $sku,
         Mage_Catalog_Model_Product $parent,
+        Nosto_Tagging_Model_Meta_Product $parentNostoProduct,
         Mage_Core_Model_Store $store = null
     )
     {
@@ -70,7 +72,7 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
         $this->setImageUrl($this->buildImageUrl($sku, $store));
         $this->setPrice($this->buildProductPrice($sku, $store));
         $this->setListPrice($this->buildProductListPrice($sku, $store));
-        $this->setAvailability($this->buildAvailability($sku));
+        $this->setAvailability($this->buildAvailability($sku, $parentNostoProduct->getAvailability()));
         $this->setUrl($this->buildUrl($sku, $store));
         $this->amendCustomizableAttributes($sku, $store);
         /** @var Mage_Catalog_Model_Product_Type_Configurable $parentType */
