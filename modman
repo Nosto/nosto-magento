@@ -10,6 +10,5 @@ app/locale/es_ES/Nosto_Tagging.csv app/locale/es_ES/Nosto_Tagging.csv
 app/locale/fr_FR/Nosto_Tagging.csv app/locale/fr_FR/Nosto_Tagging.csv
 lib/Nosto  lib/Nosto
 lib/Dotenv  lib/Dotenv
-lib/phpseclib  lib/phpseclib
 js/nosto/*  js/nosto/
 js/nosto-src/*  js/nosto-src/
