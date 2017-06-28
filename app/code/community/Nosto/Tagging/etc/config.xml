@@ -229,7 +229,7 @@
         <jobs>
             <nostotagging_currency_exchange_rate_update>
                 <run>
-                    <model>nosto_tagging/observer/exchange::scheduledCurrencyExchangeRateUpdate</model>
+                    <model>nosto_tagging/observer_exchange::scheduledCurrencyExchangeRateUpdate</model>
                 </run>
             </nostotagging_currency_exchange_rate_update>
         </jobs>
