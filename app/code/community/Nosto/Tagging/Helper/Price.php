@@ -98,9 +98,10 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
      */
     public function getDisplayPriceInStore(Mage_Catalog_Model_Product $product, $finalPrice = false, $store = null)
     {
-        /** @var Nosto_Tagging_Helper_Data $dataHelper */
-        $dataHelper = Mage::helper('nosto_tagging/data');
-        $inclTax = $dataHelper->getTaxIncluding($store);
+        /** @var Mage_Tax_Helper_Data $helper */
+        $taxHelper = Mage::helper('tax');
+        $inclTax = $taxHelper->displayPriceIncludingTax($store);
+
 
         return $this->_getProductPrice($product, $finalPrice, $inclTax);
     }

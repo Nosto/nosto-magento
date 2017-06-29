@@ -35,16 +35,6 @@
 class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
 {
     /**
-     * System configuration path to is product price including tax
-     */
-    const XML_PATH_TAX_DISPLAY_TYPE = 'tax/display/type';
-
-    /**
-     * System configuration path to is product price including tax
-     */
-    const XML_PATH_TAX_CART_DISPLAY_TYPE = 'tax/cart_display/price';
-
-    /**
      * Path to store config installation ID.
      */
     const XML_PATH_INSTALLATION_ID = 'nosto_tagging/installation/id';
@@ -621,32 +611,6 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         }
 
         return $version;
-    }
-
-    /**
-     * Get the system configuration that is the price showing in catalog including tax or not
-     *
-     * @param Mage_Core_Model_Store|null $store the store model or null.
-     * @return boolean is tax including in the price
-     */
-    public function getTaxIncluding($store)
-    {
-        $selected = Mage::getStoreConfig(self::XML_PATH_TAX_DISPLAY_TYPE, $store);
-
-        return $selected == 2;
-    }
-
-    /**
-     * Get the system configuration that is the price showing in shopping cart including tax or not
-     *
-     * @param Mage_Core_Model_Store|null $store the store model or null.
-     * @return boolean is tax including in the price
-     */
-    public function getTaxIncludingInCart($store)
-    {
-        $selected = Mage::getStoreConfig(self::XML_PATH_TAX_DISPLAY_TYPE, $store);
-
-        return $selected == 2;
     }
 }
 
