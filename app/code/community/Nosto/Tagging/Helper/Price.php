@@ -75,7 +75,6 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         $taxHelper = Mage::helper('tax');
         $inclTax = $taxHelper->displayPriceIncludingTax($store);
 
-
         return $this->_getProductPrice($product, $finalPrice, $inclTax);
     }
 
