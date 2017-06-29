@@ -37,10 +37,10 @@ use Nosto_Tagging_Helper_Log as NostoLog;
 class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
 {
     /**
-     * Gets the unit price for a product model including taxes.
+     * Gets the unit price for a product model
      *
      * @param Mage_Catalog_Model_Product $product the product model.
-     * @param boolean $includingTax
+     * @param bool $includingTax
      * @param Mage_Core_Model_Store|null $store
      *
      * @return float
@@ -51,7 +51,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Get the final price for a product model including taxes.
+     * Get the final price for a product model
      *
      * @param Mage_Catalog_Model_Product $product the product model.
      * @param Mage_Core_Model_Store|null $store
@@ -144,9 +144,9 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
                             $associatedProduct->getId()
                         );
                         if ($finalPrice) {
-                            $variationPrice = $this->getProductFinalPrice($productModel);
+                            $variationPrice = $this->getProductFinalPrice($productModel, $store);
                         } else {
-                            $variationPrice = $this->getProductPrice($productModel);
+                            $variationPrice = $this->getProductPrice($productModel, $store);
                         }
                         if (!$lowestPrice || $variationPrice < $lowestPrice) {
                             $lowestPrice = $variationPrice;

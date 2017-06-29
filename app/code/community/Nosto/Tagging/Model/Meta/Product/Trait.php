@@ -119,17 +119,17 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
 
     protected function buildPrice(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store, $type)
     {
-        if ($type === 'listPrice') {
-            $helperMethod = 'getProductPrice';
-        } else {
-            $helperMethod = 'getProductFinalPrice';
-        }
-
         /** @var Nosto_Tagging_Helper_Price $priceHelper */
         $priceHelper = Mage::helper('nosto_tagging/price');
 
+        if ($type === 'listPrice') {
+            $basePrice = $priceHelper->getProductPrice($product, $store);
+        } else {
+            $basePrice = $priceHelper->getProductFinalPrice($product, $store);
+        }
+
         return $priceHelper->getTaggingPrice(
-            $priceHelper->$helperMethod($product, $store),
+            $basePrice,
             $store->getCurrentCurrencyCode(),
             $store
         );
