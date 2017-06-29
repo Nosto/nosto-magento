@@ -47,7 +47,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
      */
     public function getProductPrice($product, $store)
     {
-        return $this->_getProductPrice($product, false, $store);
+        return $this->getDisplayPriceInStore($product, false, $store);
     }
 
     /**
@@ -60,7 +60,25 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
      */
     public function getProductFinalPrice($product, $store)
     {
-        return $this->_getProductPrice($product, true, $store);
+        return $this->getDisplayPriceInStore($product, true, $store);
+    }
+
+    /**
+     * Get unit/final price for a product model based on store's setting
+     *
+     * @param Mage_Catalog_Model_Product $product the product model.
+     * @param bool $finalPrice if it is final price.
+     * @param Mage_Core_Model_Store|null $store
+     * @return float
+     * @suppress PhanUndeclaredMethod
+     */
+    public function getDisplayPriceInStore(Mage_Catalog_Model_Product $product, $finalPrice = false, $store = null)
+    {
+        /** @var Nosto_Tagging_Helper_Data $dataHelper */
+        $dataHelper = Mage::helper('nosto_tagging/data');
+        $inclTax = $dataHelper->getTaxIncluding($store);
+
+        return $this->_getProductPrice($product, $finalPrice, $inclTax);
     }
 
     /**
@@ -68,20 +86,16 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
      *
      * @param Mage_Catalog_Model_Product $product the product model.
      * @param bool $finalPrice if final price.
-     * @param Mage_Core_Model_Store|null $store
+     * @param bool $inclTax
      * @return float
      * @suppress PhanUndeclaredMethod
      */
     protected function _getProductPrice(
         Mage_Catalog_Model_Product $product,
         $finalPrice = false,
-        $store = null
+        $inclTax = true
     ) 
     {
-        /** @var Nosto_Tagging_Helper_Data $dataHelper */
-        $dataHelper = Mage::helper('nosto_tagging/data');
-        $inclTax = $dataHelper->getTaxIncluding($store);
-
         $price = 0;
 
         switch ($product->getTypeId()) {
@@ -143,11 +157,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
                         $productModel = Mage::getModel('catalog/product')->load(
                             $associatedProduct->getId()
                         );
-                        if ($finalPrice) {
-                            $variationPrice = $this->getProductFinalPrice($productModel, $store);
-                        } else {
-                            $variationPrice = $this->getProductPrice($productModel, $store);
-                        }
+                        $variationPrice = $this->_getProductPrice($productModel, $finalPrice, $inclTax);
                         if (!$lowestPrice || $variationPrice < $lowestPrice) {
                             $lowestPrice = $variationPrice;
                         }
