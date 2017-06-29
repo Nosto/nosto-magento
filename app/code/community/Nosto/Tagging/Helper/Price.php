@@ -61,33 +61,6 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Gets the unit price for a product model
-     *
-     * @param Mage_Catalog_Model_Product $product the product model.
-     * @param bool $includingTax if tax is to be included.
-     * @param Mage_Core_Model_Store|null $store
-     *
-     * @return float
-     */
-    public function getProductPrice($product, $store)
-    {
-        return $this->getDisplayPriceInStore($product, false, $store);
-    }
-
-    /**
-     * Get the final price for a product model
-     *
-     * @param Mage_Catalog_Model_Product $product the product model.
-     * @param Mage_Core_Model_Store|null $store
-     *
-     * @return float
-     */
-    public function getProductFinalPrice($product, $store)
-    {
-        return $this->getDisplayPriceInStore($product, true, $store);
-    }
-
-    /**
      * Get unit/final price for a product model based on store's setting
      *
      * @param Mage_Catalog_Model_Product $product the product model.
