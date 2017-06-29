@@ -108,7 +108,8 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
     }
 
     /**
-     * Builds the availability for the product.
+     * Builds the availability for the SKU.
+     * The SKU availability doesn't concern about the visibility. A SKU can be found by looking at its parent product
      *
      * @param Mage_Catalog_Model_Product $product the product model.
      * @return string
