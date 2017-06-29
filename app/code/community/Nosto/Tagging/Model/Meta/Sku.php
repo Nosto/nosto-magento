@@ -108,4 +108,20 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
     {
         return array('gtin' => 'gtin');
     }
+
+    /**
+     * Builds the availability for the product.
+     *
+     * @param Mage_Catalog_Model_Product $product the product model.
+     * @return string
+     */
+    protected function buildAvailability(Mage_Catalog_Model_Product $product)
+    {
+        $availability = Nosto_Types_Product_ProductInterface::OUT_OF_STOCK;
+        if ($product->isAvailable()) {
+            $availability = Nosto_Types_Product_ProductInterface::IN_STOCK;
+        }
+
+        return $availability;
+    }
 }
