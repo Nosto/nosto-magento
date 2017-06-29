@@ -41,7 +41,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
      *
      * @param Mage_Catalog_Model_Product $product the product model.
      * @param boolean $includingTax
-     * @param Mage_Core_Model_Store $store
+     * @param Mage_Core_Model_Store|null $store
      *
      * @return float
      */
@@ -54,7 +54,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
      * Get the final price for a product model including taxes.
      *
      * @param Mage_Catalog_Model_Product $product the product model.
-     * @param Mage_Core_Model_Store $store
+     * @param Mage_Core_Model_Store|null $store
      *
      * @return float
      */
@@ -68,7 +68,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
      *
      * @param Mage_Catalog_Model_Product $product the product model.
      * @param bool $finalPrice if final price.
-     * @param Mage_Core_Model_Store $store
+     * @param Mage_Core_Model_Store|null $store
      * @return float
      * @suppress PhanUndeclaredMethod
      */
