@@ -120,15 +120,16 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
     protected function buildPrice(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store, $type)
     {
         if ($type === 'listPrice') {
-            $helperMethod = 'getProductPriceInclTax';
+            $helperMethod = 'getProductPrice';
         } else {
-            $helperMethod = 'getProductFinalPriceInclTax';
+            $helperMethod = 'getProductFinalPrice';
         }
+
         /** @var Nosto_Tagging_Helper_Price $priceHelper */
         $priceHelper = Mage::helper('nosto_tagging/price');
 
         return $priceHelper->getTaggingPrice(
-            $priceHelper->$helperMethod($product),
+            $priceHelper->$helperMethod($product, $store),
             $store->getCurrentCurrencyCode(),
             $store
         );

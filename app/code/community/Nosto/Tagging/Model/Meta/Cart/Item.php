@@ -48,8 +48,14 @@ abstract class Nosto_Tagging_Model_Meta_Cart_Item extends Nosto_Object_Cart_Line
         parent::setProductId($this->buildItemProductId($item));
         parent::setQuantity($item->getQty());
         parent::setName($this->buildItemName($item));
-        parent::setPrice($item->getPriceInclTax());
         parent::setPriceCurrencyCode($currencyCode);
+        /** @var Nosto_Tagging_Helper_Data $dataHelper */
+        $dataHelper = Mage::helper('nosto_tagging/data');
+        if ($dataHelper->getTaxIncludingInCart()) {
+            parent::setPrice($item->getPriceInclTax());
+        } else {
+            parent::setPrice($item->getPrice());
+        }
     }
 
     /**

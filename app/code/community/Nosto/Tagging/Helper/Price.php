@@ -40,24 +40,27 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
      * Gets the unit price for a product model including taxes.
      *
      * @param Mage_Catalog_Model_Product $product the product model.
+     * @param boolean $includingTax
+     * @param Mage_Core_Model_Store $store
      *
      * @return float
      */
-    public function getProductPriceInclTax($product)
+    public function getProductPrice($product, $store)
     {
-        return $this->_getProductPrice($product, false, true);
+        return $this->_getProductPrice($product, false, $store);
     }
 
     /**
      * Get the final price for a product model including taxes.
      *
      * @param Mage_Catalog_Model_Product $product the product model.
+     * @param Mage_Core_Model_Store $store
      *
      * @return float
      */
-    public function getProductFinalPriceInclTax($product)
+    public function getProductFinalPrice($product, $store)
     {
-        return $this->_getProductPrice($product, true, true);
+        return $this->_getProductPrice($product, true, $store);
     }
 
     /**
@@ -65,16 +68,20 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
      *
      * @param Mage_Catalog_Model_Product $product the product model.
      * @param bool $finalPrice if final price.
-     * @param bool $inclTax if tax is to be included.
+     * @param Mage_Core_Model_Store $store
      * @return float
      * @suppress PhanUndeclaredMethod
      */
     protected function _getProductPrice(
         Mage_Catalog_Model_Product $product,
         $finalPrice = false,
-        $inclTax = true
+        $store = null
     ) 
     {
+        /** @var Nosto_Tagging_Helper_Data $dataHelper */
+        $dataHelper = Mage::helper('nosto_tagging/data');
+        $inclTax = $dataHelper->getTaxIncluding($store);
+
         $price = 0;
 
         switch ($product->getTypeId()) {
@@ -137,9 +144,9 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
                             $associatedProduct->getId()
                         );
                         if ($finalPrice) {
-                            $variationPrice = $this->getProductFinalPriceInclTax($productModel);
+                            $variationPrice = $this->getProductFinalPrice($productModel);
                         } else {
-                            $variationPrice = $this->getProductPriceInclTax($productModel);
+                            $variationPrice = $this->getProductPrice($productModel);
                         }
                         if (!$lowestPrice || $variationPrice < $lowestPrice) {
                             $lowestPrice = $variationPrice;
