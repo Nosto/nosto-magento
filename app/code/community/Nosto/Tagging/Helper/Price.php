@@ -37,6 +37,30 @@ use Nosto_Tagging_Helper_Log as NostoLog;
 class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
 {
     /**
+     * Gets the unit price for a product model including taxes.
+     *
+     * @param Mage_Catalog_Model_Product $product the product model.
+     *
+     * @return float
+     */
+    public function getProductPriceInclTax($product)
+    {
+        return $this->_getProductPrice($product, false, true);
+    }
+
+    /**
+     * Get the final price for a product model including taxes.
+     *
+     * @param Mage_Catalog_Model_Product $product the product model.
+     *
+     * @return float
+     */
+    public function getProductFinalPriceInclTax($product)
+    {
+        return $this->_getProductPrice($product, true, true);
+    }
+
+    /**
      * Gets the unit price for a product model
      *
      * @param Mage_Catalog_Model_Product $product the product model.
