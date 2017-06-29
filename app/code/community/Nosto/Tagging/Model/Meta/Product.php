@@ -157,7 +157,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
                 try {
                     /* @var Nosto_Tagging_Model_Meta_Sku $skuModel */
                     $skuModel = Mage::getModel('nosto_tagging/meta_sku');
-                    $skuModel->loadData($mageSku, $product, $this, $store);
+                    $skuModel->loadData($mageSku, $product, $store);
                     $this->addSku($skuModel);
                 } catch (Nosto_NostoException $e) {
                     Nosto_Tagging_Helper_Log::exception($e);
