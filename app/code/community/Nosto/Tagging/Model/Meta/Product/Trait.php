@@ -122,11 +122,8 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
         /** @var Nosto_Tagging_Helper_Price $priceHelper */
         $priceHelper = Mage::helper('nosto_tagging/price');
 
-        if ($type === 'listPrice') {
-            $basePrice = $priceHelper->getProductPrice($product, $store);
-        } else {
-            $basePrice = $priceHelper->getProductFinalPrice($product, $store);
-        }
+        $isFinalPrice = $type !== 'listPrice';
+        $basePrice = $priceHelper->getDisplayPriceInStore($product, $isFinalPrice, $store);
 
         return $priceHelper->getTaggingPrice(
             $basePrice,
