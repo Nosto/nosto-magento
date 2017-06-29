@@ -64,7 +64,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
      * Gets the unit price for a product model
      *
      * @param Mage_Catalog_Model_Product $product the product model.
-     * @param bool $includingTax
+     * @param bool $includingTax if tax is to be included.
      * @param Mage_Core_Model_Store|null $store
      *
      * @return float
