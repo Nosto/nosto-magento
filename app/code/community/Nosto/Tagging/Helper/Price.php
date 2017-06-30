@@ -64,12 +64,16 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
      * Get unit/final price for a product model based on store's setting
      *
      * @param Mage_Catalog_Model_Product $product the product model.
-     * @param Mage_Core_Model_Store|null $store
+     * @param Mage_Core_Model_Store $store
      * @param bool $finalPrice if it is final price.
      * @return float
      * @suppress PhanUndeclaredMethod
      */
-    public function getDisplayPriceInStore(Mage_Catalog_Model_Product $product, $store, $finalPrice = false)
+    public function getDisplayPriceInStore(
+        Mage_Catalog_Model_Product $product,
+        Mage_Core_Model_Store $store,
+        $finalPrice = false
+    )
     {
         /** @var Mage_Tax_Helper_Data $helper */
         $taxHelper = Mage::helper('tax');
