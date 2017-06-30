@@ -61,6 +61,28 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Get unit/final price for a product model based on store's setting
+     *
+     * @param Mage_Catalog_Model_Product $product the product model.
+     * @param Mage_Core_Model_Store $store
+     * @param bool $finalPrice if it is final price.
+     * @return float
+     * @suppress PhanUndeclaredMethod
+     */
+    public function getDisplayPriceInStore(
+        Mage_Catalog_Model_Product $product,
+        Mage_Core_Model_Store $store,
+        $finalPrice = false
+    )
+    {
+        /** @var Mage_Tax_Helper_Data $helper */
+        $taxHelper = Mage::helper('tax');
+        $inclTax = $taxHelper->displayPriceIncludingTax($store);
+
+        return $this->_getProductPrice($product, $finalPrice, $inclTax);
+    }
+
+    /**
      * Get unit/final price for a product model.
      *
      * @param Mage_Catalog_Model_Product $product the product model.
@@ -136,11 +158,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
                         $productModel = Mage::getModel('catalog/product')->load(
                             $associatedProduct->getId()
                         );
-                        if ($finalPrice) {
-                            $variationPrice = $this->getProductFinalPriceInclTax($productModel);
-                        } else {
-                            $variationPrice = $this->getProductPriceInclTax($productModel);
-                        }
+                        $variationPrice = $this->_getProductPrice($productModel, $finalPrice, $inclTax);
                         if (!$lowestPrice || $variationPrice < $lowestPrice) {
                             $lowestPrice = $variationPrice;
                         }
