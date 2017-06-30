@@ -117,6 +117,14 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
         return (!empty($image) && $image !== 'no_selection');
     }
 
+    /**
+     * Build product price
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @param Mage_Core_Model_Store $store
+     * @param $isFinalPrice true means it is final price, or it is list price
+     * @return float the price
+     */
     protected function buildPrice(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store, $isFinalPrice)
     {
         /** @var Nosto_Tagging_Helper_Price $priceHelper */
@@ -130,11 +138,25 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
         );
     }
 
+    /**
+     * Build product final price
+     * 
+     * @param Mage_Catalog_Model_Product $product
+     * @param Mage_Core_Model_Store $store
+     * @return float final price of the product
+     */
     protected function buildProductPrice(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
         return $this->buildPrice($product, $store, true);
     }
 
+    /**
+     * Build product list price
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @param Mage_Core_Model_Store $store
+     * @return float list price
+     */
     protected function buildProductListPrice(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
         return $this->buildPrice($product, $store, false);
