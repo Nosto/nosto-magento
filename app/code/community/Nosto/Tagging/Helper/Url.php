@@ -108,7 +108,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
     /**
      * Path to Nosto's restore cart controller
      */
-    const NOSTO_PATH_RESTORE_CART = 'nosto/restoreCart';
+    const NOSTO_PATH_RESTORE_CART = 'nosto/cart';
 
     /**
      * The URL parameter to invoke Nosto debug mode in store
