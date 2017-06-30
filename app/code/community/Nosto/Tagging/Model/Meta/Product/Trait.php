@@ -121,7 +121,7 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
     {
         /** @var Nosto_Tagging_Helper_Price $priceHelper */
         $priceHelper = Mage::helper('nosto_tagging/price');
-        $basePrice = $priceHelper->getDisplayPriceInStore($product, $isFinalPrice, $store);
+        $basePrice = $priceHelper->getDisplayPriceInStore($product, $store, $isFinalPrice);
 
         return $priceHelper->getTaggingPrice(
             $basePrice,
