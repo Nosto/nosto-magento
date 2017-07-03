@@ -60,7 +60,15 @@ class Nosto_Tagging_Block_Variation extends Mage_Core_Block_Template
      */
     public function getVariationId()
     {
-        return Mage::app()->getStore()->getCurrentCurrencyCode();
+        $groupId = Mage::getSingleton('customer/session')->getCustomerGroupId();
+
+        /** @var Mage_Customer_Model_Group $customerGroup */
+        $customerGroup = Mage::getModel('customer/group')->load($groupId);
+        if ($customerGroup == null) {
+            return null;
+        }
+
+        return $customerGroup->getCode();
     }
 
     /**
