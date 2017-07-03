@@ -131,7 +131,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
             $this->amendSkus($product, $store);
         }
 
-        if (!$dataHelper->isMultiCurrencyMethodExchangeRate($store)) {
+        if ($dataHelper->isMultiCurrencyMethodExchangeRate($store)) {
             $this->setVariationId($store->getBaseCurrencyCode());
         } else if ($dataHelper->isMultiCurrencyMethodPriceVariation($store)){
             $this->amendVariations($product, $store);
