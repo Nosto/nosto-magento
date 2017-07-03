@@ -26,9 +26,7 @@
  */
 
 /**
- * Meta data class which holds information about a product.
- * This is used during the order confirmation API request and the product
- * history export.
+ * Meta data class which holds information about a variation.
  *
  * @category Nosto
  * @package  Nosto_Tagging
