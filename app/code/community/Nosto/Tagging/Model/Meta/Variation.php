@@ -69,8 +69,7 @@ class Nosto_Tagging_Model_Meta_Variation extends Nosto_Object_Product_Variation
 
         /** @var Nosto_Tagging_Helper_Price $priceHelper */
         $priceHelper = Mage::helper('nosto_tagging/price');
-        $priceHelper->getProductTaggingPrice($product, $store, false);
-        $this->setListPrice($priceHelper->getProductTaggingPrice($product, $store, false));
-        $this->setPrice($priceHelper->getProductTaggingPrice($product, $store, true));
+        $this->setListPrice($priceHelper->getProductTaggingPrice($tmpProduct, $store, false));
+        $this->setPrice($priceHelper->getProductTaggingPrice($tmpProduct, $store, true));
     }
 }
