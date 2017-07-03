@@ -92,9 +92,6 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
             $store = Mage::app()->getStore();
         }
 
-        //TODO: add a feature switch
-        $this->amendVariationId($store);
-
         /** @var Nosto_Tagging_Helper_Data $dataHelper */
         $dataHelper = Mage::helper('nosto_tagging');
         /** @var Nosto_Tagging_Helper_Price $priceHelper */
