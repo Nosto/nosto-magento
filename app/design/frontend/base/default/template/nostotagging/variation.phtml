@@ -31,7 +31,6 @@
  */
 $helper = Mage::helper('nosto_tagging');
 ?>
-<?php if (!$helper->multiCurrencyDisabled()): ?>
-    <!-- Nosto Price Variation Tagging -->
-    <div class="nosto_variation" style="display:none"><?php echo $helper->escapeHtml($this->getVariationId()); ?></div>
-<?php endif; ?>
+<!-- Nosto Price Variation Tagging -->
+<div class="nosto_variation" style="display:none"><?php echo $helper->escapeHtml($this->getVariationId()); ?></div>
+

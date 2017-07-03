@@ -109,6 +109,19 @@ $priceHelper = Mage::helper('nosto_tagging/price');
             </span>
             <?php endforeach; ?>
         <?php endif; ?>
+        <span class="variation_id"><?php echo $helper->escapeHtml($product->getVariationId()); ?></span>
+        <?php if ($product->getVariations() instanceof Nosto_Object_Product_VariationCollection) : ?>
+            <?php /* @var Nosto_Types_Product_VariationInterface $variation */ ?>
+            <?php foreach ($product->getVariations() as $variation) : ?>
+                <div class="variation">
+                    <span class="variation_id"><?php echo $helper->escapeHtml($variation->getId()); ?></span>
+                    <span class="price_currency_code"><?php echo $helper->escapeHtml($variation->getPriceCurrencyCode()); ?></span>
+                    <span class="price"><?php echo $helper->escapeHtml($variation->getPrice()); ?></span>
+                    <span class="list_price"><?php echo $helper->escapeHtml($variation->getListPrice()); ?></span>
+                    <span class="availability"><?php echo $helper->escapeHtml($variation->getAvailability()); ?></span>
+                </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
     </div>
 <?php if ($this->getCurrentCategory()): ?>
     <div class="nosto_category" style="display:none"><?php echo $helper->escapeHtml($this->getCurrentCategory()); ?></div>
