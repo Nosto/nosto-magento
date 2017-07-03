@@ -149,14 +149,14 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
     protected function amendVariations(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
         $this->setVariations(
-            Nosto_Tagging_Model_Meta_Product_Variation_Builder::buildVariations(
+            Nosto_Tagging_Model_Meta_Variation::buildVariations(
                 $product,
                 $this->getAvailability(),
                 $this->getPriceCurrencyCode(),
                 $store
             )
         );
-        $this->setVariationId(Nosto_Tagging_Model_Meta_Product_Variation_Builder::buildDefaultVariationId());
+        $this->setVariationId(Nosto_Tagging_Model_Meta_Variation::buildDefaultVariationId($store));
     }
 
     /**
