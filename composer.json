@@ -22,7 +22,7 @@
         }
     },
     "require": {
-        "nosto/php-sdk": "3.0.8"
+        "nosto/php-sdk": "dev-feature/add-price-variations"
     },
     "require-dev": {
         "mridang/magazine": "0.1",

@@ -427,6 +427,12 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         return ($method === self::MULTI_CURRENCY_DISABLED);
     }
 
+    public function isMultiCurrencyMethodPriceVariation($store = null)
+    {
+        $method = $this->getMultiCurrencyMethod($store);
+        return ($method === self::MULTI_CURRENCY_METHOD_PRICE_VARIATION);
+    }
+
     /**
      * Checks if the multi currency method in use is the "exchangeRate", i.e.
      * the product prices in the recommendation is updated through the Exchange

@@ -55,6 +55,10 @@ class Nosto_Tagging_Model_System_Config_Source_Multi_Currency_Method
             array(
                 'value' => Nosto_Tagging_Helper_Data::MULTI_CURRENCY_METHOD_EXCHANGE_RATE,
                 'label' => 'Exchange Rate',
+            ),
+            array(
+                'value' => Nosto_Tagging_Helper_Data::MULTI_CURRENCY_METHOD_PRICE_VARIATION,
+                'label' => 'Price Variation',
             )
         );
     }

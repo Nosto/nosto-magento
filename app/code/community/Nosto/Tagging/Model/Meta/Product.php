@@ -91,7 +91,6 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         if ($store === null) {
             $store = Mage::app()->getStore();
         }
-
         /** @var Nosto_Tagging_Helper_Data $dataHelper */
         $dataHelper = Mage::helper('nosto_tagging');
         /** @var Nosto_Tagging_Helper_Price $priceHelper */
@@ -132,8 +131,11 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
             $this->amendSkus($product, $store);
         }
 
-        //TODO: add a feature switch
-        $this->amendVariations($product, $store);
+        if (!$dataHelper->isMultiCurrencyMethodExchangeRate($store)) {
+            $this->setVariationId($store->getBaseCurrencyCode());
+        } else if ($dataHelper->isMultiCurrencyMethodPriceVariation($store)){
+            $this->amendVariations($product, $store);
+        }
     }
 
     /**
@@ -146,37 +148,15 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      */
     protected function amendVariations(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
-        /** @var $customerHelper Mage_Customer_Helper_Data */
-        $customerHelper = Mage::helper('customer');
-        $defaultGroupId = $customerHelper->getDefaultCustomerGroupId($store);
-
-        /** @var Mage_Customer_Model_Group $group */
-        $defaultGroup = Mage::getModel('customer/group')->load($defaultGroupId);
-        if ($defaultGroup != null) {
-            $this->setVariationId($defaultGroup->getCode());
-        }
-
-        $groups = Mage::getModel('customer/group')->getCollection();
-        /** @var Mage_Customer_Model_Group $group */
-        foreach ($groups as $group) {
-            if ($group->getCode() == $this->getVariationId()) {
-                continue;
-            }
-
-            //It has to be a new instance of the Product. Because magento product takes customer group Id once only
-            /** @var Mage_Catalog_Model_Product $tmpProduct */
-            $tmpProduct = Mage::getModel('catalog/product')->load($product->getId());
-            $tmpProduct->setCustomerGroupId($group->getCustomerGroupId());
-
-            /** @var Nosto_Tagging_Model_Meta_Variation $variation */
-            $variation = Mage::getModel('nosto_tagging/variation');
-            $variation->setId($group->getCode());
-            $variation->setListPrice($this->buildProductListPrice($tmpProduct, $store));
-            $variation->setAvailable($this->getAvailability());
-            $variation->setPrice($this->buildProductPrice($tmpProduct, $store));
-            $variation->setPriceCurrencyCode($this->getPriceCurrencyCode());
-            $this->addVariation($variation);
-        }
+        $this->setVariations(
+            Nosto_Tagging_Model_Meta_Product_Variation_Builder::buildVariations(
+                $product,
+                $this->getAvailability(),
+                $this->getPriceCurrencyCode(),
+                $store
+            )
+        );
+        $this->setVariationId(Nosto_Tagging_Model_Meta_Product_Variation_Builder::buildDefaultVariationId());
     }
 
     /**

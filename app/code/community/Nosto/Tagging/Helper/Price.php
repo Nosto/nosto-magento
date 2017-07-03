@@ -289,6 +289,25 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Build product price
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @param Mage_Core_Model_Store $store
+     * @param $isFinalPrice true means it is final price, or it is list price
+     * @return float the price
+     */
+    public function getProductTaggingPrice(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store, $isFinalPrice)
+    {
+        $basePrice = $this->getDisplayPriceInStore($product, $store, $isFinalPrice);
+
+        return $this->getTaggingPrice(
+            $basePrice,
+            $store->getCurrentCurrencyCode(),
+            $store
+        );
+    }
+
+    /**
      * Returns the correct currency code for tagging
      *
      * @param $currentCurrencyCode
