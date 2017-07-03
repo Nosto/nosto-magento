@@ -67,7 +67,7 @@ class Nosto_Tagging_Model_Meta_Product_Variation_Builder
 
             /** @var Nosto_Tagging_Model_Meta_Variation $variation */
             $variation = Mage::getModel('nosto_tagging/meta_variation');
-            $variation->loadData($product, $group, $store);
+            $variation->loadData($product, $group, $productAvailability, $currencyCode, $store);
             $variations->append($variation);
         }
 
