@@ -72,9 +72,7 @@ class Nosto_Tagging_Model_Meta_Variation extends Nosto_Object_Product_Variation
     }
 
     /**
-     * Build price variations. It must be called after the currency has been set.
-     * Because this method set varation currency to the product tagging currency.
-     * And have to be called before building the product price. Becuase it changes the product's customer group id.
+     * Build price variations.
      *
      * @param Mage_Catalog_Model_Product $product
      * @param string $productAvailability
@@ -86,7 +84,8 @@ class Nosto_Tagging_Model_Meta_Variation extends Nosto_Object_Product_Variation
         Mage_Catalog_Model_Product $product,
         $productAvailability,
         $currencyCode,
-        Mage_Core_Model_Store $store)
+        Mage_Core_Model_Store $store
+    )
     {
         /** @var $customerHelper Mage_Customer_Helper_Data */
         $customerHelper = Mage::helper('customer');
