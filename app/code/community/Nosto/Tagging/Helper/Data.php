@@ -81,7 +81,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const MULTI_CURRENCY_METHOD_EXCHANGE_RATE = 'exchangeRate';
 
     /**
-     * Multi currency method option for price variations in tagging.
+     * No multi currency
      */
     const MULTI_CURRENCY_DISABLED = 'disabled';
 
