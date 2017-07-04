@@ -26,19 +26,14 @@
  */
 
 /**
- * Extension system setting source model for choosing the multi-currency method
- * to use.
- *
- * Options are "Exchange Rate" and "Product Tagging". The former makes use of the built
- * in currency exchange rates and is the preferred method. The latter is the old
- * way of tagging all price variations on the product pages.
+ * Extension system setting source model for enabling/disabling price variation
  *
  * @category Nosto
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  * @suppress PhanUnreferencedClass
  */
-class Nosto_Tagging_Model_System_Config_Source_Multi_Currency_Method
+class Nosto_Tagging_Model_System_Config_Source_Variation_Switch
 {
     /**
      * Returns the method options to choose from.
@@ -49,12 +44,12 @@ class Nosto_Tagging_Model_System_Config_Source_Multi_Currency_Method
     {
         return array(
             array(
-                'value' => Nosto_Tagging_Helper_Data::MULTI_CURRENCY_DISABLED,
+                'value' => Nosto_Tagging_Helper_Data::VARIATION_SWITCH_OPTION_DISABLED,
                 'label' => 'Disabled',
             ),
             array(
-                'value' => Nosto_Tagging_Helper_Data::MULTI_CURRENCY_METHOD_EXCHANGE_RATE,
-                'label' => 'Exchange Rate',
+                'value' => Nosto_Tagging_Helper_Data::VARIATION_SWITCH_OPTION_ENABLED,
+                'label' => 'Enabled',
             )
         );
     }

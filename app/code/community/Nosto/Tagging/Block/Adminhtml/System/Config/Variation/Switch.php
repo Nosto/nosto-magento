@@ -26,36 +26,29 @@
  */
 
 /**
- * Extension system setting source model for choosing the multi-currency method
- * to use.
- *
- * Options are "Exchange Rate" and "Product Tagging". The former makes use of the built
- * in currency exchange rates and is the preferred method. The latter is the old
- * way of tagging all price variations on the product pages.
+ * Extension system setting source model for enabling/disabling price variation
  *
  * @category Nosto
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
- * @suppress PhanUnreferencedClass
  */
-class Nosto_Tagging_Model_System_Config_Source_Multi_Currency_Method
+class Nosto_Tagging_Block_Adminhtml_System_Config_Variation_Switch extends Mage_Adminhtml_Block_System_Config_Form_Field
 {
-    /**
-     * Returns the method options to choose from.
-     *
-     * @return array the options.
-     */
-    public function toOptionArray()
+    protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)
     {
-        return array(
-            array(
-                'value' => Nosto_Tagging_Helper_Data::MULTI_CURRENCY_DISABLED,
-                'label' => 'Disabled',
-            ),
-            array(
-                'value' => Nosto_Tagging_Helper_Data::MULTI_CURRENCY_METHOD_EXCHANGE_RATE,
-                'label' => 'Exchange Rate',
-            )
-        );
+        $store = $store = Mage::app()->getStore();
+        /** @var Nosto_Tagging_Helper_Data $dataHelper */
+        $dataHelper = Mage::helper('nosto_tagging');
+        if (!$dataHelper->multiCurrencyDisabled($store)) {
+            /** @noinspection PhpUndefinedMethodInspection */
+            $element->setDisabled('disabled');
+
+            $comment = 'IMPORTANT: Price variation feature is inactivated because multi-currency is enabled.';
+            $element->setData(
+                'comment', $comment
+            );
+        }
+
+        return parent::_getElementHtml($element);
     }
 }

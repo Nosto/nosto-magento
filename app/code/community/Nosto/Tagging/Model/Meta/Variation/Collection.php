@@ -32,7 +32,7 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Product_Variation_Collection
+class Nosto_Tagging_Model_Meta_Variation_Collection extends Nosto_Object_Product_VariationCollection
 {
     /**
      * Build price variations.
@@ -41,9 +41,8 @@ class Nosto_Tagging_Model_Meta_Product_Variation_Collection
      * @param string $productAvailability
      * @param string $currencyCode
      * @param Mage_Core_Model_Store $store
-     * @return Nosto_Object_Product_VariationCollection
      */
-    public static function buildVariations(
+    public function loadData(
         Mage_Catalog_Model_Product $product,
         $productAvailability,
         $currencyCode,
@@ -61,8 +60,6 @@ class Nosto_Tagging_Model_Meta_Product_Variation_Collection
             $defaultGroupCode = $defaultGroup->getCode();
         }
 
-        $variations = new Nosto_Object_Product_VariationCollection();
-
         $groups = Mage::getModel('customer/group')->getCollection();
         /** @var Mage_Customer_Model_Group $group */
         foreach ($groups as $group) {
@@ -74,30 +71,7 @@ class Nosto_Tagging_Model_Meta_Product_Variation_Collection
             /** @var Nosto_Tagging_Model_Meta_Variation $variation */
             $variation = Mage::getModel('nosto_tagging/meta_variation');
             $variation->loadData($product, $group, $productAvailability, $currencyCode, $store);
-            $variations->append($variation);
+            $this->append($variation);
         }
-
-        return $variations;
-    }
-
-    /**
-     * Get default variation
-     *
-     * @param Mage_Core_Model_Store $store
-     * @return null|string
-     */
-    public static function buildDefaultVariationId(Mage_Core_Model_Store $store)
-    {
-        /** @var $customerHelper Mage_Customer_Helper_Data */
-        $customerHelper = Mage::helper('customer');
-        $defaultGroupId = $customerHelper->getDefaultCustomerGroupId($store);
-
-        /** @var Mage_Customer_Model_Group $group */
-        $defaultGroup = Mage::getModel('customer/group')->load($defaultGroupId);
-        if ($defaultGroup instanceof Mage_Customer_Model_Group) {
-            return $defaultGroup->getCode();
-        }
-
-        return null;
     }
 }

@@ -133,7 +133,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
 
         if ($dataHelper->isMultiCurrencyMethodExchangeRate($store)) {
             $this->setVariationId($store->getBaseCurrencyCode());
-        } else if ($dataHelper->isMultiCurrencyMethodPriceVariation($store)){
+        } else if ($dataHelper->isVariationEnabled($store)){
             $this->amendVariations($product, $store);
         }
     }
@@ -147,15 +147,24 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      */
     protected function amendVariations(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
-        $this->setVariations(
-            Nosto_Tagging_Model_Meta_Product_Variation_Collection::buildVariations(
-                $product,
-                $this->getAvailability(),
-                $this->getPriceCurrencyCode(),
-                $store
-            )
+        /** @var $customerHelper Mage_Customer_Helper_Data */
+        $customerHelper = Mage::helper('customer');
+        $defaultGroupId = $customerHelper->getDefaultCustomerGroupId($store);
+        /** @var Mage_Customer_Model_Group $group */
+        $defaultGroup = Mage::getModel('customer/group')->load($defaultGroupId);
+        if ($defaultGroup instanceof Mage_Customer_Model_Group) {
+            $this->setVariationId($defaultGroup->getCode());
+        }
+
+        /** @var Nosto_Tagging_Model_Meta_Product_Variation_Collection $variationCollecton */
+        $variationCollecton = Mage::getModel('nosto_tagging/meta_variation_collection');
+        $variationCollecton->loadData(
+            $product,
+            $this->getAvailability(),
+            $this->getPriceCurrencyCode(),
+            $store
         );
-        $this->setVariationId(Nosto_Tagging_Model_Meta_Product_Variation_Collection::buildDefaultVariationId($store));
+        $this->setVariations($variationCollecton);
     }
 
     /**
