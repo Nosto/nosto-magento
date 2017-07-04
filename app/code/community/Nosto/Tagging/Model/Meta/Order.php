@@ -105,6 +105,14 @@ class Nosto_Tagging_Model_Meta_Order extends Nosto_Object_Order_Order
             $shippingItem->loadSpecialItemData($shippingName, $shippingAmount, $order->getOrderCurrencyCode());
             $this->addPurchasedItems($shippingItem);
         }
+
+        Mage::dispatchEvent(
+            Nosto_Tagging_Helper_Event::EVENT_NOSTO_ORDER_LOAD_AFTER,
+            [
+                'order' => $this,
+                'magentoOrder' => $order
+            ]
+        );
     }
 
     /**

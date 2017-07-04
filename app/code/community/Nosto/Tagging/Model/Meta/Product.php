@@ -134,6 +134,14 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         if ($dataHelper->getUseSkus($store)) {
             $this->amendSkus($product, $store);
         }
+
+        Mage::dispatchEvent(
+            Nosto_Tagging_Helper_Event::EVENT_NOSTO_PRODUCT_LOAD_AFTER,
+            [
+                'product' => $this,
+                'magentoProduct' => $product
+            ]
+        );
     }
 
     /**
