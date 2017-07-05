@@ -55,6 +55,14 @@ class Nosto_Tagging_Model_Meta_Cart extends Nosto_Object_Cart_Cart
         }
 
         $this->amendRestoreCartUrl($quote, $store);
+
+        Mage::dispatchEvent(
+            Nosto_Tagging_Helper_Event::EVENT_NOSTO_CART_LOAD_AFTER,
+            [
+                'cart' => $this,
+                'magentoQuote' => $quote
+            ]
+        );
     }
 
     /**

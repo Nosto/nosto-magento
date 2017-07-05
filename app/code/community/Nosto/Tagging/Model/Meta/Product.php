@@ -136,6 +136,14 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         } else if ($dataHelper->isVariationEnabled($store)){
             $this->amendVariations($product, $store);
         }
+
+        Mage::dispatchEvent(
+            Nosto_Tagging_Helper_Event::EVENT_NOSTO_PRODUCT_LOAD_AFTER,
+            [
+                'product' => $this,
+                'magentoProduct' => $product
+            ]
+        );
     }
 
     /**
