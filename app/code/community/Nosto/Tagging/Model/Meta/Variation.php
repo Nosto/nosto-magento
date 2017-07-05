@@ -62,7 +62,7 @@ class Nosto_Tagging_Model_Meta_Variation extends Nosto_Object_Product_Variation
         $tmpProduct->setCustomerGroupId($group->getCustomerGroupId());
 
         $this->setId($group->getCode());
-        $this->setAvailable($productAvailability);
+        $this->setAvailability($productAvailability);
         $this->setPriceCurrencyCode($currencyCode);
 
         /** @var Nosto_Tagging_Helper_Price $priceHelper */

@@ -35,6 +35,7 @@ use Nosto_Tagging_Helper_Log as NostoLog;
  * @category Nosto
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
+ * @suppress PhanUnreferencedClass
  */
 class Nosto_Tagging_Model_Observer_Order
 {

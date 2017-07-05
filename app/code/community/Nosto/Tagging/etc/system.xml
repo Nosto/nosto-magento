@@ -286,11 +286,11 @@
                     <expanded>0</expanded>
                     <fields>
                         <switch translate="label">
-                            <label>Price Variation</label>
+                            <label>Enabled</label>
                             <comment>Enable price variation to support group price and catalog price rules. It can not be enabled if multi-currency is enabled.</comment>
                             <frontend_type>select</frontend_type>
                             <frontend_model>nosto_tagging/adminhtml_system_config_variation_switch</frontend_model>
-                            <source_model>nosto_tagging/system_config_sourcE_variation_switch</source_model>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>

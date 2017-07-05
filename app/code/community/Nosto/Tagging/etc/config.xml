@@ -214,7 +214,7 @@
                 <method>disabled</method>
             </multi_currency>
             <variation>
-                <switch>disabled</switch>
+                <switch>0</switch>
             </variation>
             <brand_attribute>
                 <tag>manufacturer</tag>

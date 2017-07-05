@@ -86,16 +86,6 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const MULTI_CURRENCY_DISABLED = 'disabled';
 
     /**
-     * price variation option, disabled
-     */
-    const VARIATION_SWITCH_OPTION_DISABLED = 'disabled';
-
-    /**
-     * price variation option, enabled
-     */
-    const VARIATION_SWITCH_OPTION_ENABLED = 'enabled';
-
-    /**
      * Path to store config for using the product API or not
      */
     const XML_PATH_USE_PRODUCT_API = 'nosto_tagging/general/use_product_api';
@@ -439,8 +429,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
 
     public function isVariationEnabled($store = null)
     {
-        $switchValue = Mage::getStoreConfig(self::XML_PATH_VARIATION_SWITCH, $store);
-        return ($switchValue === self::VARIATION_SWITCH_OPTION_ENABLED);
+        return (bool)Mage::getStoreConfig(self::XML_PATH_VARIATION_SWITCH, $store);
     }
 
     /**
