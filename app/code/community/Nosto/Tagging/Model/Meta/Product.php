@@ -99,8 +99,6 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         $this->setProductId($product->getId());
         $this->setName($product->getName());
         $this->setImageUrl($this->buildImageUrl($product, $store));
-        $this->setPrice($this->buildProductPrice($product, $store));
-        $this->setListPrice($this->buildProductListPrice($product, $store));
         $this->setPriceCurrencyCode($priceHelper->getTaggingCurrencyCode($store->getCurrentCurrencyCode(), $store));
         $this->setAvailability($this->buildAvailability($product));
         $this->setCategories($this->buildCategories($product));
@@ -118,10 +116,8 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         if (($tags = $this->buildTags($product, $store)) !== array()) {
             $this->setTag1($tags);
         }
-        if (!$dataHelper->multiCurrencyDisabled($store)) {
-            $this->setVariationId($store->getBaseCurrencyCode());
-        }
 
+        $this->amendPrice($product, $store);
         $this->amendAttributeTags($product, $store);
         $this->amendReviews($product, $store);
         $this->amendCustomizableAttributes($product, $store);
@@ -135,6 +131,12 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
             $this->amendSkus($product, $store);
         }
 
+        if ($dataHelper->isMultiCurrencyMethodExchangeRate($store)) {
+            $this->setVariationId($store->getBaseCurrencyCode());
+        } else if ($dataHelper->isVariationEnabled($store)){
+            $this->amendVariations($product, $store);
+        }
+
         Mage::dispatchEvent(
             Nosto_Tagging_Helper_Event::EVENT_NOSTO_PRODUCT_LOAD_AFTER,
             [
@@ -142,6 +144,35 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
                 'magentoProduct' => $product
             ]
         );
+    }
+
+    /**
+     * Build price variations. It must be called after the currency has been set.
+     * Because this method set variation currency to the product tagging currency.
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @param Mage_Core_Model_Store $store
+     */
+    protected function amendVariations(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
+    {
+        /** @var $customerHelper Mage_Customer_Helper_Data */
+        $customerHelper = Mage::helper('customer');
+        $defaultGroupId = $customerHelper->getDefaultCustomerGroupId($store);
+        /** @var Mage_Customer_Model_Group $group */
+        $defaultGroup = Mage::getModel('customer/group')->load($defaultGroupId);
+        if ($defaultGroup instanceof Mage_Customer_Model_Group) {
+            $this->setVariationId($defaultGroup->getCode());
+        }
+
+        /** @var Nosto_Tagging_Model_Meta_Product_Variation_Collection $variationCollecton */
+        $variationCollecton = Mage::getModel('nosto_tagging/meta_variation_collection');
+        $variationCollecton->loadData(
+            $product,
+            $this->getAvailability(),
+            $this->getPriceCurrencyCode(),
+            $store
+        );
+        $this->setVariations($variationCollecton);
     }
 
     /**
@@ -271,6 +302,25 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
                 }
             }
         }
+    }
+
+    /**
+     * Amends the product price to the price that set for default customer group.
+     *
+     * @param Mage_Catalog_Model_Product $product the product model.
+     * @param Mage_Core_Model_Store $store the store model.
+     *
+     */
+    protected function amendPrice(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
+    {
+        $tmpProduct = Mage::getModel('catalog/product')->load($product->getId());
+        /** @var $customerHelper Mage_Customer_Helper_Data */
+        $customerHelper = Mage::helper('customer');
+        $defaultGroupId = $customerHelper->getDefaultCustomerGroupId($store);
+        $tmpProduct->setCustomerGroupId($defaultGroupId);
+
+        $this->setPrice($this->buildProductPrice($tmpProduct, $store));
+        $this->setListPrice($this->buildProductListPrice($tmpProduct, $store));
     }
 
     /**

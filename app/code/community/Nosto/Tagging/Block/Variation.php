@@ -56,11 +56,27 @@ class Nosto_Tagging_Block_Variation extends Mage_Core_Block_Template
     /**
      * Return the current variation id
      *
-     * @return string
+     * @return string|null
      */
     public function getVariationId()
     {
-        return Mage::app()->getStore()->getCurrentCurrencyCode();
+        /** @var Nosto_Tagging_Helper_Data $dataHelper */
+        $dataHelper = Mage::helper('nosto_tagging');
+        if ($dataHelper->isMultiCurrencyMethodExchangeRate(Mage::app()->getStore())) {
+            return Mage::app()->getStore()->getCurrentCurrencyCode();
+        } else if ($dataHelper->isVariationEnabled(Mage::app()->getStore())){
+            $groupId = Mage::getSingleton('customer/session')->getCustomerGroupId();
+
+            /** @var Mage_Customer_Model_Group $customerGroup */
+            $customerGroup = Mage::getModel('customer/group')->load($groupId);
+            if ($customerGroup == null) {
+                return null;
+            }
+
+            return $customerGroup->getCode();
+        }
+
+        return null;
     }
 
     /**

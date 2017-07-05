@@ -25,44 +25,30 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-require_once __DIR__ . '/../../bootstrap.php'; // @codingStandardsIgnoreLine
-use Nosto_Tagging_Helper_Log as NostoLog;
-
 /**
- * Event observer model for order.
- * Used to interact with Magento events.
+ * Extension system setting source model for enabling/disabling price variation
  *
  * @category Nosto
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
- * @suppress PhanUnreferencedClass
  */
-class Nosto_Tagging_Model_Observer_Order
+class Nosto_Tagging_Block_Adminhtml_System_Config_Variation_Switch extends Mage_Adminhtml_Block_System_Config_Form_Field
 {
-    /**
-     * Sends an order confirmation API request to Nosto if the order is completed.
-     *
-     * Event 'sales_order_save_commit_after'.
-     *
-     * @param Varien_Event_Observer $observer the event observer.
-     *
-     * @return Nosto_Tagging_Model_Observer_Order
-     */
-    public function sendOrderConfirmation(Varien_Event_Observer $observer)
+    protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)
     {
-        if (Mage::helper('nosto_tagging')->isModuleEnabled()) {
-            /** @var Mage_Sales_Model_Order $mageOrder */
+        $store = $store = Mage::app()->getStore();
+        /** @var Nosto_Tagging_Helper_Data $dataHelper */
+        $dataHelper = Mage::helper('nosto_tagging');
+        if (!$dataHelper->multiCurrencyDisabled($store)) {
             /** @noinspection PhpUndefinedMethodInspection */
-            $mageOrder = $observer->getEvent()->getOrder();
-            /** @var Nosto_Tagging_Model_Service_Order $service */
-            $service = Mage::getModel('nosto_tagging/service_order');
-            try {
-                $service->confirm($mageOrder);
-            } catch (Exception $e) {
-                NostoLog::exception($e);
-            }
+            $element->setDisabled('disabled');
+
+            $comment = 'Price variation feature is inactivated because multi-currency is enabled.';
+            $element->setData(
+                'comment', $comment
+            );
         }
 
-        return $this;
+        return parent::_getElementHtml($element);
     }
 }

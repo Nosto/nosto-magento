@@ -65,6 +65,11 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_MULTI_CURRENCY_METHOD = 'nosto_tagging/multi_currency/method';
 
     /**
+     * Path to store config of price variation switch
+     */
+    const XML_PATH_VARIATION_SWITCH = 'nosto_tagging/variation/switch';
+
+    /**
      * Path to store config scheduled currency exchange rate update enabled setting.
      */
     const XML_PATH_SCHEDULED_CURRENCY_EXCHANGE_RATE_UPDATE_ENABLED
@@ -74,11 +79,6 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      * Multi currency method option for currency exchange rates.
      */
     const MULTI_CURRENCY_METHOD_EXCHANGE_RATE = 'exchangeRate';
-
-    /**
-     * Multi currency method option for price variations in tagging.
-     */
-    const MULTI_CURRENCY_METHOD_PRICE_VARIATION = 'priceVariation';
 
     /**
      * No multi currency
@@ -425,6 +425,11 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     {
         $method = $this->getMultiCurrencyMethod($store);
         return ($method === self::MULTI_CURRENCY_DISABLED);
+    }
+
+    public function isVariationEnabled($store = null)
+    {
+        return (bool)Mage::getStoreConfig(self::XML_PATH_VARIATION_SWITCH, $store);
     }
 
     /**

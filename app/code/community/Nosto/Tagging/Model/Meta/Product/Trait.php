@@ -99,27 +99,6 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
     }
 
     /**
-     * Build product price
-     *
-     * @param Mage_Catalog_Model_Product $product
-     * @param Mage_Core_Model_Store $store
-     * @param $isFinalPrice true means it is final price, or it is list price
-     * @return float the price
-     */
-    protected function buildPrice(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store, $isFinalPrice)
-    {
-        /** @var Nosto_Tagging_Helper_Price $priceHelper */
-        $priceHelper = Mage::helper('nosto_tagging/price');
-        $basePrice = $priceHelper->getDisplayPriceInStore($product, $store, $isFinalPrice);
-
-        return $priceHelper->getTaggingPrice(
-            $basePrice,
-            $store->getCurrentCurrencyCode(),
-            $store
-        );
-    }
-
-    /**
      * Build product final price
      * 
      * @param Mage_Catalog_Model_Product $product
@@ -128,7 +107,10 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
      */
     protected function buildProductPrice(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
-        return $this->buildPrice($product, $store, true);
+        /** @var Nosto_Tagging_Helper_Price $priceHelper */
+        $priceHelper = Mage::helper('nosto_tagging/price');
+
+        return $priceHelper->getProductTaggingPrice($product, $store, true);
     }
 
     /**
@@ -140,7 +122,10 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
      */
     protected function buildProductListPrice(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
-        return $this->buildPrice($product, $store, false);
+        /** @var Nosto_Tagging_Helper_Price $priceHelper */
+        $priceHelper = Mage::helper('nosto_tagging/price');
+
+        return $priceHelper->getProductTaggingPrice($product, $store, false);
     }
 
     /**
