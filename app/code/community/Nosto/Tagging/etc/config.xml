@@ -213,6 +213,9 @@
             <multi_currency>
                 <method>disabled</method>
             </multi_currency>
+            <variation>
+                <switch>disabled</switch>
+            </variation>
             <brand_attribute>
                 <tag>manufacturer</tag>
             </brand_attribute>

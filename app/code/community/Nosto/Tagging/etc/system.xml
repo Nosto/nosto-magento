@@ -265,7 +265,7 @@
                     <fields>
                         <method translate="label">
                             <label>Multi Currency Method</label>
-                            <comment>Use exchange rates for multi currency product recommendations. IMPORTANT: If mult-currency is enabled, the price variation feature will be inactivated.</comment>
+                            <comment>Use exchange rates for multi currency product recommendations. If multi-currency is enabled, the price variation feature will be inactivated.</comment>
                             <frontend_type>select</frontend_type>
                             <frontend_model>nosto_tagging/adminhtml_system_config_currency_method</frontend_model>
                             <source_model>nosto_tagging/system_config_source_multi_currency_method</source_model>
@@ -287,7 +287,7 @@
                     <fields>
                         <switch translate="label">
                             <label>Price Variation</label>
-                            <comment>Enable price variation to support group price and catalog price rules. IMPORTANT: It can not be enabled if multi-currency is enabled.</comment>
+                            <comment>Enable price variation to support group price and catalog price rules. It can not be enabled if multi-currency is enabled.</comment>
                             <frontend_type>select</frontend_type>
                             <frontend_model>nosto_tagging/adminhtml_system_config_variation_switch</frontend_model>
                             <source_model>nosto_tagging/system_config_sourcE_variation_switch</source_model>

@@ -43,7 +43,7 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Variation_Switch extends Mage_
             /** @noinspection PhpUndefinedMethodInspection */
             $element->setDisabled('disabled');
 
-            $comment = 'IMPORTANT: Price variation feature is inactivated because multi-currency is enabled.';
+            $comment = 'Price variation feature is inactivated because multi-currency is enabled.';
             $element->setData(
                 'comment', $comment
             );
