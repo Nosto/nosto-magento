@@ -287,11 +287,11 @@
                     <fields>
                         <switch translate="label">
                             <label>Enabled</label>
-                            <comment>Enable price variation to support group price and catalog price rules. It can not be enabled if multi-currency is enabled.</comment>
+                            <comment>Enable price variation to support group price and catalog price rules. It cannot be enabled if multi-currency is enabled.</comment>
                             <frontend_type>select</frontend_type>
                             <frontend_model>nosto_tagging/adminhtml_system_config_variation_switch</frontend_model>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>20</sort_order>
+                            <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -342,7 +342,7 @@
                 <ratings_and_reviews translate="label">
                     <label>Ratings &amp; Reviews</label>
                     <frontend_type>text</frontend_type>
-                    <sort_order>80</sort_order>
+                    <sort_order>90</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
@@ -353,7 +353,7 @@
                             <comment>Select source for product ratings and reviews.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>nosto_tagging/system_config_source_ratings_provider</source_model>
-                            <sort_order>30</sort_order>
+                            <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>

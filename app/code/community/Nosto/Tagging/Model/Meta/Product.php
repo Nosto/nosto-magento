@@ -148,7 +148,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
 
     /**
      * Build price variations. It must be called after the currency has been set.
-     * Because this method set varation currency to the product tagging currency.
+     * Because this method set variation currency to the product tagging currency.
      *
      * @param Mage_Catalog_Model_Product $product
      * @param Mage_Core_Model_Store $store
