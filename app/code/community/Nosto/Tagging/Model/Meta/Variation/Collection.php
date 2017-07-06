@@ -52,21 +52,19 @@ class Nosto_Tagging_Model_Meta_Variation_Collection extends Nosto_Object_Product
         /** @var $customerHelper Mage_Customer_Helper_Data */
         $customerHelper = Mage::helper('customer');
         $defaultGroupId = $customerHelper->getDefaultCustomerGroupId($store);
-        $groups = $product->getData('group_price');
-        if (is_array($groups)) {
-            foreach ($groups as $groupItem) {
-                // skip the default customer group
-                if (!isset($groupItem['cust_group']) || $groupItem['cust_group'] == $defaultGroupId) {
-                    continue;
-                }
-                /** @var Mage_Customer_Model_Group $group */
-                $group = Mage::getModel('customer/group')->load($groupItem['cust_group']);
-                if ($group instanceof Mage_Customer_Model_Group) {
-                    /** @var Nosto_Tagging_Model_Meta_Variation $variation */
-                    $variation = Mage::getModel('nosto_tagging/meta_variation');
-                    $variation->loadData($product, $group, $productAvailability, $currencyCode, $store);
-                    $this->append($variation);
-                }
+        // ToDo - we shouold only create variations out of the groups the product belongs to
+        $groups = Mage::getModel('customer/group')->getCollection();
+        /** @var Mage_Customer_Model_Group $group */
+        foreach ($groups as $group) {
+            // skip the default customer group
+            if ($group->getId() == $defaultGroupId) {
+                continue;
+            }
+            if ($group instanceof Mage_Customer_Model_Group) {
+                /** @var Nosto_Tagging_Model_Meta_Variation $variation */
+                $variation = Mage::getModel('nosto_tagging/meta_variation');
+                $variation->loadData($product, $group, $productAvailability, $currencyCode, $store);
+                $this->append($variation);
             }
         }
     }
