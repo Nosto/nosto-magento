@@ -155,16 +155,11 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      */
     protected function amendVariations(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
-        /** @var $customerHelper Mage_Customer_Helper_Data */
-        $customerHelper = Mage::helper('customer');
-        $defaultGroupId = $customerHelper->getDefaultCustomerGroupId($store);
-        /** @var Mage_Customer_Model_Group $group */
-        $defaultGroup = Mage::getModel('customer/group')->load($defaultGroupId);
-        if ($defaultGroup instanceof Mage_Customer_Model_Group) {
-            $this->setVariationId($defaultGroup->getCode());
-        }
+        /* @var Nosto_Tagging_Helper_Variation $variationHelper  */
+        $variationHelper = Mage::helper('nosto_tagging/variation');
+        $this->setVariationId($variationHelper->getDefaultVariationId($store));
 
-        /** @var Nosto_Tagging_Model_Meta_Product_Variation_Collection $variationCollecton */
+        /** @var Nosto_Tagging_Model_Meta_Variation_Collection $variationCollecton */
         $variationCollecton = Mage::getModel('nosto_tagging/meta_variation_collection');
         $variationCollecton->loadData(
             $product,
