@@ -52,22 +52,14 @@ class Nosto_Tagging_Model_Meta_Variation_Collection extends Nosto_Object_Product
         /** @var $customerHelper Mage_Customer_Helper_Data */
         $customerHelper = Mage::helper('customer');
         $defaultGroupId = $customerHelper->getDefaultCustomerGroupId($store);
-
-        $defaultGroupCode = null;
-        /** @var Mage_Customer_Model_Group $group */
-        $defaultGroup = Mage::getModel('customer/group')->load($defaultGroupId);
-        if ($defaultGroup != null) {
-            $defaultGroupCode = $defaultGroup->getCode();
-        }
-
+        // ToDo - we shouold only create variations out of the groups the product belongs to
         $groups = Mage::getModel('customer/group')->getCollection();
         /** @var Mage_Customer_Model_Group $group */
         foreach ($groups as $group) {
-            //skip the default customer group
-            if ($group->getCode() == $defaultGroupCode) {
+            // skip the default customer group
+            if ($group->getId() == Nosto_Tagging_Helper_Variation::DEFAULT_CUSTOMER_GROUP_ID) {
                 continue;
             }
-
             /** @var Nosto_Tagging_Model_Meta_Variation $variation */
             $variation = Mage::getModel('nosto_tagging/meta_variation');
             $variation->loadData($product, $group, $productAvailability, $currencyCode, $store);
