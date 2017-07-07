@@ -60,12 +60,10 @@ class Nosto_Tagging_Model_Meta_Variation_Collection extends Nosto_Object_Product
             if ($group->getId() == Nosto_Tagging_Helper_Variation::DEFAULT_CUSTOMER_GROUP_ID) {
                 continue;
             }
-            if ($group instanceof Mage_Customer_Model_Group) {
-                /** @var Nosto_Tagging_Model_Meta_Variation $variation */
-                $variation = Mage::getModel('nosto_tagging/meta_variation');
-                $variation->loadData($product, $group, $productAvailability, $currencyCode, $store);
-                $this->append($variation);
-            }
+            /** @var Nosto_Tagging_Model_Meta_Variation $variation */
+            $variation = Mage::getModel('nosto_tagging/meta_variation');
+            $variation->loadData($product, $group, $productAvailability, $currencyCode, $store);
+            $this->append($variation);
         }
     }
 }

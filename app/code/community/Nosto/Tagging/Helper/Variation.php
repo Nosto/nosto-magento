@@ -40,7 +40,7 @@ class Nosto_Tagging_Helper_Variation extends Mage_Core_Helper_Abstract
     /**
      * Default customer group id for generating the variation_id
      */
-    const DEFAULT_CUSTOMER_GROUP_ID = 0;
+    const DEFAULT_CUSTOMER_GROUP_ID = Mage_Customer_Model_Group::NOT_LOGGED_IN_ID;
 
     /**
      * Generates "slug style" variation id
