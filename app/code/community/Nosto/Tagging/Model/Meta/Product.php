@@ -102,7 +102,8 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         $this->setPriceCurrencyCode($priceHelper->getTaggingCurrencyCode($store->getCurrentCurrencyCode(), $store));
         $this->setAvailability($this->buildAvailability($product));
         $this->setCategories($this->buildCategories($product));
-
+        $this->setPrice($this->buildProductPrice($product, $store));
+        $this->setListPrice($this->buildProductListPrice($product, $store));
         if ($product->hasData('short_description')) {
             $this->setDescription($product->getData('short_description'));
         }
@@ -116,8 +117,6 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         if (($tags = $this->buildTags($product, $store)) !== array()) {
             $this->setTag1($tags);
         }
-
-        $this->amendPrice($product, $store);
         $this->amendAttributeTags($product, $store);
         $this->amendReviews($product, $store);
         $this->amendCustomizableAttributes($product, $store);
@@ -297,25 +296,6 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
                 }
             }
         }
-    }
-
-    /**
-     * Amends the product price to the price that set for default customer group.
-     *
-     * @param Mage_Catalog_Model_Product $product the product model.
-     * @param Mage_Core_Model_Store $store the store model.
-     *
-     */
-    protected function amendPrice(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
-    {
-        $tmpProduct = Mage::getModel('catalog/product')->load($product->getId());
-        /** @var $customerHelper Mage_Customer_Helper_Data */
-        $customerHelper = Mage::helper('customer');
-        $defaultGroupId = $customerHelper->getDefaultCustomerGroupId($store);
-        $tmpProduct->setCustomerGroupId($defaultGroupId);
-
-        $this->setPrice($this->buildProductPrice($tmpProduct, $store));
-        $this->setListPrice($this->buildProductListPrice($tmpProduct, $store));
     }
 
     /**

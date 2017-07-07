@@ -57,7 +57,7 @@ class Nosto_Tagging_Model_Meta_Variation_Collection extends Nosto_Object_Product
         /** @var Mage_Customer_Model_Group $group */
         foreach ($groups as $group) {
             // skip the default customer group
-            if ($group->getId() == $defaultGroupId) {
+            if ($group->getId() == Nosto_Tagging_Helper_Variation::DEFAULT_CUSTOMER_GROUP_ID) {
                 continue;
             }
             if ($group instanceof Mage_Customer_Model_Group) {

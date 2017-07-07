@@ -38,6 +38,11 @@ use Nosto_Tagging_Helper_Log as NostoLog;
 class Nosto_Tagging_Helper_Variation extends Mage_Core_Helper_Abstract
 {
     /**
+     * Default customer group id for generating the variation_id
+     */
+    const DEFAULT_CUSTOMER_GROUP_ID = 0;
+
+    /**
      * Generates "slug style" variation id
      *
      * @param Mage_Customer_Model_Group $group
@@ -59,11 +64,8 @@ class Nosto_Tagging_Helper_Variation extends Mage_Core_Helper_Abstract
     public function getDefaultVariationId(Mage_Core_Model_Store $store)
     {
         $defaultVariationId = null;
-        /** @var $customerHelper Mage_Customer_Helper_Data */
-        $customerHelper = Mage::helper('customer');
-        $defaultGroupId = $customerHelper->getDefaultCustomerGroupId($store);
         /** @var Mage_Customer_Model_Group $group */
-        $defaultGroup = Mage::getModel('customer/group')->load($defaultGroupId);
+        $defaultGroup = Mage::getModel('customer/group')->load(self::DEFAULT_CUSTOMER_GROUP_ID);
         if ($defaultGroup instanceof Mage_Customer_Model_Group) {
             $defaultVariationId = $this->generateVariationId($defaultGroup);
         }
