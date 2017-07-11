@@ -162,7 +162,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * The release candidate version. Set to null for stable.
      */
-    const NOSTO_RC_VERSION = null;
+    const NOSTO_RC_VERSION = 1;
 
     /**
      * List of strings to remove from the default Nosto account title
