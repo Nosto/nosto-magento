@@ -177,6 +177,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
      */
     public function createAccountAction()
     {
+        $messageText = null;
         $this->getResponse()->setHeader('Content-type', 'application/json', true);
 
         /** @var Nosto_Tagging_Helper_Account $accountHelper */
@@ -224,21 +225,26 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                         )
                     );
                 }
-            } catch (Nosto_NostoException$e) {
+            } catch (Nosto_NostoException $e) {
                 NostoLog::exception($e);
+                $messageText = $e->getMessage();
             }
         }
 
         if (!isset($responseBody)) {
+            $params = [
+                'message_type' => Nosto_Nosto::TYPE_ERROR,
+                'message_code' => Nosto_Nosto::CODE_ACCOUNT_CREATE,
+            ];
+            if ($messageText) {
+                $params['message_text'] = $messageText;
+            }
             $responseBody = array(
                 'success' => false,
                 'redirect_url' => $accountHelper->getIframeUrl(
                     $store,
                     null, // account creation failed, so we have none.
-                    array(
-                        'message_type' => Nosto_Nosto::TYPE_ERROR,
-                        'message_code' => Nosto_Nosto::CODE_ACCOUNT_CREATE,
-                    )
+                    $params
                 )
             );
         }
