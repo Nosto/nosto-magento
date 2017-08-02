@@ -49,6 +49,20 @@ class Nosto_Tagging_Helper_Module extends Mage_Core_Helper_Abstract
     const FIELD_EXPECTED_VALUE = 'expected_value';
 
     /**
+     * check if the nosto module is enable. And if the dependencies for nosto are missing, return false as well
+     *
+     * @param null $moduleName
+     * @return bool
+     */
+    public function isModuleEnabled($moduleName = null)
+    {
+        if (!class_exists ( 'Nosto_Nosto' , true)) {
+            return false;
+        }
+        return parent::isModuleEnabled($moduleName);
+    }
+
+    /**
      * An array of supported / integrated modules
      *
      * @var array

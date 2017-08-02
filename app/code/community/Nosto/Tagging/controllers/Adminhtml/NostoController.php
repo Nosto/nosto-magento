@@ -81,6 +81,14 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
      */
     public function indexAction()
     {
+        if (!class_exists ( 'Nosto_Nosto' , true)) {
+            Mage::getSingleton('core/session')->addError(
+                'Dependencies for your nosto are missing.'
+                .'Please install nosto plugin with bundle package instead of source code package.'
+            );
+            $this->_redirectError(Mage::getUrl('adminhtml'));
+            return false;
+        }
         $this->_title($this->__('Nosto'));
         if (!$this->getSelectedStore()) {
             // If we are not under a store view, then redirect to the first
