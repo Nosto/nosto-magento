@@ -56,9 +56,10 @@ class Nosto_Tagging_Helper_Module extends Mage_Core_Helper_Abstract
      */
     public function isModuleEnabled($moduleName = null)
     {
-        if (!class_exists ('Nosto_Nosto' , true)) {
+        if (!class_exists('Nosto_Nosto', true)) {
             return false;
         }
+
         return parent::isModuleEnabled($moduleName);
     }
 

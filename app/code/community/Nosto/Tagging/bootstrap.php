@@ -25,7 +25,7 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-if (class_exists ( 'Nosto_Nosto' , true)) {
+if (class_exists('Nosto_Nosto' , true)) {
     /* @var Nosto_Tagging_Helper_Data $nostoHelper */
     $nostoHelper = Mage::helper('nosto_tagging');
     //Nosto_Request_Http_HttpRequest::buildUserAgent('Magento', Mage::getVersion(), $nostoHelper->getExtensionVersion());
