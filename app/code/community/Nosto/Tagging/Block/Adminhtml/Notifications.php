@@ -51,7 +51,7 @@ class Nosto_Tagging_Block_Adminhtml_Notifications extends Mage_Adminhtml_Block_T
      */
     public function allAccountsOK()
     {
-        if (!class_exists ( 'Nosto_Nosto' , true)) {
+        if (!class_exists ('Nosto_Nosto' , true)) {
             return false;
         }
         /** @var Nosto_Tagging_Helper_Account $accountHelper */
@@ -130,7 +130,7 @@ class Nosto_Tagging_Block_Adminhtml_Notifications extends Mage_Adminhtml_Block_T
      */
     public function getInvalidAccountDomains()
     {
-        if (!class_exists ( 'Nosto_Nosto' , true)) {
+        if (!class_exists ('Nosto_Nosto' , true)) {
             return false;
         }
         /** @var Nosto_Tagging_Helper_Url $urlHelper */
