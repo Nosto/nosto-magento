@@ -55,7 +55,7 @@ class Nosto_Tagging_Model_Observer_Controller
      */
     public function addBlockAfterMainContent(Varien_Event_Observer $observer)
     {
-        if (Mage::helper('nosto_tagging')->isModuleEnabled()) {
+        if (Mage::helper('nosto_tagging/module')->isModuleEnabled()) {
             /** @var $layout Mage_Core_Model_Layout_Update */
             /** @noinspection PhpUndefinedMethodInspection */
             $layout = $observer->getEvent()->getLayout()->getUpdate();
