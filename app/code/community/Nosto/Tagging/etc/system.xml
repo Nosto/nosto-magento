@@ -265,7 +265,7 @@
                     <fields>
                         <method translate="label">
                             <label>Multi Currency Method</label>
-                            <comment>Use either exchange rates or price variations for multi currency product recommendations.</comment>
+                            <comment>Use exchange rates for multi currency product recommendations. If multi-currency is enabled, the price variation feature will be inactivated.</comment>
                             <frontend_type>select</frontend_type>
                             <frontend_model>nosto_tagging/adminhtml_system_config_currency_method</frontend_model>
                             <source_model>nosto_tagging/system_config_source_multi_currency_method</source_model>
@@ -276,6 +276,28 @@
                         </method>
                     </fields>
                 </multi_currency>
+                <variation translate="label">
+                    <label>Price Variation</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>75</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>0</expanded>
+                    <fields>
+                        <switch translate="label">
+                            <label>Enabled</label>
+                            <comment>Enable price variation to support group price and catalog price rules. It cannot be enabled if multi-currency is enabled.</comment>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>nosto_tagging/adminhtml_system_config_variation_switch</frontend_model>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </switch>
+                    </fields>
+                </variation>
                 <scheduled_currency_exchange_rate_update translate="label">
                     <label>Scheduled Currency Exchange Rate Update</label>
                     <frontend_type>text</frontend_type>
@@ -320,7 +342,7 @@
                 <ratings_and_reviews translate="label">
                     <label>Ratings &amp; Reviews</label>
                     <frontend_type>text</frontend_type>
-                    <sort_order>80</sort_order>
+                    <sort_order>90</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
@@ -331,7 +353,7 @@
                             <comment>Select source for product ratings and reviews.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>nosto_tagging/system_config_source_ratings_provider</source_model>
-                            <sort_order>30</sort_order>
+                            <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>

@@ -38,25 +38,6 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
     protected abstract function getCustomisableAttributes();
 
     /**
-     * Builds the availability for the product.
-     *
-     * @param Mage_Catalog_Model_Product $product the product model.
-     *
-     * @return string
-     */
-    protected function buildAvailability(Mage_Catalog_Model_Product $product)
-    {
-        $availability = Nosto_Types_Product_ProductInterface::OUT_OF_STOCK;
-        if (!$product->isVisibleInSiteVisibility()) {
-            $availability = Nosto_Types_Product_ProductInterface::INVISIBLE;
-        } elseif ($product->isAvailable()) {
-            $availability = Nosto_Types_Product_ProductInterface::IN_STOCK;
-        }
-
-        return $availability;
-    }
-
-    /**
      * Builds the absolute store front url for the product page.
      *
      * The url includes the "___store" GET parameter in order for the Nosto
@@ -117,31 +98,34 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
         return (!empty($image) && $image !== 'no_selection');
     }
 
-    protected function buildPrice(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store, $type)
+    /**
+     * Build product final price
+     * 
+     * @param Mage_Catalog_Model_Product $product
+     * @param Mage_Core_Model_Store $store
+     * @return float final price of the product
+     */
+    protected function buildProductPrice(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
-        if ($type === 'listPrice') {
-            $helperMethod = 'getProductPriceInclTax';
-        } else {
-            $helperMethod = 'getProductFinalPriceInclTax';
-        }
         /** @var Nosto_Tagging_Helper_Price $priceHelper */
         $priceHelper = Mage::helper('nosto_tagging/price');
 
-        return $priceHelper->getTaggingPrice(
-            $priceHelper->$helperMethod($product),
-            $store->getCurrentCurrencyCode(),
-            $store
-        );
+        return $priceHelper->getProductTaggingPrice($product, $store, true);
     }
 
-    protected function buildProductPrice(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
-    {
-        return $this->buildPrice($product, $store, 'price');
-    }
-
+    /**
+     * Build product list price
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @param Mage_Core_Model_Store $store
+     * @return float list price
+     */
     protected function buildProductListPrice(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
-        return $this->buildPrice($product, $store, 'listPrice');
+        /** @var Nosto_Tagging_Helper_Price $priceHelper */
+        $priceHelper = Mage::helper('nosto_tagging/price');
+
+        return $priceHelper->getProductTaggingPrice($product, $store, false);
     }
 
     /**

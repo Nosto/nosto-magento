@@ -80,19 +80,20 @@ class Nosto_Tagging_Model_Meta_Account extends Nosto_Object_Signup_Signup
         $this->setOwnerLanguageCode(substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2));
         $this->setOwner($owner);
         $this->setDetails($signupDetails);
-
         /** @var Nosto_Tagging_Model_Meta_Account_Billing $billing */
         $billing = Mage::getModel('nosto_tagging/meta_account_billing');
         $billing->loadData($store);
         $this->setBillingDetails($billing);
-
         $this->setUseCurrencyExchangeRates(!$helper->multiCurrencyDisabled($store));
         if (!$helper->multiCurrencyDisabled($store)) {
             $this->setDefaultVariantId($store->getBaseCurrencyCode());
+        } elseif ($helper->isVariationEnabled($store)) {
+            /* @var Nosto_Tagging_Helper_Variation $variationHelper  */
+            $variationHelper = Mage::helper('nosto_tagging/variation');
+            $this->setDefaultVariantId($variationHelper->getDefaultVariationId($store));
         } else {
             $this->setDefaultVariantId("");
         }
-
         $storeLocale = $store->getConfig('general/locale/code');
         $currencyCodes = $store->getAvailableCurrencyCodes(true);
         if (is_array($currencyCodes) && !empty($currencyCodes)) {

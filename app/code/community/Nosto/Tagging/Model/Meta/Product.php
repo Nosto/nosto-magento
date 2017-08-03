@@ -99,12 +99,11 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         $this->setProductId($product->getId());
         $this->setName($product->getName());
         $this->setImageUrl($this->buildImageUrl($product, $store));
-        $this->setPrice($this->buildProductPrice($product, $store));
-        $this->setListPrice($this->buildProductListPrice($product, $store));
         $this->setPriceCurrencyCode($priceHelper->getTaggingCurrencyCode($store->getCurrentCurrencyCode(), $store));
         $this->setAvailability($this->buildAvailability($product));
         $this->setCategories($this->buildCategories($product));
-
+        $this->setPrice($this->buildProductPrice($product, $store));
+        $this->setListPrice($this->buildProductListPrice($product, $store));
         if ($product->hasData('short_description')) {
             $this->setDescription($product->getData('short_description'));
         }
@@ -118,10 +117,6 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         if (($tags = $this->buildTags($product, $store)) !== array()) {
             $this->setTag1($tags);
         }
-        if (!$dataHelper->multiCurrencyDisabled($store)) {
-            $this->setVariationId($store->getBaseCurrencyCode());
-        }
-
         $this->amendAttributeTags($product, $store);
         $this->amendReviews($product, $store);
         $this->amendCustomizableAttributes($product, $store);
@@ -134,6 +129,44 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         if ($dataHelper->getUseSkus($store)) {
             $this->amendSkus($product, $store);
         }
+
+        if ($dataHelper->isMultiCurrencyMethodExchangeRate($store)) {
+            $this->setVariationId($store->getBaseCurrencyCode());
+        } else if ($dataHelper->isVariationEnabled($store)){
+            $this->amendVariations($product, $store);
+        }
+
+        Mage::dispatchEvent(
+            Nosto_Tagging_Helper_Event::EVENT_NOSTO_PRODUCT_LOAD_AFTER,
+            [
+                'product' => $this,
+                'magentoProduct' => $product
+            ]
+        );
+    }
+
+    /**
+     * Build price variations. It must be called after the currency has been set.
+     * Because this method set variation currency to the product tagging currency.
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @param Mage_Core_Model_Store $store
+     */
+    protected function amendVariations(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
+    {
+        /* @var Nosto_Tagging_Helper_Variation $variationHelper  */
+        $variationHelper = Mage::helper('nosto_tagging/variation');
+        $this->setVariationId($variationHelper->getDefaultVariationId($store));
+
+        /** @var Nosto_Tagging_Model_Meta_Variation_Collection $variationCollecton */
+        $variationCollecton = Mage::getModel('nosto_tagging/meta_variation_collection');
+        $variationCollecton->loadData(
+            $product,
+            $this->getAvailability(),
+            $this->getPriceCurrencyCode(),
+            $store
+        );
+        $this->setVariations($variationCollecton);
     }
 
     /**
@@ -589,5 +622,23 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         }
 
         return $return;
+    }
+
+    /**
+     * Builds the availability for the product.
+     *
+     * @param Mage_Catalog_Model_Product $product the product model.
+     * @return string
+     */
+    protected function buildAvailability(Mage_Catalog_Model_Product $product)
+    {
+        $availability = Nosto_Types_Product_ProductInterface::OUT_OF_STOCK;
+        if (!$product->isVisibleInSiteVisibility()) {
+            $availability = Nosto_Types_Product_ProductInterface::INVISIBLE;
+        } elseif ($product->isAvailable()) {
+            $availability = Nosto_Types_Product_ProductInterface::IN_STOCK;
+        }
+
+        return $availability;
     }
 }
