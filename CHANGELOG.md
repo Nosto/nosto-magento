@@ -1,5 +1,11 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.3.0
+* Add phone number, post code and country to customer object
+* Add error handling in account creation
+* Add dependency check before running nosto
+* Improve the exchange rate handling
+
 ### 3.2.0
 * Add support for group price and catalog price rule using price variation
 * Update rating and reviews to Nosto whenever they are changed or new ones are added
