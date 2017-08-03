@@ -1,5 +1,12 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.2.0
+* Add support for group price and catalog price rule using price variation
+* Update rating and reviews to Nosto whenever they are changed or new ones are added
+* Respect tax rules in product tagging
+* Dispatch events after Nosto product, Nosto order or Nosto cart is loaded
+* Fix bug in SKU availability
+
 ### 3.1.2
 * Rename RestoreCartController to CartController to avoid issues with case sensitivity
 
