@@ -245,10 +245,10 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         }
 
         if (!isset($responseBody)) {
-            $params = [
+            $params = array(
                 'message_type' => Nosto_Nosto::TYPE_ERROR,
                 'message_code' => Nosto_Nosto::CODE_ACCOUNT_CREATE,
-            ];
+            );
             if ($messageText) {
                 $params['message_text'] = $messageText;
             }
