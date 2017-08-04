@@ -62,7 +62,7 @@
                 xhr(settings.urls.createAccount, {
                     data: post_data,
                     success: function (response) {
-                        if (response.success && response.redirect_url) {
+                        if (response.redirect_url) {
                             $iframe.src = response.redirect_url;
                         }
                     }
@@ -96,7 +96,7 @@
             case TYPE_REMOVE_ACCOUNT:
                 xhr(settings.urls.deleteAccount, {
                     success: function (response) {
-                        if (response.success && response.redirect_url) {
+                        if (response.redirect_url) {
                             $iframe.src = response.redirect_url;
                         }
                     }

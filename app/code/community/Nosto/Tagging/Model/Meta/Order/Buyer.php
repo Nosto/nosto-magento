@@ -46,5 +46,12 @@ class Nosto_Tagging_Model_Meta_Order_Buyer extends Nosto_Object_Order_Buyer
         $this->setFirstName($order->getCustomerFirstname());
         $this->setLastName($order->getCustomerLastname());
         $this->setEmail($order->getCustomerEmail());
+
+        $address = $order->getBillingAddress();
+        if ($address instanceof Mage_Sales_Model_Order_Address) {
+            $this->setPhone($address->getTelephone());
+            $this->setPostcode($address->getPostcode());
+            $this->setCountry($address->getCountry());
+        }
     }
 }

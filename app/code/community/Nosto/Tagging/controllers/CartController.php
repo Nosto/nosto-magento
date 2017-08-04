@@ -61,7 +61,7 @@ class Nosto_Tagging_CartController extends Mage_Core_Controller_Front_Action
         $nostoUrlHelper = Mage::helper('nosto_tagging/url');
         $frontPageUrl = $nostoUrlHelper->getFrontPageUrl($store);
         $redirectUrl = $frontPageUrl;
-        if (Mage::helper('nosto_tagging')->isModuleEnabled()) {
+        if (Mage::helper('nosto_tagging/module')->isModuleEnabled()) {
             /* @var Mage_Checkout_Model_Session $checkoutSession */
             $checkoutSession = Mage::getSingleton('checkout/session');
             /* @var Mage_Core_Model_Session $coreSession */

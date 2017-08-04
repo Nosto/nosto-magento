@@ -81,6 +81,19 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
      */
     public function indexAction()
     {
+        if (!class_exists('Nosto_Nosto', true)) {
+            Mage::getSingleton('core/session')->addError(
+                $this->__(
+                    'The Nosto extension for Magento is missing some required files. Apart from files in '
+                    . 'app/code/community/Nosto/Tagging, the extension requires certain libraries in the '
+                    . '`lib/Nosto` directory. This may have happened as you may have downloaded the unpackaged '
+                    . 'source-codes from our public repository. Ensure that you have downloaded the correct .tgz '
+                    . 'file and unpackaged it into the appropriate locations.'
+                )
+            );
+            $this->_redirectError(Mage::getUrl('adminhtml'));
+            return false;
+        }
         $this->_title($this->__('Nosto'));
         if (!$this->getSelectedStore()) {
             // If we are not under a store view, then redirect to the first
@@ -177,6 +190,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
      */
     public function createAccountAction()
     {
+        $messageText = null;
         $this->getResponse()->setHeader('Content-type', 'application/json', true);
 
         /** @var Nosto_Tagging_Helper_Account $accountHelper */
@@ -224,21 +238,26 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                         )
                     );
                 }
-            } catch (Nosto_NostoException$e) {
+            } catch (Nosto_NostoException $e) {
                 NostoLog::exception($e);
+                $messageText = $e->getMessage();
             }
         }
 
         if (!isset($responseBody)) {
+            $params = array(
+                'message_type' => Nosto_Nosto::TYPE_ERROR,
+                'message_code' => Nosto_Nosto::CODE_ACCOUNT_CREATE,
+            );
+            if ($messageText) {
+                $params['message_text'] = $messageText;
+            }
             $responseBody = array(
                 'success' => false,
                 'redirect_url' => $accountHelper->getIframeUrl(
                     $store,
                     null, // account creation failed, so we have none.
-                    array(
-                        'message_type' => Nosto_Nosto::TYPE_ERROR,
-                        'message_code' => Nosto_Nosto::CODE_ACCOUNT_CREATE,
-                    )
+                    $params
                 )
             );
         }
