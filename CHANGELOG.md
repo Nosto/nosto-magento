@@ -1,9 +1,9 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
 ### 3.3.0
-* Add phone number, post code and country to customer object
-* Add error handling in account creation
-* Add dependency check before running nosto
+* Send client’s phone number, postal code and country in order data 
+* Improve error handling and error recovery in Nosto account creation 
+* Verify dependencies (Nosto PHP SDK) before running Nosto
 
 ### 3.2.0
 * Add support for group price and catalog price rule using price variation
