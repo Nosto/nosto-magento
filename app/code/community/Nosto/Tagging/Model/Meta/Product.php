@@ -138,10 +138,10 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
 
         Mage::dispatchEvent(
             Nosto_Tagging_Helper_Event::EVENT_NOSTO_PRODUCT_LOAD_AFTER,
-            [
+            array(
                 'product' => $this,
                 'magentoProduct' => $product
-            ]
+            )
         );
     }
 

@@ -108,10 +108,10 @@ class Nosto_Tagging_Model_Meta_Order extends Nosto_Object_Order_Order
 
         Mage::dispatchEvent(
             Nosto_Tagging_Helper_Event::EVENT_NOSTO_ORDER_LOAD_AFTER,
-            [
+            array(
                 'order' => $this,
                 'magentoOrder' => $order
-            ]
+            )
         );
     }
 
