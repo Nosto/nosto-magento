@@ -29,10 +29,10 @@
         "phing/phing": "2.*",
         "etsy/phan": "0.8.0",
         "phpmd/phpmd": "^2.5",
-        "squizlabs/php_codesniffer": "2.*",
+        "squizlabs/php_codesniffer": "2.6.*",
         "sebastian/phpcpd": "*",
-        "magento-ecg/coding-standard": "*",
-        "magento/marketplace-eqp": "^1.0",
+        "magento-ecg/coding-standard": "2.*",
+        "magento/marketplace-eqp": "1.*",
         "openmage/magento-mirror": "1.9",
         "mridang/pearify": "0.2"
     }
