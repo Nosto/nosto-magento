@@ -154,11 +154,11 @@
         <echo msg="Lib updated" />
     </target>
 
-    <target name="validate" depends="update-lib, phpcbf, phpcs, phan, phpmd, phpcpd">
+    <target name="validate" depends="update-lib, phpcs, phan, phpmd, phpcpd">
         <echo msg="All done" />
     </target>
 
-    <target name="dist" depends="update-lib, phpcbf, phpcs, phan, phpmd, phpcpd, build">
+    <target name="dist" depends="update-lib, phpcs, phan, phpmd, phpcpd, build">
         <echo msg="All done" />
     </target>
 
