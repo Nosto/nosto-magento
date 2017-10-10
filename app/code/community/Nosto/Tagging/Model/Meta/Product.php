@@ -1,9 +1,9 @@
 <?php
 /**
  * Magento
- *  
+ *
  * NOTICE OF LICENSE
- *  
+ *
  * This source file is subject to the Open Software License (OSL 3.0)
  * that is bundled with this package in the file LICENSE.txt.
  * It is also available through the world-wide-web at this URL:
@@ -11,13 +11,13 @@
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
- *  
+ *
  * DISCLAIMER
- *  
+ *
  * Do not edit or add to this file if you wish to upgrade Magento to newer
  * versions in the future. If you wish to customize Magento for your
  * needs please refer to http://www.magentocommerce.com for more information.
- *  
+ *
  * @category  Nosto
  * @package   Nosto_Tagging
  * @author    Nosto Solutions Ltd <magento@nosto.com>
@@ -132,9 +132,11 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
 
         if ($dataHelper->isMultiCurrencyMethodExchangeRate($store)) {
             $this->setVariationId($store->getBaseCurrencyCode());
-        } else if ($dataHelper->isVariationEnabled($store)){
+        } else if ($dataHelper->isVariationEnabled($store)) {
             $this->amendVariations($product, $store);
         }
+
+        $this->amendCustomAttributes($product);
 
         Mage::dispatchEvent(
             Nosto_Tagging_Helper_Event::EVENT_NOSTO_PRODUCT_LOAD_AFTER,
@@ -154,7 +156,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      */
     protected function amendVariations(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
-        /* @var Nosto_Tagging_Helper_Variation $variationHelper  */
+        /* @var Nosto_Tagging_Helper_Variation $variationHelper */
         $variationHelper = Mage::helper('nosto_tagging/variation');
         $this->setVariationId($variationHelper->getDefaultVariationId($store));
 
@@ -167,6 +169,31 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
             $store
         );
         $this->setVariations($variationCollecton);
+    }
+
+    /**
+     * Tag the custom attributes
+     *
+     * @param Mage_Catalog_Model_Product $product
+     */
+    protected function amendCustomAttributes(Mage_Catalog_Model_Product $product)
+    {
+        $attributes = $product->getTypeInstance(true)->getSetAttributes($product);
+        /** @var Mage_Catalog_Model_Resource_Eav_Attribute $attribute */
+        foreach ($attributes as $attribute) {
+            //tag user defined attributes only
+            if ($attribute->getData('is_user_defined') == 1) {
+                $attributeValue = $this->getAttributeValue($product, $attribute->getName());
+                if (!$attributeValue) {
+                    continue;
+                }
+                $attributeName = $attribute->getFrontendLabel();
+                if ($attributeName == null) {
+                    $attributeName = $attribute->getName();
+                }
+                $this->addCustomField($attributeName, $attributeValue);
+            }
+        }
     }
 
     /**
@@ -279,8 +306,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
     protected function amendAlternativeImages(
         Mage_Catalog_Model_Product $product,
         Mage_Core_Model_Store $store
-    ) 
-    {
+    ) {
         /* @var Mage_Catalog_Model_Product_Attribute_Media_Api $mediaApi */
         $mediaApi = Mage::getModel('catalog/product_attribute_media_api');
         $mediaItems = $mediaApi->items($product->getId(), $store);
@@ -307,7 +333,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      */
     protected function amendReviews(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
-        /* @var Nosto_Tagging_Helper_Data $dataHelper*/
+        /* @var Nosto_Tagging_Helper_Data $dataHelper */
         $dataHelper = Mage::helper('nosto_tagging');
         $ratingProvider = $dataHelper->getRatingsAndReviewsProvider($store);
         if ($ratingProvider) {
@@ -432,7 +458,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         if (method_exists($this, $compatibilityMethod)) {
             return $this->$compatibilityMethod($args);
         } else {
-            trigger_error('Call to undefined method '.__CLASS__.'::'.$method.'()', E_USER_ERROR); // @codingStandardsIgnoreLine
+            trigger_error('Call to undefined method ' . __CLASS__ . '::' . $method . '()', E_USER_ERROR); // @codingStandardsIgnoreLine
         }
     }
 
