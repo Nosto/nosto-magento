@@ -60,11 +60,10 @@ class Nosto_Tagging_Block_Variation extends Mage_Core_Block_Template
      */
     public function getVariationId()
     {
-        $variationId = null;
         /** @var Nosto_Tagging_Helper_Data $dataHelper */
         $dataHelper = Mage::helper('nosto_tagging');
         if ($dataHelper->isMultiCurrencyMethodExchangeRate(Mage::app()->getStore())) {
-            $variationId = Mage::app()->getStore()->getCurrentCurrencyCode();
+            return Mage::app()->getStore()->getCurrentCurrencyCode();
         } else if ($dataHelper->isVariationEnabled(Mage::app()->getStore())){
             $groupId = Mage::getSingleton('customer/session')->getCustomerGroupId();
 
@@ -73,11 +72,11 @@ class Nosto_Tagging_Block_Variation extends Mage_Core_Block_Template
             if ($customerGroup instanceof Mage_Customer_Model_Group) {
                 /* @var Nosto_Tagging_Helper_Variation $variationHelper  */
                 $variationHelper = Mage::helper('nosto_tagging/variation');
-                $variationId = $variationHelper->generateVariationId($customerGroup);
+                return $variationHelper->generateVariationId($customerGroup);
             }
         }
 
-        return $variationId;
+        return null;
     }
 
     /**

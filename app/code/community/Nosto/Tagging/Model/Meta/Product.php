@@ -499,19 +499,18 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
     protected function getAttributeValue(Mage_Catalog_Model_Product $product, $attributeName)
     {
         $attribute = $product->getResource()->getAttribute($attributeName);
-        $attributeValue = null;
         if ($attribute instanceof Mage_Catalog_Model_Resource_Eav_Attribute) {
             $attributeData = $product->getData($attributeName);
             /** @noinspection PhpParamsInspection */
             $attributeValue = $product->getAttributeText($attributeName);
             if (empty($attributeValue) && is_scalar($attributeData)) {
-                $attributeValue = trim($attributeData);
+                return trim($attributeData);
             } elseif (is_array($attributeValue)) {
-                $attributeValue = implode(',', $attributeValue);
+                return implode(',', $attributeValue);
             }
         }
 
-        return $attributeValue;
+        return null;
     }
 
     /**
