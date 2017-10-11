@@ -12,6 +12,12 @@ ENV         NOSTO_OAUTH_BASE_URL https://staging.nosto.com/oauth
 ENV         NOSTO_WEB_HOOK_BASE_URL https://staging.nosto.com
 ENV         NOSTO_IFRAME_ORIGIN_REGEXP .*
 
+ENV         MYSQL_ENV_MYSQL_DATABASE magento2
+ENV         MYSQL_ENV_MYSQL_USER root
+ENV         MYSQL_ENV_MYSQL_ROOT root
+ENV         COMPOSER_ALLOW_SUPERUSER 1
+ENV         DEBIAN_FRONTEND noninteractive
+
 MAINTAINER  Nosto "platforms@nosto.com"
 
 # Install all core dependencies required for setting up Apache and PHP atleast
