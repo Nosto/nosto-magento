@@ -49,7 +49,7 @@ class Nosto_Tagging_Model_System_Config_Backend_Currency_Exchange_Rate_Time
         $values = $this->getValue();
         if (is_array($values) && count($values) < 3) {
             array_unshift($values, '00');
-            $this->setValue($values);
+            return $this->setValue($values);
         }
     }
 }
