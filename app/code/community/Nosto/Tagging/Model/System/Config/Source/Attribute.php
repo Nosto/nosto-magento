@@ -34,12 +34,6 @@
  */
 abstract class Nosto_Tagging_Model_System_Config_Source_Attribute
 {
-
-    /**
-     * @var int the product attribute type id
-     */
-    const PRODUCT_TYPE_ATTRIBUTE_ID = 4;
-
     /**
      * @var string the form key for the value
      */
@@ -70,10 +64,11 @@ abstract class Nosto_Tagging_Model_System_Config_Source_Attribute
                 );
             }
         }
+        $attributeTypeId = Mage::getResourceModel('catalog/config')->getEntityTypeId();
         $attributes = $resourceModel
             ->addFieldToFilter(
                 'entity_type_id',
-                self::PRODUCT_TYPE_ATTRIBUTE_ID
+                $attributeTypeId
             )
             ->setOrder(
                 'attribute_code',
