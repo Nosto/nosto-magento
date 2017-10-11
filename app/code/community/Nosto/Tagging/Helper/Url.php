@@ -382,7 +382,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
         $modifiedUrl = $url;
         $urlParts = Nosto_Request_Http_HttpRequest::parseUrl($url);
         if (
-            $urlParts !== false
+            is_array($urlParts)
             && isset($urlParts['query'])
         ) {
             $queryArray = Nosto_Request_Http_HttpRequest::parseQueryString($urlParts['query']);
