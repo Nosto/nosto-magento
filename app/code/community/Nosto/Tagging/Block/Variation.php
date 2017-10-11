@@ -56,7 +56,7 @@ class Nosto_Tagging_Block_Variation extends Mage_Core_Block_Template
     /**
      * Return the current variation id
      *
-     * @return string|null
+     * @return string|null the identifier of the current variation
      */
     public function getVariationId()
     {
