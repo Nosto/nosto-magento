@@ -7,7 +7,7 @@ RUN         export LC_ALL=en_US.UTF-8
 
 # Environment variables to force the extension to connect to a specified instance
 ENV         NOSTO_SERVER_URL staging.nosto.com
-ENV         NOSTO_API_BASE_URL https://staging.nosto.com/api
+ENV         NOSTO_API_BASE_URL https://staging-api.nosto.com
 ENV         NOSTO_OAUTH_BASE_URL https://staging.nosto.com/oauth
 ENV         NOSTO_WEB_HOOK_BASE_URL https://staging.nosto.com
 ENV         NOSTO_IFRAME_ORIGIN_REGEXP .*
@@ -80,3 +80,4 @@ RUN        groupadd -r plugins -g 113 && \
            usermod -a -G www-data plugins
 
 USER       plugins
+ENTRYPOINT ["bash"]
