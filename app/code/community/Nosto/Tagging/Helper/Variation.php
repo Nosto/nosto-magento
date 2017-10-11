@@ -59,7 +59,7 @@ class Nosto_Tagging_Helper_Variation extends Mage_Core_Helper_Abstract
      * Resolves the default variation id for a store
      *
      * @param Mage_Core_Model_Store $store
-     * @return string|null
+     * @return null|string
      */
     public function getDefaultVariationId(Mage_Core_Model_Store $store)
     {
