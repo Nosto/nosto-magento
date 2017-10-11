@@ -158,15 +158,15 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         $variationHelper = Mage::helper('nosto_tagging/variation');
         $this->setVariationId($variationHelper->getDefaultVariationId($store));
 
-        /** @var Nosto_Tagging_Model_Meta_Variation_Collection $variationCollecton */
-        $variationCollecton = Mage::getModel('nosto_tagging/meta_variation_collection');
-        $variationCollecton->loadData(
+        /** @var Nosto_Tagging_Model_Meta_Variation_Collection $variationCollection */
+        $variationCollection = Mage::getModel('nosto_tagging/meta_variation_collection');
+        $variationCollection->loadData(
             $product,
             $this->getAvailability(),
             $this->getPriceCurrencyCode(),
             $store
         );
-        $this->setVariations($variationCollecton);
+        $this->setVariations($variationCollection);
     }
 
     /**
