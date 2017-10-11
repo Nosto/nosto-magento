@@ -91,7 +91,7 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Ratings_Provider
                 $item['image_url']
             );
         } else {
-            $imageHtml = null;
+            $imageHtml = '';
         }
         $html .= sprintf('<tr id="row_nosto_tagging_%s">', $optionId);
         /** @noinspection HtmlUnknownAttribute */

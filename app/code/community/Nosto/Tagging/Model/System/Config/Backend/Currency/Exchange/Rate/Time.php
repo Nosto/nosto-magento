@@ -42,6 +42,7 @@ class Nosto_Tagging_Model_System_Config_Backend_Currency_Exchange_Rate_Time
      * for the "minute" in order to render the selected form values correctly.
      *
      * @inheritdoc
+     * @suppress PhanTypeMismatchArgument
      */
     protected function _beforeSave()
     {
