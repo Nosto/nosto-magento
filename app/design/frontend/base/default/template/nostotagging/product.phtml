@@ -102,7 +102,7 @@ $priceHelper = Mage::helper('nosto_tagging/price');
         <?php if ($product->getThumbUrl()): ?>
             <span class="thumb_url"><?php echo $helper->escapeHtml($product->getThumbUrl()); ?></span>
         <?php endif; ?>
-        <?php if (is_array($product->getCustomFields())) : ?>
+        <?php if ($product->getCustomFields() && is_array($product->getCustomFields())) : ?>
             <span class="custom_fields">
                 <?php foreach ($product->getCustomFields() as $key=>$val) : ?>
                     <span class="<?php echo $helper->escapeHtml($key); ?>"><?php echo $helper->escapeHtml($val); ?></span>
@@ -121,7 +121,7 @@ $priceHelper = Mage::helper('nosto_tagging/price');
                 <span class="image_url"><?php echo $helper->escapeHtml($sku->getImageUrl()); ?></span>
                 <span class="gtin"><?php echo $helper->escapeHtml($sku->getGtin()); ?></span>
                 <span class="availability"><?php echo $helper->escapeHtml($sku->getAvailability()); ?></span>
-                <?php if (is_array($sku->getCustomFields())) : ?>
+                <?php if ($sku->getCustomFields() && is_array($sku->getCustomFields())) : ?>
                     <span class="custom_fields">
                         <?php foreach ($sku->getCustomFields() as $key=>$val) : ?>
                             <span class="<?php echo $helper->escapeHtml($key); ?>"><?php echo $helper->escapeHtml($val); ?></span>

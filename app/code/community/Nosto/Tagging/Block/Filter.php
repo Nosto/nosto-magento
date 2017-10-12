@@ -36,6 +36,9 @@
 
 class Nosto_Tagging_Block_Filter extends Mage_Catalog_Block_Layer_State
 {
+    const NOSTO_PRICE_FROM = 'nosto_price_from';
+    const NOSTO_PRICE_TO = 'nosto_price_to';
+
     /**
      * Render order info as hidden meta data if the module is enabled for the
      * current store.
@@ -59,7 +62,7 @@ class Nosto_Tagging_Block_Filter extends Mage_Catalog_Block_Layer_State
     /**
      * Returns the current active filters
      *
-     * @return array
+     * @return array|null
      */
     public function getNostoFilters()
     {
@@ -71,6 +74,10 @@ class Nosto_Tagging_Block_Filter extends Mage_Catalog_Block_Layer_State
 
         $validFilters = array();
 
+        /** @var Nosto_Tagging_Helper_Data $dataHelper */
+        $dataHelper = Mage::helper('nosto_tagging');
+        $isSKUTaggingEnabled = $dataHelper->getUseSkus(Mage::app()->getStore());
+
         /** @var \Mage_Catalog_Model_Layer_Filter_Item $filter */
         foreach ($filters as $filter) {
             $model = $filter->getFilter();
@@ -80,7 +87,23 @@ class Nosto_Tagging_Block_Filter extends Mage_Catalog_Block_Layer_State
                 continue;
             }
 
-            $validFilters[] = $filter;
+            if ($model
+                && $model->getAttributeModel()
+                && $model->getAttributeModel()->getAttributeCode()
+            ) {
+                //If sku tagging is disabled, do not tag the attribute filters which
+                //are used for creating configurable variations because the attributes are not
+                //available in the parent product
+                if (!$isSKUTaggingEnabled) {
+                    if ($model->getAttributeModel()->getIsConfigurable()) {
+                        continue;
+                    }
+                }
+                $value = $this->stripTags($filter->getLabel());
+                if ($value) {
+                    $validFilters[$model->getAttributeModel()->getAttributeCode()] = $value;
+                }
+            }
         }
 
         return $validFilters;
@@ -100,8 +123,16 @@ class Nosto_Tagging_Block_Filter extends Mage_Catalog_Block_Layer_State
                 $data = $filter->getData();
                 if ($data && array_key_exists('value', $data)) {
                     $value = $data['value'];
-                    if (is_array($value) && array_key_exists(1, $value) && array_key_exists(0, $value)) {
-                        return $value;
+                    if (is_array($value)) {
+                        $range = array();
+                        if (array_key_exists(0, $value) && $value[0] !== '') {
+                            $range[self::NOSTO_PRICE_FROM] = $value[0];
+                        }
+                        if (array_key_exists(1, $value) && $value[1] !== '') {
+                            $range[self::NOSTO_PRICE_TO] = $value[1];
+                        }
+
+                        return $range;
                     }
                 }
             }
