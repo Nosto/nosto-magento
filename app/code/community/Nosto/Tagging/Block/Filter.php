@@ -74,10 +74,6 @@ class Nosto_Tagging_Block_Filter extends Mage_Catalog_Block_Layer_State
 
         $validFilters = array();
 
-        /** @var Nosto_Tagging_Helper_Data $dataHelper */
-        $dataHelper = Mage::helper('nosto_tagging');
-        $isSKUTaggingEnabled = $dataHelper->getUseSkus(Mage::app()->getStore());
-
         /** @var \Mage_Catalog_Model_Layer_Filter_Item $filter */
         foreach ($filters as $filter) {
             $model = $filter->getFilter();
@@ -91,14 +87,6 @@ class Nosto_Tagging_Block_Filter extends Mage_Catalog_Block_Layer_State
                 && $model->getAttributeModel()
                 && $model->getAttributeModel()->getAttributeCode()
             ) {
-                //If sku tagging is disabled, do not tag the attribute filters which
-                //are used for creating configurable variations because the attributes are not
-                //available in the parent product
-                if (!$isSKUTaggingEnabled) {
-                    if ($model->getAttributeModel()->getIsConfigurable()) {
-                        continue;
-                    }
-                }
                 $value = $this->stripTags($filter->getLabel());
                 if ($value) {
                     $validFilters[$model->getAttributeModel()->getAttributeCode()] = $value;

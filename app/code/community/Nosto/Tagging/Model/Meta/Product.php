@@ -37,6 +37,7 @@
 class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
 {
 
+    const ATTRIBUTE_VALUE_ANY = '--ANY--';
     use Nosto_Tagging_Model_Meta_Product_Trait;
 
     /**
@@ -178,6 +179,10 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      */
     protected function amendCustomAttributes(Mage_Catalog_Model_Product $product)
     {
+        /** @var Nosto_Tagging_Helper_Data $dataHelper */
+        $dataHelper = Mage::helper('nosto_tagging');
+        $isSKUTaggingEnabled = $dataHelper->getUseSkus(Mage::app()->getStore());
+
         $attributes = $product->getTypeInstance(true)->getSetAttributes($product);
         /** @var Mage_Catalog_Model_Resource_Eav_Attribute $attribute */
         foreach ($attributes as $attribute) {
@@ -185,7 +190,21 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
             if ($attribute->getData('is_user_defined') == 1) {
                 $attributeValue = $this->getAttributeValue($product, $attribute->getName());
                 if (!$attributeValue) {
-                    continue;
+                    //For a configurable product, if sku tagging is disabled,
+                    //tag all the attributes which are used to create configurable values as '--ANY--'
+                    if (!$isSKUTaggingEnabled
+                        && $product->getTypeId() === Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE
+                        && $attribute->getIsConfigurable()
+                        //Only global attributes are allowed to be use for creating configurable products
+                        //There is one attribute 'cost', which is user defined, configurable, but
+                        //it is not actually being used for creating configurable products because it's scope is
+                        //website.
+                        && $attribute->isScopeGlobal()
+                    ) {
+                        $attributeValue = self::ATTRIBUTE_VALUE_ANY;
+                    } else {
+                        continue;
+                    }
                 }
                 $attributeName = $attribute->getAttributeCode();
                 if ($attributeName == null) {
