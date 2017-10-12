@@ -44,7 +44,7 @@ class Nosto_Tagging_Model_Meta_Account extends Nosto_Object_Signup_Signup
      */
     public function __construct()
     {
-        parent::__construct(self::PLATFORM_NAME, self::SIGNUP_TOKEN, null);
+        parent::__construct(self::PLATFORM_NAME, self::SIGNUP_TOKEN, '');
     }
 
     /**

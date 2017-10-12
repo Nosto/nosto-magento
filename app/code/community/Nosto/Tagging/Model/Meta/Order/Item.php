@@ -89,6 +89,6 @@ abstract class Nosto_Tagging_Model_Meta_Order_Item extends Nosto_Object_Cart_Lin
                 return $parentIds[0];
             }
         }
-        return $item->getProductId();
+        return (string) $item->getProductId();
     }
 }

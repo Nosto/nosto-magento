@@ -38,11 +38,11 @@ use Nosto_NostoException as NostoException;
  */
 class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
 {
+
     public function addAction()
     {
         if (!$this->_validateFormKey()) {
-
-            return;
+            Mage::throwException('Invalid form key');
         }
         $cart = $this->_getCart();
         $skuId = $this->getRequest()->getParam('sku');
@@ -53,9 +53,7 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
             || $product->getTypeId() !== Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE
             || empty($skuId)
             ) {
-                $this->_goBack();
-
-                return;
+                return $this->_goBack();
             }
             /** @var Mage_Catalog_Model_Product_Type_Configurable $parentType */
             $parentType = $product->getTypeInstance();
@@ -79,9 +77,7 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
 
             if (empty($attributeOptions)) {
                 $this->_getSession()->addError($this->__('Cannot add the item to shopping cart.'));
-                $this->_goBack();
-
-                return;
+                return $this->_goBack();
             }
             $params = array('super_attribute' => $attributeOptions);
 

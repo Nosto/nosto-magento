@@ -177,10 +177,10 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
             /** @noinspection PhpParamsInspection */
             $attributeValue = $product->getAttributeText($attributeName);
             if (empty($attributeValue) && is_scalar($attributeData)) {
-                $attributeValue = $attributeData;
+                $attributeValue = (string) $attributeData;
             }
         } else {
-            $attributeValue = null;
+            $attributeValue = '';
         }
 
         return trim($attributeValue);

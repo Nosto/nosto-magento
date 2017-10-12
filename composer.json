@@ -27,7 +27,7 @@
     "require-dev": {
         "mridang/magazine": "0.1",
         "phing/phing": "2.*",
-        "etsy/phan": "0.8.0",
+        "phan/phan": "0.8.*",
         "phpmd/phpmd": "^2.5",
         "squizlabs/php_codesniffer": "2.6.*",
         "sebastian/phpcpd": "*",

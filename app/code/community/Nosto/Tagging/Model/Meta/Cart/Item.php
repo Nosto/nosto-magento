@@ -58,7 +58,7 @@ abstract class Nosto_Tagging_Model_Meta_Cart_Item extends Nosto_Object_Cart_Line
         if ($inclTax) {
             parent::setPrice($item->getPriceInclTax());
         } else {
-            parent::setPrice($item->getPrice());
+            parent::setPrice((double) $item->getPrice());
         }
     }
 
@@ -85,7 +85,7 @@ abstract class Nosto_Tagging_Model_Meta_Cart_Item extends Nosto_Object_Cart_Line
     {
         $parentItem = $item->getOptionByCode('product_type');
         if ($parentItem !== null) {
-            return $parentItem->getProductId();
+            return (string) $parentItem->getProductId();
         } elseif ($item->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_SIMPLE) {
             /** @var Mage_Catalog_Model_Product_Type_Configurable $model */
             $model = Mage::getModel('catalog/product_type_configurable');
@@ -98,6 +98,6 @@ abstract class Nosto_Tagging_Model_Meta_Cart_Item extends Nosto_Object_Cart_Line
                 return $parentIds[0];
             }
         }
-        return $item->getProductId();
+        return (string) $item->getProductId();
     }
 }

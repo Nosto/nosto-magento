@@ -51,7 +51,7 @@ class Nosto_Tagging_Helper_Module extends Mage_Core_Helper_Abstract
     /**
      * check if the nosto module is enable. And if the dependencies for nosto are missing, return false as well
      *
-     * @param null $moduleName
+     * @param string|null $moduleName
      * @return bool
      */
     public function isModuleEnabled($moduleName = null)

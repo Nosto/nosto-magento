@@ -158,15 +158,15 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         $variationHelper = Mage::helper('nosto_tagging/variation');
         $this->setVariationId($variationHelper->getDefaultVariationId($store));
 
-        /** @var Nosto_Tagging_Model_Meta_Variation_Collection $variationCollecton */
-        $variationCollecton = Mage::getModel('nosto_tagging/meta_variation_collection');
-        $variationCollecton->loadData(
+        /** @var Nosto_Tagging_Model_Meta_Variation_Collection $variationCollection */
+        $variationCollection = Mage::getModel('nosto_tagging/meta_variation_collection');
+        $variationCollection->loadData(
             $product,
             $this->getAvailability(),
             $this->getPriceCurrencyCode(),
             $store
         );
-        $this->setVariations($variationCollecton);
+        $this->setVariations($variationCollection);
     }
 
     /**
@@ -493,25 +493,24 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      *
      * @param Mage_Catalog_Model_Product $product
      * @param string $attributeName
-     * @return string
+     * @return string|null
      * @suppress PhanUndeclaredMethod
      */
     protected function getAttributeValue(Mage_Catalog_Model_Product $product, $attributeName)
     {
         $attribute = $product->getResource()->getAttribute($attributeName);
-        $attributeValue = null;
         if ($attribute instanceof Mage_Catalog_Model_Resource_Eav_Attribute) {
             $attributeData = $product->getData($attributeName);
             /** @noinspection PhpParamsInspection */
             $attributeValue = $product->getAttributeText($attributeName);
             if (empty($attributeValue) && is_scalar($attributeData)) {
-                $attributeValue = trim($attributeData);
+                return trim($attributeData);
             } elseif (is_array($attributeValue)) {
-                $attributeValue = implode(',', $attributeValue);
+                return implode(',', $attributeValue);
             }
         }
 
-        return $attributeValue;
+        return null;
     }
 
     /**
@@ -605,8 +604,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      * Reloads the product info from a Magento product model.
      *
      * @param Mage_Catalog_Model_Product $product the product model to reload
-     * @param Mage_Core_Model_Store|null $store the store to get the product data for.
-     *
+     * @param Mage_Core_Model_Store $store the store to get the product data for.
      * @return bool returns false if the product is not available in a given store
      */
     public function reloadData(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
