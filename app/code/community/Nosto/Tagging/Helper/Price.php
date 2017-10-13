@@ -205,6 +205,32 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Convert price from current currency to base currency
+     *
+     * @param float $price
+     * @param Mage_Core_Model_Store $store
+     * @return float
+     */
+    public function convertFromCurrentToBaseCurrency($price, Mage_Core_Model_Store $store)
+    {
+        if (!is_numeric($price)) {
+            NostoLog::error(
+                'price must be a numeric value in %s, got %s.',
+                array(__CLASS__, $price)
+            );
+            $price = 0;
+        }
+        /** @var Mage_Directory_Helper_Data $helper */
+        $helper = Mage::helper('directory');
+
+        return $helper->currencyConvert(
+            $price,
+            $store->getCurrentCurrencyCode(),
+            $store->getBaseCurrencyCode()
+        );
+    }
+
+    /**
      * @param float $price
      * @param Mage_Core_Model_Store $store
      * @return float

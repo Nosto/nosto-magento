@@ -58,10 +58,10 @@ $helper = Mage::helper('nosto_tagging');
 
 <?php $priceRange = $this->getNostoPriceRange() ?>
 <?php if ($priceRange && array_key_exists(Nosto_Tagging_Block_Filter::NOSTO_PRICE_FROM, $priceRange)): ?>
-    <span class="nosto_price_from" style="display:none"><?php echo $helper->escapeHtml($priceRange[Nosto_Tagging_Block_Filter::NOSTO_PRICE_FROM]); ?></span>
+    <div class="nosto_price_from" style="display:none"><?php echo $helper->escapeHtml($priceRange[Nosto_Tagging_Block_Filter::NOSTO_PRICE_FROM]); ?></div>
 <?php endif; ?>
 <?php if ($priceRange && array_key_exists(Nosto_Tagging_Block_Filter::NOSTO_PRICE_TO, $priceRange)): ?>
-    <span class="nosto_price_to" style="display:none"><?php echo $helper->escapeHtml($priceRange[Nosto_Tagging_Block_Filter::NOSTO_PRICE_TO]); ?></span>
+    <div class="nosto_price_to" style="display:none"><?php echo $helper->escapeHtml($priceRange[Nosto_Tagging_Block_Filter::NOSTO_PRICE_TO]); ?></div>
 <?php endif; ?>
 
 <?php $categories = $this->getNostoCategoryFilters() ?>

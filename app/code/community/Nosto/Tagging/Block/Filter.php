@@ -119,6 +119,20 @@ class Nosto_Tagging_Block_Filter extends Mage_Catalog_Block_Layer_State
                         if (array_key_exists(1, $value) && $value[1] !== '') {
                             $range[self::NOSTO_PRICE_TO] = $value[1];
                         }
+                        /* @var Nosto_Tagging_Helper_Data $helper */
+                        $helper = Mage::helper('nosto_tagging');
+                        //Always tag the price filter in base currency if multi-currency is enabled
+                        //because it is the currency to be store in the nosto
+                        if (!$helper->multiCurrencyDisabled(Mage::app()->getStore())) {
+                            /* @var Nosto_Tagging_Helper_Price $nostoPriceHelper */
+                            $nostoPriceHelper = Mage::helper('nosto_tagging/price');
+                            $range = array_map(function($price) use ($nostoPriceHelper) {
+                                return $nostoPriceHelper->convertFromCurrentToBaseCurrency(
+                                    $price,
+                                    Mage::app()->getStore()
+                                );
+                            }, $range);
+                        }
 
                         return $range;
                     }
