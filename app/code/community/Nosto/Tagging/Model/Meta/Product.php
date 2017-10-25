@@ -417,7 +417,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      * old customisations
      *
      * @param string $method
-     * @param $args
+     * @param array $args
      * @return mixed
      */
     public function __call($method, $args)
@@ -504,10 +504,12 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
             $attributeData = $product->getData($attributeName);
             /** @noinspection PhpParamsInspection */
             $attributeValue = $product->getAttributeText($attributeName);
-            if (empty($attributeValue) && is_scalar($attributeData)) {
+            if (!empty($attributeValue)) {
+                return $attributeValue;
+            } elseif (is_scalar($attributeData)) {
                 return trim($attributeData);
-            } elseif (is_array($attributeValue)) {
-                return implode(',', $attributeValue);
+            } elseif (is_array($attributeData)) {
+                return implode(',', $attributeData);
             }
         }
 
