@@ -501,15 +501,16 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
     {
         $attribute = $product->getResource()->getAttribute($attributeName);
         if ($attribute instanceof Mage_Catalog_Model_Resource_Eav_Attribute) {
-            $attributeData = $product->getData($attributeName);
             /** @noinspection PhpParamsInspection */
             $attributeValue = $product->getAttributeText($attributeName);
-            if (!empty($attributeValue)) {
-                return $attributeValue;
-            } elseif (is_scalar($attributeData)) {
-                return trim($attributeData);
-            } elseif (is_array($attributeData)) {
-                return implode(',', $attributeData);
+            if (empty($attributeValue)) {
+                $attributeValue = $product->getData($attributeName);
+            }
+
+            if (is_scalar($attributeValue)) {
+                return trim($attributeValue);
+            } elseif (is_array($attributeValue)) {
+                return implode(',', $attributeValue);
             }
         }
 
