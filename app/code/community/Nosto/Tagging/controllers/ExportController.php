@@ -150,23 +150,11 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
             foreach ($products as $product) {
                 /** @var Nosto_Tagging_Model_Meta_Product $meta */
                 $meta = Mage::getModel('nosto_tagging/meta_product');
-                $meta->loadData($product);
-                //Skip the product url has the string '_ignore_category'
-                //If the flat catalog is enabled, and a new product is added to the catalog, then the product
-                //url contains '_ignore_category' because it fail to build the url properly.
-                //Nosto should not recommend this product because it is yet available in the frontend
-                if (!is_string($meta->getUrl())
-                    || strpos(
-                        $meta->getUrl(),
-                        Nosto_Tagging_Helper_Url::MAGENTO_URL_OPTION_IGNORE_CATEGORY
-                    ) !== false
-                ) {
-                    Nosto_Tagging_Helper_Log::error(
-                        'Skip product (%s) upsert since the url contains "_ignore_category".',
-                        array($meta->getProductId())
-                    );
-                } else {
+                try {
+                    $meta->loadData($product);
                     $collection->append($meta);
+                } catch (Nosto_NostoException $e) {
+                    Nosto_Tagging_Helper_Log::exception($e);
                 }
             }
             $this->export($collection);
