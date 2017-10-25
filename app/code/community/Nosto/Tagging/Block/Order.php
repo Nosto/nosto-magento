@@ -82,7 +82,7 @@ class Nosto_Tagging_Block_Order extends Mage_Checkout_Block_Success
                 $orderId = Mage::getSingleton('checkout/session')->getLastOrderId();
                 /** @var Mage_Sales_Model_Order $order */
                 $order = Mage::getModel('sales/order')->load($orderId);
-                /** @var Nosto_Tagging_Model_Meta_Order $meta */
+                /** @var Nosto_Tagging_Model_Meta_Order $nostoOrder */
                 $nostoOrder = Mage::getModel('nosto_tagging/meta_order');
                 $nostoOrder->loadData($order);
             }
