@@ -1,5 +1,8 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.3.1
+* Fix the issue that new product url contains '_ignore_category' when flat catalog is enabled
+
 ### 3.3.0
 * Send client’s phone number, postal code and country in order data 
 * Improve error handling and error recovery in Nosto account creation 

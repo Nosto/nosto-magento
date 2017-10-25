@@ -162,16 +162,27 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
                 'visibility',
                 Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH
             )
-            ->setPageSize(1)
+            ->setPageSize(100)
             ->setCurPage(1);
-        /** @var Mage_Catalog_Model_Product $product */
-        $product = $collection->getFirstItem(); // @codingStandardsIgnoreLine
-        if ($product instanceof Mage_Catalog_Model_Product) {
-            $url = $this->generateProductUrl($product, $store);
-            $productUrl = $this->addNostoPreviewParameter($url);
+        //Try 100 projects
+        $products = $collection->getItems();
+        if ($products) {
+            /** @var Mage_Catalog_Model_Product $product */
+            foreach ($products as $product) {
+                try {
+                    if ($product instanceof Mage_Catalog_Model_Product) {
+                        $url = $this->generateProductUrl($product, $store);
+                        $productUrl = $this->addNostoPreviewParameter($url);
+                        
+                        return $productUrl;
+                    }
+                } catch (Nosto_NostoException $e) {
+                    Nosto_Tagging_Helper_Log::exception($e);
+                }
+            }
         }
 
-        return $productUrl;
+        return '';
     }
 
     /**
@@ -344,6 +355,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
      * @param Mage_Core_Model_Store $store
      *
      * @return string the url.
+     * @throws Nosto_NostoException throw exception if it fail to build url
      */
     public function generateProductUrl(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
@@ -364,6 +376,24 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
             $productUrl = $this->removeQueryParamFromUrl(
                 $productUrl,
                 self::MAGENTO_URL_PARAMETER_STORE
+            );
+        }
+
+        //Skip the product url has the string '_ignore_category'
+        //If the flat catalog is enabled, and a new product is added to the catalog, then the product
+        //url contains '_ignore_category' because it fail to build the url properly.
+        //Nosto should not recommend this product because it is yet available in the frontend
+        if (!is_string($productUrl)
+            || strpos(
+                $productUrl,
+                Nosto_Tagging_Helper_Url::MAGENTO_URL_OPTION_IGNORE_CATEGORY
+            ) !== false
+        ) {
+            throw new Nosto_NostoException(
+                sprintf(
+                    'Failed to build product (%s) url. It is not available in the flat table yet.',
+                    $product->getId()
+                )
             );
         }
 
