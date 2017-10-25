@@ -113,7 +113,9 @@ class Nosto_Tagging_Model_Service_Product
             $env = $emulation->startEnvironmentEmulation($store->getId());
             foreach ($productBatches as $productsInStore) {
                 try {
-                    $operation = new Nosto_Operation_UpsertProduct($account);
+                    /** @var Nosto_Tagging_Model_Service_Operation $operation */
+                    $operation = Mage::getModel('nosto_tagging/service_operation');
+                    $operation->setResponseTimeout(self::$apiWaitTimeout);
                     /* @var $mageProduct Mage_Catalog_Model_Product */
                     foreach ($productsInStore as $mageProduct) {
                         if ($mageProduct instanceof Mage_Catalog_Model_Product === false) {

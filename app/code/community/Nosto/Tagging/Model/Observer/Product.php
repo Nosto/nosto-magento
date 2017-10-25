@@ -98,7 +98,8 @@ class Nosto_Tagging_Model_Observer_Product
                 $model = Mage::getModel('nosto_tagging/meta_product');
                 $model->setProductId($product->getId());
                 try {
-                    $service = new Nosto_Operation_UpsertProduct($account);
+                    /** @var Nosto_Tagging_Model_Service_Operation $service */
+                    $service = Mage::getModel('nosto_tagging/service_operation');
                     $service->addProduct($model);
                     $service->upsert();
                 } catch (Nosto_NostoException $e) {
