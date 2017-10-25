@@ -1,9 +1,9 @@
 <?php
 /**
  * Magento
- *  
+ *
  * NOTICE OF LICENSE
- *  
+ *
  * This source file is subject to the Open Software License (OSL 3.0)
  * that is bundled with this package in the file LICENSE.txt.
  * It is also available through the world-wide-web at this URL:
@@ -11,13 +11,13 @@
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
- *  
+ *
  * DISCLAIMER
- *  
+ *
  * Do not edit or add to this file if you wish to upgrade Magento to newer
  * versions in the future. If you wish to customize Magento for your
  * needs please refer to http://www.magentocommerce.com for more information.
- *  
+ *
  * @category  Nosto
  * @package   Nosto_Tagging
  * @author    Nosto Solutions Ltd <magento@nosto.com>
@@ -151,7 +151,20 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
                 /** @var Nosto_Tagging_Model_Meta_Product $meta */
                 $meta = Mage::getModel('nosto_tagging/meta_product');
                 $meta->loadData($product);
-                $collection->append($meta);
+                //Skip the product url has the string '_ignore_category'
+                //If the flat catalog is enabled, and a new product is added to the catalog, then the product
+                //url contains '_ignore_category' because it fail to build the url properly.
+                //Nosto should not recommend this product because it is yet available in the frontend
+                if (!is_string($meta->getUrl())
+                    || strpos($meta->getUrl(), Nosto_Tagging_Helper_Url::MAGENTO_URL_OPTION_IGNORE_CATEGORY)
+                ) {
+                    Nosto_Tagging_Helper_Log::error(
+                        'Skip product (%s) upsert since the url contains "_ignore_category".',
+                        array($meta->getProductId())
+                    );
+                } else {
+                    $collection->append($meta);
+                }
             }
             $this->export($collection);
         }
