@@ -166,16 +166,18 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
             ->setCurPage(1);
         //Try 100 projects
         $products = $collection->getItems();
-        /** @var Mage_Catalog_Model_Product $product */
-        foreach ($products as $product) {
-            try {
-                if ($product instanceof Mage_Catalog_Model_Product) {
-                    $url = $this->generateProductUrl($product, $store);
-                    $productUrl = $this->addNostoPreviewParameter($url);
-                    return $productUrl;
+        if ($products) {
+            /** @var Mage_Catalog_Model_Product $product */
+            foreach ($products as $product) {
+                try {
+                    if ($product instanceof Mage_Catalog_Model_Product) {
+                        $url = $this->generateProductUrl($product, $store);
+                        $productUrl = $this->addNostoPreviewParameter($url);
+                        return $productUrl;
+                    }
+                } catch (Nosto_NostoException $e) {
+                    Nosto_Tagging_Helper_Log::exception($e);
                 }
-            } catch (Nosto_NostoException $e) {
-                Nosto_Tagging_Helper_Log::exception($e);
             }
         }
 
