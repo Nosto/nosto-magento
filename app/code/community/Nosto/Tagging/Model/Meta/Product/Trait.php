@@ -48,12 +48,14 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
      * @param Mage_Core_Model_Store $store the store model.
      *
      * @return string
+     * @throws Nosto_NostoException
      */
     protected function buildUrl(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
         /** @var Nosto_Tagging_Helper_Url $urlHelper */
         $urlHelper = Mage::helper('nosto_tagging/url');
         $productUrl = $urlHelper->generateProductUrl($product, $store);
+
         return $productUrl;
     }
 
