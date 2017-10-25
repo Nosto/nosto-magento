@@ -43,7 +43,10 @@ class Nosto_Tagging_Model_Service_Operation extends Nosto_Operation_UpsertProduc
         //url contains '_ignore_category' because it fail to build the url properly.
         //Nosto should not recommend this product because it is yet available in the frontend
         if (!is_string($product->getUrl())
-            || strpos($product->getUrl(), Nosto_Tagging_Helper_Url::MAGENTO_URL_OPTION_IGNORE_CATEGORY)
+            || strpos(
+                $product->getUrl(),
+                Nosto_Tagging_Helper_Url::MAGENTO_URL_OPTION_IGNORE_CATEGORY
+            ) !== false
         ) {
             Nosto_Tagging_Helper_Log::error(
                 'Skip product (%s) upsert since the url contains "_ignore_category".',
