@@ -173,6 +173,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
                     if ($product instanceof Mage_Catalog_Model_Product) {
                         $url = $this->generateProductUrl($product, $store);
                         $productUrl = $this->addNostoPreviewParameter($url);
+                        
                         return $productUrl;
                     }
                 } catch (Nosto_NostoException $e) {
