@@ -126,7 +126,7 @@ class Nosto_Tagging_Block_Adminhtml_Notifications extends Mage_Adminhtml_Block_T
      *  'actionUrl' => $this->getUrl(
      * ]
      *
-     * @return array (see structure above)
+     * @return array|bool (see structure above)
      */
     public function getInvalidAccountDomains()
     {

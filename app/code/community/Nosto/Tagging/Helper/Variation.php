@@ -26,7 +26,6 @@
  */
 
 require_once __DIR__ . '/../bootstrap.php'; // @codingStandardsIgnoreLine
-use Nosto_Tagging_Helper_Log as NostoLog;
 
 /**
  * Helper class for variation related tasks
@@ -58,19 +57,17 @@ class Nosto_Tagging_Helper_Variation extends Mage_Core_Helper_Abstract
     /**
      * Resolves the default variation id for a store
      *
-     * @param Mage_Core_Model_Store $store
-     * @return string
+     * @return null|string the identifier of the default variation
      */
-    public function getDefaultVariationId(Mage_Core_Model_Store $store)
+    public function getDefaultVariationId()
     {
-        $defaultVariationId = null;
         /** @var Mage_Customer_Model_Group $group */
         $defaultGroup = Mage::getModel('customer/group')->load(self::DEFAULT_CUSTOMER_GROUP_ID);
         if ($defaultGroup instanceof Mage_Customer_Model_Group) {
-            $defaultVariationId = $this->generateVariationId($defaultGroup);
+            return $this->generateVariationId($defaultGroup);
         }
 
-        return $defaultVariationId;
+        return null;
     }
 }
 

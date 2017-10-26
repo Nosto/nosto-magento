@@ -151,7 +151,7 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
      * Checks that an account exists for the given store and that it is
      * connected to nosto.
      *
-     * @param Mage_Core_Model_Store $store the store to check the account for.
+     * @param Mage_Core_Model_Store|null $store the store to check the account for.
      *
      * @return bool true if exists and is connected, false otherwise.
      */
@@ -167,7 +167,7 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
      * account can be created from.
      *
      * @param Mage_Core_Model_Store $store the store view to get the url for.
-     * @param Nosto_Object_Signup_Account $account the Nosto account to get the iframe url for.
+     * @param Nosto_Object_Signup_Account|null $account the Nosto account to get the iframe url for.
      * @param array $params optional extra params for the url.
      *
      * @return string the iframe url.

@@ -1,44 +1,73 @@
 #!/usr/bin/env groovy
 
-node {
-    stage "Prepare environment"
+pipeline {
+
+  agent { dockerfile true }
+
+  stages {
+    stage('Prepare environment') {
+      steps {
         checkout scm
-        def environment  = docker.build 'platforms-base'
+      }
+    }
 
-        environment.inside {
-            stage "Update Dependencies"
-                sh "composer install"
-                sh "composer dump-autoload --optimize"
-                sh "./vendor/bin/pearify process ."
+    stage('Update Dependencies') {
+      steps {
+        sh "composer install --no-progress --no-suggest"
+        sh "composer dump-autoload --optimize"
+        sh "./vendor/bin/pearify process ."
+      }
+    }
 
-            stage "Code Sniffer"
-                catchError {
-                    sh "./vendor/bin/phpcbf --standard=ruleset.xml app || true"
-                    sh "./vendor/bin/phpcs --standard=ruleset.xml --severity=10 --report=checkstyle --report-file=phpcs.xml app lib || true"
-                }
-                step([$class: 'hudson.plugins.checkstyle.CheckStylePublisher', pattern: 'phpcs.xml', unstableTotalAll:'0'])
-
-            stage "Copy-Paste Detection"
-                sh "./vendor/bin/phpcpd --exclude=vendor --exclude=build --log-pmd=phpcpd.xml app || true"
-
-            stage "Mess Detection"
-                catchError {
-                    sh "./vendor/bin/phpmd . xml codesize,naming,unusedcode,controversial,design --exclude vendor,var,build,tests --reportfile phpmd.xml || true"
-                }
-                //step([$class: 'PmdPublisher', pattern: 'phpmd.xml', unstableTotalAll:'0'])
-
-            stage "Phan Analysis"
-                catchError {
-                    sh "./vendor/bin/phan --config-file=phan.php --output-mode=checkstyle --output=phan.xml || true"
-                }
-                step([$class: 'hudson.plugins.checkstyle.CheckStylePublisher', pattern: 'phan.xml', unstableTotalAll:'0'])
-
-            stage "Package"
-                version = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
-                sh "./vendor/bin/magazine package magazine.json ${version} -v"
-                archiveArtifacts "Nosto_Tagging-${version}.tgz"
+    stage('Code Sniffer') {
+      steps {
+        catchError {
+          sh "./vendor/bin/phpcs --standard=ruleset.xml --severity=10 --report=checkstyle --report-file=chkphpcs.xml app lib || true"
         }
+      }
+    }
 
-    stage "Cleanup"
-        deleteDir()
+    stage('Copy-Paste Detection') {
+      steps {
+        catchError {
+          sh "./vendor/bin/phpcpd --exclude=vendor --exclude=build --log-pmd=phdpcpd.xml app || true"
+        }
+      }
+    }
+
+    stage('Mess Detection') {
+      steps {
+        catchError {
+          sh "./vendor/bin/phpmd . xml codesize,naming,unusedcode,controversial,design --exclude vendor,var,build,tests --reportfile pmdphpmd.xml || true"
+        }
+      }
+    }
+
+    stage('Package') {
+      steps {
+        script {
+          version = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+          sh "./vendor/bin/magazine package magazine.json ${version} -v"
+          sh 'chmod 644 *.tgz'
+        }
+        archiveArtifacts "Nosto_Tagging-${version}.tgz"
+      }
+    }
+
+    stage('Phan Analysis') {
+      steps {
+        catchError {
+          sh "./vendor/bin/phan --config-file=phan.php --output-mode=checkstyle --output=chkphan.xml || true"
+        }
+      }
+    }
+  }
+
+  post {
+    always {
+      checkstyle pattern: 'chk*.xml', unstableTotalAll:'0'
+      pmd pattern: 'pmd*.xml', unstableTotalAll:'0'
+      deleteDir()
+    }
+  }
 }
