@@ -28,7 +28,7 @@
 <config>
     <modules>
         <Nosto_Tagging>
-            <version>3.3.1</version>
+            <version>3.4.0</version>
         </Nosto_Tagging>
     </modules>
     <global>
@@ -39,6 +39,15 @@
                     <class>Mage_Eav_Model_Entity_Setup</class>
                 </setup>
             </tagging_setup>
+            <nosto_index_setup>
+                <setup>
+                    <module>Nosto_Tagging</module>
+                    <class>Mage_Eav_Model_Entity_Setup</class>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </nosto_index_setup>
             <nosto_customer_reference_setup>
                 <setup>
                     <module>Nosto_Tagging</module>
@@ -80,6 +89,9 @@
                     <customer>
                         <table>nosto_tagging_customer</table>
                     </customer>
+                    <index>
+                        <table>nosto_tagging_index</table>
+                    </index>
                 </entities>
             </nosto_tagging_resource>
         </models>
@@ -139,6 +151,14 @@
                 </observers>
             </review_delete_after>
         </events>
+        <index>
+            <indexer>
+                <nosto_indexer>
+                    <model>nosto_tagging/indexer_product</model>
+                </nosto_indexer>
+            </indexer>
+        </index>
+
     </global>
     <adminhtml>
         <layout>

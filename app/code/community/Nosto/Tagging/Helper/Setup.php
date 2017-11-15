@@ -133,4 +133,44 @@ class Nosto_Tagging_Helper_Setup extends Mage_Core_Helper_Abstract
             );
         $installer->endSetup();
     }
+
+    public function createNostoIndexTable(Mage_Eav_Model_Entity_Setup $installer)
+    {
+        $table = $installer
+            ->getConnection()
+            ->newTable($installer->getTable('nosto_tagging/index'))
+            ->addColumn(
+                'auto_id', Varien_Db_Ddl_Table::TYPE_INTEGER, 10, array(
+                    'unsigned' => true,
+                    'nullable' => false,
+                    'primary' => true,
+                    'identity' => true
+                )
+            )
+            ->addColumn(
+                'store_id', Varien_Db_Ddl_Table::TYPE_INTEGER, 10, array(
+                    'unsigned' => true,
+                    'nullable' => false,
+                )
+            )
+            ->addColumn(
+                'product_id', Varien_Db_Ddl_Table::TYPE_INTEGER, 10, array(
+                    'unsigned' => true,
+                    'nullable' => false,
+                )
+            )
+            ->addColumn(
+                'data', Varien_Db_Ddl_Table::TYPE_TEXT
+            )
+            ->addColumn(
+                'in_sync', Varien_Db_Ddl_Table::TYPE_SMALLINT
+            )
+            ->addColumn(
+                'created_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
+                    'nullable' => false
+                )
+            );
+
+        $installer->getConnection()->createTable($table);
+    }
 }
