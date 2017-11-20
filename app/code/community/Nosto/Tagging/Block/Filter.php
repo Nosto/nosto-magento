@@ -36,11 +36,8 @@
 
 class Nosto_Tagging_Block_Filter extends Mage_Catalog_Block_Layer_State
 {
-    const NOSTO_PRICE_FROM = 'nosto_price_from';
-    const NOSTO_PRICE_TO = 'nosto_price_to';
-
     /**
-     * Render order info as hidden meta data if the module is enabled for the
+     * Render nosto filter tagging if the module is enabled for the
      * current store.
      *
      * @return string
@@ -62,9 +59,9 @@ class Nosto_Tagging_Block_Filter extends Mage_Catalog_Block_Layer_State
     /**
      * Returns the current active filters
      *
-     * @return array|null
+     * @return Nosto_Tagging_Model_Meta_Filter
      */
-    public function getNostoFilters()
+    public function getNostoFilter()
     {
         $filters = $this->getActiveFilters();
 
@@ -72,101 +69,10 @@ class Nosto_Tagging_Block_Filter extends Mage_Catalog_Block_Layer_State
             return null;
         }
 
-        $validFilters = array();
+        /* @var Nosto_Tagging_Model_Meta_Filter $nostoFilter */
+        $nostoFilter = Mage::getModel('nosto_tagging/meta_filter');
+        $nostoFilter->loadData($filters, $this);
 
-        /** @var \Mage_Catalog_Model_Layer_Filter_Item $filter */
-        foreach ($filters as $filter) {
-            $model = $filter->getFilter();
-            if ($model instanceof Mage_Catalog_Model_Layer_Filter_Price
-                || $model instanceof Mage_Catalog_Model_Layer_Filter_Category
-            ) {
-                continue;
-            }
-
-            if ($model
-                && $model->getAttributeModel()
-                && $model->getAttributeModel()->getAttributeCode()
-            ) {
-                $value = $this->stripTags($filter->getLabel());
-                if ($value) {
-                    $validFilters[$model->getAttributeModel()->getAttributeCode()] = $value;
-                }
-            }
-        }
-
-        return $validFilters;
-    }
-
-    public function getNostoPriceRange()
-    {
-        $filters = $this->getActiveFilters();
-        if (!$filters) {
-            return null;
-        }
-
-        /** @var \Mage_Catalog_Model_Layer_Filter_Item $filter */
-        foreach ($filters as $filter) {
-            $model = $filter->getFilter();
-            if ($model instanceof Mage_Catalog_Model_Layer_Filter_Price) {
-                $data = $filter->getData();
-                if ($data && array_key_exists('value', $data)) {
-                    $value = $data['value'];
-                    if (is_array($value)) {
-                        $range = array();
-                        if (array_key_exists(0, $value) && $value[0] !== '') {
-                            $range[self::NOSTO_PRICE_FROM] = $value[0];
-                        }
-                        if (array_key_exists(1, $value) && $value[1] !== '') {
-                            $range[self::NOSTO_PRICE_TO] = $value[1];
-                        }
-                        /* @var Nosto_Tagging_Helper_Data $helper */
-                        $helper = Mage::helper('nosto_tagging');
-                        //Always tag the price filter in base currency if multi-currency is enabled
-                        //because it is the currency to be store in the nosto
-                        if (!$helper->multiCurrencyDisabled(Mage::app()->getStore())) {
-                            /* @var Nosto_Tagging_Helper_Price $nostoPriceHelper */
-                            $nostoPriceHelper = Mage::helper('nosto_tagging/price');
-                            $range = array_map(function($price) use ($nostoPriceHelper) {
-                                return $nostoPriceHelper->convertFromCurrentToBaseCurrency(
-                                    $price,
-                                    Mage::app()->getStore()
-                                );
-                            }, $range);
-                        }
-
-                        return $range;
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
-
-    public function getNostoCategoryFilters()
-    {
-        $filters = $this->getActiveFilters();
-        if (!$filters) {
-            return null;
-        }
-        /** @var Nosto_Tagging_Helper_Data $helper */
-        $helper = Mage::helper('nosto_tagging');
-
-        $categories = array();
-        /** @var \Mage_Catalog_Model_Layer_Filter_Item $filter */
-        foreach ($filters as $filter) {
-            $model = $filter->getFilter();
-            if ($model instanceof Mage_Catalog_Model_Layer_Filter_Category) {
-                $categoryId = $filter->getValueString();
-                if ($categoryId) {
-                    $category = Mage::getModel('catalog/category')->load($categoryId);
-                    if ($category instanceof Mage_Catalog_Model_Category) {
-                        $categories[] = $helper->buildCategoryString($category);
-                    }
-                }
-            }
-        }
-
-        return $categories;
+        return $nostoFilter;
     }
 }

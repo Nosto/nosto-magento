@@ -50,4 +50,9 @@ class Nosto_Tagging_Helper_Event extends Mage_Core_Helper_Abstract
      * event name, fired after nosto shopping cart object loaded
      */
     const EVENT_NOSTO_CART_LOAD_AFTER = 'nosto_cart_load_after';
+
+    /**
+     * event name, fired after nosto product object loaded
+     */
+    const EVENT_NOSTO_FILTER_LOAD_AFTER = 'nosto_filter_load_after';
 }

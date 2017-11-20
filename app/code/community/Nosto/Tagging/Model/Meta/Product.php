@@ -137,7 +137,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
             $this->amendVariations($product, $store);
         }
 
-        $this->amendCustomAttributes($product);
+        $this->amendCustomFields($product, $store);
 
         Mage::dispatchEvent(
             Nosto_Tagging_Helper_Event::EVENT_NOSTO_PRODUCT_LOAD_AFTER,
@@ -159,7 +159,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
     {
         /* @var Nosto_Tagging_Helper_Variation $variationHelper */
         $variationHelper = Mage::helper('nosto_tagging/variation');
-        $this->setVariationId($variationHelper->getDefaultVariationId($store));
+        $this->setVariationId($variationHelper->getDefaultVariationId());
 
         /** @var Nosto_Tagging_Model_Meta_Variation_Collection $variationCollection */
         $variationCollection = Mage::getModel('nosto_tagging/meta_variation_collection');
@@ -176,41 +176,47 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      * Tag the custom attributes
      *
      * @param Mage_Catalog_Model_Product $product
+     * @param Mage_Core_Model_Store|null $store
      */
-    protected function amendCustomAttributes(Mage_Catalog_Model_Product $product)
+    protected function amendCustomFields(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
         /** @var Nosto_Tagging_Helper_Data $dataHelper */
         $dataHelper = Mage::helper('nosto_tagging');
-        $isSKUTaggingEnabled = $dataHelper->getUseSkus(Mage::app()->getStore());
+        if (!$dataHelper->getUseCustomFields($store)) {
+            return;
+        }
+
+        $isSKUTaggingEnabled = $dataHelper->getUseSkus($store);
 
         $attributes = $product->getTypeInstance(true)->getSetAttributes($product);
         /** @var Mage_Catalog_Model_Resource_Eav_Attribute $attribute */
         foreach ($attributes as $attribute) {
-            //tag user defined attributes only
-            if ($attribute->getData('is_user_defined') == 1) {
-                $attributeValue = $this->getAttributeValue($product, $attribute->getName());
-                if (!$attributeValue) {
-                    //For a configurable product, if sku tagging is disabled,
-                    //tag all the attributes which are used to create configurable values as '--ANY--'
-                    if (!$isSKUTaggingEnabled
-                        && $product->getTypeId() === Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE
-                        && $attribute->getIsConfigurable()
-                        //Only global attributes are allowed to be use for creating configurable products
-                        //There is one attribute 'cost', which is user defined, configurable, but
-                        //it is not actually being used for creating configurable products because it's scope is
-                        //website.
-                        && $attribute->isScopeGlobal()
-                    ) {
-                        $attributeValue = self::ATTRIBUTE_VALUE_ANY;
-                    } else {
-                        continue;
+            try {
+                //tag user defined attributes only
+                if ($attribute->getData('is_user_defined') == 1) {
+                    $attributeCode = $attribute->getAttributeCode();
+                    $attributeValue = $this->getAttributeValue($product, $attributeCode);
+                    if (!is_scalar($attributeValue)) {
+                        //For a configurable product, if sku tagging is disabled,
+                        //tag all the attributes which are used to create configurable values as '--ANY--'
+                        if (!$isSKUTaggingEnabled
+                            && $product->getTypeId() === Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE
+                            && $attribute->getIsConfigurable()
+                            //Only global attributes are allowed to be use for creating configurable products
+                            //There is one attribute 'cost', which is user defined, configurable, but
+                            //it is not actually being used for creating configurable products because it's scope is
+                            //website.
+                            && $attribute->isScopeGlobal()
+                        ) {
+                            $attributeValue = self::ATTRIBUTE_VALUE_ANY;
+                        } else {
+                            continue;
+                        }
                     }
+                    $this->addCustomField($attributeCode, $attributeValue);
                 }
-                $attributeName = $attribute->getAttributeCode();
-                if ($attributeName == null) {
-                    $attributeName = $attribute->getName();
-                }
-                $this->addCustomField($attributeName, $attributeValue);
+            } catch (Exception $e) {
+                Nosto_Tagging_Helper_Log::exception($e);
             }
         }
     }
