@@ -79,7 +79,7 @@ class Nosto_Tagging_Model_Meta_Filter
         }
 
         Mage::dispatchEvent(
-            Nosto_Tagging_Helper_Event::EVENT_NOSTO_PRODUCT_LOAD_AFTER,
+            Nosto_Tagging_Helper_Event::EVENT_NOSTO_FILTER_LOAD_AFTER,
             array(
                 'filter' => $this,
                 'magentoFilters' => $filters
