@@ -53,29 +53,27 @@ class Nosto_Tagging_Model_Meta_Filter
         $this->priceRangeFilter = array();
 
         if ($filters) {
-            return;
-        }
+            /** @var \Mage_Catalog_Model_Layer_Filter_Item $filter */
+            foreach ($filters as $filter) {
+                $model = $filter->getFilter();
+                if ($model instanceof Mage_Catalog_Model_Layer_Filter_Price) {
+                    $this->loadPriceRange($filter);
+                    continue;
+                }
 
-        /** @var \Mage_Catalog_Model_Layer_Filter_Item $filter */
-        foreach ($filters as $filter) {
-            $model = $filter->getFilter();
-            if ($model instanceof Mage_Catalog_Model_Layer_Filter_Price) {
-                $this->loadPriceRange($filter);
-                continue;
-            }
+                if ($model instanceof Mage_Catalog_Model_Layer_Filter_Category) {
+                    $this->loadCategoriesFilter($filter);
+                    continue;
+                }
 
-            if ($model instanceof Mage_Catalog_Model_Layer_Filter_Category) {
-                $this->loadCategoriesFilter($filter);
-                continue;
-            }
-
-            if ($model
-                && $model->getAttributeModel()
-                && $model->getAttributeModel()->getAttributeCode()
-            ) {
-                $value = $filterBlock->stripTags($filter->getLabel());
-                if ($value) {
-                    $this->customFieldsFilter[$model->getAttributeModel()->getAttributeCode()] = $value;
+                if ($model
+                    && $model->getAttributeModel()
+                    && $model->getAttributeModel()->getAttributeCode()
+                ) {
+                    $value = $filterBlock->stripTags($filter->getLabel());
+                    if ($value) {
+                        $this->customFieldsFilter[$model->getAttributeModel()->getAttributeCode()] = $value;
+                    }
                 }
             }
         }
