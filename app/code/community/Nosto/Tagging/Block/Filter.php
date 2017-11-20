@@ -65,10 +65,6 @@ class Nosto_Tagging_Block_Filter extends Mage_Catalog_Block_Layer_State
     {
         $filters = $this->getActiveFilters();
 
-        if (!$filters) {
-            return null;
-        }
-
         /* @var Nosto_Tagging_Model_Meta_Filter $nostoFilter */
         $nostoFilter = Mage::getModel('nosto_tagging/meta_filter');
         $nostoFilter->loadData($filters, $this);

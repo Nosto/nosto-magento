@@ -50,6 +50,11 @@ class Nosto_Tagging_Model_Meta_Filter
     {
         $this->customFieldsFilter = array();
         $this->categoriesFilter = array();
+        $this->priceRangeFilter = array();
+
+        if ($filters) {
+            return;
+        }
 
         /** @var \Mage_Catalog_Model_Layer_Filter_Item $filter */
         foreach ($filters as $filter) {

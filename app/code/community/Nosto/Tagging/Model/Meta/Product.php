@@ -176,7 +176,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      * Tag the custom attributes
      *
      * @param Mage_Catalog_Model_Product $product
-     * @param Mage_Core_Model_Store|null $store
+     * @param Mage_Core_Model_Store $store
      */
     protected function amendCustomFields(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {

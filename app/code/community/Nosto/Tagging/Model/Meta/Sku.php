@@ -80,7 +80,7 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
      * Tag the custom attributes
      *
      * @param Mage_Catalog_Model_Product $sku
-     * @param Mage_Core_Model_Store|null $store
+     * @param Mage_Core_Model_Store $store
      */
     protected function loadCustomFieldsFromAttributeSet(Mage_Catalog_Model_Product $sku, Mage_Core_Model_Store $store)
     {
