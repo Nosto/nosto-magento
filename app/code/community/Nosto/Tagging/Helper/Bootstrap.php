@@ -25,15 +25,34 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-if (class_exists('Nosto_Nosto' , true)) {
-    /* @var Nosto_Tagging_Helper_Data $nostoHelper */
-    $nostoHelper = Mage::helper('nosto_tagging');
-    Nosto_Request_Http_HttpRequest::buildUserAgent('Magento', Mage::getVersion(), $nostoHelper->getExtensionVersion());
+/**
+ * Helper class for initing user agent and load the .env file
+ *
+ * @category Nosto
+ * @package  Nosto_Tagging
+ * @author   Nosto Solutions Ltd <magento@nosto.com>
+ */
+class Nosto_Tagging_Helper_Bootstrap extends Mage_Core_Helper_Abstract
+{
+    /**
+     * Flushes the Magento caches, not all of them but some of them, normally after creating an
+     * account or connecting with nosto.
+     */
+    public function init()
+    {
+        static $loaded = false;
+        if (!$loaded) {
+            /* @var Nosto_Tagging_Helper_Data $nostoHelper */
+            $nostoHelper = Mage::helper('nosto_tagging');
+            Nosto_Request_Http_HttpRequest::buildUserAgent('Magento', Mage::getVersion(), $nostoHelper->getExtensionVersion());
 
-    if (file_exists(dirname(__FILE__) . DIRECTORY_SEPARATOR . '.env')) {
-        $dotenv = new Dotenv_Dotenv(
-            dirname(__FILE__)
-        ); // @codingStandardsIgnoreLine
-        $dotenv->load();
+            if (file_exists(dirname(__FILE__) . DIRECTORY_SEPARATOR . '.env')) {
+                $dotenv = new Dotenv_Dotenv(
+                    dirname(__FILE__)
+                ); // @codingStandardsIgnoreLine
+                $dotenv->load();
+            }
+            $loaded = true;
+        }
     }
 }
