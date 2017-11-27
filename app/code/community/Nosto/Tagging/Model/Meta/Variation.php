@@ -62,7 +62,7 @@ class Nosto_Tagging_Model_Meta_Variation extends Nosto_Object_Product_Variation
         $tmpProduct->setCustomerGroupId($group->getCustomerGroupId());
         /* @var Nosto_Tagging_Helper_Variation $variationHelper  */
         $variationHelper = Mage::helper('nosto_tagging/variation');
-        $this->setId($variationHelper->generateVariationId($group));
+        $this->setVariationId($variationHelper->generateVariationId($group));
         $this->setAvailability($productAvailability);
         $this->setPriceCurrencyCode($currencyCode);
 
