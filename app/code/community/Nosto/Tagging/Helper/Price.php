@@ -158,9 +158,11 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
                         $productModel = Mage::getModel('catalog/product')->load(
                             $associatedProduct->getId()
                         );
-                        $variationPrice = $this->_getProductPrice($productModel, $finalPrice, $inclTax);
-                        if (!$lowestPrice || $variationPrice < $lowestPrice) {
-                            $lowestPrice = $variationPrice;
+                        if ($productModel && $productModel->isAvailable()) {
+                            $variationPrice = $this->_getProductPrice($productModel, $finalPrice, $inclTax);
+                            if (!$lowestPrice || $variationPrice < $lowestPrice) {
+                                $lowestPrice = $variationPrice;
+                            }
                         }
                     }
                     $price = $lowestPrice;
