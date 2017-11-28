@@ -86,7 +86,7 @@ $params = array('store' => $this->getSelectedStore()->getId(), 'isAjax' => true)
             window.location.href = '<?php echo $this->getConfigurationUrl(); ?>';
         };
 
-		//Inject configuration button
+        //Inject configuration button
         var elements = document.querySelectorAll('.switcher');
         if (elements && '<?php echo $this->getConfigurationUrl(); ?>') {
             elements[0].innerHTML += '<button title="Plugin configurations" type="button" class="scalable" onclick="Nosto.openConfigurationPage()" style="float: right;"><span><?php echo $this->__("Configuration"); ?></span></button>';
