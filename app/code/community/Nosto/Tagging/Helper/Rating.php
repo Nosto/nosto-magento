@@ -54,11 +54,6 @@ class Nosto_Tagging_Helper_Rating extends Mage_Core_Helper_Abstract
     const FIELD_MODULE = 'module';
 
     /**
-     * Array key for provider module name
-     */
-    const FIELD_CONFIG_PATH = 'config_path';
-
-    /**
      * A list of out-of-the-box supported ratings and reviews providers
      * Note that these modules need to be enabled also
      * @var array

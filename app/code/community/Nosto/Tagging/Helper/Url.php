@@ -36,6 +36,9 @@
  */
 class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
 {
+    const URL_PATH_NOSTO_CONFIG = 'adminhtml/system_config/edit/section/nosto_tagging';
+    const MAGENTO_URL_OPTION_STORE_CODE = 'store';
+
     /**
      * The ___store parameter in Magento URLs
      */
@@ -284,7 +287,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
             $defaultParams
         );
         if (!empty($additionalParams)) {
-            foreach ($additionalParams as $key=>$val) {
+            foreach ($additionalParams as $key => $val) {
                 $url = Nosto_Request_Http_HttpRequest::replaceQueryParamInUrl(
                     $key,
                     $val,
@@ -540,5 +543,23 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
         );
 
         return $url;
+    }
+
+    /**
+     * Gets the absolute URL to the Nosto configuration page
+     *
+     * @param Mage_Core_Model_Store $store the store to get the url for.
+     *
+     * @return string the url.
+     */
+    public function getAdminNostoConfiguratioUrl(Mage_Core_Model_Store $store)
+    {
+        $params = array(
+            self::MAGENTO_URL_OPTION_STORE_CODE => $store->getCode()
+        );
+        /** @var Mage_Adminhtml_Helper_Data $adminHtmlHelper */
+        $adminHtmlHelper = Mage::helper('adminhtml');
+
+        return $adminHtmlHelper->getUrl(self::URL_PATH_NOSTO_CONFIG, $params);
     }
 }
