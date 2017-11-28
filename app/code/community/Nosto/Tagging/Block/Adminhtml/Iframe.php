@@ -107,6 +107,18 @@ class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
     }
 
     /**
+     * Returns the valid origin url from where the iframe should accept
+     * postMessage calls.
+     * This is configurable to support different origins based on $_ENV.
+     *
+     * @return string the origin url.
+     */
+    public function getIframeOrigin()
+    {
+        return Nosto_Nosto::getIframeOriginRegex();
+    }
+
+    /**
      * @inheritdoc
      */
     public function getIframe()

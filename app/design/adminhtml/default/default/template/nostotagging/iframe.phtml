@@ -61,7 +61,7 @@ $params = array('store' => $this->getSelectedStore()->getId(), 'isAjax' => true)
 			};
 
 			// Check the origin to prevent cross-site scripting.
-			var originRegexp = new RegExp("<?php echo Nosto_Nosto::getIframeOriginRegex(); ?>");
+			var originRegexp = new RegExp("<?php echo $this->getIframeOrigin(); ?>");
 			if (!originRegexp.test(event.origin)) {
 				return;
 			}
