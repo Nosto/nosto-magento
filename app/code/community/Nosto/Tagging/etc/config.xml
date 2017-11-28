@@ -224,7 +224,7 @@
                 <supplier_cost>cost</supplier_cost>
             </attribute_map>
             <ratings_and_reviews>
-                <provider>1</provider>
+                <provider>0</provider>
             </ratings_and_reviews>
         </nosto_tagging>
     </default>
