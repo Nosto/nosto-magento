@@ -61,6 +61,8 @@ class Nosto_Tagging_Helper_Rating extends Mage_Core_Helper_Abstract
     /**
      * A list of out-of-the-box supported ratings and reviews providers
      * Note that these modules need to be enabled also
+     * The first one will be set as nosto review and rating provider if it is installed and enabled,
+     * or the next one will checked and so on
      * @var array
      */
     protected static $_ratingProviders = array(
@@ -139,5 +141,21 @@ class Nosto_Tagging_Helper_Rating extends Mage_Core_Helper_Abstract
             $module = self::$_ratingProviders[$provider][self::FIELD_MODULE];
         }
         return $module;
+    }
+
+    /**
+     * Enable review and rating
+     * @param Mage_Core_Model_Store $store scope
+     */
+    public function enableReviewAndRating(Mage_Core_Model_Store $store)
+    {
+        /** @var Nosto_Tagging_Helper_Data $dataHelper */
+        $dataHelper = Mage::helper('nosto_tagging');
+        $ratingProviders = $this->getActiveRatingProviders();
+        //Get the first one from the array
+        foreach ($ratingProviders as $key => $ratingProvider) {
+            $dataHelper->setRatingsAndReviewsProvider($key, $store);
+            return;
+        }
     }
 }
