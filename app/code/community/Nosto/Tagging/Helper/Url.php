@@ -283,7 +283,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
             self::MAGENTO_PATH_CART,
             $defaultParams
         );
-        if (count($additionalParams) > 0) {
+        if (!empty($additionalParams)) {
             foreach ($additionalParams as $key=>$val) {
                 $url = Nosto_Request_Http_HttpRequest::replaceQueryParamInUrl(
                     $key,

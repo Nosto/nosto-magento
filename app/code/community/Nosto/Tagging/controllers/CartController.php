@@ -56,7 +56,7 @@ class Nosto_Tagging_CartController extends Mage_Core_Controller_Front_Action
         /* @var Mage_Core_Model_Url $mageUrlSingleton */
         $mageUrlSingleton = Mage::getSingleton('core/url');
         $urlParts = $mageUrlSingleton->parseUrl($currentUrl);
-        parse_str($urlParts['query'], $urlParameters);
+        parse_str($urlParts['query'], $urlParameters);// @codingStandardsIgnoreLine
         /* @var Nosto_Tagging_Helper_Url $nostoUrlHelper */
         $nostoUrlHelper = Mage::helper('nosto_tagging/url');
         $frontPageUrl = $nostoUrlHelper->getFrontPageUrl($store);
