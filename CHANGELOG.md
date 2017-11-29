@@ -1,5 +1,12 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.3.3
+* Exclude OutOfStock simple products from configurable product price determination
+* Add a link to configuration page
+* Enable rating and review tagging by default
+* Get product attribute type id in runtime instead of hard coded it to 4
+* Fix phan settings and phpcs settings
+
 ### 3.3.2
 * Update composer dependencies
 * Update Magento package dependencies
