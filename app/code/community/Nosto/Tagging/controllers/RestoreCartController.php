@@ -36,6 +36,6 @@ require_once __DIR__ . '/CartController.php'; // @codingStandardsIgnoreLine
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_RestoreCartController extends Nosto_Tagging_CartController
+class Nosto_Tagging_RestoreCartController extends Nosto_Tagging_CartController// @codingStandardsIgnoreLine
 {
 }

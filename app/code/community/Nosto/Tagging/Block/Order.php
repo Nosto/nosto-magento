@@ -67,7 +67,7 @@ class Nosto_Tagging_Block_Order extends Mage_Checkout_Block_Success
         /** @var Nosto_Tagging_Helper_Account $helper */
         $helper = Mage::helper('core');
         try {
-            if($helper->isModuleEnabled('Vaimo_Klarna')) {
+            if ($helper->isModuleEnabled('Vaimo_Klarna')) {
                 /** @noinspection PhpUndefinedMethodInspection */
                 $checkoutId = Mage::getSingleton('checkout/session')->getKlarnaCheckoutPrevId();
                 /* @var Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout $nostoOrder */

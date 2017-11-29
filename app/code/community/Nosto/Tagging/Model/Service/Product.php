@@ -56,7 +56,6 @@ class Nosto_Tagging_Model_Service_Product
      */
     protected function update(array $products)
     {
-        Nosto_Request_Http_HttpRequest::$responseTimeout = self::$apiWaitTimeout;
         $productsInStore = array();
         $counter = 0;
         $batch = 1;
@@ -114,6 +113,7 @@ class Nosto_Tagging_Model_Service_Product
             foreach ($productBatches as $productsInStore) {
                 try {
                     $operation = new Nosto_Operation_UpsertProduct($account);
+                    $operation->setResponseTimeout(self::$apiWaitTimeout);
                     /* @var $mageProduct Mage_Catalog_Model_Product */
                     foreach ($productsInStore as $mageProduct) {
                         if ($mageProduct instanceof Mage_Catalog_Model_Product === false) {
@@ -125,7 +125,7 @@ class Nosto_Tagging_Model_Service_Product
                         // the admin store scope, then we should reload the product as the store
                         // code of the product refers to an pseudo store scope called "admin"
                         // which leads to issues when flat tables are enabled.
-                        if($nostoProduct->reloadData($mageProduct, $store)) {
+                        if ($nostoProduct->reloadData($mageProduct, $store)) {
                             $operation->addProduct($nostoProduct);
                         }
                     }

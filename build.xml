@@ -122,9 +122,8 @@
             <arg value="--colors"/>
             <arg value="--report-width=auto"/>
             <arg value="--standard=ruleset.xml"/>
-            <arg value="--severity=10"/>
+            <arg value="--severity=3"/>
             <arg value="app"/>
-            <arg value="lib"/>
         </exec>
     </target>
 

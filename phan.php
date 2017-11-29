@@ -47,4 +47,9 @@ return [
         'vendor',
         'app/code/community/Nosto/Tagging/sql/tagging_setup/'
     ],
+    // Add any issue types (such as 'PhanUndeclaredMethod')
+    // to this black-list to inhibit them from being reported.
+    'suppress_issue_types' => [
+        'PhanUnreferencedMethod'
+    ],
 ];

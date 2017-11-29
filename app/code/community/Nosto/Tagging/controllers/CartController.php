@@ -53,10 +53,7 @@ class Nosto_Tagging_CartController extends Mage_Core_Controller_Front_Action
         /* @var Mage_Core_Helper_Url $mageUrlHelper */
         $mageUrlHelper = Mage::helper('core/url');
         $currentUrl = $mageUrlHelper->getCurrentUrl();
-        /* @var Mage_Core_Model_Url $mageUrlSingleton */
-        $mageUrlSingleton = Mage::getSingleton('core/url');
-        $urlParts = $mageUrlSingleton->parseUrl($currentUrl);
-        parse_str($urlParts['query'], $urlParameters);
+        $urlParameters = Zend_Uri_Http::fromString($currentUrl)->getQueryAsArray();
         /* @var Nosto_Tagging_Helper_Url $nostoUrlHelper */
         $nostoUrlHelper = Mage::helper('nosto_tagging/url');
         $frontPageUrl = $nostoUrlHelper->getFrontPageUrl($store);

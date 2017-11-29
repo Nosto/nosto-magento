@@ -559,6 +559,27 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Set the ratings and reviews provider
+     *
+     * @param string $provider
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     */
+    public function setRatingsAndReviewsProvider($provider, $store = null)
+    {
+        if ($store === null) {
+            $store = Mage::app()->getStore();
+        }
+        /** @var Mage_Core_Model_Config $config */
+        $config = Mage::getModel('core/config');
+        $config->saveConfig(
+            self::XML_PATH_RATING_PROVIDER,
+            $provider,
+            'stores',
+            $store->getId()
+        );
+    }
+
+    /**
      * Returns all store views for the installation
      *
      * @return Mage_Core_Model_Store[]

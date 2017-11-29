@@ -47,7 +47,7 @@ class Nosto_Tagging_Model_System_Config_Backend_Currency_Exchange_Rate_Time
     protected function _beforeSave()
     {
         $values = $this->getValue();
-        if (is_array($values) && count($values) < 3) {
+        if (is_array($values) && count($values) < 3) {// @codingStandardsIgnoreLine
             array_unshift($values, '00');
             return $this->setValue($values);
         }

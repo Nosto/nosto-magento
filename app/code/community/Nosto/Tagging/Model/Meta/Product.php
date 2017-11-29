@@ -133,7 +133,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
 
         if ($dataHelper->isMultiCurrencyMethodExchangeRate($store)) {
             $this->setVariationId($store->getBaseCurrencyCode());
-        } else if ($dataHelper->isVariationEnabled($store)){
+        } elseif ($dataHelper->isVariationEnabled($store)) {
             $this->amendVariations($product, $store);
         }
 
@@ -587,7 +587,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      * @return array
      * @suppress PhanDeprecatedProperty
      */
-    protected function __getTags()
+    protected function __getTags()// @codingStandardsIgnoreLine
     {
         /** @noinspection PhpDeprecationInspection */
         return $this->_tags;
