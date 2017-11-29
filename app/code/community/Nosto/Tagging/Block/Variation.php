@@ -89,7 +89,7 @@ class Nosto_Tagging_Block_Variation extends Mage_Core_Block_Template
         /** @var Nosto_Tagging_Helper_Data $helper */
         $helper = Mage::helper('nosto_tagging');
 
-        $enabled = !$helper->multiCurrencyDisabled(Mage::app()->getStore());
+        $enabled = $helper->isMultiCurrencyMethodExchangeRate(Mage::app()->getStore());
         if (!$enabled) {
             $enabled = $helper->isVariationEnabled(Mage::app()->getStore());
         }
