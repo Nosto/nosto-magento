@@ -119,7 +119,17 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
     {
         /** @var Nosto_Tagging_Helper_Account $accountHelper */
         $accountHelper = Mage::helper('nosto_tagging/account');
-        return $accountHelper->save($account, self::getStore());
+        if ($accountHelper->save($account, self::getStore())) {
+            //Enable review and rating by default
+            /* @var Nosto_Tagging_Helper_Rating $ratingHelper */
+            $ratingHelper = Mage::helper('nosto_tagging/rating');
+            $ratingHelper->enableReviewAndRating(self::getStore());
+
+            return true;
+        } else {
+
+            return false;
+        }
     }
 
     /**

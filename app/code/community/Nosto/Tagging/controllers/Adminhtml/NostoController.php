@@ -226,6 +226,11 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                 $account = $operation->create();
                 if ($accountHelper->save($account, $store)) {
                     $accountHelper->updateCurrencyExchangeRates($account, $store);
+                    //Enable review and rating by default
+                    /* @var Nosto_Tagging_Helper_Rating $ratingHelper */
+                    $ratingHelper = Mage::helper('nosto_tagging/rating');
+                    $ratingHelper->enableReviewAndRating($store);
+
                     $responseBody = array(
                         'success' => true,
                         'redirect_url' => $accountHelper->getIframeUrl(

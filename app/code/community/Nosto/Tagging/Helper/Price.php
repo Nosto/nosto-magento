@@ -158,9 +158,11 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
                         $productModel = Mage::getModel('catalog/product')->load(
                             $associatedProduct->getId()
                         );
-                        $variationPrice = $this->_getProductPrice($productModel, $finalPrice, $inclTax);
-                        if (!$lowestPrice || $variationPrice < $lowestPrice) {
-                            $lowestPrice = $variationPrice;
+                        if ($productModel && $productModel->isAvailable()) {
+                            $variationPrice = $this->_getProductPrice($productModel, $finalPrice, $inclTax);
+                            if (!$lowestPrice || $variationPrice < $lowestPrice) {
+                                $lowestPrice = $variationPrice;
+                            }
                         }
                     }
                     $price = $lowestPrice;
@@ -296,7 +298,10 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
      * @param $isFinalPrice true means it is final price, or it is list price
      * @return float the price
      */
-    public function getProductTaggingPrice(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store, $isFinalPrice)
+    public function getProductTaggingPrice(
+        Mage_Catalog_Model_Product $product,
+        Mage_Core_Model_Store $store, $isFinalPrice
+    )
     {
         $basePrice = $this->getDisplayPriceInStore($product, $store, $isFinalPrice);
 
