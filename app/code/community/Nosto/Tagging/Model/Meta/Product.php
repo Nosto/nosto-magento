@@ -587,7 +587,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      * @return array
      * @suppress PhanDeprecatedProperty
      */
-    protected function __getTags()
+    protected function __getTags()// @codingStandardsIgnoreLine
     {
         /** @noinspection PhpDeprecationInspection */
         return $this->_tags;

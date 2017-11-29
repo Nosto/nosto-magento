@@ -22,7 +22,7 @@ pipeline {
     stage('Code Sniffer') {
       steps {
         catchError {
-          sh "./vendor/bin/phpcs --standard=ruleset.xml --severity=10 --report=checkstyle --report-file=chkphpcs.xml app lib || true"
+          sh "./vendor/bin/phpcs --standard=ruleset.xml --severity=3 --report=checkstyle --report-file=chkphpcs.xml app || true"
         }
       }
     }

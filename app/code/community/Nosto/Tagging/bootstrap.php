@@ -25,14 +25,14 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-if (class_exists('Nosto_Nosto' , true)) {
+if (class_exists('Nosto_Nosto', true)) {
     /* @var Nosto_Tagging_Helper_Data $nostoHelper */
     $nostoHelper = Mage::helper('nosto_tagging');
     Nosto_Request_Http_HttpRequest::buildUserAgent('Magento', Mage::getVersion(), $nostoHelper->getExtensionVersion());
 
-    if (file_exists(dirname(__FILE__) . DIRECTORY_SEPARATOR . '.env')) {
+    if (file_exists(dirname(__FILE__) . DIRECTORY_SEPARATOR . '.env')) {// @codingStandardsIgnoreLine
         $dotenv = new Dotenv_Dotenv(
-            dirname(__FILE__)
+            dirname(__FILE__)// @codingStandardsIgnoreLine
         ); // @codingStandardsIgnoreLine
         $dotenv->load();
     }

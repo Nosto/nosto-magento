@@ -283,7 +283,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
             self::MAGENTO_PATH_CART,
             $defaultParams
         );
-        if (count($additionalParams) > 0) {
+        if (!empty($additionalParams)) {
             foreach ($additionalParams as $key=>$val) {
                 $url = Nosto_Request_Http_HttpRequest::replaceQueryParamInUrl(
                     $key,
@@ -409,25 +409,10 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
      */
     public function removeQueryParamFromUrl($url, $param)
     {
-        $modifiedUrl = $url;
-        $urlParts = Nosto_Request_Http_HttpRequest::parseUrl($url);
-        if (
-            is_array($urlParts)
-            && isset($urlParts['query'])
-        ) {
-            $queryArray = Nosto_Request_Http_HttpRequest::parseQueryString($urlParts['query']);
-            if (isset($queryArray[$param])) {
-                unset($queryArray[$param]);
-                if (empty($queryArray)) {
-                    unset($urlParts['query']);
-                } else {
-                    $urlParts['query'] = http_build_query($queryArray);
-                }
-                $modifiedUrl = Nosto_Request_Http_HttpRequest::buildUrl($urlParts);
-            }
-        }
+        $zendUrl = Zend_Uri_Http::fromString($url);
+        $zendUrl->removeQueryParameters([$param]);
 
-        return $modifiedUrl;
+        return $zendUrl->getUri();
     }
 
     /**
