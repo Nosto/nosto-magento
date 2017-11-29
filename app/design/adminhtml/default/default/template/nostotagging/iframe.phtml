@@ -79,7 +79,19 @@ $params = array('store' => $this->getSelectedStore()->getId(), 'isAjax' => true)
 		}
 
 		// Register event handler for window.postMessage() messages from Nosto.
-		window.addEventListener("message", receiveMessage, false);
-	});
+        window.addEventListener("message", receiveMessage, false);
+
+        window.Nosto = window.Nosto || {};
+        window.Nosto.openConfigurationPage = function() {
+            window.location.href = '<?php echo $this->getConfigurationUrl(); ?>';
+        };
+
+        //Inject configuration button
+        var elements = document.querySelectorAll('.switcher');
+        if (elements && '<?php echo $this->getConfigurationUrl(); ?>') {
+            elements[0].innerHTML += '<button title="Plugin configurations" type="button" class="scalable" onclick="Nosto.openConfigurationPage()" style="float: right;"><span><?php echo $this->__("Configuration"); ?></span></button>';
+        }
+
+    });
 
 </script>

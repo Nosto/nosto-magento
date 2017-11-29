@@ -150,4 +150,13 @@ class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
         $account = $helper->find($this->getSelectedStore());
         return $account;
     }
+
+    public function getConfigurationUrl()
+    {
+        /** @var Nosto_Tagging_Helper_Url $urlHelper */
+        $urlHelper = Mage::helper('nosto_tagging/url');
+        $store = $this->getSelectedStore();
+
+        return $urlHelper->getAdminNostoConfiguratioUrl($store);
+    }
 }
