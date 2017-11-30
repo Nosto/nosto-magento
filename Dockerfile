@@ -33,6 +33,7 @@ RUN         apt-get update && \
             apt-get -y install mysql-client && \
             apt-get -y install libmcrypt-dev && \
             apt-get -y install libxml2-dev && \
+            apt-get -y install libxml2-utils && \
             apt-get -y install libxslt1-dev && \
             apt-get -y install vim && \
             apt-get -y install nano && \
