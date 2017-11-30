@@ -46,7 +46,7 @@ pipeline {
     stage('Package') {
       steps {
         script {
-          version = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+          version = sh(returnStdout: true, script: 'xmllint --xpath "//config/modules/Nosto_Tagging/version/text()" ./app/code/community/Nosto/Tagging/etc/config.xml').trim()
           sh "./vendor/bin/magazine package magazine.json ${version} -v"
           sh 'chmod 644 *.tgz'
         }
