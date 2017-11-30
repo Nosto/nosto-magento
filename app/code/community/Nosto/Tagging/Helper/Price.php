@@ -179,6 +179,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
      * @param bool $finalPrice
      * @param bool $inclTax
      * @return float
+     * @suppress PhanUndeclaredMethod
      */
     public function getBundleProductPrices(
         Mage_Catalog_Model_Product $product,

@@ -1,5 +1,8 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.3.4
+* Fix the list price for bundle product was aways same as final price
+
 ### 3.3.3
 * Exclude OutOfStock simple products from configurable product price determination
 * Add a link to configuration page
