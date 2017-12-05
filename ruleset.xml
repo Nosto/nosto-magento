@@ -28,7 +28,7 @@
 <!--suppress XmlUnboundNsPrefix -->
 <ruleset name="Magento">
     <exclude-pattern>*.js</exclude-pattern>
-    <config name="installed_paths" value="vendor/magento-ecg/coding-standard/,vendor/magento/marketplace-eqp/" />
+    <config name="installed_paths" value="vendor/magento-ecg/coding-standard/,vendor/magento/marketplace-eqp/, vendor/wimg/php-compatibility/" />
     <description>The Magento coding standard.</description>
     <rule ref="./vendor/magento-ecg/coding-standard/Ecg">
         <exclude name="Ecg.PHP.PrivateClassMember"/>
@@ -39,6 +39,8 @@
         <exclude name="Generic.Metrics.CyclomaticComplexity"/>
         <exclude name="MEQP1.Performance.Loop"/>
     </rule>
+    <rule ref="./vendor/wimg/php-compatibility/PHPCompatibility"/>
+    <config name="testVersion" value="5.4"/>
     <exclude-pattern>*/build/*</exclude-pattern>
     <exclude-pattern>*/tests/*</exclude-pattern>
     <exclude-pattern>*/vendor/*</exclude-pattern>

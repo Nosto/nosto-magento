@@ -1,5 +1,20 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.3.4
+* Fix the list price for bundle product was aways same as final price
+
+### 3.3.3
+* Exclude OutOfStock simple products from configurable product price determination
+* Add a link to configuration page
+* Enable rating and review tagging by default
+* Get product attribute type id in runtime instead of hard coded it to 4
+* Fix phan settings and phpcs settings
+
+### 3.3.2
+* Update composer dependencies
+* Update Magento package dependencies
+* Define PHP requirements
+
 ### 3.3.1
 * Fix the issue that new product url contains '_ignore_category' when flat catalog is enabled
 

@@ -22,7 +22,7 @@ pipeline {
     stage('Code Sniffer') {
       steps {
         catchError {
-          sh "./vendor/bin/phpcs --standard=ruleset.xml --severity=10 --report=checkstyle --report-file=chkphpcs.xml app lib || true"
+          sh "./vendor/bin/phpcs --standard=ruleset.xml --severity=3 --report=checkstyle --report-file=chkphpcs.xml app || true"
         }
       }
     }
@@ -46,7 +46,7 @@ pipeline {
     stage('Package') {
       steps {
         script {
-          version = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+          version = sh(returnStdout: true, script: 'xmllint --xpath "//config/modules/Nosto_Tagging/version/text()" ./app/code/community/Nosto/Tagging/etc/config.xml').trim()
           sh "./vendor/bin/magazine package magazine.json ${version} -v"
           sh 'chmod 644 *.tgz'
         }
@@ -57,7 +57,7 @@ pipeline {
     stage('Phan Analysis') {
       steps {
         catchError {
-          sh "./vendor/bin/phan --config-file=phan.php --output-mode=checkstyle --output=chkphan.xml || true"
+          sh "./vendor/bin/phan --config-file=phan.php --output-mode=checkstyle --output=chkphan.xml"
         }
       }
     }
