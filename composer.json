@@ -23,7 +23,8 @@
     },
     "require": {
         "php": ">=5.4.0",
-        "nosto/php-sdk": "3.1.1"
+        "nosto/php-sdk": "3.1.1",
+        "mridang/pearify": "0.2"
     },
     "require-dev": {
         "mridang/magazine": "0.1",
@@ -34,7 +35,10 @@
         "sebastian/phpcpd": "*",
         "magento-ecg/coding-standard": "2.*",
         "magento/marketplace-eqp": "1.*",
-        "openmage/magento-mirror": "1.9",
-        "mridang/pearify": "0.2"
+        "openmage/magento-mirror": "1.9"
+    },
+    "scripts": {
+        "post-install-cmd": "if ! type \"composer\" > /dev/null; then echo \"composer not available in path - you must update the lib files manually\"; else composer dump-autoload --optimize; ./vendor/bin/pearify process .;fi",
+        "post-update-cmd" : "if ! type \"composer\" > /dev/null; then echo \"composer not available in path - you must update the lib files manually\"; else composer dump-autoload --optimize; ./vendor/bin/pearify process .;fi"
     }
 }
