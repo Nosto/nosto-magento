@@ -148,7 +148,7 @@ class Nosto_Tagging_Helper_Setup extends Mage_Core_Helper_Abstract
                 )
             )
             ->addColumn(
-                'store_id', Varien_Db_Ddl_Table::TYPE_INTEGER, 10, array(
+                'store_id', Varien_Db_Ddl_Table::TYPE_SMALLINT, 5, array(
                     'unsigned' => true,
                     'nullable' => false,
                 )
@@ -160,10 +160,17 @@ class Nosto_Tagging_Helper_Setup extends Mage_Core_Helper_Abstract
                 )
             )
             ->addColumn(
-                'data', Varien_Db_Ddl_Table::TYPE_TEXT
+                'nosto_product', Varien_Db_Ddl_Table::TYPE_TEXT, null, array(
+                    'nullable' => false,
+                )
             )
             ->addColumn(
                 'in_sync', Varien_Db_Ddl_Table::TYPE_SMALLINT
+            )
+            ->addColumn(
+                'updated_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
+                    'nullable' => false
+                )
             )
             ->addColumn(
                 'created_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(

@@ -29,16 +29,18 @@
  * Customer model.
  * Used for keeping a link between a Mage quote and a Nosto customer.
  *
- * @method void setQuoteId($quoteId)
- * @method int getQuoteId()
- * @method void setNostoId($nostoId)
- * @method string getNostoId()
+ * @method void setProductId($productId)
+ * @method int getProductId()
+ * @method void setNostoProduct($serializedObject)
+ * @method string getNostoProduct()
  * @method void setUpdatedAt($updatedAt)
  * @method string getUpdatedAt()
  * @method void setCreatedAt($createdAt)
  * @method string getCreatedAt()
- * @method void setRestoreCartHash($restoreCartHash)
- * @method string getRestoreCartHash()
+ * @method void setStoreId($storeId)
+ * @method string getStoreId()
+ * @method void setInSync($inSync)
+ * @method string getInSync()
  *
  * @category Nosto
  * @package  Nosto_Tagging

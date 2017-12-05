@@ -181,37 +181,55 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
                 'visibility',
                 Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH
             )
-            ->setPageSize(3)
+            ->setPageSize(1)
             ->setCurPage(1);
 
         foreach ($products as $product) {
             /* @var Nosto_Tagging_Model_Meta_Product $nostoProduct */
             $nostoProduct = Mage::getModel('nosto_tagging/meta_product');
             $nostoProduct->reloadData($product, $store);
-            $this->reindexProduct($nostoProduct);
+            $this->reindexProduct($nostoProduct, $store);
         }
     }
 
-    public function reindexProduct(Nosto_Tagging_Model_Meta_Product $product)
-    {
+    public function reindexProduct(
+        Nosto_Tagging_Model_Meta_Product $nostoProduct,
+        Mage_Core_Model_Store $store
+    ) {
         /*
         * - Find the product from index
         * - Check if the content hash matches
         * - If not or not exist, insert new one
         */
 
-        $indexedProduct = Mage::getModel('nosto_tagging/index')->load($product->getProductId());
-        $serialized = serialize($indexedProduct);
+        /** @var Mage_Core_Model_Date $dateHelper */
+        $dateHelper = Mage::getSingleton('core/date');
+
+        /* @var Nosto_Tagging_Model_Meta_Product $nostoProduct */
+        $indexedProduct = Mage::getModel('nosto_tagging/index')
+            ->getCollection()
+            ->addFieldToFilter('product_id', $nostoProduct->getProductId())
+            ->addFieldToFilter('store_id', $store->getId())
+            ->setPageSize(1)
+            ->setCurPage(1)
+            ->getFirstItem(); // @codingStandardsIgnoreLine
+
+        $serialized = serialize($nostoProduct);
         if ($indexedProduct instanceof Nosto_Tagging_Model_Index) {
-            if ($indexedProduct->getData() !== $serialized) {
-                $indexedProduct = Mage::getModel('nosto_tagging/index');
-                $indexedProduct->setId($product->getProductId());
-                $indexedProduct->setData($serialized);
+            if ($indexedProduct->getNostoProduct() !== $serialized) {
+                $indexedProduct->setNostoProduct($serialized);
+                $indexedProduct->setUpdatedAt($dateHelper->gmtDate());
+                $indexedProduct->setInSync(false);
+                if (!$indexedProduct->getId()) {
+                    $indexedProduct->setCreatedAt($dateHelper->gmtDate());
+                    $indexedProduct->setProductId(
+                        $nostoProduct->getProductId()
+                    );
+                    $indexedProduct->setStoreId($store->getId());
+                }
                 $indexedProduct->save();
-                // Update
             }
         }
-
     }
 
     /**

@@ -40,6 +40,6 @@ class Nosto_Tagging_Model_Resource_Index extends Mage_Core_Model_Resource_Db_Abs
      */
     protected function _construct()
     {
-        $this->_init('nosto_tagging/index', 'product_id');
+        $this->_init('nosto_tagging/index', 'auto_id');
     }
 }
