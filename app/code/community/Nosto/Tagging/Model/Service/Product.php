@@ -74,12 +74,7 @@ class Nosto_Tagging_Model_Service_Product
                 );
             }
 
-            $parentProducts = $this->buildParentProducts($product);
-            if (!empty($parentProducts)) {
-                $productsToUpdate = $parentProducts;
-            } else {
-                $productsToUpdate = array($product);
-            }
+            $productsToUpdate = Nosto_Tagging_Util_Product::toParentProducts($product);
             foreach ($productsToUpdate as $productToUpdate) {
                 foreach ($product->getStoreIds() as $storeId) {
                     if (!isset($productsInStore[$storeId])) {
@@ -161,29 +156,5 @@ class Nosto_Tagging_Model_Service_Product
     public function updateProduct(Mage_Catalog_Model_Product $product)
     {
         return $this->update(array($product));
-    }
-
-    /**
-     * Helper method to check if simple product has multiple parent products
-     *
-     * @param Mage_Catalog_Model_Product $product
-     * @return array
-     */
-    public function buildParentProducts(Mage_Catalog_Model_Product $product)
-    {
-        $parents = array();
-        if ($product->getTypeId() === Mage_Catalog_Model_Product_Type::TYPE_SIMPLE) {
-            /** @var Mage_Catalog_Model_Product_Type_Configurable $model */
-            $model = Mage::getModel('catalog/product_type_configurable');
-            $parentIds = $model->getParentIdsByChild($product->getId());
-            if (!empty($parentIds)) {
-                foreach ($parentIds as $productId) {
-                    $configurable = Mage::getModel('catalog/product')->load($productId);
-                    $parents[] = $configurable;
-                }
-            }
-        }
-
-        return $parents;
     }
 }

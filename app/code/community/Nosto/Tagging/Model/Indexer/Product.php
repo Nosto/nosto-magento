@@ -45,6 +45,12 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
     const EVENT_TYPE_REINDEX_PRICE = 'catalog_reindex_price';
 
     /**
+     * Reindex price event type
+     */
+    const HARD_LIMIT_FOR_PRODUCTS = 10000;
+
+    private $reindexQueue = array();
+    /**
      * Matched Entities instruction array
      *
      * @var array
@@ -55,15 +61,6 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
             Mage_Index_Model_Event::TYPE_DELETE,
             Mage_Index_Model_Event::TYPE_MASS_ACTION,
             self::EVENT_TYPE_REINDEX_PRICE,
-        ),
-        Mage_Core_Model_Config_Data::ENTITY => array(
-            Mage_Index_Model_Event::TYPE_SAVE
-        ),
-        Mage_Catalog_Model_Convert_Adapter_Product::ENTITY => array(
-            Mage_Index_Model_Event::TYPE_SAVE
-        ),
-        Mage_Customer_Model_Group::ENTITY => array(
-            Mage_Index_Model_Event::TYPE_SAVE
         )
     );
 
@@ -102,44 +99,50 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
     }
 
     /**
+     * Adds product object to index queue
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @param int $storeId
+     */
+    private function addToReindexQueue(
+        Mage_Catalog_Model_Product $product,
+        $storeId
+    ) {
+        if (empty($this->reindexQueue[$storeId])) {
+            $this->reindexQueue[$storeId] = array();
+        }
+        if (!isset($this->reindexQueue[$storeId][$product->getId()])) {
+            $this->reindexQueue[$storeId][$product->getId()] = $product;
+        }
+    }
+
+    /**
      * Register data required by process in event object
      *
      * @param Mage_Index_Model_Event $event
+     * @return bool
      */
     protected function _registerEvent(Mage_Index_Model_Event $event)
     {
-        $event->addNewData(self::EVENT_MATCH_RESULT_KEY, true);
         $entity = $event->getEntity();
+        $objectId = $event->getDataObject()->getId();
 
-        if ($entity == Mage_Core_Model_Config_Data::ENTITY || $entity == Mage_Customer_Model_Group::ENTITY) {
-            $process = $event->getProcess();
-            $process->changeStatus(Mage_Index_Model_Process::STATUS_REQUIRE_REINDEX);
-        } else if ($entity == Mage_Catalog_Model_Convert_Adapter_Product::ENTITY) {
-            $event->addNewData('catalog_product_price_reindex_all', true);
-        } else if ($entity == Mage_Catalog_Model_Product::ENTITY) {
-            switch ($event->getType()) {
-                case Mage_Index_Model_Event::TYPE_DELETE:
-                    $this->_registerCatalogProductDeleteEvent($event);
-                    break;
-
-                case Mage_Index_Model_Event::TYPE_SAVE:
-                    $this->_registerCatalogProductSaveEvent($event);
-                    break;
-
-                case Mage_Index_Model_Event::TYPE_MASS_ACTION:
-                    $this->_registerCatalogProductMassActionEvent($event);
-                    break;
-                case self::EVENT_TYPE_REINDEX_PRICE:
-                    $event->addNewData('id', $event->getDataObject()->getId());
-                    break;
-            }
-
-            // call product type indexers registerEvent
-            $indexers = $this->_getResource()->getTypeIndexers();
-            foreach ($indexers as $indexer) {
-                $indexer->registerEvent($event);
+        if ($entity !== 'catalog_product' && !$objectId) {
+            return false;
+        }
+        $catalogProduct = Mage::getModel('catalog/product')->load($objectId);
+        if ($catalogProduct instanceof Mage_Catalog_Model_Product === false) {
+            return false;
+        }
+        // Check if we're handling simple product with parents
+        $products = Nosto_Tagging_Util_Product::toParentProducts($catalogProduct);
+        foreach ($products as $product) {
+            foreach ($product->getStoreIds() as $storeId) {
+                $this->addToReindexQueue($product, $storeId);
             }
         }
+
+        return true;
     }
 
     /**
@@ -149,16 +152,32 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
      */
     protected function _processEvent(Mage_Index_Model_Event $event)
     {
-        $data = $event->getNewData();
-        if ($event->getType() == self::EVENT_TYPE_REINDEX_PRICE) {
-            $this->_getResource()->reindexProductIds($data['id']);
-            return;
-        }
-        if (!empty($data['catalog_product_price_reindex_all'])) {
-            $this->reindexAll();
-        }
-        if (empty($data['catalog_product_price_skip_call_event_handler'])) {
-            $this->callEventHandler($event);
+        foreach ($this->reindexQueue as $storeId => $products) {
+            $store = Mage::app()->getStore($storeId);
+            /** @var Nosto_Tagging_Helper_Account $helper */
+            $helper = Mage::helper('nosto_tagging/account');
+            $account = $helper->find($store);
+            /* @var $nostoHelper Nosto_Tagging_Helper_Data */
+            $nostoHelper = Mage::helper('nosto_tagging');
+            if (
+                $account === null
+                || !$account->isConnectedToNosto()
+                || !$nostoHelper->getUseProductApi($store)
+            ) {
+                continue;
+            }
+
+            foreach ($products as $product) {
+                /* @var Nosto_Tagging_Model_Meta_Product $nostoProduct */
+                $nostoProduct = Mage::getModel('nosto_tagging/meta_product');
+                $nostoProduct->reloadData(
+                    $product,
+                    $store
+                );
+                if ($nostoProduct instanceof Nosto_Tagging_Model_Meta_Product) {
+                    $this->reindexProductInStore($nostoProduct, $store);
+                }
+            }
         }
     }
 
@@ -181,18 +200,41 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
                 'visibility',
                 Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH
             )
-            ->setPageSize(1)
+            ->setPageSize(self::HARD_LIMIT_FOR_PRODUCTS)
             ->setCurPage(1);
 
+        Nosto_Tagging_Helper_Log::info(
+            sprintf(
+                'Indexing / checking %d products',
+                    count($products)
+                )
+        );
+        /* @var Mage_Catalog_Model_Product $product */
         foreach ($products as $product) {
-            /* @var Nosto_Tagging_Model_Meta_Product $nostoProduct */
-            $nostoProduct = Mage::getModel('nosto_tagging/meta_product');
-            $nostoProduct->reloadData($product, $store);
-            $this->reindexProduct($nostoProduct, $store);
+            $parents = Nosto_Tagging_Util_Product::toParentProducts($product);
+            foreach ($parents as $parent) {
+                if ($this->reindexable($parent)) {
+                    /* @var Nosto_Tagging_Model_Meta_Product $nostoProduct */
+                    $nostoProduct = Mage::getModel('nosto_tagging/meta_product');
+                    $nostoProduct->reloadData($parent, $store);
+                    $this->reindexProductInStore($nostoProduct, $store);
+                }
+            }
         }
     }
 
-    public function reindexProduct(
+    private function reindexable(Mage_Catalog_Model_Product $product)
+    {
+        if (
+            $product->getVisibility() == Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE
+        ) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function reindexProductInStore(
         Nosto_Tagging_Model_Meta_Product $nostoProduct,
         Mage_Core_Model_Store $store
     ) {
@@ -242,6 +284,41 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
         $stores = $helper->getAllStoreViewsWithNostoAccount();
         foreach ($stores as $store) {
             $this->reindexAllInStore($store);
+        }
+    }
+
+    private function reindexByProductId($id)
+    {
+        $catalogProduct = Mage::getModel('catalog/product')->load($id);
+        if ($catalogProduct instanceof Mage_Catalog_Model_Product === false) {
+            return false;
+        }
+        foreach ($catalogProduct->getStoreIds() as $storeId) {
+            $store = Mage::app()->getStore($storeId);
+            /** @var Nosto_Tagging_Helper_Account $helper */
+            $helper = Mage::helper('nosto_tagging/account');
+            $account = $helper->find($store);
+            /* @var $nostoHelper Nosto_Tagging_Helper_Data */
+            $nostoHelper = Mage::helper('nosto_tagging');
+            if (
+                $account === null
+                || !$account->isConnectedToNosto()
+                || !$nostoHelper->getUseProductApi($store)
+            ) {
+                continue;
+            }
+            $products = Nosto_Tagging_Util_Product::toParentProducts($catalogProduct);
+            foreach ($products as $product) {
+                /* @var Nosto_Tagging_Model_Meta_Product $nostoProduct */
+                $nostoProduct = Mage::getModel('nosto_tagging/meta_product');
+                $nostoProduct = $nostoProduct->reloadData(
+                    $product,
+                    $store
+                );
+                if ($nostoProduct instanceof Nosto_Tagging_Model_Meta_Product) {
+                    $this->reindexProductInStore($nostoProduct, $store);
+                }
+            }
         }
     }
 }
