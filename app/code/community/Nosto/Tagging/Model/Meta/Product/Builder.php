@@ -59,7 +59,7 @@ class Nosto_Tagging_Model_Meta_Product_Builder
             /* @var Nosto_Tagging_Model_Meta_Product $nostoProduct */
             $indexedProduct = Mage::getModel('nosto_tagging/index')
                 ->getCollection()
-                ->addFieldToFilter('product_id', $product->getProductId())
+                ->addFieldToFilter('product_id', $product->getId())
                 ->addFieldToFilter('store_id', $store->getId())
                 ->setPageSize(1)
                 ->setCurPage(1)
