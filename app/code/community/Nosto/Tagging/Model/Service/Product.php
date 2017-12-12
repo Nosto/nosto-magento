@@ -47,12 +47,18 @@ class Nosto_Tagging_Model_Service_Product
     public static $apiWaitTimeout = 60;
 
     /**
+     * Maximum amount of products that will be processed and sent to Nosto
+     *
+     * @var int
+     */
+    public static $hardLimitMaxProcuts = 100000;
+
+    /**
      * Sends a product update to Nosto for all stores and installed Nosto
      * accounts
      *
      * @param Mage_Catalog_Model_Product[] $products
-     * @return bool
-     * @throws Nosto_NostoException
+     * @return boolean
      */
     protected function update(array $products)
     {
@@ -139,7 +145,7 @@ class Nosto_Tagging_Model_Service_Product
      * Updates a batch of products to Nosto
      *
      * @param Nosto_Tagging_Model_Resource_Product_Collection $products
-     * @return true
+     * @return boolean
      */
     public function updateBatch(Nosto_Tagging_Model_Resource_Product_Collection $products)
     {
@@ -151,10 +157,92 @@ class Nosto_Tagging_Model_Service_Product
      * Updates single product to Nosto
      *
      * @param Mage_Catalog_Model_Product $product
-     * @return true
+     * @return boolean
      */
     public function updateProduct(Mage_Catalog_Model_Product $product)
     {
         return $this->update(array($product));
+    }
+
+    /**
+     * Send out of sync products from Nosto index to Nosto via API
+     */
+    public function updateOutOfSyncToNosto()
+    {
+        $storesWithNosto = Mage::helper('nosto_tagging/account')->getAllStoreViewsWithNostoAccount();
+        foreach ($storesWithNosto as $store) {
+
+            /** @var Nosto_Tagging_Helper_Account $helper */
+            $helper = Mage::helper('nosto_tagging/account');
+            $account = $helper->find($store);
+            $operation = new Nosto_Operation_UpsertProduct($account);
+            $operation->setResponseTimeout(self::$apiWaitTimeout);
+
+            // loop through stores that have nosto & add store as filter
+            $indexedProducts = Mage::getModel('nosto_tagging/index')
+                ->getCollection()
+                ->addFieldToFilter('in_sync', 0)
+                ->addFieldToFilter('store_id', $store->getId())
+                ->setPageSize(self::$hardLimitMaxProcuts); // @codingStandardsIgnoreLine
+            $batchCounter = 0;
+            $totalCounter = 0;
+            $totalCount = count($indexedProducts);
+            /* @var Nosto_Tagging_Model_Index $indexedProduct */
+            foreach ($indexedProducts as $indexedProduct) {
+                ++$batchCounter;
+                ++$totalCounter;
+                $nostoProduct = unserialize($indexedProduct->getNostoProduct());
+                if ($nostoProduct instanceof Nosto_Tagging_Model_Meta_Product) {
+                    $operation->addProduct($nostoProduct);
+                }
+                $indexedProduct->setInSync(1);
+                $indexedProduct->save();
+                if ($batchCounter % self::$maxBatchSize == 0
+                    || $totalCounter == $totalCount
+                ) {
+                    try {
+                        $operation->upsert();
+                    } catch (\Exception $e) {
+                        Nosto_Tagging_Helper_Log::exception($e);
+                    }
+                    $batchCounter = 0;
+                    $operation = new Nosto_Operation_UpsertProduct($account);
+                    $operation->setResponseTimeout(self::$apiWaitTimeout);
+                }
+            }
+        }
+    }
+
+    /**
+     * Send single product from Nosto index to Nosto via API
+     *
+     * @param Nosto_Tagging_Model_Index $nostoIndexedProduct
+     * @param Mage_Core_Model_Store $store
+     * @throws Exception
+     */
+    public function syncIndexedProduct(
+        Nosto_Tagging_Model_Index $nostoIndexedProduct,
+        Mage_Core_Model_Store $store
+    )
+    {
+        /** @var Nosto_Tagging_Helper_Account $helper */
+        $helper = Mage::helper('nosto_tagging/account');
+        $account = $helper->find($store);
+        $nostoProduct = unserialize($nostoIndexedProduct->getNostoProduct());
+        if (
+            $account instanceof Nosto_Object_Signup_Account
+            && $nostoProduct instanceof Nosto_Tagging_Model_Meta_Product
+        ) {
+            $operation = new Nosto_Operation_UpsertProduct($account);
+            $operation->setResponseTimeout(self::$apiWaitTimeout);
+            $operation->addProduct($nostoProduct);
+            $nostoIndexedProduct->setInSync(1);
+            $nostoIndexedProduct->save();
+            try {
+                $operation->upsert();
+            } catch (\Exception $e) {
+                Nosto_Tagging_Helper_Log::exception($e);
+            }
+        }
     }
 }

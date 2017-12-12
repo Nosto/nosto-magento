@@ -148,10 +148,12 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
             $collection = new Nosto_Object_Product_ProductCollection();
             /** @var Mage_Catalog_Model_Product $product */
             foreach ($products as $product) {
-                /** @var Nosto_Tagging_Model_Meta_Product $meta */
-                $meta = Mage::getModel('nosto_tagging/meta_product');
                 try {
-                    $meta->loadData($product);
+                    $meta = Nosto_Tagging_Model_Meta_Product_Builder::build(
+                        $product,
+                        Mage::app()->getStore(),
+                        false
+                    );
                     $collection->append($meta);
                 } catch (Nosto_NostoException $e) {
                     Nosto_Tagging_Helper_Log::exception($e);
