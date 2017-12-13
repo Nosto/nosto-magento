@@ -86,4 +86,18 @@ class Nosto_Tagging_Util_Product
 
         return $parents;
     }
+
+    /**
+     * Helper method to check two Nosto product models are equal
+     * @param Nosto_Tagging_Model_Meta_Product $product1
+     * @param Nosto_Tagging_Model_Meta_Product $product2
+     * @return boolean
+     */
+    public static function productsEqual(
+        Nosto_Tagging_Model_Meta_Product $product1,
+        Nosto_Tagging_Model_Meta_Product $product2
+    ) {
+
+        return ($product1 == $product2);
+    }
 }

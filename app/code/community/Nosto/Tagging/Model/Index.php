@@ -31,8 +31,8 @@
  *
  * @method void setProductId($productId)
  * @method int getProductId()
- * @method void setNostoProduct($serializedObject)
- * @method string getNostoProduct()
+ * @method void setSerializedProduct($serializedObject)
+ * @method string getSerializedProduct()
  * @method void setUpdatedAt($updatedAt)
  * @method string getUpdatedAt()
  * @method void setCreatedAt($createdAt)
@@ -54,5 +54,21 @@ class Nosto_Tagging_Model_Index extends Mage_Core_Model_Abstract
     protected function _construct()
     {
         $this->_init('nosto_tagging/index');
+    }
+
+    /**
+     * @return Nosto_Tagging_Model_Meta_Product
+     */
+    public function getNostoMetaProduct()
+    {
+        return unserialize($this->getSerializedProduct());
+    }
+
+    /**
+     * @param Nosto_Tagging_Model_Meta_Product $product
+     */
+    public function setNostoMetaProduct(Nosto_Tagging_Model_Meta_Product $product)
+    {
+        $this->setSerializedProduct(serialize($product));
     }
 }

@@ -171,7 +171,7 @@ class Nosto_Tagging_Model_Service_Product
     {
         $storesWithNosto = Mage::helper('nosto_tagging/account')->getAllStoreViewsWithNostoAccount();
         foreach ($storesWithNosto as $store) {
-
+            $start = microtime(true);
             /** @var Nosto_Tagging_Helper_Account $helper */
             $helper = Mage::helper('nosto_tagging/account');
             $account = $helper->find($store);
@@ -187,11 +187,18 @@ class Nosto_Tagging_Model_Service_Product
             $batchCounter = 0;
             $totalCounter = 0;
             $totalCount = count($indexedProducts);
+            Nosto_Tagging_Helper_Log::info(
+                sprintf(
+                    'Synchronizing %d products in store %s to Nosto',
+                    $totalCount,
+                    $store->getCode()
+                )
+            );
             /* @var Nosto_Tagging_Model_Index $indexedProduct */
             foreach ($indexedProducts as $indexedProduct) {
                 ++$batchCounter;
                 ++$totalCounter;
-                $nostoProduct = unserialize($indexedProduct->getNostoProduct());
+                $nostoProduct = $indexedProduct->getNostoMetaProduct();
                 if ($nostoProduct instanceof Nosto_Tagging_Model_Meta_Product) {
                     $operation->addProduct($nostoProduct);
                 }
@@ -210,6 +217,13 @@ class Nosto_Tagging_Model_Service_Product
                     $operation->setResponseTimeout(self::$apiWaitTimeout);
                 }
             }
+            Nosto_Tagging_Helper_Log::info(
+                sprintf(
+                    'Synchronizing for store %s done in %d',
+                    $store->getCode(),
+                    microtime(true)-$start
+                )
+            );
         }
     }
 
@@ -228,7 +242,7 @@ class Nosto_Tagging_Model_Service_Product
         /** @var Nosto_Tagging_Helper_Account $helper */
         $helper = Mage::helper('nosto_tagging/account');
         $account = $helper->find($store);
-        $nostoProduct = unserialize($nostoIndexedProduct->getNostoProduct());
+        $nostoProduct = $nostoIndexedProduct->getNostoMetaProduct();
         if (
             $account instanceof Nosto_Object_Signup_Account
             && $nostoProduct instanceof Nosto_Tagging_Model_Meta_Product

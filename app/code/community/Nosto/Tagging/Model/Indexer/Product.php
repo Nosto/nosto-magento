@@ -47,7 +47,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
     /**
      * Reindex price event type
      */
-    const HARD_LIMIT_FOR_PRODUCTS = 10000;
+    const HARD_LIMIT_FOR_PRODUCTS = 100000;
 
     /**
      * A queue for products to be updated
@@ -165,8 +165,6 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
             /** @var Nosto_Tagging_Helper_Account $helper */
             $helper = Mage::helper('nosto_tagging/account');
             $account = $helper->find($store);
-            /* @var $nostoHelper Nosto_Tagging_Helper_Data */
-            $nostoHelper = Mage::helper('nosto_tagging');
             if (
                 $account === null
                 || !$account->isConnectedToNosto()
@@ -203,6 +201,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
      */
     public function reindexAllInStore(Mage_Core_Model_Store $store)
     {
+        $start = microtime(true);
         $products = Mage::getModel('nosto_tagging/product')->getCollection();
         $products->addStoreFilter($store->getId())
             ->addAttributeToSelect('*')
@@ -219,9 +218,9 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
             ->setCurPage(1);
 
         Nosto_Tagging_Helper_Log::info(
-            sprintf(
-                'Indexing / checking %d products',
-                    count($products)
+            sprintf('Indexing %d products in store %s',
+                    count($products),
+                    $store->getCode()
                 )
         );
         /* @var Mage_Core_Model_App_Emulation $emulation */
@@ -242,6 +241,11 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
             }
         }
         $emulation->stopEnvironmentEmulation($env);
+        Nosto_Tagging_Helper_Log::info(
+            sprintf('Indexing done in %d secs',
+                microtime(true)-$start
+            )
+        );
     }
 
     /**
@@ -284,10 +288,12 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
             ->setPageSize(1)
             ->setCurPage(1)
             ->getFirstItem(); // @codingStandardsIgnoreLine
-        $serialized = serialize($nostoProduct);
         if ($indexedProduct instanceof Nosto_Tagging_Model_Index) {
-            if ($indexedProduct->getNostoProduct() !== $serialized) {
-                $indexedProduct->setNostoProduct($serialized);
+            $indexedMetaProduct = $indexedProduct->getNostoMetaProduct();
+            if ($indexedMetaProduct instanceof Nosto_Tagging_Model_Meta_Product === false
+                || !Nosto_Tagging_Util_Product::productsEqual($indexedMetaProduct, $nostoProduct)
+            ) {
+                $indexedProduct->setNostoMetaProduct($nostoProduct);
                 $indexedProduct->setUpdatedAt($dateHelper->gmtDate());
                 $indexedProduct->setInSync(0);
                 if (!$indexedProduct->getId()) {

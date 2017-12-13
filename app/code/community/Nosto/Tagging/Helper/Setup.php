@@ -166,7 +166,7 @@ class Nosto_Tagging_Helper_Setup extends Mage_Core_Helper_Abstract
                 )
             )
             ->addColumn(
-                'nosto_product', Varien_Db_Ddl_Table::TYPE_TEXT, null, array(
+                'serialized_product', Varien_Db_Ddl_Table::TYPE_TEXT, null, array(
                     'nullable' => false,
                 )
             )

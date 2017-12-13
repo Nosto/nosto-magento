@@ -65,7 +65,7 @@ class Nosto_Tagging_Model_Meta_Product_Builder
                 ->setCurPage(1)
                 ->getFirstItem(); // @codingStandardsIgnoreLine
             if ($indexedProduct instanceof Nosto_Tagging_Model_Index) {
-                $nostoProduct = unserialize($indexedProduct->getNostoProduct());
+                $nostoProduct = $indexedProduct->getNostoMetaProduct();
                 if ($nostoProduct instanceof Nosto_Tagging_Model_Meta_Product) {
                     return $nostoProduct;
                 }
