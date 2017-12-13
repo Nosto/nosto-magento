@@ -134,6 +134,12 @@ class Nosto_Tagging_Helper_Setup extends Mage_Core_Helper_Abstract
         $installer->endSetup();
     }
 
+    /**
+     * Creates the table for Nosto product index
+     *
+     * @param Mage_Eav_Model_Entity_Setup $installer
+     * @suppress PhanTypeMismatchArgument
+     */
     public function createNostoIndexTable(Mage_Eav_Model_Entity_Setup $installer)
     {
         $table = $installer
