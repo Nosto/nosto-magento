@@ -205,6 +205,9 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
     public function reindexAllInStore(Mage_Core_Model_Store $store)
     {
         $start = microtime(true);
+        /** @var Mage_Core_Model_Date $dateHelper */
+        $dateHelper = Mage::getSingleton('core/date');
+        $startTime = $dateHelper->gmtDate();
         $products = Mage::getModel('nosto_tagging/product')->getCollection();
         $products->addStoreFilter($store->getId())
             ->addAttributeToSelect('*')
@@ -229,7 +232,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
         /* @var Mage_Core_Model_App_Emulation $emulation */
         $emulation = Mage::getSingleton('core/app_emulation');
         $env = $emulation->startEnvironmentEmulation($store->getId());
-
+        $changed = 0;
         /* @var Mage_Catalog_Model_Product $product */
         foreach ($products as $product) {
             $parents = Nosto_Tagging_Util_Product::toParentProducts($product);
@@ -238,15 +241,20 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
                     /* @var Nosto_Tagging_Model_Meta_Product $nostoProduct */
                     $nostoProduct = Mage::getModel('nosto_tagging/meta_product');
                     $nostoProduct->reloadData($parent, $store);
-                    $this->reindexProductInStore($nostoProduct, $store);
+                    $reindexed = $this->reindexProductInStore($nostoProduct, $store);
+                    if (strtotime($reindexed->getUpdatedAt()) > strtotime($startTime)) {
+                        ++$changed;
+                    }
+
 
                 }
             }
         }
         $emulation->stopEnvironmentEmulation($env);
         Nosto_Tagging_Helper_Log::info(
-            sprintf('Indexing done in %d secs',
-                microtime(true)-$start
+            sprintf('Indexing done in %d secs, re-indexd %d products',
+                microtime(true)-$start,
+                $changed
             )
         );
     }

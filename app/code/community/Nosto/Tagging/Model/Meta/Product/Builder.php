@@ -42,7 +42,7 @@ class Nosto_Tagging_Model_Meta_Product_Builder
      *
      * @param Mage_Catalog_Model_Product $product
      * @param Mage_Core_Model_Store|null $store
-     * @param bool $skipIndex
+     * @param bool $useIndex
      * @throws Nosto_NostoException
      *
      * @return Nosto_Tagging_Model_Meta_Product
@@ -50,12 +50,12 @@ class Nosto_Tagging_Model_Meta_Product_Builder
     public static function build(
         Mage_Catalog_Model_Product $product,
         Mage_Core_Model_Store $store = null,
-        $skipIndex = false
+        $useIndex = false
     ) {
         if ($store === null) {
             $store = Mage::app()->getStore();
         }
-        if ($skipIndex === false) {
+        if ($useIndex === true) {
             /* @var Nosto_Tagging_Model_Meta_Product $nostoProduct */
             $indexedProduct = Mage::getModel('nosto_tagging/index')
                 ->getCollection()
