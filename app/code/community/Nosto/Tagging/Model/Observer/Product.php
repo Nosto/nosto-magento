@@ -49,18 +49,19 @@ class Nosto_Tagging_Model_Observer_Product
      */
     public function sendProductUpdate(Varien_Event_Observer $observer)
     {
-        if (Mage::helper('nosto_tagging/module')->isModuleEnabled()) {
+        /* @var Nosto_Tagging_Helper_Data $dataHelper */
+        $dataHelper = Mage::helper('nosto_tagging');
+        // If all store views use product indexer there's no need to use update observer
+        if (Mage::helper('nosto_tagging/module')->isModuleEnabled()
+            && !$dataHelper->getAllStoresUseProductIndexer()
+        ) {
             /** @var Mage_Catalog_Model_Product $product */
             /** @noinspection PhpUndefinedMethodInspection */
             $product = $observer->getEvent()->getProduct();
 
-            try {
-                /* @var Nosto_Tagging_Model_Service_Product $service */
-                $service = Mage::getModel('nosto_tagging/service_product');
-                $service->updateProduct($product);
-            } catch (Nosto_NostoException$e) {
-                NostoLog::exception($e);
-            }
+            /* @var Nosto_Tagging_Model_Service_Product $service */
+            $service = Mage::getModel('nosto_tagging/service_product');
+            $service->updateProduct($product);
         }
 
         return $this;
@@ -73,6 +74,8 @@ class Nosto_Tagging_Model_Observer_Product
      * @param Varien_Event_Observer $observer the event observer.
      *
      * @return Nosto_Tagging_Model_Observer_Product
+     *
+     * @throws HttpException
      */
     public function sendProductDelete(Varien_Event_Observer $observer)
     {

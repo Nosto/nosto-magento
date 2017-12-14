@@ -91,6 +91,11 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_USE_PRODUCT_API = 'nosto_tagging/general/use_product_api';
 
     /**
+     * Path to store config for using the product Indexer or not
+     */
+    const XML_PATH_USE_PRODUCT_INDEXER = 'nosto_tagging/general/use_product_indexer';
+
+    /**
      * Path to store config for using SKUs
      */
     const XML_PATH_USE_SKUS = 'nosto_tagging/general/use_skus';
@@ -471,6 +476,17 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Returns on/off setting for product indexer
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     * @return boolean
+     */
+    public function getUseProductIndexer($store = null)
+    {
+        return (bool)Mage::getStoreConfig(self::XML_PATH_USE_PRODUCT_INDEXER, $store);
+    }
+
+    /**
      * Returns on/off setting for SKUs
      *
      * @param Mage_Core_Model_Store|null $store the store model or null.
@@ -637,6 +653,22 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         }
 
         return $version;
+    }
+
+    /**
+     * Returns boolean if all stores use product indexer
+     *
+     * @return boolean
+     */
+    public function getAllStoresUseProductIndexer()
+    {
+        foreach ($this->getAllStoreViews() as $store) {
+            if (!$this->getUseProductIndexer($store)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
 

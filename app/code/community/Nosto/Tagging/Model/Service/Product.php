@@ -175,6 +175,15 @@ class Nosto_Tagging_Model_Service_Product
             /** @var Nosto_Tagging_Helper_Account $helper */
             $helper = Mage::helper('nosto_tagging/account');
             $account = $helper->find($store);
+            /* @var $nostoHelper Nosto_Tagging_Helper_Data */
+            $nostoHelper = Mage::helper('nosto_tagging');
+            if (
+                $account === null
+                || !$account->isConnectedToNosto()
+                || !$nostoHelper->getUseProductApi($store)
+            ) {
+                continue;
+            }
             $operation = new Nosto_Operation_UpsertProduct($account);
             $operation->setResponseTimeout(self::$apiWaitTimeout);
 
@@ -242,10 +251,14 @@ class Nosto_Tagging_Model_Service_Product
         /** @var Nosto_Tagging_Helper_Account $helper */
         $helper = Mage::helper('nosto_tagging/account');
         $account = $helper->find($store);
+        /* @var $nostoHelper Nosto_Tagging_Helper_Data */
+        $nostoHelper = Mage::helper('nosto_tagging');
         $nostoProduct = $nostoIndexedProduct->getNostoMetaProduct();
         if (
             $account instanceof Nosto_Object_Signup_Account
+            && $account->isConnectedToNosto()
             && $nostoProduct instanceof Nosto_Tagging_Model_Meta_Product
+            && $nostoHelper->getUseProductApi($store)
         ) {
             $operation = new Nosto_Operation_UpsertProduct($account);
             $operation->setResponseTimeout(self::$apiWaitTimeout);

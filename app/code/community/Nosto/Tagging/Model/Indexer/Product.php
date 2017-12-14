@@ -162,12 +162,15 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
     {
         foreach ($this->reindexQueue as $storeId => $products) {
             $store = Mage::app()->getStore($storeId);
-            /** @var Nosto_Tagging_Helper_Account $helper */
-            $helper = Mage::helper('nosto_tagging/account');
-            $account = $helper->find($store);
+            /** @var Nosto_Tagging_Helper_Account $accountHelper */
+            $accountHelper = Mage::helper('nosto_tagging/account');
+            $account = $accountHelper->find($store);
+            /** @var Nosto_Tagging_Helper_Data $dataHelper */
+            $dataHelper = Mage::helper('nosto_tagging');
             if (
                 $account === null
                 || !$account->isConnectedToNosto()
+                || !$dataHelper->getUseProductIndexer($store)
             ) {
                 continue;
             }
@@ -315,11 +318,15 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
      */
     public function reindexAll()
     {
-        /* @var Nosto_Tagging_Helper_Account $helper */
-        $helper = Mage::helper('nosto_tagging/account');
-        $stores = $helper->getAllStoreViewsWithNostoAccount();
+        /* @var Nosto_Tagging_Helper_Account $accountHelper */
+        $accountHelper = Mage::helper('nosto_tagging/account');
+        $stores = $accountHelper->getAllStoreViewsWithNostoAccount();
+        /* @var Nosto_Tagging_Helper_Data $dataHelper */
+        $dataHelper = Mage::helper('nosto_tagging');
         foreach ($stores as $store) {
-            $this->reindexAllInStore($store);
+            if ($dataHelper->getUseProductIndexer($store)) {
+                $this->reindexAllInStore($store);
+            }
         }
         /* @var Nosto_Tagging_Model_Service_Product $service */
         $service = Mage::getModel('nosto_tagging/service_product');
