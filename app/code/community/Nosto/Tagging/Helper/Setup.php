@@ -182,6 +182,14 @@ class Nosto_Tagging_Helper_Setup extends Mage_Core_Helper_Abstract
                 'created_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
                     'nullable' => false
                 )
+            )->addIndex(
+                $installer->getIdxName(
+                    'nosto_tagging/index', array('store_id', 'product_id'),
+                    Varien_Db_Adapter_Interface::INDEX_TYPE_UNIQUE
+                ),
+                array('store_id', 'product_id'), array(
+                    'type' => Varien_Db_Adapter_Interface::INDEX_TYPE_UNIQUE
+                )
             );
 
         $installer->getConnection()->createTable($table);

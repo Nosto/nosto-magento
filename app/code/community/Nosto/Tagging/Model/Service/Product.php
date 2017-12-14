@@ -219,7 +219,7 @@ class Nosto_Tagging_Model_Service_Product
             }
             Nosto_Tagging_Helper_Log::info(
                 sprintf(
-                    'Synchronizing for store %s done in %d',
+                    'Synchronizing for store %s done in %d secs',
                     $store->getCode(),
                     microtime(true)-$start
                 )
