@@ -260,7 +260,9 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         $helper = Mage::helper('tax');
         if ($finalPrice) {
             $date = time();
-            $rulePrice = Mage::getResourceModel('catalogrule/rule')
+            /* @var Mage_CatalogRule_Model_Resource_Rule $priceRule */
+            $priceRule = Mage::getResourceModel('catalogrule/rule');
+            $rulePrice = $priceRule
                 ->getRulePrice(
                     $date,
                     $product->getStore()->getWebsiteId(),
@@ -408,5 +410,39 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         }
 
         return $taggingCurrencyCode;
+    }
+
+    /**
+     * Gets productIds with active catalog price rules
+     *
+     * @return array
+     */
+    public function getProductIdsWithActivePriceRules()
+    {
+        /* @var Mage_CatalogRule_Model_Resource_Rule_Collection $rules */
+        $rules = Mage::getModel('catalogrule/rule')->getCollection();
+        $rules
+            ->addIsActiveFilter()
+            ->addFieldToFilter('from_date', [
+                ['lt' => date("Y-m-d")],
+                ['null' => true]
+            ])
+            ->addFieldToFilter('to_date', [
+                ['gt' => date("Y-m-d")],
+                ['null' => true]
+            ]);
+        $s = $rules->getSelectSql();
+        $ids = [];
+        /* @var Mage_CatalogRule_Model_Rule $rule*/
+        foreach ($rules as $rule) {
+            if ($rule->getIsActive()) {
+                $matchingProductIds = array_unique(
+                    $rule->getResource()->getRuleProductIds($rule->getId())
+                );
+                $ids = array_merge($matchingProductIds, $ids);
+            }
+        }
+
+        return array_unique($ids);
     }
 }

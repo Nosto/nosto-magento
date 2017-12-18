@@ -205,9 +205,6 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
     public function reindexAllInStore(Mage_Core_Model_Store $store)
     {
         $start = microtime(true);
-        /** @var Mage_Core_Model_Date $dateHelper */
-        $dateHelper = Mage::getSingleton('core/date');
-        $startTime = $dateHelper->gmtDate();
         $products = Mage::getModel('nosto_tagging/product')->getCollection();
         $products->addStoreFilter($store->getId())
             ->addAttributeToSelect('*')
@@ -235,24 +232,15 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
         $changed = 0;
         /* @var Mage_Catalog_Model_Product $product */
         foreach ($products as $product) {
-            $parents = Nosto_Tagging_Util_Product::toParentProducts($product);
-            foreach ($parents as $parent) {
-                if ($this->reindexable($parent)) {
-                    /* @var Nosto_Tagging_Model_Meta_Product $nostoProduct */
-                    $nostoProduct = Mage::getModel('nosto_tagging/meta_product');
-                    $nostoProduct->reloadData($parent, $store);
-                    $reindexed = $this->reindexProductInStore($nostoProduct, $store);
-                    if (strtotime($reindexed->getUpdatedAt()) > strtotime($startTime)) {
-                        ++$changed;
-                    }
-
-
-                }
+            try {
+                $changed += $this->reindexMagentoProductInStore($product, $store);
+            } catch (\Exception $e) {
+                Nosto_Tagging_Helper_Log::exception($e);
             }
         }
         $emulation->stopEnvironmentEmulation($env);
         Nosto_Tagging_Helper_Log::info(
-            sprintf('Indexing done in %d secs, re-indexd %d products',
+            sprintf('Indexing done in %d secs, updated %d products',
                 microtime(true)-$start,
                 $changed
             )
@@ -260,20 +248,31 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
     }
 
     /**
-     * Checks if product is reindexable or shuold be indexed
-     *
      * @param Mage_Catalog_Model_Product $product
-     * @return bool
+     * @param Mage_Core_Model_Store $store
+     * @return int amount of updated products
+     * @throws Exception
      */
-    private function reindexable(Mage_Catalog_Model_Product $product)
-    {
-        if (
-            $product->getVisibility() == Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE
-        ) {
-            return false;
+    private function reindexMagentoProductInStore(
+        Mage_Catalog_Model_Product $product,
+        Mage_Core_Model_Store $store
+    ) {
+        /** @var Mage_Core_Model_Date $dateHelper */
+        $dateHelper = Mage::getSingleton('core/date');
+        $startTime = $dateHelper->gmtDate();
+        $changed = 0;
+        $parents = Nosto_Tagging_Util_Product::toParentProducts($product);
+        foreach ($parents as $parent) {
+            /* @var Nosto_Tagging_Model_Meta_Product $nostoProduct */
+            $nostoProduct = Mage::getModel('nosto_tagging/meta_product');
+            $nostoProduct->reloadData($parent, $store);
+            $reindexed = $this->reindexProductInStore($nostoProduct, $store);
+            if (strtotime($reindexed->getUpdatedAt()) >= strtotime($startTime)) {
+                ++$changed;
+            }
         }
 
-        return true;
+        return $changed;
     }
 
     /**
@@ -336,6 +335,65 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
                 $this->reindexAllInStore($store);
             }
         }
+        /* @var Nosto_Tagging_Model_Service_Product $service */
+        $service = Mage::getModel('nosto_tagging/service_product');
+        $service->updateOutOfSyncToNosto();
+    }
+
+    /**
+     * Reindex products by productIds
+     * @param array $ids
+     * @throws Exception
+     */
+    public function reindexByProductIds(array $ids)
+    {
+        $start = microtime(true);
+        Nosto_Tagging_Helper_Log::info(
+            sprintf('Indexing %d products with given product ids',
+                count($ids)
+            )
+        );
+        $products = Mage::getModel('nosto_tagging/product')->getCollection();
+        $products->addFieldToFilter(
+            'entity_id', array('in' => $ids)
+        );
+        /* @var Nosto_Tagging_Helper_Account $accountHelper */
+        $accountHelper = Mage::helper('nosto_tagging/account');
+        $storesWithNosto = $accountHelper->getAllStoreViewsWithNostoAccount();
+        $storeIdsWithNosto = array();
+        foreach ($storesWithNosto as $storeWithNosto) {
+            $storeIdsWithNosto[] = $storeWithNosto->getId();
+        }
+        $productsInStore = array();
+        /* @var Mage_Catalog_Model_Product $product */
+        foreach ($products as $product) {
+            foreach ($product->getStoreIds() as $storeId) {
+                if (in_array($storeId, $storeIdsWithNosto)) {
+                    continue;
+                }
+                if (empty($productsInStore[$storeId])) {
+                    $productsInStore[$storeId] = array();
+                }
+                $productsInStore[$storeId][] = $product;
+            }
+        }
+        $changed = 0;
+        foreach ($productsInStore as $storeId => $storeSroducts) {
+            $store = Mage::app()->getStore($storeId);
+            /* @var Mage_Core_Model_App_Emulation $emulation */
+            $emulation = Mage::getSingleton('core/app_emulation');
+            $env = $emulation->startEnvironmentEmulation($store->getId());
+            foreach ($storeSroducts as $storeSroduct) {
+                $changed += $this->reindexMagentoProductInStore($storeSroduct, $store);
+            }
+            $emulation->stopEnvironmentEmulation($env);
+        }
+        Nosto_Tagging_Helper_Log::info(
+            sprintf('Indexing done in %d secs, updated %d products',
+                microtime(true)-$start,
+                $changed
+            )
+        );
         /* @var Nosto_Tagging_Model_Service_Product $service */
         $service = Mage::getModel('nosto_tagging/service_product');
         $service->updateOutOfSyncToNosto();

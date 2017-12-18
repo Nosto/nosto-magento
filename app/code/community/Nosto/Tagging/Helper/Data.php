@@ -96,6 +96,11 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_USE_PRODUCT_INDEXER = 'nosto_tagging/general/use_product_indexer';
 
     /**
+     * Path to store config for automatically update catalog price rule changes
+     */
+    const XML_PATH_UPDATE_CATALOG_PRICE_RULES = 'nosto_tagging/general/update_catalog_price_rules';
+
+    /**
      * Path to store config for using SKUs
      */
     const XML_PATH_USE_SKUS = 'nosto_tagging/general/use_skus';
@@ -484,6 +489,17 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     public function getUseProductIndexer($store = null)
     {
         return (bool)Mage::getStoreConfig(self::XML_PATH_USE_PRODUCT_INDEXER, $store);
+    }
+
+    /**
+     * Returns on/off setting for automatic catalog price rule updates
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     * @return boolean
+     */
+    public function getUseAutomaticCatalogPriceRuleUpdates($store = null)
+    {
+        return (bool)Mage::getStoreConfig(self::XML_PATH_UPDATE_CATALOG_PRICE_RULES, $store);
     }
 
     /**

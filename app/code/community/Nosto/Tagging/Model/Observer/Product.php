@@ -78,16 +78,21 @@ class Nosto_Tagging_Model_Observer_Product
     {
         /* @var Nosto_Tagging_Helper_Data $dataHelper */
         $dataHelper = Mage::helper('nosto_tagging');
-        // If all store views use product indexer there's no need to use update observer
         if (Mage::helper('nosto_tagging/module')->isModuleEnabled()
-            && !$dataHelper->getAllStoresUseProductIndexer()
+            && $dataHelper->getUseAutomaticCatalogPriceRuleUpdates()
         ) {
-            /** @var Mage_Catalog_Model_Product $product */
-            /** @noinspection PhpUndefinedMethodInspection */
-            $product = $observer->getEvent()->getProduct();
-
-            //How to get affected products?
-
+            /* @var Nosto_Tagging_Helper_Price $priceHelper */
+            $priceHelper = Mage::helper('nosto_tagging/price');
+            $productIds = $priceHelper->getProductIdsWithActivePriceRules();
+            if (count($productIds) > 0) {
+                /* @var Nosto_Tagging_Model_Indexer_Product $indexer */
+                $indexer = Mage::getModel('nosto_tagging/indexer_product');
+                try {
+                    $indexer->reindexByProductIds($productIds);
+                } catch (\Exception $e) {
+                    Nosto_Tagging_Helper_Log::exception($e);
+                }
+            }
         }
 
         return $this;
