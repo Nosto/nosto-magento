@@ -426,12 +426,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
             ->addFieldToFilter('from_date', [
                 ['lt' => date("Y-m-d")],
                 ['null' => true]
-            ])
-            ->addFieldToFilter('to_date', [
-                ['gt' => date("Y-m-d")],
-                ['null' => true]
             ]);
-        $s = $rules->getSelectSql();
         $ids = [];
         /* @var Mage_CatalogRule_Model_Rule $rule*/
         foreach ($rules as $rule) {
