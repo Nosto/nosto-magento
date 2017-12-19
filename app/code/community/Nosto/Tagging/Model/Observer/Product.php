@@ -76,21 +76,30 @@ class Nosto_Tagging_Model_Observer_Product
      */
     public function afterCatalogPriceRule(Varien_Event_Observer $observer)
     {
-        /* @var Nosto_Tagging_Helper_Data $dataHelper */
-        $dataHelper = Mage::helper('nosto_tagging');
         if (Mage::helper('nosto_tagging/module')->isModuleEnabled()
-            && $dataHelper->getUseAutomaticCatalogPriceRuleUpdates()
         ) {
+            /* @var Nosto_Tagging_Helper_Account $accountHelper */
+            $accountHelper = Mage::helper('nosto_tagging/account');
+            $nostoStores = $accountHelper->getAllStoreViewsWithNostoAccount();
+            if (count($nostoStores) == 0) {
+                return $this;
+            }
             /* @var Nosto_Tagging_Helper_Price $priceHelper */
             $priceHelper = Mage::helper('nosto_tagging/price');
             $productIds = $priceHelper->getProductIdsWithActivePriceRules();
             if (count($productIds) > 0) {
+                /* @var Nosto_Tagging_Helper_Data $dataHelper */
+                $dataHelper = Mage::helper('nosto_tagging');
                 /* @var Nosto_Tagging_Model_Indexer_Product $indexer */
                 $indexer = Mage::getModel('nosto_tagging/indexer_product');
-                try {
-                    $indexer->reindexByProductIds($productIds);
-                } catch (\Exception $e) {
-                    Nosto_Tagging_Helper_Log::exception($e);
+                foreach ($nostoStores as $store) {
+                    if ($dataHelper->getUseAutomaticCatalogPriceRuleUpdates($store)) {
+                        try {
+                            $indexer->reindexByProductIdsInStore($productIds, $store);
+                        } catch (\Exception $e) {
+                            Nosto_Tagging_Helper_Log::exception($e);
+                        }
+                    }
                 }
             }
         }
@@ -106,7 +115,6 @@ class Nosto_Tagging_Model_Observer_Product
      *
      * @return Nosto_Tagging_Model_Observer_Product
      *
-     * @throws HttpException
      */
     public function sendProductDelete(Varien_Event_Observer $observer)
     {
