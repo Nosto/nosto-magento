@@ -48,6 +48,10 @@ All you need to take Nosto into use in your store, is to install the extension
 and create a Nosto account for your store. This is as easy as clicking a button,
 so read on.
 
+## Documentation
+
+For more information, please see our exhaustive [wiki](https://github.com/Nosto/nosto-magento/wiki)
+
 
 ## License
 
