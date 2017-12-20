@@ -52,7 +52,6 @@ so read on.
 
 For more information, please see our exhaustive [wiki](https://github.com/Nosto/nosto-magento/wiki)
 
-
 ## License
 
 Open Software License ("OSL") v3.0
