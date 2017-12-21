@@ -76,7 +76,10 @@ class Nosto_Tagging_Model_Observer_Product
      */
     public function afterCatalogPriceRule(Varien_Event_Observer $observer)
     {
-        if (Mage::helper('nosto_tagging/module')->isModuleEnabled()
+        // Safeguard for not processing single product updates with this observer
+        /** @noinspection PhpUndefinedMethodInspection */
+        $product = $observer->getEvent()->getProduct();
+        if ($product === null && Mage::helper('nosto_tagging/module')->isModuleEnabled()
         ) {
             /* @var Nosto_Tagging_Helper_Account $accountHelper */
             $accountHelper = Mage::helper('nosto_tagging/account');

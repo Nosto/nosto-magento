@@ -96,7 +96,7 @@
             </nosto_tagging_resource>
         </models>
         <events>
-            <catalogrule_after_apply>
+            <after_reindex_process_catalog_product_price>
                 <observers>
                     <nosto_tagging_catalog_product_save_commit_after>
                         <type>singleton</type>
@@ -104,7 +104,7 @@
                         <method>afterCatalogPriceRule</method>
                     </nosto_tagging_catalog_product_save_commit_after>
                 </observers>
-            </catalogrule_after_apply>
+            </after_reindex_process_catalog_product_price>
             <catalog_product_save_commit_after>
                 <observers>
                     <nosto_tagging_catalog_product_save_commit_after>
