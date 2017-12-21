@@ -269,7 +269,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
                     $product->getId()
                 );
             $productFinalPrice = $product->getFinalPrice();
-            if ($rulePrice && (!$productFinalPrice || $productFinalPrice > $rulePrice)) {
+            if (is_numeric($rulePrice) && (!$productFinalPrice || $productFinalPrice > $rulePrice)) {
                 $price = $rulePrice;
             } else {
                 $price = $productFinalPrice;
