@@ -258,9 +258,25 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
     {
         /** @var Mage_Tax_Helper_Data $helper */
         $helper = Mage::helper('tax');
-        $price = $finalPrice
-            ? $product->getFinalPrice()
-            : $product->getPrice();
+        if ($finalPrice) {
+            $date = time();
+            $customerGroupId = $product->getCustomerGroupId() ? $product->getCustomerGroupId() : 0;
+            $rulePrice = Mage::getResourceModel('catalogrule/rule')
+                ->getRulePrice(
+                    $date,
+                    $product->getStore()->getWebsiteId(),
+                    $customerGroupId,
+                    $product->getId()
+                );
+            $productFinalPrice = $product->getFinalPrice();
+            if (is_numeric($rulePrice) && (!$productFinalPrice || $productFinalPrice > $rulePrice)) {
+                $price = $rulePrice;
+            } else {
+                $price = $productFinalPrice;
+            }
+        } else {
+            $price = $product->getPrice();
+        }
         if ($inclTax) {
             $price = $helper->getPrice($product, $price, true);
         }
