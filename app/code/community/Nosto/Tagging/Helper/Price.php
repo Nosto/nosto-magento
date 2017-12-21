@@ -260,11 +260,12 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         $helper = Mage::helper('tax');
         if ($finalPrice) {
             $date = time();
+            $customerGroupId = $product->getCustomerGroupId() ? $product->getCustomerGroupId() : 0;
             $rulePrice = Mage::getResourceModel('catalogrule/rule')
                 ->getRulePrice(
                     $date,
                     $product->getStore()->getWebsiteId(),
-                    0,
+                    $customerGroupId,
                     $product->getId()
                 );
             $productFinalPrice = $product->getFinalPrice();
