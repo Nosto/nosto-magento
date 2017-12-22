@@ -57,6 +57,13 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
     private $reindexQueue = array();
 
     /**
+     * Array containing already procecced product ids
+     *
+     * @var array
+     */
+    private $processed = array();
+
+    /**
      * Matched Entities instruction array
      *
      * @var array
@@ -120,6 +127,45 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
         if (!isset($this->reindexQueue[$storeId][$product->getId()])) {
             $this->reindexQueue[$storeId][$product->getId()] = $product;
         }
+    }
+
+    /**
+     * Checks if the product has been already processed / indexed
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @param Mage_Core_Model_Store $store
+     * @return bool
+     */
+    private function isProcessed(
+        Mage_Catalog_Model_Product $product,
+        Mage_Core_Model_Store $store
+    ) {
+        $storeId = $store->getId();
+        if (empty($this->processed[$storeId])) {
+            return false;
+        }
+        if (empty($this->processed[$storeId][$product->getId()])) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Adds product object processed list
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @param Mage_Core_Model_Store $store
+     */
+    private function setProcessed(
+        Mage_Catalog_Model_Product $product,
+        Mage_Core_Model_Store $store
+    ) {
+        $storeId = $store->getId();
+        if (empty($this->processed[$storeId])) {
+            $this->processed[$storeId] = array();
+        }
+        $this->processed[$storeId][$product->getId()] = $product->getId();
     }
 
     /**
@@ -221,7 +267,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
             ->setCurPage(1);
 
         Nosto_Tagging_Helper_Log::info(
-            sprintf('Indexing %d products in store %s',
+            sprintf('Processing %d products in store %s',
                     count($products),
                     $store->getCode()
                 )
@@ -257,12 +303,18 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
         Mage_Catalog_Model_Product $product,
         Mage_Core_Model_Store $store
     ) {
+        $changed = 0;
+        if ($this->isProcessed($product, $store)) {
+            return $changed;
+        }
         /** @var Mage_Core_Model_Date $dateHelper */
         $dateHelper = Mage::getSingleton('core/date');
         $startTime = $dateHelper->gmtDate();
-        $changed = 0;
         $parents = Nosto_Tagging_Util_Product::toParentProducts($product);
         foreach ($parents as $parent) {
+            if ($this->isProcessed($parent, $store)) {
+                continue;
+            }
             /* @var Nosto_Tagging_Model_Meta_Product $nostoProduct */
             $nostoProduct = Mage::getModel('nosto_tagging/meta_product');
             $nostoProduct->reloadData($parent, $store);
@@ -270,7 +322,9 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
             if (strtotime($reindexed->getUpdatedAt()) >= strtotime($startTime)) {
                 ++$changed;
             }
+            $this->setProcessed($parent, $store);
         }
+        $this->setProcessed($product, $store);
 
         return $changed;
     }
@@ -353,7 +407,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
     ) {
         $start = microtime(true);
         Nosto_Tagging_Helper_Log::info(
-            sprintf('Indexing %d products with given product ids in store %s',
+            sprintf('Processing %d products with given product ids in store %s',
                 count($ids),
                 $store->getCode()
             )
