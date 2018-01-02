@@ -51,7 +51,7 @@ class Nosto_Tagging_Model_Service_Product
      *
      * @var int
      */
-    public static $hardLimitMaxProcuts = 100000;
+    public static $hardLimitMaxProducts = 100000;
 
     /**
      * Sends a product update to Nosto for all stores and installed Nosto
@@ -192,7 +192,7 @@ class Nosto_Tagging_Model_Service_Product
                 ->getCollection()
                 ->addFieldToFilter('in_sync', 0)
                 ->addFieldToFilter('store_id', $store->getId())
-                ->setPageSize(self::$hardLimitMaxProcuts); // @codingStandardsIgnoreLine
+                ->setPageSize(self::$hardLimitMaxProducts); // @codingStandardsIgnoreLine
             $batchCounter = 0;
             $totalCounter = 0;
             $totalCount = count($indexedProducts);

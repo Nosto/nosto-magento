@@ -121,7 +121,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
         Mage_Catalog_Model_Product $product,
         $storeId
     ) {
-        if (empty($this->reindexQueue[$storeId])) {
+        if (!isset($this->reindexQueue[$storeId])) {
             $this->reindexQueue[$storeId] = array();
         }
         if (!isset($this->reindexQueue[$storeId][$product->getId()])) {
@@ -141,10 +141,10 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
         Mage_Core_Model_Store $store
     ) {
         $storeId = $store->getId();
-        if (empty($this->processed[$storeId])) {
+        if (!isset($this->processed[$storeId])) {
             return false;
         }
-        if (empty($this->processed[$storeId][$product->getId()])) {
+        if (!isset($this->processed[$storeId][$product->getId()])) {
             return false;
         }
 
@@ -287,7 +287,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
         $emulation->stopEnvironmentEmulation($env);
         Nosto_Tagging_Helper_Log::info(
             sprintf('Indexing done in %d secs, updated %d products',
-                microtime(true)-$start,
+                microtime(true) - $start,
                 $changed
             )
         );
@@ -432,13 +432,14 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
                 $changed += $this->reindexMagentoProductInStore($product, $store);
             } catch (\Exception $e) {
                 Nosto_Tagging_Helper_Log::exception($e);
+                $emulation->stopEnvironmentEmulation($env);
                 return false;
             }
         }
         $emulation->stopEnvironmentEmulation($env);
         Nosto_Tagging_Helper_Log::info(
             sprintf('Indexing done in %d secs, updated %d products',
-                microtime(true)-$start,
+                microtime(true) - $start,
                 $changed
             )
         );

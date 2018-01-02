@@ -26,21 +26,20 @@
  */
 
 /**
- * Customer model.
- * Used for keeping a link between a Mage quote and a Nosto customer.
+ * Model for Nosto product index
  *
+ * @method void setStoreId($storeId)
+ * @method string getStoreId()
  * @method void setProductId($productId)
  * @method int getProductId()
  * @method void setSerializedProduct($serializedObject)
  * @method string getSerializedProduct()
+ * @method void setInSync($inSync)
+ * @method string getInSync()
  * @method void setUpdatedAt($updatedAt)
  * @method string getUpdatedAt()
  * @method void setCreatedAt($createdAt)
  * @method string getCreatedAt()
- * @method void setStoreId($storeId)
- * @method string getStoreId()
- * @method void setInSync($inSync)
- * @method string getInSync()
  *
  * @category Nosto
  * @package  Nosto_Tagging
@@ -57,7 +56,7 @@ class Nosto_Tagging_Model_Index extends Mage_Core_Model_Abstract
     }
 
     /**
-     * @return Nosto_Tagging_Model_Meta_Product
+     * @return Nosto_Tagging_Model_Meta_Product|false
      */
     public function getNostoMetaProduct()
     {
