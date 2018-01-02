@@ -45,11 +45,6 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
     const EVENT_TYPE_REINDEX_PRICE = 'catalog_reindex_price';
 
     /**
-     * Reindex price event type
-     */
-    const HARD_LIMIT_FOR_PRODUCTS = 100000;
-
-    /**
      * A queue for products to be updated
      *
      * @var Mage_Catalog_Model_Product[]
@@ -62,6 +57,23 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
      * @var array
      */
     private $processed = array();
+
+    /**
+     * Maximum batch size for indexing products. If exceeded the batches will
+     * be splitted into smaller ones.
+     *
+     * @var int
+     */
+    public static $maxBatchSize = 500;
+
+    /**
+     * Maximum amount of batches to be indexed.
+     *
+     * @var int
+     */
+    public static $maxBatchCount = 10000;
+
+
 
     /**
      * Matched Entities instruction array
@@ -251,38 +263,51 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
     public function reindexAllInStore(Mage_Core_Model_Store $store)
     {
         $start = microtime(true);
-        $products = Mage::getModel('nosto_tagging/product')->getCollection();
-        $products->addStoreFilter($store->getId())
-            ->addAttributeToSelect('*')
-            ->addAttributeToFilter(
-                'status', array(
-                    'eq' => Mage_Catalog_Model_Product_Status::STATUS_ENABLED
-                )
-            )
-            ->addFieldToFilter(
-                'visibility',
-                Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH
-            )
-            ->setPageSize(self::HARD_LIMIT_FOR_PRODUCTS)
-            ->setCurPage(1);
 
-        Nosto_Tagging_Helper_Log::info(
-            sprintf('Processing %d products in store %s',
-                    count($products),
-                    $store->getCode()
-                )
-        );
         /* @var Mage_Core_Model_App_Emulation $emulation */
         $emulation = Mage::getSingleton('core/app_emulation');
         $env = $emulation->startEnvironmentEmulation($store->getId());
+
+        $iterations = 1;
+        $products = $this->getProductBatch($store, $iterations);
+        $totalProductCount = $products->getSize();
+        $totalBatchCount = ceil($totalProductCount/self::$maxBatchSize);
         $changed = 0;
-        /* @var Mage_Catalog_Model_Product $product */
-        foreach ($products as $product) {
-            try {
-                $changed += $this->reindexMagentoProductInStore($product, $store);
-            } catch (\Exception $e) {
-                Nosto_Tagging_Helper_Log::exception($e);
+
+        while (true) {
+            if ($iterations >= self::$maxBatchCount) {
+                Nosto_Tagging_Helper_Log::info(
+                    sprintf('Max batch count (%d) reached - exiting indexing',
+                        self::$maxBatchCount
+                    )
+                );
+                break;
             }
+            $batchCount = count($products);
+            if ($batchCount == 0) {
+                break;
+            }
+            Nosto_Tagging_Helper_Log::info(
+                sprintf('Processing %d products in store %s [%d/%d]',
+                    count($products),
+                    $store->getCode(),
+                    $iterations,
+                    $totalBatchCount
+                )
+            );
+            /* @var Mage_Catalog_Model_Product $product */
+            foreach ($products as $product) {
+                try {
+                    $changed += $this->reindexMagentoProductInStore($product, $store);
+                } catch (\Exception $e) {
+                    Nosto_Tagging_Helper_Log::exception($e);
+                }
+            }
+            if ($batchCount < self::$maxBatchSize) {
+                break;
+            }
+            ++$iterations;
+            $products = $this->getProductBatch($store, $iterations);
         }
         $emulation->stopEnvironmentEmulation($env);
         Nosto_Tagging_Helper_Log::info(
@@ -334,13 +359,14 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
      *
      * @param Nosto_Tagging_Model_Meta_Product $nostoProduct
      * @param Mage_Core_Model_Store $store
-     * @throws Exception
-     *
+     * @param bool $setSynced
      * @return Nosto_Tagging_Model_Index
+     * @throws Exception
      */
     public function reindexProductInStore(
         Nosto_Tagging_Model_Meta_Product $nostoProduct,
-        Mage_Core_Model_Store $store
+        Mage_Core_Model_Store $store,
+        $setSynced = false
     ) {
         /** @var Mage_Core_Model_Date $dateHelper */
         $dateHelper = Mage::getSingleton('core/date');
@@ -359,7 +385,11 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
             ) {
                 $indexedProduct->setNostoMetaProduct($nostoProduct);
                 $indexedProduct->setUpdatedAt($dateHelper->gmtDate());
-                $indexedProduct->setInSync(0);
+                if ($setSynced === true) {
+                    $indexedProduct->setInSync(1);
+                } else {
+                    $indexedProduct->setInSync(0);
+                }
                 if (!$indexedProduct->getId()) {
                     $indexedProduct->setCreatedAt($dateHelper->gmtDate());
                     $indexedProduct->setProductId(
@@ -418,22 +448,23 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
         if (!$accountHelper->find($store)) {
             return true;
         }
-        /* @var Nosto_Tagging_Model_Resource_Product_Collection $products */
-        $products = Mage::getModel('nosto_tagging/product')->getCollection();
-        $products->addStoreFilter($store->getId())
-            ->addFieldToFilter('entity_id', array('in' => $ids));
 
         /* @var Mage_Core_Model_App_Emulation $emulation */
         $emulation = Mage::getSingleton('core/app_emulation');
         $env = $emulation->startEnvironmentEmulation($store->getId());
         $changed = 0;
-        foreach ($products as $product) {
-            try {
-                $changed += $this->reindexMagentoProductInStore($product, $store);
-            } catch (\Exception $e) {
-                Nosto_Tagging_Helper_Log::exception($e);
-                $emulation->stopEnvironmentEmulation($env);
-                return false;
+        $batches = array_chunk($ids, self::$maxBatchSize);
+        foreach ($batches as $productIds) {
+            /* @var Nosto_Tagging_Model_Resource_Product_Collection $products */
+            $products = Mage::getModel('nosto_tagging/product')->getCollection();
+            $products->addStoreFilter($store->getId())
+                ->addFieldToFilter('entity_id', array('in' => $productIds));
+            foreach ($products as $product) {
+                try {
+                    $changed += $this->reindexMagentoProductInStore($product, $store);
+                } catch (\Exception $e) {
+                    Nosto_Tagging_Helper_Log::exception($e);
+                }
             }
         }
         $emulation->stopEnvironmentEmulation($env);
@@ -448,5 +479,33 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
         $service->updateOutOfSyncToNosto();
 
         return true;
+    }
+
+    /**
+     * @param Mage_Core_Model_Store $store
+     * @param int $pageNumber
+     * @return object
+     */
+    private function getProductBatch(
+        Mage_Core_Model_Store $store,
+        $pageNumber = 1
+    ) {
+        $products = Mage::getModel('nosto_tagging/product')->getCollection();
+        $products->addStoreFilter($store->getId())
+            ->addAttributeToSelect('*')
+            ->addAttributeToFilter(
+                'status', array(
+                    'eq' => Mage_Catalog_Model_Product_Status::STATUS_ENABLED
+                )
+            )
+            ->addFieldToFilter(
+                'visibility',
+                Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH
+            )
+            ->addAttributeToSort('entity_id', Varien_Data_Collection::SORT_ORDER_DESC)
+            ->setPageSize(self::$maxBatchSize)
+            ->setCurPage($pageNumber);
+
+        return $products;
     }
 }

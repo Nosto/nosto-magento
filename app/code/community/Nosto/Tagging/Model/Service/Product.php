@@ -40,18 +40,18 @@ class Nosto_Tagging_Model_Service_Product
     public static $maxBatchSize = 500;
 
     /**
-     * Max time to wait for Nosto's API response
+     * Maximum amount of batches to be updated to Nosto.
      *
      * @var int
      */
-    public static $apiWaitTimeout = 60;
+    public static $maxBatchCount = 10000;
 
     /**
-     * Maximum amount of products that will be processed and sent to Nosto
-     *
+     * Max time in seconds to wait for Nosto's API response
+     *s
      * @var int
      */
-    public static $hardLimitMaxProducts = 100000;
+    public static $apiWaitTimeout = 120;
 
     /**
      * Sends a product update to Nosto for all stores and installed Nosto
@@ -184,56 +184,77 @@ class Nosto_Tagging_Model_Service_Product
             ) {
                 continue;
             }
-            $operation = new Nosto_Operation_UpsertProduct($account);
-            $operation->setResponseTimeout(self::$apiWaitTimeout);
-
-            // loop through stores that have nosto & add store as filter
-            $indexedProducts = Mage::getModel('nosto_tagging/index')
-                ->getCollection()
-                ->addFieldToFilter('in_sync', 0)
-                ->addFieldToFilter('store_id', $store->getId())
-                ->setPageSize(self::$hardLimitMaxProducts); // @codingStandardsIgnoreLine
-            $batchCounter = 0;
-            $totalCounter = 0;
-            $totalCount = count($indexedProducts);
-            Nosto_Tagging_Helper_Log::info(
-                sprintf(
-                    'Synchronizing %d products in store %s to Nosto',
-                    $totalCount,
-                    $store->getCode()
-                )
-            );
-            /* @var Nosto_Tagging_Model_Index $indexedProduct */
-            foreach ($indexedProducts as $indexedProduct) {
-                ++$batchCounter;
-                ++$totalCounter;
-                $nostoProduct = $indexedProduct->getNostoMetaProduct();
-                if ($nostoProduct instanceof Nosto_Tagging_Model_Meta_Product) {
-                    $operation->addProduct($nostoProduct);
+            $iterations = 0;
+            $indexedProducts = $this->getOutOfSyncBatch($store);
+            $totalOutOfSyncCount = $indexedProducts->getSize();
+            $totaBatchCount = ceil($totalOutOfSyncCount/self::$maxBatchSize);
+            while (true) {
+                ++$iterations;
+                if ($iterations >= self::$maxBatchCount) {
+                    Nosto_Tagging_Helper_Log::info(
+                        sprintf('Max batch count (%d) reached - exiting indexing',
+                            self::$maxBatchCount
+                        )
+                    );
+                    break;
                 }
-                $indexedProduct->setInSync(1);
-                $indexedProduct->save();
-                if ($batchCounter % self::$maxBatchSize == 0
-                    || $totalCounter == $totalCount
-                ) {
-                    try {
-                        $operation->upsert();
-                    } catch (\Exception $e) {
-                        Nosto_Tagging_Helper_Log::exception($e);
+                $operation = new Nosto_Operation_UpsertProduct($account);
+                $operation->setResponseTimeout(self::$apiWaitTimeout);
+                $batchCount = count($indexedProducts);
+                if ($batchCount == 0) {
+                    break;
+                }
+                Nosto_Tagging_Helper_Log::info(
+                    sprintf(
+                        'Synchronizing %d products in store %s to Nosto [%d/%d]',
+                        $batchCount,
+                        $store->getCode(),
+                        $iterations,
+                        $totaBatchCount
+                    )
+                );
+                /* @var Nosto_Tagging_Model_Index $indexedProduct */
+                foreach ($indexedProducts as $indexedProduct) {
+                    $nostoProduct = $indexedProduct->getNostoMetaProduct();
+                    if ($nostoProduct instanceof Nosto_Tagging_Model_Meta_Product) {
+                        $operation->addProduct($nostoProduct);
                     }
-                    $batchCounter = 0;
-                    $operation = new Nosto_Operation_UpsertProduct($account);
-                    $operation->setResponseTimeout(self::$apiWaitTimeout);
+                    $indexedProduct->setInSync(1);
+                    $indexedProduct->save();
                 }
+                try {
+                    $operation->upsert();
+                } catch (\Exception $e) {
+                    Nosto_Tagging_Helper_Log::exception($e);
+                }
+                if ($batchCount < self::$maxBatchSize) {
+                    break;
+                }
+                $indexedProducts = $this->getOutOfSyncBatch($store);
             }
+
             Nosto_Tagging_Helper_Log::info(
                 sprintf(
                     'Synchronizing for store %s done in %d secs',
                     $store->getCode(),
-                    microtime(true)-$start
+                    microtime(true) - $start
                 )
             );
         }
+    }
+
+    /**
+     * @param Mage_Core_Model_Store $store
+     * @return mixed
+     */
+    private function getOutOfSyncBatch(
+        Mage_Core_Model_Store $store
+    ) {
+        return Mage::getModel('nosto_tagging/index')
+            ->getCollection()
+            ->addFieldToFilter('in_sync', 0)
+            ->addFieldToFilter('store_id', $store->getId())
+            ->setPageSize(self::$maxBatchSize); // @codingStandardsIgnoreLine
     }
 
     /**
