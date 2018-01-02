@@ -83,7 +83,6 @@ class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
             /* @var Nosto_Tagging_Helper_Data $dataHelper */
             $dataHelper = Mage::helper('nosto_tagging');
             try {
-
                 $store = Mage::app()->getStore();
                 $model = Nosto_Tagging_Model_Meta_Product_Builder::build(
                     $this->getProduct(),
