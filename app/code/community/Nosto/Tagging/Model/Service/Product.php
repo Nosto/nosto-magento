@@ -47,13 +47,6 @@ class Nosto_Tagging_Model_Service_Product
     public static $maxBatchCount = 10000;
 
     /**
-     * Max time in seconds to wait for Nosto's API response
-     *s
-     * @var int
-     */
-    public static $apiWaitTimeout = 120;
-
-    /**
      * Sends a product update to Nosto for all stores and installed Nosto
      * accounts
      *
@@ -114,7 +107,7 @@ class Nosto_Tagging_Model_Service_Product
             foreach ($productBatches as $productsInStore) {
                 try {
                     $operation = new Nosto_Operation_UpsertProduct($account);
-                    $operation->setResponseTimeout(self::$apiWaitTimeout);
+                    $operation->setResponseTimeout($this->getApiWaitTimeout());
                     /* @var $mageProduct Mage_Catalog_Model_Product */
                     foreach ($productsInStore as $mageProduct) {
                         if ($mageProduct instanceof Mage_Catalog_Model_Product === false) {
@@ -187,7 +180,7 @@ class Nosto_Tagging_Model_Service_Product
             $iterations = 0;
             $indexedProducts = $this->getOutOfSyncBatch($store);
             $totalOutOfSyncCount = $indexedProducts->getSize();
-            $totaBatchCount = ceil($totalOutOfSyncCount/self::$maxBatchSize);
+            $totalBatchCount = ceil($totalOutOfSyncCount/self::$maxBatchSize);
             while (true) {
                 ++$iterations;
                 if ($iterations >= self::$maxBatchCount) {
@@ -199,7 +192,7 @@ class Nosto_Tagging_Model_Service_Product
                     break;
                 }
                 $operation = new Nosto_Operation_UpsertProduct($account);
-                $operation->setResponseTimeout(self::$apiWaitTimeout);
+                $operation->setResponseTimeout($this->getApiWaitTimeout());
                 $batchCount = count($indexedProducts);
                 if ($batchCount == 0) {
                     break;
@@ -210,7 +203,7 @@ class Nosto_Tagging_Model_Service_Product
                         $batchCount,
                         $store->getCode(),
                         $iterations,
-                        $totaBatchCount
+                        $totalBatchCount
                     )
                 );
                 /* @var Nosto_Tagging_Model_Index $indexedProduct */
@@ -282,7 +275,7 @@ class Nosto_Tagging_Model_Service_Product
             && $nostoHelper->getUseProductApi($store)
         ) {
             $operation = new Nosto_Operation_UpsertProduct($account);
-            $operation->setResponseTimeout(self::$apiWaitTimeout);
+            $operation->setResponseTimeout($this->getApiWaitTimeout());
             $operation->addProduct($nostoProduct);
             $nostoIndexedProduct->setInSync(1);
             $nostoIndexedProduct->save();
@@ -292,5 +285,15 @@ class Nosto_Tagging_Model_Service_Product
                 Nosto_Tagging_Helper_Log::exception($e);
             }
         }
+    }
+
+    /**
+     * Returns the wait timeout for product API call
+     *
+     * @return int
+     */
+    private function getApiWaitTimeout()
+    {
+        return Nosto_Nosto::getEnvVariable('NOSTO_PRODUCT_API_WAIT_TIMEOUT', 120);
     }
 }

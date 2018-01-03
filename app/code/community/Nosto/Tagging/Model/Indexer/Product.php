@@ -381,7 +381,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
         if ($indexedProduct instanceof Nosto_Tagging_Model_Index) {
             $indexedMetaProduct = $indexedProduct->getNostoMetaProduct();
             if ($indexedMetaProduct instanceof Nosto_Tagging_Model_Meta_Product === false
-                || !Nosto_Tagging_Util_Product::productsEqual($indexedMetaProduct, $nostoProduct)
+                || $indexedMetaProduct != $nostoProduct
             ) {
                 $indexedProduct->setNostoMetaProduct($nostoProduct);
                 $indexedProduct->setUpdatedAt($dateHelper->gmtDate());
