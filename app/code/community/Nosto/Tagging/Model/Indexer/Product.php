@@ -189,16 +189,17 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
     protected function _registerEvent(Mage_Index_Model_Event $event)
     {
         $entity = $event->getEntity();
-        $objectId = $event->getDataObject()->getId();
+        $object = $event->getDataObject();
+        $objectId = $object->getId();
 
         if ($entity !== 'catalog_product' && !$objectId) {
             return false;
         }
-        $catalogProduct = Mage::getModel('catalog/product')->load($objectId);
-        if ($catalogProduct instanceof Mage_Catalog_Model_Product === false) {
-            return false;
+        if ($event->getType() === 'delete') {
+            $this->removeProductFromIndex($object);
+        } else {
+            $this->addProductToIndexQueue($object);
         }
-        $this->addProductToIndexQueue($catalogProduct);
 
         return true;
     }
@@ -456,6 +457,29 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
         return $indexedProduct;
     }
 
+
+    /**
+     * Indexes Nosto product
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @return void
+     * @throws Exception
+     */
+    public function removeProductFromIndex(
+        Mage_Catalog_Model_Product $product
+    ) {
+        try {
+            $indexedProducts = Mage::getModel('nosto_tagging/index')
+                ->getCollection()
+                ->addFieldToFilter('product_id', $product->getId());
+            /* @var Nosto_Tagging_Model_Index $indexedProduct */
+            foreach ($indexedProducts as $indexedProduct) {
+                $indexedProduct->delete();
+            }
+        } catch (\Exception $e) {
+            Nosto_Tagging_Helper_Log::exception($e);
+        }
+    }
     /**
      * Reindex all products in all stores where Nosto is installed
      */
