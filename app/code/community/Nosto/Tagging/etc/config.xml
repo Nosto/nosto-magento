@@ -167,7 +167,6 @@
                 </nosto_indexer>
             </indexer>
         </index>
-
     </global>
     <adminhtml>
         <layout>

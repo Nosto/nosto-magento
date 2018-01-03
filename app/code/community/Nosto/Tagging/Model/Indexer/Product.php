@@ -198,6 +198,18 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
         if ($catalogProduct instanceof Mage_Catalog_Model_Product === false) {
             return false;
         }
+        $this->addProductToIndexQueue($catalogProduct);
+
+        return true;
+    }
+
+    /**
+     * Adds a product to reindexing queue for all store views
+     *
+     * @param Mage_Catalog_Model_Product $catalogProduct
+     */
+    private function addProductToIndexQueue(Mage_Catalog_Model_Product $catalogProduct)
+    {
         // Check if we're handling simple product with parents
         $products = Nosto_Tagging_Util_Product::toParentProducts($catalogProduct);
         foreach ($products as $product) {
@@ -205,18 +217,14 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
                 $this->addToReindexQueue($product, $storeId);
             }
         }
-
-        return true;
     }
 
     /**
-     * Process event
-     *
-     * @param Mage_Index_Model_Event $event
+     * Reindexes all products in queue and updates products to Nosto
      *
      * @throws Exception
      */
-    protected function _processEvent(Mage_Index_Model_Event $event)
+    private function flushReindexingQueue()
     {
         foreach ($this->reindexQueue as $storeId => $products) {
             $store = Mage::app()->getStore($storeId);
@@ -251,6 +259,50 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
         /* @var Nosto_Tagging_Model_Service_Product $service */
         $service = Mage::getModel('nosto_tagging/service_product');
         $service->updateOutOfSyncToNosto();
+    }
+
+    /**
+     * Reindexes a product in all store views and updates product to Nosto
+     *
+     * @param Mage_Catalog_Model_Product $product
+     */
+    public function reindexAndUpdate(Mage_Catalog_Model_Product $product)
+    {
+        try {
+            $this->addProductToIndexQueue($product);
+            $this->flushReindexingQueue();
+        } catch (\Exception $e) {
+            Nosto_Tagging_Helper_Log::exception($e);
+        }
+    }
+
+    /**
+     * Reindexes a product in all store views and updates product to Nosto
+     *
+     * @param Mage_Catalog_Model_Product[] $products
+     */
+    public function reindexAndUpdateMany($products)
+    {
+        try {
+            foreach ($products as $product) {
+                $this->addProductToIndexQueue($product);
+            }
+            $this->flushReindexingQueue();
+        } catch (\Exception $e) {
+            Nosto_Tagging_Helper_Log::exception($e);
+        }
+    }
+
+    /**
+     * Process event
+     *
+     * @param Mage_Index_Model_Event $event
+     *
+     * @throws Exception
+     */
+    protected function _processEvent(Mage_Index_Model_Event $event)
+    {
+        $this->flushReindexingQueue();
     }
 
     /**

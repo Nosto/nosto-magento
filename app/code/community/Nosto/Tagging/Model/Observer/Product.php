@@ -167,9 +167,16 @@ class Nosto_Tagging_Model_Observer_Product
             $product = Mage::getModel('catalog/product')->load($productId);
             if ($product instanceof Mage_Catalog_Model_Product) {
                 try {
-                    /* @var Nosto_Tagging_Model_Service_Product $service */
-                    $service = Mage::getModel('nosto_tagging/service_product');
-                    $service->updateProduct($product);
+                    /* @var Nosto_Tagging_Helper_Data $dataHelper */
+                    $dataHelper = Mage::helper('nosto_tagging');
+                    if (!$dataHelper->getAllStoresUseProductIndexer()) {
+                        /* @var Nosto_Tagging_Model_Service_Product $service */
+                        $service = Mage::getModel('nosto_tagging/service_product');
+                        $service->updateProduct($product);
+                    }
+                    /* @var Nosto_Tagging_Model_Indexer_Product $indexer */
+                    $indexer = Mage::getModel('nosto_tagging/indexer_product');
+                    $indexer->reindexAndUpdate($product);
                 } catch (\Exception $e) {
                     NostoLog::exception($e);
                 }
