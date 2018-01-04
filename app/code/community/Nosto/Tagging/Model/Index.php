@@ -60,6 +60,7 @@ class Nosto_Tagging_Model_Index extends Mage_Core_Model_Abstract
      */
     public function getNostoMetaProduct()
     {
+        // @codingStandardsIgnoreLine
         return unserialize($this->getSerializedProduct());
     }
 
@@ -68,6 +69,7 @@ class Nosto_Tagging_Model_Index extends Mage_Core_Model_Abstract
      */
     public function setNostoMetaProduct(Nosto_Tagging_Model_Meta_Product $product)
     {
+        // @codingStandardsIgnoreLine
         $this->setSerializedProduct(serialize($product));
     }
 }

@@ -219,14 +219,14 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         );
         $sumListPrice = 0;
         /** @var Mage_Bundle_Model_Option $option */
-        foreach ($options as $option){
+        foreach ($options as $option) {
             $selections  = $option->getSelections();
             $minSimpleProductPricePrice = null;
             $simpleProductListPrice = null;
             /**
              * @var Mage_Catalog_Model_Product $selection
              */
-            foreach ($selections as $selection){
+            foreach ($selections as $selection) {
                 if ($selection->isAvailable()) {
                     $simpleProductPrice = $this->_getProductPrice($selection, true, $inclTax);
                     if ($minSimpleProductPricePrice === null || $simpleProductPrice < $minSimpleProductPricePrice) {
@@ -423,11 +423,13 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         $rules = Mage::getModel('catalogrule/rule')->getCollection();
         $rules
             ->addIsActiveFilter()
-            ->addFieldToFilter('from_date', [
-                ['lt' => date("Y-m-d")],
-                ['null' => true]
-            ]);
-        $ids = [];
+            ->addFieldToFilter(
+                'from_date', array(
+                array('lt' => date("Y-m-d")),
+                array('null' => true)
+                )
+            );
+        $ids = array();
         /* @var Mage_CatalogRule_Model_Rule $rule*/
         foreach ($rules as $rule) {
             if ($rule->getIsActive()) {

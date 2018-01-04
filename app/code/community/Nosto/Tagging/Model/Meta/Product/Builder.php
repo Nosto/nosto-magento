@@ -51,7 +51,8 @@ class Nosto_Tagging_Model_Meta_Product_Builder
         Mage_Catalog_Model_Product $product,
         Mage_Core_Model_Store $store = null,
         $useIndex = false
-    ) {
+    ) 
+    {
         if ($store === null) {
             $store = Mage::app()->getStore();
         }

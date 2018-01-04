@@ -88,7 +88,8 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
     private function reindexIfNeeded(
         Nosto_Tagging_Model_Meta_Product $nostoProduct,
         Mage_Core_Model_Store $store
-    ) {
+    ) 
+    {
         /* @var Nosto_Tagging_Model_Indexer_Product $indexer */
         $indexer = Mage::getModel('nosto_tagging/indexer_product');
         try {

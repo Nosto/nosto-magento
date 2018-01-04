@@ -185,7 +185,8 @@ class Nosto_Tagging_Model_Service_Product
                 ++$iterations;
                 if ($iterations >= self::$maxBatchCount) {
                     Nosto_Tagging_Helper_Log::info(
-                        sprintf('Max batch count (%d) reached - exiting indexing',
+                        sprintf(
+                            'Max batch count (%d) reached - exiting indexing',
                             self::$maxBatchCount
                         )
                     );
@@ -242,7 +243,8 @@ class Nosto_Tagging_Model_Service_Product
      */
     private function getOutOfSyncBatch(
         Mage_Core_Model_Store $store
-    ) {
+    ) 
+    {
         return Mage::getModel('nosto_tagging/index')
             ->getCollection()
             ->addFieldToFilter('in_sync', 0)
