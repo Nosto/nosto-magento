@@ -598,7 +598,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
     /**
      * @param Mage_Core_Model_Store $store
      * @param int $pageNumber
-     * @return object
+     * @return Nosto_Tagging_Model_Resource_Product_Collection
      */
     protected function getProductBatch(
         Mage_Core_Model_Store $store,

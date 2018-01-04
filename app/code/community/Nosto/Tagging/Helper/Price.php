@@ -428,17 +428,15 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
             ->addIsActiveFilter()
             ->addFieldToFilter(
                 'from_date', array(
-                array('lt' => $date),
-                array('null' => true)
+                    array('lt' => $date),
+                    array('null' => true)
                 )
             );
         $ids = array();
         /* @var Mage_CatalogRule_Model_Rule $rule*/
         foreach ($rules as $rule) {
             if ($rule->getIsActive()) {
-                $matchingProductIds = array_unique(
-                    $rule->getResource()->getRuleProductIds($rule->getId())
-                );
+                $matchingProductIds = $rule->getResource()->getRuleProductIds($rule->getId());
                 $ids = array_merge($matchingProductIds, $ids);
             }
         }
