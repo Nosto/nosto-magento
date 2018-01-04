@@ -58,7 +58,7 @@ class Nosto_Tagging_Model_Observer_Order
             $service = Mage::getModel('nosto_tagging/service_order');
             try {
                 $service->confirm($mageOrder);
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 NostoLog::exception($e);
             }
         }

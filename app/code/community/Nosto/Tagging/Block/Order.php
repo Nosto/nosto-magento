@@ -67,17 +67,26 @@ class Nosto_Tagging_Block_Order extends Mage_Checkout_Block_Success
         /** @var Nosto_Tagging_Helper_Account $helper */
         $helper = Mage::helper('core');
         try {
+            $nostoOrder = null;
             if ($helper->isModuleEnabled('Vaimo_Klarna')) {
-                /** @noinspection PhpUndefinedMethodInspection */
-                $checkoutId = Mage::getSingleton('checkout/session')->getKlarnaCheckoutPrevId();
-                /* @var Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout $nostoOrder */
-                $nostoOrder = Mage::getModel('nosto_tagging/meta_order_vaimo_klarna_checkout');
-                $nostoOrder->loadOrderByKlarnaCheckoutId($checkoutId);
-                // Double check that payment provider is vaimo_klarna_checkout
-                if ($nostoOrder->getPaymentProvider() !== 'vaimo_klarna_checkout') {
-                    $nostoOrder = null;
+                try {
+                    /** @noinspection PhpUndefinedMethodInspection */
+                    $checkoutId = Mage::getSingleton('checkout/session')
+                        ->getKlarnaCheckoutPrevId();
+                    /* @var Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout $nostoOrder */
+                    $nostoOrder = Mage::getModel(
+                        'nosto_tagging/meta_order_vaimo_klarna_checkout'
+                    );
+                    $nostoOrder->loadOrderByKlarnaCheckoutId($checkoutId);
+                    // Double check that payment provider is vaimo_klarna_checkout
+                    if ($nostoOrder->getPaymentProvider() !== 'vaimo_klarna_checkout') {
+                        $nostoOrder = null;
+                    }
+                } catch (\Exception $vaimoException) {
+                    NostoLog::exception($vaimoException);
                 }
-            } else {
+            }
+            if (!$nostoOrder) {
                 /** @noinspection PhpUndefinedMethodInspection */
                 $orderId = Mage::getSingleton('checkout/session')->getLastOrderId();
                 /** @var Mage_Sales_Model_Order $order */
