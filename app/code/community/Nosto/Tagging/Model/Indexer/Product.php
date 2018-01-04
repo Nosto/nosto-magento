@@ -185,14 +185,20 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
      *
      * @param Mage_Index_Model_Event $event
      * @return bool
+     * @throws Exception
+     * @suppress PhanTypeMismatchArgument
      */
     protected function _registerEvent(Mage_Index_Model_Event $event)
     {
         $entity = $event->getEntity();
+        /* @var Mage_Catalog_Model_Product $object */
         $object = $event->getDataObject();
-        $objectId = $object->getId();
 
-        if ($entity !== 'catalog_product' && !$objectId) {
+        if ($entity !== 'catalog_product'
+            || !$object->getId()
+            || $object instanceof Mage_Catalog_Model_Product
+
+        ) {
             return false;
         }
         if ($event->getType() === 'delete') {
