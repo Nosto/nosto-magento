@@ -52,6 +52,13 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
     protected $_reindexQueue = array();
 
     /**
+     * A queue for product ids to be deleted
+     *
+     * @var array
+     */
+    protected $_deleteQueue = array();
+
+    /**
      * Array containing already procecced product ids
      *
      * @var array
@@ -124,7 +131,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
     }
 
     /**
-     * Adds product object to index queue
+     * Adds product object to reindex queue
      *
      * @param Mage_Catalog_Model_Product $product
      * @param int $storeId
@@ -204,7 +211,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
         }
         $product = Mage::getModel('catalog/product')->load($object->getId());
         if ($event->getType() === 'delete') {
-            $this->removeProductFromIndex($product);
+            $this->addProductIdToDeleteQueue($object->getId());
         } else {
             $this->addProductToIndexQueue($product);
         }
@@ -224,6 +231,40 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
         foreach ($products as $product) {
             foreach ($product->getStoreIds() as $storeId) {
                 $this->addToReindexQueue($product, $storeId);
+            }
+        }
+    }
+
+    /**
+     * Adds a product to delete queue for all store views
+     *
+     * @param string $productId
+     */
+    protected function addProductIdToDeleteQueue($productId)
+    {
+        if (!isset($this->_deleteQueue[$productId])) {
+            $this->_deleteQueue[$productId] = $productId;
+        }
+    }
+
+    /**
+     * Removes all products that are in delete queue
+     *
+     * @throws Exception
+     */
+    protected function flushDeleteQueue()
+    {
+        foreach ($this->_deleteQueue as $productId) {
+            try {
+                /** @var Nosto_Tagging_Model_Index $indexedProduct */
+                $indexedProducts = Mage::getModel('nosto_tagging/index')
+                    ->getCollection()
+                    ->addFieldToFilter('product_id', $productId);
+                foreach ($indexedProducts as $indexedProduct) {
+                    $indexedProduct->delete();
+                }
+            } catch (\Exception $e) {
+                Nosto_Tagging_Helper_Log::exception($e);
             }
         }
     }
@@ -308,13 +349,15 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
      * @param Mage_Index_Model_Event $event
      *
      * @throws Exception
-     * @codingStandardsIgnoreStart
      */
     protected function _processEvent(Mage_Index_Model_Event $event)
     {
-        $this->flushReindexingQueue();
+        if ($event->getType() == 'delete') {
+            $this->flushDeleteQueue();
+        } else {
+            $this->flushReindexingQueue();
+        }
     }
-    // @codingStandardsIgnoreEnd
 
     /**
      * Reindex all products in a store
@@ -472,30 +515,6 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
         return $indexedProduct;
     }
 
-
-    /**
-     * Indexes Nosto product
-     *
-     * @param Mage_Catalog_Model_Product $product
-     * @return void
-     * @throws Exception
-     */
-    public function removeProductFromIndex(
-        Mage_Catalog_Model_Product $product
-    ) 
-    {
-        try {
-            $indexedProducts = Mage::getModel('nosto_tagging/index')
-                ->getCollection()
-                ->addFieldToFilter('product_id', $product->getId());
-            /* @var Nosto_Tagging_Model_Index $indexedProduct */
-            foreach ($indexedProducts as $indexedProduct) {
-                $indexedProduct->delete();
-            }
-        } catch (\Exception $e) {
-            Nosto_Tagging_Helper_Log::exception($e);
-        }
-    }
     /**
      * Reindex all products in all stores where Nosto is installed
      */
