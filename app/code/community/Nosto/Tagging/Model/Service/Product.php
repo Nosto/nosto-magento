@@ -52,7 +52,6 @@ class Nosto_Tagging_Model_Service_Product
      *
      * @param Mage_Catalog_Model_Product[] $products
      * @return bool
-     * @throws Nosto_NostoException
      */
     protected function update(array $products)
     {
@@ -145,6 +144,8 @@ class Nosto_Tagging_Model_Service_Product
      *
      * @param Nosto_Tagging_Model_Resource_Product_Collection $products
      * @return true
+     *
+     * @throws Nosto_NostoException
      */
     public function updateBatch(Nosto_Tagging_Model_Resource_Product_Collection $products)
     {
@@ -157,6 +158,8 @@ class Nosto_Tagging_Model_Service_Product
      *
      * @param Mage_Catalog_Model_Product $product
      * @return true
+     *
+     * @throws Nosto_NostoException
      */
     public function updateProduct(Mage_Catalog_Model_Product $product)
     {

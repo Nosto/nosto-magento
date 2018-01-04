@@ -1,5 +1,10 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.3.5
+* Handle orders when Vaimo KCO module is enabled but not used for order
+* Fix issues with code style checks
+
+
 ### 3.3.4
 * Fix the list price for bundle product was aways same as final price
 
