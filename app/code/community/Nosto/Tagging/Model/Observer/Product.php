@@ -73,6 +73,7 @@ class Nosto_Tagging_Model_Observer_Product
      * @param Varien_Event_Observer $observer the event observer.
      *
      * @return Nosto_Tagging_Model_Observer_Product
+     * @codingStandardsIgnoreStart
      */
     public function afterCatalogPriceRule(Varien_Event_Observer $observer)
     {
@@ -80,13 +81,13 @@ class Nosto_Tagging_Model_Observer_Product
             /* @var Nosto_Tagging_Helper_Account $accountHelper */
             $accountHelper = Mage::helper('nosto_tagging/account');
             $nostoStores = $accountHelper->getAllStoreViewsWithNostoAccount();
-            if (count($nostoStores) == 0) {
+            if (empty($nostoStores)) {
                 return $this;
             }
             /* @var Nosto_Tagging_Helper_Price $priceHelper */
             $priceHelper = Mage::helper('nosto_tagging/price');
             $productIds = $priceHelper->getProductIdsWithActivePriceRules();
-            if (count($productIds) > 0) {
+            if (!empty($productIds)) {
                 /* @var Nosto_Tagging_Helper_Data $dataHelper */
                 $dataHelper = Mage::helper('nosto_tagging');
                 /* @var Nosto_Tagging_Model_Indexer_Product $indexer */
@@ -105,6 +106,7 @@ class Nosto_Tagging_Model_Observer_Product
 
         return $this;
     }
+    // @codingStandardsIgnoreEnd
 
     /**
      * Event handler for the "catalog_product_delete_after" event.

@@ -85,7 +85,7 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
      * @param Nosto_Tagging_Model_Meta_Product $nostoProduct
      * @param Mage_Core_Model_Store $store
      */
-    private function reindexIfNeeded(
+    protected function reindexIfNeeded(
         Nosto_Tagging_Model_Meta_Product $nostoProduct,
         Mage_Core_Model_Store $store
     ) 

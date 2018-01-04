@@ -241,7 +241,7 @@ class Nosto_Tagging_Model_Service_Product
      * @param Mage_Core_Model_Store $store
      * @return mixed
      */
-    private function getOutOfSyncBatch(
+    protected function getOutOfSyncBatch(
         Mage_Core_Model_Store $store
     ) 
     {
@@ -294,7 +294,7 @@ class Nosto_Tagging_Model_Service_Product
      *
      * @return int
      */
-    private function getApiWaitTimeout()
+    protected function getApiWaitTimeout()
     {
         return Nosto_Nosto::getEnvVariable('NOSTO_PRODUCT_API_WAIT_TIMEOUT', 120);
     }

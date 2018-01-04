@@ -129,7 +129,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
      * @param Mage_Catalog_Model_Product $product
      * @param int $storeId
      */
-    private function addToReindexQueue(
+    protected function addToReindexQueue(
         Mage_Catalog_Model_Product $product,
         $storeId
     ) 
@@ -149,7 +149,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
      * @param Mage_Core_Model_Store $store
      * @return bool
      */
-    private function isProcessed(
+    protected function isProcessed(
         Mage_Catalog_Model_Product $product,
         Mage_Core_Model_Store $store
     ) 
@@ -171,7 +171,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
      * @param Mage_Catalog_Model_Product $product
      * @param Mage_Core_Model_Store $store
      */
-    private function setProcessed(
+    protected function setProcessed(
         Mage_Catalog_Model_Product $product,
         Mage_Core_Model_Store $store
     ) 
@@ -189,7 +189,6 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
      * @param Mage_Index_Model_Event $event
      * @return bool
      * @throws Exception
-     * @suppress PhanTypeMismatchArgument
      */
     protected function _registerEvent(Mage_Index_Model_Event $event)
     {
@@ -199,15 +198,15 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
 
         if ($entity !== 'catalog_product'
             || !$object->getId()
-            || $object instanceof Mage_Catalog_Model_Product
 
         ) {
             return false;
         }
+        $product = Mage::getModel('catalog/product')->load($object->getId());
         if ($event->getType() === 'delete') {
-            $this->removeProductFromIndex($object);
+            $this->removeProductFromIndex($product);
         } else {
-            $this->addProductToIndexQueue($object);
+            $this->addProductToIndexQueue($product);
         }
 
         return true;
@@ -218,7 +217,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
      *
      * @param Mage_Catalog_Model_Product $catalogProduct
      */
-    private function addProductToIndexQueue(Mage_Catalog_Model_Product $catalogProduct)
+    protected function addProductToIndexQueue(Mage_Catalog_Model_Product $catalogProduct)
     {
         // Check if we're handling simple product with parents
         $products = Nosto_Tagging_Util_Product::toParentProducts($catalogProduct);
@@ -234,7 +233,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
      *
      * @throws Exception
      */
-    private function flushReindexingQueue()
+    protected function flushReindexingQueue()
     {
         foreach ($this->_reindexQueue as $storeId => $products) {
             $store = Mage::app()->getStore($storeId);
@@ -309,11 +308,13 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
      * @param Mage_Index_Model_Event $event
      *
      * @throws Exception
+     * @codingStandardsIgnoreStart
      */
     protected function _processEvent(Mage_Index_Model_Event $event)
     {
         $this->flushReindexingQueue();
     }
+    // @codingStandardsIgnoreEnd
 
     /**
      * Reindex all products in a store
@@ -389,7 +390,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
      * @return int amount of updated products
      * @throws Exception
      */
-    private function reindexMagentoProductInStore(
+    protected function reindexMagentoProductInStore(
         Mage_Catalog_Model_Product $product,
         Mage_Core_Model_Store $store
     ) 
@@ -580,7 +581,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
      * @param int $pageNumber
      * @return object
      */
-    private function getProductBatch(
+    protected function getProductBatch(
         Mage_Core_Model_Store $store,
         $pageNumber = 1
     ) 

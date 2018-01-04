@@ -90,6 +90,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
      * @param bool $inclTax if tax is to be included.
      * @return float
      * @suppress PhanUndeclaredMethod
+     * @codingStandardsIgnoreStart
      */
     protected function _getProductPrice(
         Mage_Catalog_Model_Product $product,
@@ -173,6 +174,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
 
         return $price;
     }
+    // @codingStandardsIgnoreEnd
 
     /**
      * @param Mage_Catalog_Model_Product $product
@@ -259,12 +261,12 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         /** @var Mage_Tax_Helper_Data $helper */
         $helper = Mage::helper('tax');
         if ($finalPrice) {
-            $date = time();
+            $timestamp = Mage::getSingleton('core/date')->gmtTimestamp();
             /* @var Mage_CatalogRule_Model_Resource_Rule $priceRule */
             $customerGroupId = $product->getCustomerGroupId() ? $product->getCustomerGroupId() : 0;
             $rulePrice = Mage::getResourceModel('catalogrule/rule')
                 ->getRulePrice(
-                    $date,
+                    $timestamp,
                     $product->getStore()->getWebsiteId(),
                     $customerGroupId,
                     $product->getId()
@@ -421,11 +423,12 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
     {
         /* @var Mage_CatalogRule_Model_Resource_Rule_Collection $rules */
         $rules = Mage::getModel('catalogrule/rule')->getCollection();
+        $date = Mage::getSingleton('core/date')->gmtDate();
         $rules
             ->addIsActiveFilter()
             ->addFieldToFilter(
                 'from_date', array(
-                array('lt' => date("Y-m-d")),
+                array('lt' => $date),
                 array('null' => true)
                 )
             );
