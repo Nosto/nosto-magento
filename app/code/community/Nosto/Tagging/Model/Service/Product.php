@@ -51,7 +51,7 @@ class Nosto_Tagging_Model_Service_Product
      * accounts
      *
      * @param Mage_Catalog_Model_Product[] $products
-     * @return boolean
+     * @return bool
      */
     protected function update(array $products)
     {
@@ -138,7 +138,8 @@ class Nosto_Tagging_Model_Service_Product
      * Updates a batch of products to Nosto
      *
      * @param Nosto_Tagging_Model_Resource_Product_Collection $products
-     * @return boolean
+     * @return bool
+     *
      */
     public function updateBatch(Nosto_Tagging_Model_Resource_Product_Collection $products)
     {
@@ -150,7 +151,8 @@ class Nosto_Tagging_Model_Service_Product
      * Updates single product to Nosto
      *
      * @param Mage_Catalog_Model_Product $product
-     * @return boolean
+     * @return bool
+     *
      */
     public function updateProduct(Mage_Catalog_Model_Product $product)
     {
