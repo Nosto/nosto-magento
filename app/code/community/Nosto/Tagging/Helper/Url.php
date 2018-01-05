@@ -413,7 +413,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
     public function removeQueryParamFromUrl($url, $param)
     {
         $zendUrl = Zend_Uri_Http::fromString($url);
-        $zendUrl->removeQueryParameters([$param]);
+        $zendUrl->removeQueryParameters(array($param));
 
         return $zendUrl->getUri();
     }
