@@ -1,5 +1,9 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.4.0
+* Introduce custom indexer for Nosto product data
+* Update Nosto product data after catalog price rules are saved and applied
+
 ### 3.3.5
 * Handle orders when Vaimo KCO module is enabled but not used for order
 * Fix issues with code style checks
