@@ -90,6 +90,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
      * @param bool $inclTax if tax is to be included.
      * @return float
      * @suppress PhanUndeclaredMethod
+     * @codingStandardsIgnoreStart
      */
     protected function _getProductPrice(
         Mage_Catalog_Model_Product $product,
@@ -219,14 +220,14 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         );
         $sumListPrice = 0;
         /** @var Mage_Bundle_Model_Option $option */
-        foreach ($options as $option){
+        foreach ($options as $option) {
             $selections  = $option->getSelections();
             $minSimpleProductPricePrice = null;
             $simpleProductListPrice = null;
             /**
              * @var Mage_Catalog_Model_Product $selection
              */
-            foreach ($selections as $selection){
+            foreach ($selections as $selection) {
                 if ($selection->isAvailable()) {
                     $simpleProductPrice = $this->_getProductPrice($selection, true, $inclTax);
                     if ($minSimpleProductPricePrice === null || $simpleProductPrice < $minSimpleProductPricePrice) {

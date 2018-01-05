@@ -25,7 +25,10 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-require_once __DIR__ . '/../../bootstrap.php'; // @codingStandardsIgnoreLine
+/* @var Nosto_Tagging_Helper_Bootstrap $nostoBootstrapHelper */
+$nostoBootstrapHelper = Mage::helper('nosto_tagging/bootstrap');
+$nostoBootstrapHelper->init();
+
 use Nosto_Tagging_Helper_Log as NostoLog;
 
 /**
@@ -58,7 +61,7 @@ class Nosto_Tagging_Model_Observer_Product
                 /* @var Nosto_Tagging_Model_Service_Product $service */
                 $service = Mage::getModel('nosto_tagging/service_product');
                 $service->updateProduct($product);
-            } catch (Nosto_NostoException$e) {
+            } catch (Nosto_NostoException $e) {
                 NostoLog::exception($e);
             }
         }

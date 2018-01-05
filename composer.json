@@ -35,6 +35,7 @@
         "magento-ecg/coding-standard": "2.*",
         "magento/marketplace-eqp": "1.*",
         "openmage/magento-mirror": "1.9",
-        "mridang/pearify": "0.2"
+        "mridang/pearify": "0.2",
+        "wimg/php-compatibility": "^8.0"
     }
 }
