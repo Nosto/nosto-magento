@@ -51,6 +51,7 @@ abstract class Nosto_Tagging_Model_Meta_Order_Item extends Nosto_Object_Cart_Lin
         parent::setName($this->buildItemName($item));
         parent::setPrice($nostoPriceHelper->getItemFinalPriceInclTax($item));
         parent::setPriceCurrencyCode($currencyCode);
+        parent::setSkuId($this->buildSkuId($item));
     }
 
     /**
@@ -91,4 +92,24 @@ abstract class Nosto_Tagging_Model_Meta_Order_Item extends Nosto_Object_Cart_Lin
         }
         return (string) $item->getProductId();
     }
+
+    /**
+     * Resolves the item id / variation id
+     *
+     * @param Mage_Sales_Model_Order_Item $item
+     *
+     * @return string|null
+     */
+    protected function buildSkuId(Mage_Sales_Model_Order_Item $item)
+    {
+        $skus = $item->getChildrenItems();
+        /* @var Mage_Sales_Model_Order_Item $sku */
+        if (isset($skus[0]) && $skus[0] instanceof Mage_Sales_Model_Order_Item) {
+
+            return $skus[0]->getProductId();
+        }
+
+        return null;
+    }
+
 }
