@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "377e8eddd4fc87e442fafda39c41dcd8",
-    "content-hash": "83d170e8baf14917353f67152a5fab51",
+    "hash": "a835bed80e33d756859944ab84fe5690",
+    "content-hash": "5ee4a975fbda2333c3eb1bfe797c565b",
     "packages": [
         {
             "name": "mridang/pearify",
@@ -55,16 +55,16 @@
         },
         {
             "name": "nosto/php-sdk",
-            "version": "3.1.5",
+            "version": "3.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Nosto/nosto-php-sdk.git",
-                "reference": "0e54b96c0241c62b5a827240ac214856816bc2e9"
+                "reference": "b6a2f3f6e789cd151f841a541041c42748380dd3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Nosto/nosto-php-sdk/zipball/0e54b96c0241c62b5a827240ac214856816bc2e9",
-                "reference": "0e54b96c0241c62b5a827240ac214856816bc2e9",
+                "url": "https://api.github.com/repos/Nosto/nosto-php-sdk/zipball/b6a2f3f6e789cd151f841a541041c42748380dd3",
+                "reference": "b6a2f3f6e789cd151f841a541041c42748380dd3",
                 "shasum": ""
             },
             "require": {
@@ -98,7 +98,7 @@
                 "BSD-3-Clause"
             ],
             "description": "PHP SDK for developing Nosto modules for e-commerce platforms",
-            "time": "2017-12-28 12:09:55"
+            "time": "2018-01-08 14:20:10"
         },
         {
             "name": "phpseclib/phpseclib",
