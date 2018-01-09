@@ -56,10 +56,14 @@ abstract class Nosto_Tagging_Model_Meta_Cart_Item extends Nosto_Object_Cart_Line
         $inclTax = $taxHelper->displayCartPriceInclTax($store);
 
         if ($inclTax) {
-            parent::setPrice($item->getPriceInclTax());
-        } else {
-            parent::setPrice((double) $item->getPrice());
+            $unitPrice = $item->getPriceInclTax();
+        } elseif($item->getConvertedPrice()) {
+            $unitPrice = $item->getConvertedPrice();
+        } else { // Fallback to whatever is the default price
+            $unitPrice = $item->getPrice();
         }
+
+        parent::setPrice($unitPrice);
     }
 
     /**
