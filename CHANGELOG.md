@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file. This projec
 ### 3.3.6
 * Fix currency conversion issue in cart tagging
 * Add SKU id in cart tagging and order tagging
+* Apply catalog price rules also for product API updates
+* Change the sorting order of Nosto settings in store admin
 
 ### 3.3.5
 * Handle orders when Vaimo KCO module is enabled but not used for order
