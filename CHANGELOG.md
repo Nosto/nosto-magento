@@ -1,6 +1,9 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
-### 3.4.0
+### 3.4.0-RC2
+* Remove redundant non-dev dependencies
+
+### 3.4.0-RC1
 * Introduce custom indexer for Nosto product data
 * Update Nosto product data after catalog price rules are saved and applied
 
