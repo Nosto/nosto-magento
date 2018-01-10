@@ -53,6 +53,7 @@ $nostoPriceHelper = Mage::helper('nosto_tagging/price');
     <span class="hcid"><?php echo $this->getVisitorChecksum(); ?></span>
     <?php foreach ($cart->getItems() as $item): ?>
         <div class="line_item">
+            <span class="sku_id"><?php echo $item->getSkuId(); ?></span>
             <span class="product_id"><?php echo $item->getProductId(); ?></span>
             <span class="quantity"><?php echo $item->getQuantity(); ?></span>
             <span class="name"><?php echo $helper->escapeHtml($item->getName()); ?></span>
