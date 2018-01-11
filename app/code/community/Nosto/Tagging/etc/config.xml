@@ -63,6 +63,11 @@
             <nosto_tagging>
                 <class>Nosto_Tagging_Block</class>
             </nosto_tagging>
+            <catalog>
+                <rewrite>
+                    <product_list_toolbar>Nosto_Tagging_Block_Product_List_Toolbar</product_list_toolbar>
+                </rewrite>
+            </catalog>
         </blocks>
         <helpers>
             <nosto_tagging>
@@ -82,6 +87,11 @@
                     </customer>
                 </entities>
             </nosto_tagging_resource>
+            <catalog>
+                <rewrite>
+                    <config>Nosto_Tagging_Model_Category_Config</config>
+                </rewrite>
+            </catalog>
         </models>
         <events>
             <catalog_product_save_commit_after>
