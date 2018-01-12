@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "612cdccf54bee432b021fdfe71ed6316",
+    "content-hash": "ce43add9c67882a7fcb012f72037434f",
     "packages": [
         {
             "name": "mridang/pearify",
@@ -58,12 +58,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Nosto/nosto-php-sdk.git",
-                "reference": "b32e440"
+                "reference": "573f52e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Nosto/nosto-php-sdk/zipball/b32e440",
-                "reference": "b32e440",
+                "url": "https://api.github.com/repos/Nosto/nosto-php-sdk/zipball/573f52e",
+                "reference": "573f52e",
                 "shasum": ""
             },
             "require": {
@@ -97,7 +97,7 @@
                 "BSD-3-Clause"
             ],
             "description": "PHP SDK for developing Nosto modules for e-commerce platforms",
-            "time": "2018-01-12T11:53:54+00:00"
+            "time": "2018-01-12T13:37:35+00:00"
         },
         {
             "name": "phpseclib/phpseclib",

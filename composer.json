@@ -23,7 +23,7 @@
     },
     "require": {
         "php": ">=5.4.0",
-        "nosto/php-sdk": "dev-feature/support-update-cart-operation#b32e440",
+        "nosto/php-sdk": "dev-feature/support-update-cart-operation#573f52e",
         "mridang/pearify": "0.2"
     },
     "require-dev": {
