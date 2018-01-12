@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "fb92eec9fc34189f3a6b961ea237e6f6",
+    "content-hash": "49284c07cba98d02b2812b57bc33b281",
     "packages": [
         {
             "name": "mridang/pearify",
@@ -54,16 +54,16 @@
         },
         {
             "name": "nosto/php-sdk",
-            "version": "dev-feature/support-update-cart-operation",
+            "version": "3.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Nosto/nosto-php-sdk.git",
-                "reference": "3acc399"
+                "reference": "04f024206961c5642f2bedcbe0b940c1ff2abad0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Nosto/nosto-php-sdk/zipball/3acc399",
-                "reference": "3acc399",
+                "url": "https://api.github.com/repos/Nosto/nosto-php-sdk/zipball/04f024206961c5642f2bedcbe0b940c1ff2abad0",
+                "reference": "04f024206961c5642f2bedcbe0b940c1ff2abad0",
                 "shasum": ""
             },
             "require": {
@@ -97,7 +97,7 @@
                 "BSD-3-Clause"
             ],
             "description": "PHP SDK for developing Nosto modules for e-commerce platforms",
-            "time": "2018-01-12T14:22:39+00:00"
+            "time": "2018-01-12T17:45:12+00:00"
         },
         {
             "name": "phpseclib/phpseclib",
@@ -1936,9 +1936,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "nosto/php-sdk": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
