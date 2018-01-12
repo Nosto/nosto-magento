@@ -32,7 +32,7 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Service_Category
+class Nosto_Tagging_Model_Service_Recommendation_Category
 {
     /**
      * Returns an of product ids sorted by relevance
@@ -41,6 +41,7 @@ class Nosto_Tagging_Model_Service_Category
      * @param $nostoCustomerId
      * @param $category
      * @param null $limit
+     *
      * @return array
      */
     public function getSortedProductIds(
@@ -53,7 +54,21 @@ class Nosto_Tagging_Model_Service_Category
         if (!$limit) {
             $limit = 20;
         }
-        // ToDo - Make the API call to fetch the product ids
-        return array(402, 404, 403);
+        $recoOperation = new Nosto_Operation_Recommendation_Category(
+            $nostoAccount,
+            $category,
+            $nostoCustomerId
+        );
+
+        $recoOperation->setConnectTimeout(0.2);
+        $recoOperation->setResponseTimeout(0.2);
+        $productIds = array();
+        try {
+            $productIds = $recoOperation->get()->getJsonResult();
+        } catch (\Exception $e) {
+            Nosto_Tagging_Helper_Log::exception($e);
+        }
+
+        return $productIds;
     }
 }
