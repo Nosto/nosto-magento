@@ -101,6 +101,11 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_USE_ALTERNATE_IMAGES = 'nosto_tagging/general/use_alternate_images';
 
     /**
+     * Path to store config for send add to cart event to nosto
+     */
+    const XML_PATH_SEND_ADD_TO_CART_EVENT = 'nosto_tagging/general/send_add_to_cart_event';
+
+    /**
      * Path to store config for using inventory level
      */
     const XML_PATH_USE_INVENTORY_LEVEL = 'nosto_tagging/general/use_inventory_level';
@@ -512,6 +517,17 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     public function getUseLowStock($store = null)
     {
         return (bool)Mage::getStoreConfig(self::XML_PATH_USE_LOW_STOCK, $store);
+    }
+
+    /**
+     * Returns is the sending add to cart event to nosto enabled
+     *
+     * @param Mage_Core_Model_Store $store
+     * @return bool
+     */
+    public function getSendAddToCartEvent($store)
+    {
+        return (bool)Mage::getStoreConfig(self::XML_PATH_SEND_ADD_TO_CART_EVENT, $store);
     }
 
     /**
