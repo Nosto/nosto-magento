@@ -53,48 +53,51 @@ class Nosto_Tagging_Model_Observer_Cart
      */
     public function cartItemAdded(Varien_Event_Observer $observer)
     {
-        /** @var Nosto_Tagging_Helper_Data $dataHelper */
-        $dataHelper = Mage::helper('nosto_tagging');
-        if (!$dataHelper->getSendAddToCartEvent(Mage::app()->getStore())) {
-            return $this;
+        try {
+            /** @var Nosto_Tagging_Helper_Data $dataHelper */
+            $dataHelper = Mage::helper('nosto_tagging');
+            if (!$dataHelper->getSendAddToCartEvent(Mage::app()->getStore())) {
+                return $this;
+            }
+
+            $quoteItem = $observer->getQuoteItem();
+
+            if (!$quoteItem instanceof Mage_Sales_Model_Quote_Item) {
+                NostoLog::info('Cannot find quote item from the event.');
+
+                return $this;
+            }
+
+            $store = Mage::app()->getStore();
+            $currencyCode = $store->getCurrentCurrencyCode();
+
+            $cartUpdate = new Nosto_Object_Event_Cart_Update();
+            $addedItem = Nosto_Tagging_Model_Meta_Cart_Builder::buildItem($quoteItem, $currencyCode);
+            $cartUpdate->setAddedItems(array($addedItem));
+
+            $quote = $quoteItem->getQuote();
+            if ($quote instanceof Mage_Sales_Model_Quote) {
+                /** @var Nosto_Tagging_Model_Meta_Cart $nostoCart */
+                $nostoCart = Mage::getModel('nosto_tagging/meta_cart');
+                $nostoCart->loadData($quote);
+                $cartUpdate->setCart($nostoCart);
+            } else {
+                NostoLog::info('Cannot find quote from the event.');
+            }
+
+            /* @var $helper Nosto_Tagging_Helper_Data */
+            $helper = Mage::helper('nosto_tagging');
+            $nostoCustomerId = $helper->getCookieId();
+
+            /** @var Nosto_Tagging_Helper_Account $helper */
+            $helper = Mage::helper('nosto_tagging/account');
+            $account = $helper->find($store);
+            $service = new Nosto_Operation_CartOperation($account);
+
+            $service->updateCart($cartUpdate, $nostoCustomerId, $account->getName());
+        } catch (\Exception $e) {
+            NostoLog::exception($e);
         }
-
-        $quoteItem = $observer->getQuoteItem();
-
-        if (!$quoteItem instanceof Mage_Sales_Model_Quote_Item) {
-            NostoLog::info('Can not find quote item out of the event.');
-
-            return $this;
-        }
-
-        $store = Mage::app()->getStore();
-        $currencyCode = $store->getCurrentCurrencyCode();
-
-        $addedItem = Nosto_Tagging_Model_Meta_Cart_Builder::buildItem($quoteItem, $currencyCode);
-
-        $nostoCart = null;
-        $quote = $quoteItem->getQuote();
-        if ($quote instanceof Mage_Sales_Model_Quote) {
-            /** @var Nosto_Tagging_Model_Meta_Cart $nostoCart */
-            $nostoCart = Mage::getModel('nosto_tagging/meta_cart');
-            $nostoCart->loadData($quote);
-        } else {
-            NostoLog::info('Can not find quote out of the event.');
-        }
-
-        /* @var $helper Nosto_Tagging_Helper_Data */
-        $helper = Mage::helper('nosto_tagging');
-        $nostoCustomerId = $helper->getCookieId();
-
-        /** @var Nosto_Tagging_Helper_Account $helper */
-        $helper = Mage::helper('nosto_tagging/account');
-        $account = $helper->find($store);
-        $service = new Nosto_Operation_CartOperation($account);
-        $cartUpdate = new Nosto_Object_Event_Cart_Update();
-
-        $cartUpdate->setCart($nostoCart);
-        $cartUpdate->setAddedItems(array($addedItem));
-        $service->updateCart($cartUpdate, $nostoCustomerId, $account->getName());
 
         return $this;
     }
