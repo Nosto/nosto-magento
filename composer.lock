@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "3e61941d100df1a0c498495dbc0f9fa6",
+    "content-hash": "612cdccf54bee432b021fdfe71ed6316",
     "packages": [
         {
             "name": "mridang/pearify",
@@ -550,43 +550,32 @@
         },
         {
             "name": "magento/marketplace-eqp",
-            "version": "1.0.5",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/magento/marketplace-eqp.git",
-                "reference": "c82070eca1075569578206430a6ef7975f7eeec1"
+                "reference": "bf22e38539cc4752696b8b65131e132e590e0faf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/magento/marketplace-eqp/zipball/c82070eca1075569578206430a6ef7975f7eeec1",
-                "reference": "c82070eca1075569578206430a6ef7975f7eeec1",
+                "url": "https://api.github.com/repos/magento/marketplace-eqp/zipball/bf22e38539cc4752696b8b65131e132e590e0faf",
+                "reference": "bf22e38539cc4752696b8b65131e132e590e0faf",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5.0",
-                "squizlabs/php_codesniffer": "2.6.2"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "4.1.0"
+                "php": ">=5.6.0",
+                "squizlabs/php_codesniffer": ">= 2.3.1"
             },
             "type": "library",
-            "scripts": {
-                "post-install-cmd": [
-                    "\"vendor/bin/phpcs\" --config-set installed_paths ../../.."
-                ],
-                "post-update-cmd": [
-                    "\"vendor/bin/phpcs\" --config-set installed_paths ../../.."
-                ]
-            },
             "license": [
                 "MIT"
             ],
             "description": "A set of PHP_CodeSniffer rules and sniffs.",
             "support": {
-                "source": "https://github.com/magento/marketplace-eqp/tree/1.0.5",
+                "source": "https://github.com/magento/marketplace-eqp/tree/1.0.3",
                 "issues": "https://github.com/magento/marketplace-eqp/issues"
             },
-            "time": "2017-04-11T08:57:43+00:00"
+            "time": "2016-09-29T15:14:39+00:00"
         },
         {
             "name": "mridang/magazine",
@@ -1437,16 +1426,16 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "2.6.2",
+            "version": "2.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "4edb770cb853def6e60c93abb088ad5ac2010c83"
+                "reference": "fb72ed32f8418db5e7770be1653e62e0d6f5dd3d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/4edb770cb853def6e60c93abb088ad5ac2010c83",
-                "reference": "4edb770cb853def6e60c93abb088ad5ac2010c83",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/fb72ed32f8418db5e7770be1653e62e0d6f5dd3d",
+                "reference": "fb72ed32f8418db5e7770be1653e62e0d6f5dd3d",
                 "shasum": ""
             },
             "require": {
@@ -1511,7 +1500,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2016-07-13T23:29:13+00:00"
+            "time": "2016-05-30T22:24:32+00:00"
         },
         {
             "name": "symfony/config",
@@ -1891,6 +1880,58 @@
                 "validate"
             ],
             "time": "2016-11-23T20:04:58+00:00"
+        },
+        {
+            "name": "wimg/php-compatibility",
+            "version": "8.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wimg/PHPCompatibility.git",
+                "reference": "4ac01e4fe8faaa4f8d3b3cd06ea92e5418ce472e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wimg/PHPCompatibility/zipball/4ac01e4fe8faaa4f8d3b3cd06ea92e5418ce472e",
+                "reference": "4ac01e4fe8faaa4f8d3b3cd06ea92e5418ce472e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3",
+                "squizlabs/php_codesniffer": "^2.2 || ^3.0.2"
+            },
+            "conflict": {
+                "squizlabs/php_codesniffer": "2.6.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0"
+            },
+            "suggest": {
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.4.3"
+            },
+            "type": "phpcodesniffer-standard",
+            "autoload": {
+                "psr-4": {
+                    "PHPCompatibility\\": "PHPCompatibility/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Wim Godden",
+                    "role": "lead"
+                }
+            ],
+            "description": "A set of sniffs for PHP_CodeSniffer that checks for PHP version compatibility.",
+            "homepage": "http://techblog.wimgodden.be/tag/codesniffer/",
+            "keywords": [
+                "compatibility",
+                "phpcs",
+                "standards"
+            ],
+            "time": "2017-12-27T21:58:38+00:00"
         }
     ],
     "aliases": [],

@@ -35,7 +35,9 @@
         "sebastian/phpcpd": "*",
         "magento-ecg/coding-standard": "2.*",
         "magento/marketplace-eqp": "1.*",
-        "openmage/magento-mirror": "1.9"
+        "openmage/magento-mirror": "1.9",
+        "wimg/php-compatibility": "^8.0",
+        "mridang/pearify": "0.2"
     },
     "scripts": {
         "post-install-cmd": "if ! type \"composer\" > /dev/null; then echo \"composer not available in path - you must update the lib files manually\"; else composer dump-autoload --optimize; ./vendor/bin/pearify process .;fi",

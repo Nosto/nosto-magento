@@ -25,7 +25,9 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-require_once __DIR__ . '/../bootstrap.php'; // @codingStandardsIgnoreLine
+/* @var Nosto_Tagging_Helper_Bootstrap $nostoBootstrapHelper */
+$nostoBootstrapHelper = Mage::helper('nosto_tagging/bootstrap');
+$nostoBootstrapHelper->init();
 
 /**
  * History data export controller.
@@ -173,7 +175,7 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
         $account = $helper->find();
         $this->getResponse()->setHeader('Content-type', 'application/octet-stream');
         if ($account !== null) {
-            $cipherText = Nosto_Helper_ExportHelper::export($account, $collection);
+            $cipherText = (new Nosto_Helper_ExportHelper())->export($account, $collection);
             $this->getResponse()->setBody($cipherText);
         } else {
             $this->getResponse()->setBody('');
