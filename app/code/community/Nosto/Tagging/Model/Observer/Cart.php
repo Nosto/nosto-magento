@@ -54,9 +54,24 @@ class Nosto_Tagging_Model_Observer_Cart
     public function cartItemAdded(Varien_Event_Observer $observer)
     {
         try {
+            /** @var Nosto_Tagging_Helper_Data $helper */
+            $helper = Mage::helper('nosto_tagging');
+            if (!$helper->isModuleEnabled()) {
+                return $this;
+            }
+
             /** @var Nosto_Tagging_Helper_Data $dataHelper */
             $dataHelper = Mage::helper('nosto_tagging');
             $store = Mage::app()->getStore();
+
+            /** @var Nosto_Tagging_Helper_Account $helper */
+            $helper = Mage::helper('nosto_tagging/account');
+            $account = $helper->find($store);
+
+            if (!$account || !$account->isConnectedToNosto()) {
+                return $this;
+            }
+
             if (!$dataHelper->getSendAddToCartEvent($store)) {
                 return $this;
             }
@@ -85,16 +100,9 @@ class Nosto_Tagging_Model_Observer_Cart
                 NostoLog::info('Cannot find quote from the event.');
             }
 
-            /* @var $helper Nosto_Tagging_Helper_Data */
-            $helper = Mage::helper('nosto_tagging');
-            $nostoCustomerId = $helper->getCookieId();
-
-            /** @var Nosto_Tagging_Helper_Account $helper */
-            $helper = Mage::helper('nosto_tagging/account');
-            $account = $helper->find($store);
-            $service = new Nosto_Operation_CartOperation($account);
-
-            $service->updateCart($cartUpdate, $nostoCustomerId, $account->getName());
+            /* @var Nosto_Tagging_Model_Service_Cart $service */
+            $service = Mage::getModel('nosto_tagging/service_cart');
+            $service->update($cartUpdate, $account);
         } catch (\Exception $e) {
             NostoLog::exception($e);
         }
