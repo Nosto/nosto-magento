@@ -33,6 +33,7 @@
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
 class Nosto_Tagging_Model_Service_Recommendation_Category
+    extends Nosto_Tagging_Model_Service_Recommendation_Base
 {
     /**
      * Returns an of product ids sorted by relevance
@@ -57,11 +58,12 @@ class Nosto_Tagging_Model_Service_Recommendation_Category
         $recoOperation = new Nosto_Operation_Recommendation_Category(
             $nostoAccount,
             $category,
-            $nostoCustomerId
+            $nostoCustomerId,
+            $limit
         );
 
-        $recoOperation->setConnectTimeout(0.2);
-        $recoOperation->setResponseTimeout(0.2);
+        $recoOperation->setConnectTimeout($this->getConnectTimeout());
+        $recoOperation->setResponseTimeout($this->getResponseTimeout());
         $productIds = array();
         try {
             $productIds = $recoOperation->get()->getJsonResult();

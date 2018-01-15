@@ -49,8 +49,8 @@ class Nosto_Tagging_Block_Product_List_Toolbar
         $accountHelper = Mage::helper('nosto_tagging/account');
         $store = Mage::app()->getStore();
         if ($this->getCurrentOrder() !== Nosto_Tagging_Model_Category_Config::NOSTO_RELEVANCE_KEY
-            || $dataHelper->getUsePersonalizedCategorySorting($store)
-            || $accountHelper->find($store) !== null
+            || !$dataHelper->getUsePersonalizedCategorySorting($store)
+            || !$accountHelper->find($store)
         ) {
             return parent::setCollection($collection);
         } else {
