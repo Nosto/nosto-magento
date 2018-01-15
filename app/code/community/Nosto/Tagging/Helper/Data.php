@@ -111,6 +111,11 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_USE_LOW_STOCK = 'nosto_tagging/general/use_low_stock';
 
     /**
+     * Path to setting if personalized category sorting is enabled
+     */
+    const XML_PATH_USE_PERSONALIZED_CATEGORY_SORTING = 'nosto_tagging/general/personalized_category_sorting';
+
+    /**
      * @var boolean the path for setting for product urls
      */
     const XML_PATH_PRETTY_URL = 'nosto_tagging/pretty_url/in_use';
@@ -512,6 +517,17 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     public function getUseLowStock($store = null)
     {
         return (bool)Mage::getStoreConfig(self::XML_PATH_USE_LOW_STOCK, $store);
+    }
+
+    /**
+     * Returns on/off setting for using personalized category sorting
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     * @return boolean
+     */
+    public function getUsePersonalizedCategorySorting($store = null)
+    {
+        return (bool)Mage::getStoreConfig(self::XML_PATH_USE_PERSONALIZED_CATEGORY_SORTING, $store);
     }
 
     /**

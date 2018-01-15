@@ -43,7 +43,15 @@ class Nosto_Tagging_Block_Product_List_Toolbar
      */
     public function setCollection($collection)
     {
-        if ($this->getCurrentOrder() !== Nosto_Tagging_Model_Category_Config::NOSTO_RELEVANCE_KEY) {
+        /* @var Nosto_Tagging_Helper_Data $dataHelper */
+        $dataHelper = Mage::helper('nosto_tagging');
+        /* @var Nosto_Tagging_Helper_Account $accountHelper */
+        $accountHelper = Mage::helper('nosto_tagging/account');
+        $store = Mage::app()->getStore();
+        if ($this->getCurrentOrder() !== Nosto_Tagging_Model_Category_Config::NOSTO_RELEVANCE_KEY
+            || $dataHelper->getUsePersonalizedCategorySorting($store)
+            || $accountHelper->find($store) !== null
+        ) {
             return parent::setCollection($collection);
         } else {
             $this->_collection = $collection;

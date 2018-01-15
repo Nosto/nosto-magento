@@ -34,7 +34,7 @@
  */
 class Nosto_Tagging_Model_Category_Config extends Mage_Catalog_Model_Config
 {
-    const NOSTO_RELEVANCE_KEY = 'relevance';
+    const NOSTO_RELEVANCE_KEY = 'nosto-personalized';
 
     /**
      * Add relevance attribute as a sorting option
@@ -44,7 +44,16 @@ class Nosto_Tagging_Model_Category_Config extends Mage_Catalog_Model_Config
     public function getAttributeUsedForSortByArray()
     {
         $options = parent::getAttributeUsedForSortByArray();
-        $options[self::NOSTO_RELEVANCE_KEY] = Mage::helper('catalog')->__('Relevance');
+        /* @var Nosto_Tagging_Helper_Data $dataHelper */
+        $dataHelper = Mage::helper('nosto_tagging');
+        /* @var Nosto_Tagging_Helper_Account $accountHelper */
+        $accountHelper = Mage::helper('nosto_tagging/account');
+        $store = Mage::app()->getStore();
+        if ($dataHelper->getUsePersonalizedCategorySorting($store)
+            && $accountHelper->find($store) !== null
+        ) {
+            $options[self::NOSTO_RELEVANCE_KEY] = Mage::helper('catalog')->__('Personalized for you');
+        }
 
         return $options;
     }
