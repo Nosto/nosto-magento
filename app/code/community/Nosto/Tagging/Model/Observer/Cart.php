@@ -56,7 +56,8 @@ class Nosto_Tagging_Model_Observer_Cart
         try {
             /** @var Nosto_Tagging_Helper_Data $dataHelper */
             $dataHelper = Mage::helper('nosto_tagging');
-            if (!$dataHelper->getSendAddToCartEvent(Mage::app()->getStore())) {
+            $store = Mage::app()->getStore();
+            if (!$dataHelper->getSendAddToCartEvent($store)) {
                 return $this;
             }
 
@@ -68,7 +69,6 @@ class Nosto_Tagging_Model_Observer_Cart
                 return $this;
             }
 
-            $store = Mage::app()->getStore();
             $currencyCode = $store->getCurrentCurrencyCode();
 
             $cartUpdate = new Nosto_Object_Event_Cart_Update();
