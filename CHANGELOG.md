@@ -1,5 +1,8 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.3.7
+* Add validation for Nosto product before product tagging, sending product over the API and before exporting
+
 ### 3.3.6
 * Fix currency conversion issue in cart tagging
 * Add SKU id in cart tagging and order tagging

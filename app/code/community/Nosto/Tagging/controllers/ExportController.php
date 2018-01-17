@@ -154,7 +154,9 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
                 $meta = Mage::getModel('nosto_tagging/meta_product');
                 try {
                     $meta->loadData($product);
-                    $collection->append($meta);
+                    if ($meta->isValid()) {
+                        $collection->append($meta);
+                    }
                 } catch (Nosto_NostoException $e) {
                     Nosto_Tagging_Helper_Log::exception($e);
                 }
