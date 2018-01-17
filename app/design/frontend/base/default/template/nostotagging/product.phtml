@@ -48,7 +48,7 @@ $product = $this->getMetaProduct();
 $helper = Mage::helper('nosto_tagging');
 $priceHelper = Mage::helper('nosto_tagging/price');
 ?>
-
+<?php if ($product instanceof Nosto_Types_Product_ProductInterface && $product->isValid()): ?>
     <!-- Nosto Product Tagging -->
     <div class="nosto_product<?php echo ($this->isOveridden() ? ' overridden' : ''); ?>" style="display:none">
         <span class="url"><?php echo $product->getUrl(); ?></span>
@@ -138,6 +138,7 @@ $priceHelper = Mage::helper('nosto_tagging/price');
             <?php endforeach; ?>
         <?php endif; ?>
     </div>
-<?php if ($this->getCurrentCategory()): ?>
-    <div class="nosto_category" style="display:none"><?php echo $helper->escapeHtml($this->getCurrentCategory()); ?></div>
+    <?php if ($this->getCurrentCategory()): ?>
+        <div class="nosto_category" style="display:none"><?php echo $helper->escapeHtml($this->getCurrentCategory()); ?></div>
+    <?php endif; ?>
 <?php endif; ?>

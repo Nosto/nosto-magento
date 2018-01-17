@@ -124,7 +124,9 @@ class Nosto_Tagging_Model_Service_Product
                         // the admin store scope, then we should reload the product as the store
                         // code of the product refers to an pseudo store scope called "admin"
                         // which leads to issues when flat tables are enabled.
-                        if ($nostoProduct->reloadData($mageProduct, $store)) {
+                        if ($nostoProduct->reloadData($mageProduct, $store)
+                            && $nostoProduct->isValid()
+                        ) {
                             $operation->addProduct($nostoProduct);
                         }
                     }
