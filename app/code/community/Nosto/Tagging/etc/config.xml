@@ -230,7 +230,7 @@
         <nosto_tagging>
             <general>
                 <use_product_api>1</use_product_api>
-                <use_product_indexer>1</use_product_indexer>
+                <use_product_indexer>0</use_product_indexer>
                 <use_skus>0</use_skus>
                 <use_alternate_images>1</use_alternate_images>
                 <use_inventory_level>0</use_inventory_level>
