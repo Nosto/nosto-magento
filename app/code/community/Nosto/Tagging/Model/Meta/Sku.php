@@ -82,13 +82,18 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
     /**
      * Tag the custom attributes
      *
-     * @param Mage_Catalog_Model_Product $sku
+     * @param Mage_Catalog_Model_Product $product
      * @param Mage_Core_Model_Store $store
      */
-    protected function loadCustomFieldsFromAttributeSet(Mage_Catalog_Model_Product $sku, Mage_Core_Model_Store $store)
+    protected function loadCustomFieldsFromAttributeSet(
+        Mage_Catalog_Model_Product $product,
+        Mage_Core_Model_Store $store
+    )
     {
+        /** @var Nosto_Tagging_Helper_Data $dataHelper */
+        $dataHelper = Mage::helper('nosto_tagging');
         if ($dataHelper->getUseCustomFields($store)) {
-            $customFields = $this->loadCustomFields($product, $store);
+            $customFields = $this->loadCustomFields($product);
             foreach ($customFields as $key => $value) {
                 $this->addCustomField($key, $value);
             }
@@ -99,7 +104,8 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
         Mage_Catalog_Model_Product $sku,
         Mage_Catalog_Model_Product $parent,
         Mage_Core_Model_Store $store
-    ) {
+    )
+    {
         /** @var Nosto_Tagging_Helper_Data $dataHelper */
         $dataHelper = Mage::helper('nosto_tagging');
         if (!$dataHelper->getUseCustomFields($store)) {

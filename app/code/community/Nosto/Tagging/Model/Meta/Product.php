@@ -136,7 +136,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
             $this->amendVariations($product, $store);
         }
         if ($dataHelper->getUseCustomFields($store)) {
-            $this->setCustomFields($this->loadCustomFields($product, $store));
+            $this->setCustomFields($this->loadCustomFields($product));
         }
 
         Mage::dispatchEvent(

@@ -192,10 +192,9 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
      * Get the custom attributes
      *
      * @param Mage_Catalog_Model_Product $product
-     * @param Mage_Core_Model_Store $store
      * @return array|null custom fields
      */
-    protected function loadCustomFields(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
+    protected function loadCustomFields(Mage_Catalog_Model_Product $product)
     {
         $customFields = array();
 
