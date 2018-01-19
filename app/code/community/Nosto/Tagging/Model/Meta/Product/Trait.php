@@ -187,4 +187,35 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
 
         return trim($attributeValue);
     }
+
+    /**
+     * Get the custom attributes
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @param Mage_Core_Model_Store $store
+     * @return array|null custom fields
+     */
+    protected function loadCustomFields(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
+    {
+        $customFields = array();
+
+        $attributes = $product->getTypeInstance(true)->getSetAttributes($product);
+        /** @var Mage_Catalog_Model_Resource_Eav_Attribute $attribute */
+        foreach ($attributes as $attribute) {
+            try {
+                //tag user defined attributes only
+                if ($attribute->getData('is_user_defined') == 1) {
+                    $attributeCode = $attribute->getAttributeCode();
+                    $attributeValue = $this->getAttributeValue($product, $attributeCode);
+                    if (is_scalar($attributeValue)) {
+                        $customFields[$attributeCode] = $attributeValue;
+                    }
+                }
+            } catch (Exception $e) {
+                Nosto_Tagging_Helper_Log::exception($e);
+            }
+        }
+
+        return $customFields;
+    }
 }
