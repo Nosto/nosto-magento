@@ -134,11 +134,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
 
         if ($dataHelper->isMultiCurrencyMethodExchangeRate($store)) {
             $this->setVariationId($store->getBaseCurrencyCode());
-<<<<<<< HEAD
-        } else if ($dataHelper->isVariationEnabled($store)) {
-=======
         } elseif ($dataHelper->isVariationEnabled($store)) {
->>>>>>> develop
             $this->amendVariations($product, $store);
         }
 
@@ -336,12 +332,8 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
     protected function amendAlternativeImages(
         Mage_Catalog_Model_Product $product,
         Mage_Core_Model_Store $store
-<<<<<<< HEAD
-    ) {
-=======
     )
     {
->>>>>>> develop
         /* @var Mage_Catalog_Model_Product_Attribute_Media_Api $mediaApi */
         $mediaApi = Mage::getModel('catalog/product_attribute_media_api');
         $mediaItems = $mediaApi->items($product->getId(), $store);
@@ -563,19 +555,11 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         if ($attribute instanceof Mage_Catalog_Model_Resource_Eav_Attribute) {
             /** @noinspection PhpParamsInspection */
             $attributeValue = $product->getAttributeText($attributeName);
-<<<<<<< HEAD
+
             if (!empty($attributeValue)) {
                 return $attributeValue;
             } elseif (is_scalar($attributeData)) {
                 return trim($attributeData);
-=======
-            if (empty($attributeValue)) {
-                $attributeValue = $product->getData($attributeName);
-            }
-
-            if (is_scalar($attributeValue)) {
-                return trim($attributeValue);
->>>>>>> develop
             } elseif (is_array($attributeValue)) {
                 return implode(',', $attributeValue);
             }
