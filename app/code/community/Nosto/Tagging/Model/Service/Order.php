@@ -105,9 +105,19 @@ class Nosto_Tagging_Model_Service_Order
                     $products instanceof Nosto_Tagging_Model_Resource_Product_Collection
                     && !empty($products)
                 ) {
-                    /* @var Nosto_Tagging_Model_Service_Product $productService */
-                    $productService = Mage::getModel('nosto_tagging/service_product');
-                    $productService->updateBatch($products);
+                    /* @var Nosto_Tagging_Helper_Data $dataHelper */
+                    $dataHelper = Mage::helper('nosto_tagging');
+                    if (!$dataHelper->getAllStoresUseProductIndexer()) {
+                        /* @var Nosto_Tagging_Model_Service_Product $productService */
+                        $productService = Mage::getModel(
+                            'nosto_tagging/service_product'
+                        );
+                        $productService->updateBatch($products);
+                    }
+                    /* @var Nosto_Tagging_Model_Indexer_Product $indexer */
+                    $indexer = Mage::getModel('nosto_tagging/indexer_product');
+                    $indexer->reindexAndUpdateMany($products);
+
                 }
             }
         }

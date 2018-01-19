@@ -82,6 +82,38 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
     }
 
     /**
+     * Reindex product into Nosto product index if it doesn't exist already
+     *
+     * @param Nosto_Tagging_Model_Meta_Product $nostoProduct
+     * @param Mage_Core_Model_Store $store
+     */
+    protected function reindexIfNeeded(
+        Nosto_Tagging_Model_Meta_Product $nostoProduct,
+        Mage_Core_Model_Store $store
+    ) 
+    {
+        /* @var Nosto_Tagging_Model_Indexer_Product $indexer */
+        $indexer = Mage::getModel('nosto_tagging/indexer_product');
+        try {
+            /* @var Nosto_Tagging_Model_Meta_Product $nostoProduct */
+            $indexedProduct = Mage::getModel('nosto_tagging/index')
+                ->getCollection()
+                ->addFieldToFilter('product_id', $nostoProduct->getProductId())
+                ->addFieldToFilter('store_id', $store->getId())
+                ->setPageSize(1)
+                ->setCurPage(1)
+                ->getFirstItem(); // @codingStandardsIgnoreLine
+            if ($indexedProduct instanceof Nosto_Tagging_Model_Index === false
+                || !$indexedProduct->getId()
+            ) {
+                $indexer->reindexProductInStore($nostoProduct, $store, true);
+            }
+        } catch (\Exception $reindexException) {
+            Nosto_Tagging_Helper_Log::exception($reindexException);
+        }
+    }
+
+    /**
      * Exports completed orders from the current store.
      * Result can be limited by the `limit` and `offset` GET parameters.
      */
@@ -122,6 +154,12 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
     public function productAction()
     {
         if (Mage::helper('nosto_tagging/module')->isModuleEnabled()) {
+            /* @var Mage_Core_Model_Store $store */
+            $store = Mage::app()->getStore();
+            $storeId = $store->getId();
+            /* @var Nosto_Tagging_Helper_Data $dataHelper */
+            $dataHelper = Mage::helper('nosto_tagging');
+            $reindexProducts = $dataHelper->getUseProductIndexer($store);
             $pageSize = (int)$this->getRequest()->getParam(self::LIMIT, 100);
             $currentOffset = (int)$this->getRequest()->getParam(self::OFFSET, 0);
             $currentPage = ($currentOffset / $pageSize) + 1;
@@ -130,7 +168,7 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
             /** @var Nosto_Tagging_Model_Resource_Product_Collection $products */
             $products = Mage::getModel('nosto_tagging/product')->getCollection();
             $this->applyIdFilters($products);
-            $products->addStoreFilter(Mage::app()->getStore()->getId())
+            $products->addStoreFilter($storeId)
                 ->addAttributeToSelect('*')
                 ->addAttributeToFilter(
                     'status', array(
@@ -150,11 +188,17 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
             $collection = new Nosto_Object_Product_ProductCollection();
             /** @var Mage_Catalog_Model_Product $product */
             foreach ($products as $product) {
-                /** @var Nosto_Tagging_Model_Meta_Product $meta */
-                $meta = Mage::getModel('nosto_tagging/meta_product');
                 try {
-                    $meta->loadData($product);
+                    $meta = Nosto_Tagging_Model_Meta_Product_Builder::build(
+                        $product,
+                        Mage::app()->getStore(),
+                        false
+                    );
                     if ($meta->isValid()) {
+                        // reindex the product as well if index is being used
+                        if ($reindexProducts) {
+                            $this->reindexIfNeeded($meta, $store);
+                        }
                         $collection->append($meta);
                     }
                 } catch (Nosto_NostoException $e) {

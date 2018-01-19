@@ -71,7 +71,9 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
         $this->setPrice($this->buildProductPrice($sku, $store));
         $this->setListPrice($this->buildProductListPrice($sku, $store));
         $this->setAvailability($this->buildAvailability($sku));
-        $this->setUrl($this->buildUrl($sku, $store));
+        if ((int)$sku->getVisibility() != Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE) {
+            $this->setUrl($this->buildUrl($sku, $store));
+        }
         $this->amendCustomizableAttributes($sku, $store);
         /** @var Mage_Catalog_Model_Product_Type_Configurable $parentType */
         $parentType = $parent->getTypeInstance();

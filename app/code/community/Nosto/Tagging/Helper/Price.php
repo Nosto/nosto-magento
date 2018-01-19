@@ -174,6 +174,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
 
         return $price;
     }
+    // @codingStandardsIgnoreEnd
 
     /**
      * @param Mage_Catalog_Model_Product $product
@@ -265,11 +266,12 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         /** @var Mage_Tax_Helper_Data $helper */
         $helper = Mage::helper('tax');
         if ($finalPrice) {
-            $date = time();
+            $timestamp = Mage::getSingleton('core/date')->gmtTimestamp();
+            /* @var Mage_CatalogRule_Model_Resource_Rule $priceRule */
             $customerGroupId = $product->getCustomerGroupId() ? $product->getCustomerGroupId() : 0;
             $rulePrice = Mage::getResourceModel('catalogrule/rule')
                 ->getRulePrice(
-                    $date,
+                    $timestamp,
                     $product->getStore()->getWebsiteId(),
                     $customerGroupId,
                     $product->getId()
@@ -415,5 +417,35 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         }
 
         return $taggingCurrencyCode;
+    }
+
+    /**
+     * Gets productIds with active catalog price rules
+     *
+     * @return array
+     */
+    public function getProductIdsWithActivePriceRules()
+    {
+        /* @var Mage_CatalogRule_Model_Resource_Rule_Collection $rules */
+        $rules = Mage::getModel('catalogrule/rule')->getCollection();
+        $date = Mage::getSingleton('core/date')->gmtDate();
+        $rules
+            ->addIsActiveFilter()
+            ->addFieldToFilter(
+                'from_date', array(
+                    array('lt' => $date),
+                    array('null' => true)
+                )
+            );
+        $ids = array();
+        /* @var Mage_CatalogRule_Model_Rule $rule*/
+        foreach ($rules as $rule) {
+            if ($rule->getIsActive()) {
+                $matchingProductIds = $rule->getResource()->getRuleProductIds($rule->getId());
+                $ids = array_merge($matchingProductIds, $ids);
+            }
+        }
+
+        return array_unique($ids);
     }
 }

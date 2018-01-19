@@ -133,4 +133,65 @@ class Nosto_Tagging_Helper_Setup extends Mage_Core_Helper_Abstract
             );
         $installer->endSetup();
     }
+
+    /**
+     * Creates the table for Nosto product index
+     *
+     * @param Mage_Eav_Model_Entity_Setup $installer
+     * @suppress PhanTypeMismatchArgument
+     */
+    public function createNostoIndexTable(Mage_Eav_Model_Entity_Setup $installer)
+    {
+        $table = $installer
+            ->getConnection()
+            ->newTable($installer->getTable('nosto_tagging/index'))
+            ->addColumn(
+                'auto_id', Varien_Db_Ddl_Table::TYPE_INTEGER, 10, array(
+                    'unsigned' => true,
+                    'nullable' => false,
+                    'primary' => true,
+                    'identity' => true
+                )
+            )
+            ->addColumn(
+                'store_id', Varien_Db_Ddl_Table::TYPE_SMALLINT, 5, array(
+                    'unsigned' => true,
+                    'nullable' => false,
+                )
+            )
+            ->addColumn(
+                'product_id', Varien_Db_Ddl_Table::TYPE_INTEGER, 10, array(
+                    'unsigned' => true,
+                    'nullable' => false,
+                )
+            )
+            ->addColumn(
+                'serialized_product', Varien_Db_Ddl_Table::TYPE_TEXT, null, array(
+                    'nullable' => false,
+                )
+            )
+            ->addColumn(
+                'in_sync', Varien_Db_Ddl_Table::TYPE_SMALLINT
+            )
+            ->addColumn(
+                'updated_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
+                    'nullable' => false
+                )
+            )
+            ->addColumn(
+                'created_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
+                    'nullable' => false
+                )
+            )->addIndex(
+                $installer->getIdxName(
+                    'nosto_tagging/index', array('store_id', 'product_id'),
+                    Varien_Db_Adapter_Interface::INDEX_TYPE_UNIQUE
+                ),
+                array('store_id', 'product_id'), array(
+                    'type' => Varien_Db_Adapter_Interface::INDEX_TYPE_UNIQUE
+                )
+            );
+
+        $installer->getConnection()->createTable($table);
+    }
 }
