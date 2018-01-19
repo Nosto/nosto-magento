@@ -89,7 +89,11 @@ class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
                     $store,
                     $dataHelper->getUseProductIndexer($store)
                 );
-                $this->_product = $model;
+                if ($model instanceof Nosto_Types_Product_ProductInterface) {
+                    $this->_product = $model;
+                } else {
+                    $this->_product = null;
+                }
             } catch (Nosto_NostoException $e) {
                 Nosto_Tagging_Helper_Log::exception($e);
             }

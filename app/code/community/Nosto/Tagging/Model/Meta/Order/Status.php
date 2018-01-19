@@ -41,11 +41,14 @@ class Nosto_Tagging_Model_Meta_Order_Status extends Nosto_Object_Order_OrderStat
      * Loads the order buyer from the given order.
      *
      * @param Mage_Sales_Model_Order_Status_History $status the status from which to load the status
+     * @return bool
      */
     public function loadData(Mage_Sales_Model_Order_Status_History $status)
     {
         $this->setCode($status->getStatus());
         $this->setLabel($status->getStatusLabel());
         $this->setDate($status->getCreatedAt());
+
+        return true;
     }
 }

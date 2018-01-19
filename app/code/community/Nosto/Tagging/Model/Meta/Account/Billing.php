@@ -39,9 +39,12 @@ class Nosto_Tagging_Model_Meta_Account_Billing extends Nosto_Object_Signup_Billi
      * Loads the meta data for the given store.
      *
      * @param Mage_Core_Model_Store $store the store view to load the data for.
+     * @return bool
      */
     public function loadData(Mage_Core_Model_Store $store)
     {
         $this->setCountry($store->getConfig('general/country/default'));
+
+        return true;
     }
 }

@@ -42,7 +42,7 @@ class Nosto_Tagging_Model_Meta_Variation extends Nosto_Object_Product_Variation
      * @param string $productAvailability
      * @param string $currencyCode
      * @param Mage_Core_Model_Store|null $store the store to get the product data for.
-     * @throws Nosto_NostoException
+     * @return bool
      */
     public function loadData(
         Mage_Catalog_Model_Product $product,
@@ -70,5 +70,7 @@ class Nosto_Tagging_Model_Meta_Variation extends Nosto_Object_Product_Variation
         $priceHelper = Mage::helper('nosto_tagging/price');
         $this->setListPrice($priceHelper->getProductTaggingPrice($tmpProduct, $store, false));
         $this->setPrice($priceHelper->getProductTaggingPrice($tmpProduct, $store, true));
+
+        return true;
     }
 }

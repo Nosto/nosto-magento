@@ -42,6 +42,7 @@ abstract class Nosto_Tagging_Model_Meta_Cart_Item extends Nosto_Object_Cart_Line
      *
      * @param Mage_Sales_Model_Quote_Item $item
      * @param string $currencyCode
+     * @return bool
      */
     public function loadData(Mage_Sales_Model_Quote_Item $item, $currencyCode)
     {
@@ -64,6 +65,8 @@ abstract class Nosto_Tagging_Model_Meta_Cart_Item extends Nosto_Object_Cart_Line
         }
 
         parent::setPrice($unitPrice);
+
+        return true;
     }
 
     /**

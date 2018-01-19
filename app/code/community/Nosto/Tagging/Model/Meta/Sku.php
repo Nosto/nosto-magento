@@ -45,6 +45,7 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
      * @param Mage_Catalog_Model_Product $sku the product model.
      * @param Mage_Catalog_Model_Product $parent
      * @param Mage_Core_Model_Store|null $store the store to get the product data for.
+     * @return bool
      * @throws Nosto_NostoException
      */
     public function loadData(
@@ -96,6 +97,8 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
                 }
             }
         }
+
+        return true;
     }
 
     /**

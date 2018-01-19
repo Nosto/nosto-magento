@@ -85,6 +85,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      *
      * @param Mage_Catalog_Model_Product $product the product model.
      * @param Mage_Core_Model_Store|null $store the store to get the product data for.
+     * @return bool
      * @throws Nosto_NostoException
      */
     public function loadData(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store = null)
@@ -144,6 +145,8 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
                 'magentoProduct' => $product
             )
         );
+
+        return true;
     }
 
     /**
@@ -152,6 +155,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      *
      * @param Mage_Catalog_Model_Product $product
      * @param Mage_Core_Model_Store $store
+     * @throws Nosto_NostoException
      */
     protected function amendVariations(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
@@ -339,6 +343,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      *
      * @param Mage_Catalog_Model_Product $product the product model.
      * @param Mage_Core_Model_Store $store the store model.
+     * @throws Nosto_NostoException
      */
     protected function amendAttributeTags(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
@@ -620,9 +625,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         $reloadedProduct = $productModel->setStoreId($store->getId())->load($product->getId());
         if ($reloadedProduct instanceof Mage_Catalog_Model_Product) {
             try {
-                $this->loadData($reloadedProduct, $store);
-
-                return true;
+                return $this->loadData($reloadedProduct, $store);
             } catch (Nosto_NostoException $e) {
                 Nosto_Tagging_Helper_Log::exception($e);
             }
