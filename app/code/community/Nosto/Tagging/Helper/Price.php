@@ -188,10 +188,15 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         $inclTax = true
     )
     {
-        // Get the bundle product "from" / min price.
-        // Price for bundled "parent" product cannot be configured in
-        // store admin. In practise there is no such thing as
-        // parent product for the bundled type product
+        // If a bundled uses fixed pricing the list price can be fethched from
+        // product itself. For final price we always get the min price. If dynamic
+        // pricing is used the list price for the bundled product is the sum of
+        // list prices of the simple products included in the bundle.
+        $fixedPrice = $this->_getDefaultFromProduct($product, $finalPrice, $inclTax);
+        if ($fixedPrice) {
+
+            return $fixedPrice;
+        }
         /** @var Mage_Bundle_Model_Product_Price $model */
         $model = $product->getPriceModel();
         $minBundlePrice = $model->getTotalPrices($product, 'min', $inclTax, $finalPrice);
