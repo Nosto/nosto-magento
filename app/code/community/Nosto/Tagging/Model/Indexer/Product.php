@@ -296,11 +296,9 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
             foreach ($products as $product) {
                 /* @var Nosto_Tagging_Model_Meta_Product $nostoProduct */
                 $nostoProduct = Mage::getModel('nosto_tagging/meta_product');
-                $nostoProduct->reloadData(
-                    $product,
-                    $store
-                );
-                if ($nostoProduct instanceof Nosto_Tagging_Model_Meta_Product) {
+                if ($nostoProduct->reloadData($product,$store)
+                    && $nostoProduct instanceof Nosto_Tagging_Model_Meta_Product
+                ) {
                     $this->reindexProductInStore($nostoProduct, $store);
                 }
             }
@@ -452,10 +450,11 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
             }
             /* @var Nosto_Tagging_Model_Meta_Product $nostoProduct */
             $nostoProduct = Mage::getModel('nosto_tagging/meta_product');
-            $nostoProduct->reloadData($parent, $store);
-            $reindexed = $this->reindexProductInStore($nostoProduct, $store);
-            if (strtotime($reindexed->getUpdatedAt()) >= strtotime($startTime)) {
-                ++$changed;
+            if($nostoProduct->reloadData($parent, $store)) {
+                $reindexed = $this->reindexProductInStore($nostoProduct, $store);
+                if (strtotime($reindexed->getUpdatedAt()) >= strtotime($startTime)) {
+                    ++$changed;
+                }
             }
             $this->setProcessed($parent, $store);
         }
