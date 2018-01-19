@@ -1,5 +1,44 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.4.0-RC2
+* Remove redundant non-dev dependencies
+
+### 3.4.0-RC1
+* Introduce custom indexer for Nosto product data
+* Update Nosto product data after catalog price rules are saved and applied
+
+### 3.3.7
+* Add validation for Nosto product before product tagging, sending product over the API and before exporting
+
+### 3.3.6
+* Fix currency conversion issue in cart tagging
+* Add SKU id in cart tagging and order tagging
+* Apply catalog price rules also for product API updates
+* Change the sorting order of Nosto settings in store admin
+
+### 3.3.5
+* Handle orders when Vaimo KCO module is enabled but not used for order
+* Fix issues with code style checks
+* Add support Magento compilation mode
+
+### 3.3.4
+* Fix the list price for bundle product was aways same as final price
+
+### 3.3.3
+* Exclude OutOfStock simple products from configurable product price determination
+* Add a link to configuration page
+* Enable rating and review tagging by default
+* Get product attribute type id in runtime instead of hard coded it to 4
+* Fix phan settings and phpcs settings
+
+### 3.3.2
+* Update composer dependencies
+* Update Magento package dependencies
+* Define PHP requirements
+
+### 3.3.1
+* Fix the issue that new product url contains '_ignore_category' when flat catalog is enabled
+
 ### 3.3.0
 * Send client’s phone number, postal code and country in order data 
 * Improve error handling and error recovery in Nosto account creation 

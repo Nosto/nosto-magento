@@ -90,6 +90,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
      * @param bool $inclTax if tax is to be included.
      * @return float
      * @suppress PhanUndeclaredMethod
+     * @codingStandardsIgnoreStart
      */
     protected function _getProductPrice(
         Mage_Catalog_Model_Product $product,
@@ -101,13 +102,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
 
         switch ($product->getTypeId()) {
             case Mage_Catalog_Model_Product_Type::TYPE_BUNDLE:
-                // Get the bundle product "from" / min price.
-                // Price for bundled "parent" product cannot be configured in
-                // store admin. In practise there is no such thing as
-                // parent product for the bundled type product
-                /** @var Mage_Bundle_Model_Product_Price $model */
-                $model = $product->getPriceModel();
-                $price = $model->getTotalPrices($product, 'min', $inclTax);
+                $price = $this->getBundleProductPrices($product, $finalPrice, $inclTax);
                 break;
             case Mage_Catalog_Model_Product_Type::TYPE_GROUPED:
                 // Get the grouped product "starting at" price.
@@ -158,9 +153,11 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
                         $productModel = Mage::getModel('catalog/product')->load(
                             $associatedProduct->getId()
                         );
-                        $variationPrice = $this->_getProductPrice($productModel, $finalPrice, $inclTax);
-                        if (!$lowestPrice || $variationPrice < $lowestPrice) {
-                            $lowestPrice = $variationPrice;
+                        if ($productModel && $productModel->isAvailable()) {
+                            $variationPrice = $this->_getProductPrice($productModel, $finalPrice, $inclTax);
+                            if (!$lowestPrice || $variationPrice < $lowestPrice) {
+                                $lowestPrice = $variationPrice;
+                            }
                         }
                     }
                     $price = $lowestPrice;
@@ -176,6 +173,80 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         }
 
         return $price;
+    }
+    // @codingStandardsIgnoreEnd
+
+    /**
+     * @param Mage_Catalog_Model_Product $product
+     * @param bool $finalPrice
+     * @param bool $inclTax
+     * @return float
+     * @suppress PhanUndeclaredMethod
+     */
+    public function getBundleProductPrices(
+        Mage_Catalog_Model_Product $product,
+        $finalPrice = false,
+        $inclTax = true
+    )
+    {
+        // If a bundled uses fixed pricing the list price can be fethched from
+        // product itself. For final price we always get the min price. If dynamic
+        // pricing is used the list price for the bundled product is the sum of
+        // list prices of the simple products included in the bundle.
+        $fixedPrice = $this->_getDefaultFromProduct($product, $finalPrice, $inclTax);
+        if ($fixedPrice) {
+
+            return $fixedPrice;
+        }
+        /** @var Mage_Bundle_Model_Product_Price $model */
+        $model = $product->getPriceModel();
+        $minBundlePrice = $model->getTotalPrices($product, 'min', $inclTax, $finalPrice);
+
+        if ($finalPrice) {
+
+            return $minBundlePrice;
+        }
+
+        /** @var Mage_Bundle_Model_Product_Type $typeInstance */
+        $typeInstance = $product->getTypeInstance();
+        $typeInstance->setStoreFilter($product->getStoreId(), $product);
+
+        /** @var Mage_Bundle_Model_Resource_Option_Collection $optionCollection */
+        $optionCollection = $typeInstance->getOptionsCollection($product);
+
+        $selectionCollection = $typeInstance->getSelectionsCollection(
+            $typeInstance->getOptionsIds($product),
+            $product
+        );
+
+        $options = $optionCollection->appendSelections(
+            $selectionCollection,
+            false,
+            Mage::helper('catalog/product')->getSkipSaleableCheck()
+        );
+        $sumListPrice = 0;
+        /** @var Mage_Bundle_Model_Option $option */
+        foreach ($options as $option) {
+            $selections  = $option->getSelections();
+            $minSimpleProductPricePrice = null;
+            $simpleProductListPrice = null;
+            /**
+             * @var Mage_Catalog_Model_Product $selection
+             */
+            foreach ($selections as $selection) {
+                if ($selection->isAvailable()) {
+                    $simpleProductPrice = $this->_getProductPrice($selection, true, $inclTax);
+                    if ($minSimpleProductPricePrice === null || $simpleProductPrice < $minSimpleProductPricePrice) {
+                        $minSimpleProductPricePrice = $simpleProductPrice;
+                        $simpleProductListPrice = $this->_getProductPrice($selection, false, $inclTax);
+                    }
+                }
+            }
+
+            $sumListPrice += $simpleProductListPrice;
+        }
+
+        return max($sumListPrice, $minBundlePrice);
     }
 
     /**
@@ -194,9 +265,26 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
     {
         /** @var Mage_Tax_Helper_Data $helper */
         $helper = Mage::helper('tax');
-        $price = $finalPrice
-            ? $product->getFinalPrice()
-            : $product->getPrice();
+        if ($finalPrice) {
+            $timestamp = Mage::getSingleton('core/date')->gmtTimestamp();
+            /* @var Mage_CatalogRule_Model_Resource_Rule $priceRule */
+            $customerGroupId = $product->getCustomerGroupId() ? $product->getCustomerGroupId() : 0;
+            $rulePrice = Mage::getResourceModel('catalogrule/rule')
+                ->getRulePrice(
+                    $timestamp,
+                    $product->getStore()->getWebsiteId(),
+                    $customerGroupId,
+                    $product->getId()
+                );
+            $productFinalPrice = $product->getFinalPrice();
+            if (is_numeric($rulePrice) && (!$productFinalPrice || $productFinalPrice > $rulePrice)) {
+                $price = $rulePrice;
+            } else {
+                $price = $productFinalPrice;
+            }
+        } else {
+            $price = $product->getPrice();
+        }
         if ($inclTax) {
             $price = $helper->getPrice($product, $price, true);
         }
@@ -322,7 +410,11 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
      * @param $isFinalPrice true means it is final price, or it is list price
      * @return float the price
      */
-    public function getProductTaggingPrice(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store, $isFinalPrice)
+    public function getProductTaggingPrice(
+        Mage_Catalog_Model_Product $product,
+        Mage_Core_Model_Store $store,
+        $isFinalPrice
+    )
     {
         $basePrice = $this->getDisplayPriceInStore($product, $store, $isFinalPrice);
 
@@ -351,5 +443,35 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         }
 
         return $taggingCurrencyCode;
+    }
+
+    /**
+     * Gets productIds with active catalog price rules
+     *
+     * @return array
+     */
+    public function getProductIdsWithActivePriceRules()
+    {
+        /* @var Mage_CatalogRule_Model_Resource_Rule_Collection $rules */
+        $rules = Mage::getModel('catalogrule/rule')->getCollection();
+        $date = Mage::getSingleton('core/date')->gmtDate();
+        $rules
+            ->addIsActiveFilter()
+            ->addFieldToFilter(
+                'from_date', array(
+                    array('lt' => $date),
+                    array('null' => true)
+                )
+            );
+        $ids = array();
+        /* @var Mage_CatalogRule_Model_Rule $rule*/
+        foreach ($rules as $rule) {
+            if ($rule->getIsActive()) {
+                $matchingProductIds = $rule->getResource()->getRuleProductIds($rule->getId());
+                $ids = array_merge($matchingProductIds, $ids);
+            }
+        }
+
+        return array_unique($ids);
     }
 }

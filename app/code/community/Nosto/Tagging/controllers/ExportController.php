@@ -1,9 +1,9 @@
 <?php
 /**
  * Magento
- *  
+ *
  * NOTICE OF LICENSE
- *  
+ *
  * This source file is subject to the Open Software License (OSL 3.0)
  * that is bundled with this package in the file LICENSE.txt.
  * It is also available through the world-wide-web at this URL:
@@ -11,13 +11,13 @@
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
- *  
+ *
  * DISCLAIMER
- *  
+ *
  * Do not edit or add to this file if you wish to upgrade Magento to newer
  * versions in the future. If you wish to customize Magento for your
  * needs please refer to http://www.magentocommerce.com for more information.
- *  
+ *
  * @category  Nosto
  * @package   Nosto_Tagging
  * @author    Nosto Solutions Ltd <magento@nosto.com>
@@ -25,7 +25,9 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-require_once __DIR__ . '/../bootstrap.php'; // @codingStandardsIgnoreLine
+/* @var Nosto_Tagging_Helper_Bootstrap $nostoBootstrapHelper */
+$nostoBootstrapHelper = Mage::helper('nosto_tagging/bootstrap');
+$nostoBootstrapHelper->init();
 
 /**
  * History data export controller.
@@ -80,6 +82,38 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
     }
 
     /**
+     * Reindex product into Nosto product index if it doesn't exist already
+     *
+     * @param Nosto_Tagging_Model_Meta_Product $nostoProduct
+     * @param Mage_Core_Model_Store $store
+     */
+    protected function reindexIfNeeded(
+        Nosto_Tagging_Model_Meta_Product $nostoProduct,
+        Mage_Core_Model_Store $store
+    ) 
+    {
+        /* @var Nosto_Tagging_Model_Indexer_Product $indexer */
+        $indexer = Mage::getModel('nosto_tagging/indexer_product');
+        try {
+            /* @var Nosto_Tagging_Model_Meta_Product $nostoProduct */
+            $indexedProduct = Mage::getModel('nosto_tagging/index')
+                ->getCollection()
+                ->addFieldToFilter('product_id', $nostoProduct->getProductId())
+                ->addFieldToFilter('store_id', $store->getId())
+                ->setPageSize(1)
+                ->setCurPage(1)
+                ->getFirstItem(); // @codingStandardsIgnoreLine
+            if ($indexedProduct instanceof Nosto_Tagging_Model_Index === false
+                || !$indexedProduct->getId()
+            ) {
+                $indexer->reindexProductInStore($nostoProduct, $store, true);
+            }
+        } catch (\Exception $reindexException) {
+            Nosto_Tagging_Helper_Log::exception($reindexException);
+        }
+    }
+
+    /**
      * Exports completed orders from the current store.
      * Result can be limited by the `limit` and `offset` GET parameters.
      */
@@ -120,6 +154,12 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
     public function productAction()
     {
         if (Mage::helper('nosto_tagging/module')->isModuleEnabled()) {
+            /* @var Mage_Core_Model_Store $store */
+            $store = Mage::app()->getStore();
+            $storeId = $store->getId();
+            /* @var Nosto_Tagging_Helper_Data $dataHelper */
+            $dataHelper = Mage::helper('nosto_tagging');
+            $reindexProducts = $dataHelper->getUseProductIndexer($store);
             $pageSize = (int)$this->getRequest()->getParam(self::LIMIT, 100);
             $currentOffset = (int)$this->getRequest()->getParam(self::OFFSET, 0);
             $currentPage = ($currentOffset / $pageSize) + 1;
@@ -128,7 +168,7 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
             /** @var Nosto_Tagging_Model_Resource_Product_Collection $products */
             $products = Mage::getModel('nosto_tagging/product')->getCollection();
             $this->applyIdFilters($products);
-            $products->addStoreFilter(Mage::app()->getStore()->getId())
+            $products->addStoreFilter($storeId)
                 ->addAttributeToSelect('*')
                 ->addAttributeToFilter(
                     'status', array(
@@ -148,10 +188,22 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
             $collection = new Nosto_Object_Product_ProductCollection();
             /** @var Mage_Catalog_Model_Product $product */
             foreach ($products as $product) {
-                /** @var Nosto_Tagging_Model_Meta_Product $meta */
-                $meta = Mage::getModel('nosto_tagging/meta_product');
-                $meta->loadData($product);
-                $collection->append($meta);
+                try {
+                    $meta = Nosto_Tagging_Model_Meta_Product_Builder::build(
+                        $product,
+                        Mage::app()->getStore(),
+                        false
+                    );
+                    if ($meta->isValid()) {
+                        // reindex the product as well if index is being used
+                        if ($reindexProducts) {
+                            $this->reindexIfNeeded($meta, $store);
+                        }
+                        $collection->append($meta);
+                    }
+                } catch (Nosto_NostoException $e) {
+                    Nosto_Tagging_Helper_Log::exception($e);
+                }
             }
             $this->export($collection);
         }
@@ -169,7 +221,7 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
         $account = $helper->find();
         $this->getResponse()->setHeader('Content-type', 'application/octet-stream');
         if ($account !== null) {
-            $cipherText = Nosto_Helper_ExportHelper::export($account, $collection);
+            $cipherText = (new Nosto_Helper_ExportHelper())->export($account, $collection);
             $this->getResponse()->setBody($cipherText);
         } else {
             $this->getResponse()->setBody('');

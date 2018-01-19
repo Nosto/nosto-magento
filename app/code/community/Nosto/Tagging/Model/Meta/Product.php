@@ -86,6 +86,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      *
      * @param Mage_Catalog_Model_Product $product the product model.
      * @param Mage_Core_Model_Store|null $store the store to get the product data for.
+     * @throws Nosto_NostoException
      */
     public function loadData(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store = null)
     {
@@ -133,7 +134,11 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
 
         if ($dataHelper->isMultiCurrencyMethodExchangeRate($store)) {
             $this->setVariationId($store->getBaseCurrencyCode());
+<<<<<<< HEAD
         } else if ($dataHelper->isVariationEnabled($store)) {
+=======
+        } elseif ($dataHelper->isVariationEnabled($store)) {
+>>>>>>> develop
             $this->amendVariations($product, $store);
         }
 
@@ -331,7 +336,12 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
     protected function amendAlternativeImages(
         Mage_Catalog_Model_Product $product,
         Mage_Core_Model_Store $store
+<<<<<<< HEAD
     ) {
+=======
+    )
+    {
+>>>>>>> develop
         /* @var Mage_Catalog_Model_Product_Attribute_Media_Api $mediaApi */
         $mediaApi = Mage::getModel('catalog/product_attribute_media_api');
         $mediaItems = $mediaApi->items($product->getId(), $store);
@@ -551,13 +561,21 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
     {
         $attribute = $product->getResource()->getAttribute($attributeName);
         if ($attribute instanceof Mage_Catalog_Model_Resource_Eav_Attribute) {
-            $attributeData = $product->getData($attributeName);
             /** @noinspection PhpParamsInspection */
             $attributeValue = $product->getAttributeText($attributeName);
+<<<<<<< HEAD
             if (!empty($attributeValue)) {
                 return $attributeValue;
             } elseif (is_scalar($attributeData)) {
                 return trim($attributeData);
+=======
+            if (empty($attributeValue)) {
+                $attributeValue = $product->getData($attributeName);
+            }
+
+            if (is_scalar($attributeValue)) {
+                return trim($attributeValue);
+>>>>>>> develop
             } elseif (is_array($attributeValue)) {
                 return implode(',', $attributeValue);
             }
@@ -636,7 +654,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      * @return array
      * @suppress PhanDeprecatedProperty
      */
-    protected function __getTags()
+    protected function __getTags()// @codingStandardsIgnoreLine
     {
         /** @noinspection PhpDeprecationInspection */
         return $this->_tags;
@@ -658,21 +676,26 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      *
      * @param Mage_Catalog_Model_Product $product the product model to reload
      * @param Mage_Core_Model_Store $store the store to get the product data for.
+     *
      * @return bool returns false if the product is not available in a given store
      */
     public function reloadData(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
-        $return = false;
         /** @var Mage_Catalog_Model_Product $productModel */
         $productModel = Mage::getModel('catalog/product');
         /** @noinspection PhpUndefinedMethodInspection */
         $reloadedProduct = $productModel->setStoreId($store->getId())->load($product->getId());
         if ($reloadedProduct instanceof Mage_Catalog_Model_Product) {
-            $this->loadData($reloadedProduct, $store);
-            $return = true;
+            try {
+                $this->loadData($reloadedProduct, $store);
+
+                return true;
+            } catch (Nosto_NostoException $e) {
+                Nosto_Tagging_Helper_Log::exception($e);
+            }
         }
 
-        return $return;
+        return false;
     }
 
     /**

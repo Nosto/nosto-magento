@@ -25,32 +25,12 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-/* @var Nosto_Tagging_Helper_Bootstrap $nostoBootstrapHelper */
-$nostoBootstrapHelper = Mage::helper('nosto_tagging/bootstrap');
-$nostoBootstrapHelper->init();
-
 /**
- * Helper class for OAuth2 related tasks.
+ * This install script will run only when installing the version 3.4.0 or above
  *
- * @category Nosto
- * @package  Nosto_Tagging
- * @author   Nosto Solutions Ltd <magento@nosto.com>
+ * Adds custom attribute `nosto_customer_reference` for the Customer object
  */
-class Nosto_Tagging_Helper_Oauth extends Mage_Core_Helper_Abstract
-{
-    /**
-     * Returns the meta data model needed for using the OAuth2 client included
-     * in the Nosto SDk.
-     *
-     * @param Mage_Core_Model_Store $store the store to get the oauth meta data for..
-     *
-     * @return Nosto_Tagging_Model_Meta_Oauth the meta data instance.
-     */
-    public function getMetaData(Mage_Core_Model_Store $store)
-    {
-        /** @var Nosto_Tagging_Model_Meta_Oauth $meta */
-        $meta = Mage::getModel('nosto_tagging/meta_oauth');
-        $meta->loadData($store);
-        return $meta;
-    }
-}
+
+/** @var $setupHelper Nosto_Tagging_Helper_Setup */
+$setupHelper = Mage::helper('nosto_tagging/setup');
+$setupHelper->createNostoIndexTable($this);

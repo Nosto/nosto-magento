@@ -25,7 +25,9 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-require_once __DIR__ . '/../bootstrap.php'; // @codingStandardsIgnoreLine
+/* @var Nosto_Tagging_Helper_Bootstrap $nostoBootstrapHelper */
+$nostoBootstrapHelper = Mage::helper('nosto_tagging/bootstrap');
+$nostoBootstrapHelper->init();
 
 /**
  * OAuth2 controller.
@@ -119,7 +121,17 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
     {
         /** @var Nosto_Tagging_Helper_Account $accountHelper */
         $accountHelper = Mage::helper('nosto_tagging/account');
-        return $accountHelper->save($account, self::getStore());
+        if ($accountHelper->save($account, self::getStore())) {
+            //Enable review and rating by default
+            /* @var Nosto_Tagging_Helper_Rating $ratingHelper */
+            $ratingHelper = Mage::helper('nosto_tagging/rating');
+            $ratingHelper->enableReviewAndRating(self::getStore());
+
+            return true;
+        } else {
+
+            return false;
+        }
     }
 
     /**

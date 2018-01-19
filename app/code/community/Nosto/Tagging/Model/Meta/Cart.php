@@ -88,7 +88,7 @@ class Nosto_Tagging_Model_Meta_Cart extends Nosto_Object_Cart_Cart
                 $nostoCustomer->getRestoreCartHash(),
                 $store
             );
-            $this->setRestoreCartUrl($link);
+            $this->setRestoreLink($link);
         }
     }
 }

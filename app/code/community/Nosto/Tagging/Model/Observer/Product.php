@@ -25,7 +25,10 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-require_once __DIR__ . '/../../bootstrap.php'; // @codingStandardsIgnoreLine
+/* @var Nosto_Tagging_Helper_Bootstrap $nostoBootstrapHelper */
+$nostoBootstrapHelper = Mage::helper('nosto_tagging/bootstrap');
+$nostoBootstrapHelper->init();
+
 use Nosto_Tagging_Helper_Log as NostoLog;
 
 /**
@@ -49,22 +52,64 @@ class Nosto_Tagging_Model_Observer_Product
      */
     public function sendProductUpdate(Varien_Event_Observer $observer)
     {
-        if (Mage::helper('nosto_tagging/module')->isModuleEnabled()) {
+        /* @var Nosto_Tagging_Helper_Data $dataHelper */
+        $dataHelper = Mage::helper('nosto_tagging');
+        // If all store views use product indexer there's no need to use update observer
+        if (Mage::helper('nosto_tagging/module')->isModuleEnabled()
+            && !$dataHelper->getAllStoresUseProductIndexer()
+        ) {
             /** @var Mage_Catalog_Model_Product $product */
             /** @noinspection PhpUndefinedMethodInspection */
             $product = $observer->getEvent()->getProduct();
 
-            try {
-                /* @var Nosto_Tagging_Model_Service_Product $service */
-                $service = Mage::getModel('nosto_tagging/service_product');
-                $service->updateProduct($product);
-            } catch (Nosto_NostoException$e) {
-                NostoLog::exception($e);
+            /* @var Nosto_Tagging_Model_Service_Product $service */
+            $service = Mage::getModel('nosto_tagging/service_product');
+            $service->updateProduct($product);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Event handler for the "catalogrule_after_apply" event.
+     *
+     * @param Varien_Event_Observer $observer the event observer.
+     *
+     * @return Nosto_Tagging_Model_Observer_Product
+     * @codingStandardsIgnoreStart
+     */
+    public function afterCatalogPriceRule(Varien_Event_Observer $observer)
+    {
+        if (Mage::helper('nosto_tagging/module')->isModuleEnabled()) {
+            /* @var Nosto_Tagging_Helper_Account $accountHelper */
+            $accountHelper = Mage::helper('nosto_tagging/account');
+            $nostoStores = $accountHelper->getAllStoreViewsWithNostoAccount();
+            if (empty($nostoStores)) {
+                return $this;
+            }
+            /* @var Nosto_Tagging_Helper_Price $priceHelper */
+            $priceHelper = Mage::helper('nosto_tagging/price');
+            $productIds = $priceHelper->getProductIdsWithActivePriceRules();
+            if (!empty($productIds)) {
+                /* @var Nosto_Tagging_Helper_Data $dataHelper */
+                $dataHelper = Mage::helper('nosto_tagging');
+                /* @var Nosto_Tagging_Model_Indexer_Product $indexer */
+                $indexer = Mage::getModel('nosto_tagging/indexer_product');
+                foreach ($nostoStores as $store) {
+                    if ($dataHelper->getUseAutomaticCatalogPriceRuleUpdates($store)) {
+                        try {
+                            $indexer->reindexByProductIdsInStore($productIds, $store);
+                        } catch (\Exception $e) {
+                            Nosto_Tagging_Helper_Log::exception($e);
+                        }
+                    }
+                }
             }
         }
 
         return $this;
     }
+    // @codingStandardsIgnoreEnd
 
     /**
      * Event handler for the "catalog_product_delete_after" event.
@@ -73,6 +118,7 @@ class Nosto_Tagging_Model_Observer_Product
      * @param Varien_Event_Observer $observer the event observer.
      *
      * @return Nosto_Tagging_Model_Observer_Product
+     *
      */
     public function sendProductDelete(Varien_Event_Observer $observer)
     {
@@ -126,9 +172,16 @@ class Nosto_Tagging_Model_Observer_Product
             $product = Mage::getModel('catalog/product')->load($productId);
             if ($product instanceof Mage_Catalog_Model_Product) {
                 try {
-                    /* @var Nosto_Tagging_Model_Service_Product $service */
-                    $service = Mage::getModel('nosto_tagging/service_product');
-                    $service->updateProduct($product);
+                    /* @var Nosto_Tagging_Helper_Data $dataHelper */
+                    $dataHelper = Mage::helper('nosto_tagging');
+                    if (!$dataHelper->getAllStoresUseProductIndexer()) {
+                        /* @var Nosto_Tagging_Model_Service_Product $service */
+                        $service = Mage::getModel('nosto_tagging/service_product');
+                        $service->updateProduct($product);
+                    }
+                    /* @var Nosto_Tagging_Model_Indexer_Product $indexer */
+                    $indexer = Mage::getModel('nosto_tagging/indexer_product');
+                    $indexer->reindexAndUpdate($product);
                 } catch (\Exception $e) {
                     NostoLog::exception($e);
                 }

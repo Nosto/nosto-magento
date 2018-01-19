@@ -52,7 +52,6 @@ class Nosto_Tagging_Model_Meta_Variation_Collection extends Nosto_Object_Product
         /** @var $customerHelper Mage_Customer_Helper_Data */
         $customerHelper = Mage::helper('customer');
         $defaultGroupId = $customerHelper->getDefaultCustomerGroupId($store);
-        // ToDo - we shouold only create variations out of the groups the product belongs to
         $groups = Mage::getModel('customer/group')->getCollection();
         /** @var Mage_Customer_Model_Group $group */
         foreach ($groups as $group) {

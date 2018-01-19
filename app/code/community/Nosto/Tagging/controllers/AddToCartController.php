@@ -25,9 +25,11 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-require_once __DIR__ . '/../bootstrap.php'; // @codingStandardsIgnoreLine
+/* @var Nosto_Tagging_Helper_Bootstrap $nostoBootstrapHelper */
+$nostoBootstrapHelper = Mage::helper('nosto_tagging/bootstrap');
+$nostoBootstrapHelper->init();
+
 require_once 'Mage/Checkout/controllers/CartController.php';
-use Nosto_NostoException as NostoException;
 
 /**
  * Restores an abandoned cart
@@ -93,7 +95,10 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
 
             if (!$this->_getSession()->getNoCartRedirect(true)) {
                 if (!$cart->getQuote()->getHasError()) {
-                    $message = $this->__('%s was added to your shopping cart.', Mage::helper('core')->escapeHtml($product->getName()));
+                    $message = $this->__(
+                        '%s was added to your shopping cart.',
+                        Mage::helper('core')->escapeHtml($product->getName())
+                    );
                     $this->_getSession()->addSuccess($message);
                 }
                 $this->_goBack();

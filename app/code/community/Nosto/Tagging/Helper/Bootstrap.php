@@ -25,32 +25,38 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-/* @var Nosto_Tagging_Helper_Bootstrap $nostoBootstrapHelper */
-$nostoBootstrapHelper = Mage::helper('nosto_tagging/bootstrap');
-$nostoBootstrapHelper->init();
-
 /**
- * Helper class for OAuth2 related tasks.
+ * Helper class for initing user agent and load the .env file
  *
  * @category Nosto
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Helper_Oauth extends Mage_Core_Helper_Abstract
+class Nosto_Tagging_Helper_Bootstrap extends Mage_Core_Helper_Abstract
 {
     /**
-     * Returns the meta data model needed for using the OAuth2 client included
-     * in the Nosto SDk.
-     *
-     * @param Mage_Core_Model_Store $store the store to get the oauth meta data for..
-     *
-     * @return Nosto_Tagging_Model_Meta_Oauth the meta data instance.
+     * Flushes the Magento caches, not all of them but some of them, normally after creating an
+     * account or connecting with nosto.
      */
-    public function getMetaData(Mage_Core_Model_Store $store)
+    public function init()
     {
-        /** @var Nosto_Tagging_Model_Meta_Oauth $meta */
-        $meta = Mage::getModel('nosto_tagging/meta_oauth');
-        $meta->loadData($store);
-        return $meta;
+        static $loaded = false;
+        if (!$loaded) {
+            /* @var Nosto_Tagging_Helper_Data $nostoHelper */
+            $nostoHelper = Mage::helper('nosto_tagging');
+            Nosto_Request_Http_HttpRequest::buildUserAgent(
+                'Magento', Mage::getVersion(),
+                $nostoHelper->getExtensionVersion()
+            );
+            $validator = new Zend_Validate_File_Exists();
+            $validator->addDirectory(__DIR__ . '/../');
+            if ($validator->isValid('.env')) {
+                $dotenv = new Dotenv_Dotenv(
+                    $validator->getDirectory()
+                );
+                $dotenv->load();
+            }
+            $loaded = true;
+        }
     }
 }

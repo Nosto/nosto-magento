@@ -23,13 +23,13 @@
   "dependencies": {
     "required": {
       "php": {
-        "min": "5.2.0",
+        "min": "5.4.0",
         "max": "7.1.0"
       },
       "package": {
         "name": "Mage_Core_Modules",
         "min": "1.6.0.0",
-        "max": "1.9.3.3",
+        "max": "1.9.3.6",
         "channel": "community"
       }
     }

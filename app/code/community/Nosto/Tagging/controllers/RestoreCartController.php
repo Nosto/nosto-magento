@@ -25,7 +25,10 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-require_once __DIR__ . '/../bootstrap.php'; // @codingStandardsIgnoreLine
+/* @var Nosto_Tagging_Helper_Bootstrap $nostoBootstrapHelper */
+$nostoBootstrapHelper = Mage::helper('nosto_tagging/bootstrap');
+$nostoBootstrapHelper->init();
+
 require_once __DIR__ . '/CartController.php'; // @codingStandardsIgnoreLine
 
 /**
@@ -36,6 +39,6 @@ require_once __DIR__ . '/CartController.php'; // @codingStandardsIgnoreLine
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_RestoreCartController extends Nosto_Tagging_CartController
+class Nosto_Tagging_RestoreCartController extends Nosto_Tagging_CartController// @codingStandardsIgnoreLine
 {
 }

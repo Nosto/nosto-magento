@@ -25,7 +25,10 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-require_once __DIR__ . '/../bootstrap.php'; // @codingStandardsIgnoreLine
+/* @var Nosto_Tagging_Helper_Bootstrap $nostoBootstrapHelper */
+$nostoBootstrapHelper = Mage::helper('nosto_tagging/bootstrap');
+$nostoBootstrapHelper->init();
+
 use Nosto_Tagging_Helper_Log as NostoLog;
 
 /**
@@ -307,5 +310,24 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
         $helper->flushCache();
 
         return true;
+    }
+
+    /**
+     * Returns all store views that have Nosto intsalled
+     *
+     * @return Mage_Core_Model_Store[]
+     */
+    public function getAllStoreViewsWithNostoAccount()
+    {
+        $storesWithNosto = array();
+        /* @var Nosto_Tagging_Helper_Data $helper */
+        $helper = Mage::helper('nosto_tagging');
+        foreach ($helper->getAllStoreViews() as $store) {
+            if ($this->existsAndIsConnected($store)) {
+                $storesWithNosto[] = $store;
+            }
+        }
+
+        return $storesWithNosto;
     }
 }

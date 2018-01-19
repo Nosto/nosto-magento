@@ -122,9 +122,8 @@
             <arg value="--colors"/>
             <arg value="--report-width=auto"/>
             <arg value="--standard=ruleset.xml"/>
-            <arg value="--severity=10"/>
+            <arg value="--severity=3"/>
             <arg value="app"/>
-            <arg value="lib"/>
         </exec>
     </target>
 
@@ -143,6 +142,10 @@
         <exec executable="composer" dir="${srcdir}">
             <arg value="install" />
         </exec>
+        <phingcall target="pearify"></phingcall>
+    </target>
+
+    <target name="pearify">
         <exec executable="composer" dir="${srcdir}">
             <arg value="dump-autoload" />
             <arg value="--optimize" />

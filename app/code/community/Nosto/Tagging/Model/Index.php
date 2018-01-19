@@ -26,30 +26,50 @@
  */
 
 /**
- * Alters saving the cron schedule for exhange rates
+ * Model for Nosto product index
+ *
+ * @method void setStoreId($storeId)
+ * @method string getStoreId()
+ * @method void setProductId($productId)
+ * @method int getProductId()
+ * @method void setSerializedProduct($serializedObject)
+ * @method string getSerializedProduct()
+ * @method void setInSync($inSync)
+ * @method string getInSync()
+ * @method void setUpdatedAt($updatedAt)
+ * @method string getUpdatedAt()
+ * @method void setCreatedAt($createdAt)
+ * @method string getCreatedAt()
  *
  * @category Nosto
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_System_Config_Backend_Currency_Exchange_Rate_Time
-    extends Mage_Core_Model_Config_Data
+class Nosto_Tagging_Model_Index extends Mage_Core_Model_Abstract
 {
+    /**
+     * @inheritdoc
+     */
+    protected function _construct()
+    {
+        $this->_init('nosto_tagging/index');
+    }
 
     /**
-     * If the cron is ran hourly the first drop down field is not sent as it's
-     * disabled in Magento's Nosto settings. We need to set an artificial value
-     * for the "minute" in order to render the selected form values correctly.
-     *
-     * @inheritdoc
-     * @suppress PhanTypeMismatchArgument
+     * @return Nosto_Tagging_Model_Meta_Product|false
      */
-    protected function _beforeSave()
+    public function getNostoMetaProduct()
     {
-        $values = $this->getValue();
-        if (is_array($values) && count($values) < 3) {// @codingStandardsIgnoreLine
-            array_unshift($values, '00');
-            return $this->setValue($values);
-        }
+        // @codingStandardsIgnoreLine
+        return unserialize($this->getSerializedProduct());
+    }
+
+    /**
+     * @param Nosto_Tagging_Model_Meta_Product $product
+     */
+    public function setNostoMetaProduct(Nosto_Tagging_Model_Meta_Product $product)
+    {
+        // @codingStandardsIgnoreLine
+        $this->setSerializedProduct(serialize($product));
     }
 }

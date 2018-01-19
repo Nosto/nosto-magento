@@ -36,6 +36,9 @@
  */
 class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
 {
+    const URL_PATH_NOSTO_CONFIG = 'adminhtml/system_config/edit/section/nosto_tagging';
+    const MAGENTO_URL_OPTION_STORE_CODE = 'store';
+
     /**
      * The ___store parameter in Magento URLs
      */
@@ -162,16 +165,27 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
                 'visibility',
                 Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH
             )
-            ->setPageSize(1)
+            ->setPageSize(100)
             ->setCurPage(1);
-        /** @var Mage_Catalog_Model_Product $product */
-        $product = $collection->getFirstItem(); // @codingStandardsIgnoreLine
-        if ($product instanceof Mage_Catalog_Model_Product) {
-            $url = $this->generateProductUrl($product, $store);
-            $productUrl = $this->addNostoPreviewParameter($url);
+        //Try 100 projects
+        $products = $collection->getItems();
+        if ($products) {
+            /** @var Mage_Catalog_Model_Product $product */
+            foreach ($products as $product) {
+                try {
+                    if ($product instanceof Mage_Catalog_Model_Product) {
+                        $url = $this->generateProductUrl($product, $store);
+                        $productUrl = $this->addNostoPreviewParameter($url);
+
+                        return $productUrl;
+                    }
+                } catch (Nosto_NostoException $e) {
+                    Nosto_Tagging_Helper_Log::exception($e);
+                }
+            }
         }
 
-        return $productUrl;
+        return '';
     }
 
     /**
@@ -272,8 +286,8 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
             self::MAGENTO_PATH_CART,
             $defaultParams
         );
-        if (count($additionalParams) > 0) {
-            foreach ($additionalParams as $key=>$val) {
+        if (!empty($additionalParams)) {
+            foreach ($additionalParams as $key => $val) {
                 $url = Nosto_Request_Http_HttpRequest::replaceQueryParamInUrl(
                     $key,
                     $val,
@@ -344,6 +358,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
      * @param Mage_Core_Model_Store $store
      *
      * @return string the url.
+     * @throws Nosto_NostoException throw exception if it fail to build url
      */
     public function generateProductUrl(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
@@ -367,6 +382,24 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
             );
         }
 
+        //Skip the product url has the string '_ignore_category'
+        //If the flat catalog is enabled, and a new product is added to the catalog, then the product
+        //url contains '_ignore_category' because it fail to build the url properly.
+        //Nosto should not recommend this product because it is yet available in the frontend
+        if (!is_string($productUrl)
+            || strpos(
+                $productUrl,
+                Nosto_Tagging_Helper_Url::MAGENTO_URL_OPTION_IGNORE_CATEGORY
+            ) !== false
+        ) {
+            throw new Nosto_NostoException(
+                sprintf(
+                    'Failed to build product (%s) url. It is not available in the flat table yet.',
+                    $product->getId()
+                )
+            );
+        }
+
         return $productUrl;
     }
 
@@ -379,25 +412,10 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
      */
     public function removeQueryParamFromUrl($url, $param)
     {
-        $modifiedUrl = $url;
-        $urlParts = Nosto_Request_Http_HttpRequest::parseUrl($url);
-        if (
-            is_array($urlParts)
-            && isset($urlParts['query'])
-        ) {
-            $queryArray = Nosto_Request_Http_HttpRequest::parseQueryString($urlParts['query']);
-            if (isset($queryArray[$param])) {
-                unset($queryArray[$param]);
-                if (empty($queryArray)) {
-                    unset($urlParts['query']);
-                } else {
-                    $urlParts['query'] = http_build_query($queryArray);
-                }
-                $modifiedUrl = Nosto_Request_Http_HttpRequest::buildUrl($urlParts);
-            }
-        }
+        $zendUrl = Zend_Uri_Http::fromString($url);
+        $zendUrl->removeQueryParameters(array($param));
 
-        return $modifiedUrl;
+        return $zendUrl->getUri();
     }
 
     /**
@@ -478,7 +496,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
      * Gets the absolute URL to the add to cart controller
      *
      * @param Mage_Core_Model_Store $store the store to get the url for.
-     * 
+     *
      * @return string the url.
      */
     public function getAddToCartUrl(Mage_Core_Model_Store $store)
@@ -510,5 +528,23 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
         );
 
         return $url;
+    }
+
+    /**
+     * Gets the absolute URL to the Nosto configuration page
+     *
+     * @param Mage_Core_Model_Store $store the store to get the url for.
+     *
+     * @return string the url.
+     */
+    public function getAdminNostoConfiguratioUrl(Mage_Core_Model_Store $store)
+    {
+        $params = array(
+            self::MAGENTO_URL_OPTION_STORE_CODE => $store->getCode()
+        );
+        /** @var Mage_Adminhtml_Helper_Data $adminHtmlHelper */
+        $adminHtmlHelper = Mage::helper('adminhtml');
+
+        return $adminHtmlHelper->getUrl(self::URL_PATH_NOSTO_CONFIG, $params);
     }
 }

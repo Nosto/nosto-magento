@@ -25,7 +25,10 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-require_once __DIR__ . '/../../bootstrap.php'; // @codingStandardsIgnoreLine
+/* @var Nosto_Tagging_Helper_Bootstrap $nostoBootstrapHelper */
+$nostoBootstrapHelper = Mage::helper('nosto_tagging/bootstrap');
+$nostoBootstrapHelper->init();
+
 use Nosto_Tagging_Helper_Log as NostoLog;
 
 /**
@@ -36,6 +39,7 @@ use Nosto_Tagging_Helper_Log as NostoLog;
  * @category Nosto
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
+ * @suppress PhanUnreferencedProperty
  */
 class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_Action
 {
@@ -226,6 +230,11 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                 $account = $operation->create();
                 if ($accountHelper->save($account, $store)) {
                     $accountHelper->updateCurrencyExchangeRates($account, $store);
+                    //Enable review and rating by default
+                    /* @var Nosto_Tagging_Helper_Rating $ratingHelper */
+                    $ratingHelper = Mage::helper('nosto_tagging/rating');
+                    $ratingHelper->enableReviewAndRating($store);
+
                     $responseBody = array(
                         'success' => true,
                         'redirect_url' => $accountHelper->getIframeUrl(
