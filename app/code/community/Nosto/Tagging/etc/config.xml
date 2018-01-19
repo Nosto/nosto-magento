@@ -132,6 +132,15 @@
                     </nosto_tagging_sales_order_save_commit_after>
                 </observers>
             </sales_order_save_commit_after>
+            <checkout_cart_product_add_after>
+                <observers>
+                    <nosto_tagging_checkout_cart_product_add_afterr>
+                        <type>singleton</type>
+                        <class>Nosto_Tagging_Model_Observer_Cart</class>
+                        <method>cartItemAdded</method>
+                    </nosto_tagging_checkout_cart_product_add_afterr>
+                </observers>
+            </checkout_cart_product_add_after>
             <admin_system_config_changed_section_nosto_tagging>
                 <observers>
                     <nosto_tagging_custom>
@@ -235,6 +244,7 @@
                 <use_alternate_images>1</use_alternate_images>
                 <use_inventory_level>0</use_inventory_level>
                 <use_low_stock>0</use_low_stock>
+                <send_add_to_cart_event>0</send_add_to_cart_event>
                 <update_catalog_price_rules>0</update_catalog_price_rules>
             </general>
             <image_options>
