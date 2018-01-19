@@ -142,6 +142,10 @@
         <exec executable="composer" dir="${srcdir}">
             <arg value="install" />
         </exec>
+        <phingcall target="pearify"></phingcall>
+    </target>
+
+    <target name="pearify">
         <exec executable="composer" dir="${srcdir}">
             <arg value="dump-autoload" />
             <arg value="--optimize" />
