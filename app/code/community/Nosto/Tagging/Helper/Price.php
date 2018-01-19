@@ -174,6 +174,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
 
         return $price;
     }
+    // @codingStandardsIgnoreEnd
 
     /**
      * @param Mage_Catalog_Model_Product $product
@@ -188,10 +189,15 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         $inclTax = true
     )
     {
-        // Get the bundle product "from" / min price.
-        // Price for bundled "parent" product cannot be configured in
-        // store admin. In practise there is no such thing as
-        // parent product for the bundled type product
+        // If a bundled uses fixed pricing the list price can be fethched from
+        // product itself. For final price we always get the min price. If dynamic
+        // pricing is used the list price for the bundled product is the sum of
+        // list prices of the simple products included in the bundle.
+        $fixedPrice = $this->_getDefaultFromProduct($product, $finalPrice, $inclTax);
+        if ($fixedPrice) {
+
+            return $fixedPrice;
+        }
         /** @var Mage_Bundle_Model_Product_Price $model */
         $model = $product->getPriceModel();
         $minBundlePrice = $model->getTotalPrices($product, 'min', $inclTax, $finalPrice);
@@ -260,11 +266,12 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         /** @var Mage_Tax_Helper_Data $helper */
         $helper = Mage::helper('tax');
         if ($finalPrice) {
-            $date = time();
+            $timestamp = Mage::getSingleton('core/date')->gmtTimestamp();
+            /* @var Mage_CatalogRule_Model_Resource_Rule $priceRule */
             $customerGroupId = $product->getCustomerGroupId() ? $product->getCustomerGroupId() : 0;
             $rulePrice = Mage::getResourceModel('catalogrule/rule')
                 ->getRulePrice(
-                    $date,
+                    $timestamp,
                     $product->getStore()->getWebsiteId(),
                     $customerGroupId,
                     $product->getId()
@@ -410,5 +417,35 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         }
 
         return $taggingCurrencyCode;
+    }
+
+    /**
+     * Gets productIds with active catalog price rules
+     *
+     * @return array
+     */
+    public function getProductIdsWithActivePriceRules()
+    {
+        /* @var Mage_CatalogRule_Model_Resource_Rule_Collection $rules */
+        $rules = Mage::getModel('catalogrule/rule')->getCollection();
+        $date = Mage::getSingleton('core/date')->gmtDate();
+        $rules
+            ->addIsActiveFilter()
+            ->addFieldToFilter(
+                'from_date', array(
+                    array('lt' => $date),
+                    array('null' => true)
+                )
+            );
+        $ids = array();
+        /* @var Mage_CatalogRule_Model_Rule $rule*/
+        foreach ($rules as $rule) {
+            if ($rule->getIsActive()) {
+                $matchingProductIds = $rule->getResource()->getRuleProductIds($rule->getId());
+                $ids = array_merge($matchingProductIds, $ids);
+            }
+        }
+
+        return array_unique($ids);
     }
 }

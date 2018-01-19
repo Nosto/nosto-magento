@@ -91,6 +91,16 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_USE_PRODUCT_API = 'nosto_tagging/general/use_product_api';
 
     /**
+     * Path to store config for using the product Indexer or not
+     */
+    const XML_PATH_USE_PRODUCT_INDEXER = 'nosto_tagging/general/use_product_indexer';
+
+    /**
+     * Path to store config for automatically update catalog price rule changes
+     */
+    const XML_PATH_UPDATE_CATALOG_PRICE_RULES = 'nosto_tagging/general/update_catalog_price_rules';
+
+    /**
      * Path to store config for using SKUs
      */
     const XML_PATH_USE_SKUS = 'nosto_tagging/general/use_skus';
@@ -167,7 +177,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * The release candidate version. Set to null for stable.
      */
-    const NOSTO_RC_VERSION = null;
+    const NOSTO_RC_VERSION = 3;
 
     /**
      * List of strings to remove from the default Nosto account title
@@ -476,6 +486,28 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Returns on/off setting for product indexer
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     * @return boolean
+     */
+    public function getUseProductIndexer($store = null)
+    {
+        return (bool)Mage::getStoreConfig(self::XML_PATH_USE_PRODUCT_INDEXER, $store);
+    }
+
+    /**
+     * Returns on/off setting for automatic catalog price rule updates
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     * @return boolean
+     */
+    public function getUseAutomaticCatalogPriceRuleUpdates($store = null)
+    {
+        return (bool)Mage::getStoreConfig(self::XML_PATH_UPDATE_CATALOG_PRICE_RULES, $store);
+    }
+
+    /**
      * Returns on/off setting for SKUs
      *
      * @param Mage_Core_Model_Store|null $store the store model or null.
@@ -653,6 +685,22 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         }
 
         return $version;
+    }
+
+    /**
+     * Returns boolean if all stores use product indexer
+     *
+     * @return boolean
+     */
+    public function getAllStoresUseProductIndexer()
+    {
+        foreach ($this->getAllStoreViews() as $store) {
+            if (!$this->getUseProductIndexer($store)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
 
