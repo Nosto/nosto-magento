@@ -37,6 +37,7 @@
 class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
 {
 
+    const ATTRIBUTE_VALUE_ANY = '--ANY--';
     use Nosto_Tagging_Model_Meta_Product_Trait;
 
     /**
@@ -137,6 +138,8 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
             $this->amendVariations($product, $store);
         }
 
+        $this->amendCustomFields($product, $store);
+
         Mage::dispatchEvent(
             Nosto_Tagging_Helper_Event::EVENT_NOSTO_PRODUCT_LOAD_AFTER,
             array(
@@ -155,9 +158,9 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      */
     protected function amendVariations(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
-        /* @var Nosto_Tagging_Helper_Variation $variationHelper  */
+        /* @var Nosto_Tagging_Helper_Variation $variationHelper */
         $variationHelper = Mage::helper('nosto_tagging/variation');
-        $this->setVariationId($variationHelper->getDefaultVariationId($store));
+        $this->setVariationId($variationHelper->getDefaultVariationId());
 
         /** @var Nosto_Tagging_Model_Meta_Variation_Collection $variationCollection */
         $variationCollection = Mage::getModel('nosto_tagging/meta_variation_collection');
@@ -168,6 +171,55 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
             $store
         );
         $this->setVariations($variationCollection);
+    }
+
+    /**
+     * Tag the custom attributes
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @param Mage_Core_Model_Store $store
+     */
+    protected function amendCustomFields(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
+    {
+        /** @var Nosto_Tagging_Helper_Data $dataHelper */
+        $dataHelper = Mage::helper('nosto_tagging');
+        if (!$dataHelper->getUseCustomFields($store)) {
+            return;
+        }
+
+        $isSKUTaggingEnabled = $dataHelper->getUseSkus($store);
+
+        $attributes = $product->getTypeInstance(true)->getSetAttributes($product);
+        /** @var Mage_Catalog_Model_Resource_Eav_Attribute $attribute */
+        foreach ($attributes as $attribute) {
+            try {
+                //tag user defined attributes only
+                if ($attribute->getData('is_user_defined') == 1) {
+                    $attributeCode = $attribute->getAttributeCode();
+                    $attributeValue = $this->getAttributeValue($product, $attributeCode);
+                    if (!is_scalar($attributeValue)) {
+                        //For a configurable product, if sku tagging is disabled,
+                        //tag all the attributes which are used to create configurable values as '--ANY--'
+                        if (!$isSKUTaggingEnabled
+                            && $product->getTypeId() === Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE
+                            && $attribute->getIsConfigurable()
+                            //Only global attributes are allowed to be use for creating configurable products
+                            //There is one attribute 'cost', which is user defined, configurable, but
+                            //it is not actually being used for creating configurable products because it's scope is
+                            //website.
+                            && $attribute->isScopeGlobal()
+                        ) {
+                            $attributeValue = self::ATTRIBUTE_VALUE_ANY;
+                        } else {
+                            continue;
+                        }
+                    }
+                    $this->addCustomField($attributeCode, $attributeValue);
+                }
+            } catch (Exception $e) {
+                Nosto_Tagging_Helper_Log::exception($e);
+            }
+        }
     }
 
     /**
@@ -308,7 +360,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      */
     protected function amendReviews(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
-        /* @var Nosto_Tagging_Helper_Data $dataHelper*/
+        /* @var Nosto_Tagging_Helper_Data $dataHelper */
         $dataHelper = Mage::helper('nosto_tagging');
         $ratingProvider = $dataHelper->getRatingsAndReviewsProvider($store);
         if ($ratingProvider) {
@@ -433,7 +485,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         if (method_exists($this, $compatibilityMethod)) {
             return $this->$compatibilityMethod($args);
         } else {
-            trigger_error('Call to undefined method '.__CLASS__.'::'.$method.'()', E_USER_ERROR); // @codingStandardsIgnoreLine
+            trigger_error('Call to undefined method ' . __CLASS__ . '::' . $method . '()', E_USER_ERROR); // @codingStandardsIgnoreLine
         }
     }
 
@@ -503,12 +555,11 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         if ($attribute instanceof Mage_Catalog_Model_Resource_Eav_Attribute) {
             /** @noinspection PhpParamsInspection */
             $attributeValue = $product->getAttributeText($attributeName);
-            if (empty($attributeValue)) {
-                $attributeValue = $product->getData($attributeName);
-            }
 
-            if (is_scalar($attributeValue)) {
-                return trim($attributeValue);
+            if (!empty($attributeValue)) {
+                return $attributeValue;
+            } elseif (is_scalar($attributeData)) {
+                return trim($attributeData);
             } elseif (is_array($attributeValue)) {
                 return implode(',', $attributeValue);
             }

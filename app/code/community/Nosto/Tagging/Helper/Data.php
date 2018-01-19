@@ -106,6 +106,11 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_USE_SKUS = 'nosto_tagging/general/use_skus';
 
     /**
+     * Path to store config for custom fields
+     */
+    const XML_PATH_USE_CUSTOM_FIELDS = 'nosto_tagging/general/use_custom_fields';
+
+    /**
      * Path to store config for alternate images
      */
     const XML_PATH_USE_ALTERNATE_IMAGES = 'nosto_tagging/general/use_alternate_images';
@@ -516,6 +521,17 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     public function getUseSkus($store = null)
     {
         return (bool)Mage::getStoreConfig(self::XML_PATH_USE_SKUS, $store);
+    }
+
+   /**
+     * Returns on/off setting for custom fields
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     * @return boolean
+     */
+    public function getUseCustomFields($store = null)
+    {
+        return (bool)Mage::getStoreConfig(self::XML_PATH_USE_CUSTOM_FIELDS, $store);
     }
 
     /**
