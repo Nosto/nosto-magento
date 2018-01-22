@@ -203,7 +203,12 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
         foreach ($attributes as $attribute) {
             try {
                 //tag user defined attributes only
-                if ($attribute->getData('is_user_defined') == 1) {
+                if ($attribute->getData('is_user_defined') == 1
+                    && (
+                        $attribute->getIsVisibleOnFront() == 1
+                        || $attribute->getIsFilterable() == 1
+                    )
+                ) {
                     $attributeCode = $attribute->getAttributeCode();
                     $attributeValue = $this->getAttributeValue($product, $attributeCode);
                     if (is_scalar($attributeValue)) {
