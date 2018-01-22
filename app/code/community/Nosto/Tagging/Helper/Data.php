@@ -91,14 +91,34 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_USE_PRODUCT_API = 'nosto_tagging/general/use_product_api';
 
     /**
+     * Path to store config for using the product Indexer or not
+     */
+    const XML_PATH_USE_PRODUCT_INDEXER = 'nosto_tagging/general/use_product_indexer';
+
+    /**
+     * Path to store config for automatically update catalog price rule changes
+     */
+    const XML_PATH_UPDATE_CATALOG_PRICE_RULES = 'nosto_tagging/general/update_catalog_price_rules';
+
+    /**
      * Path to store config for using SKUs
      */
     const XML_PATH_USE_SKUS = 'nosto_tagging/general/use_skus';
 
     /**
+     * Path to store config for custom fields
+     */
+    const XML_PATH_USE_CUSTOM_FIELDS = 'nosto_tagging/general/use_custom_fields';
+
+    /**
      * Path to store config for alternate images
      */
     const XML_PATH_USE_ALTERNATE_IMAGES = 'nosto_tagging/general/use_alternate_images';
+
+    /**
+     * Path to store config for send add to cart event to nosto
+     */
+    const XML_PATH_SEND_ADD_TO_CART_EVENT = 'nosto_tagging/general/send_add_to_cart_event';
 
     /**
      * Path to store config for using inventory level
@@ -273,7 +293,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      *
      * @param Mage_Core_Model_Store|null $store the store model or null.
      *
-     * @return boolean
+     * @return bool
      */
     public function getUsePrettyProductUrls($store = null)
     {
@@ -463,7 +483,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      * Returns on/off setting for product API
      *
      * @param Mage_Core_Model_Store|null $store the store model or null.
-     * @return boolean
+     * @return bool
      */
     public function getUseProductApi($store = null)
     {
@@ -471,21 +491,54 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Returns on/off setting for product indexer
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     * @return bool
+     */
+    public function getUseProductIndexer($store = null)
+    {
+        return (bool)Mage::getStoreConfig(self::XML_PATH_USE_PRODUCT_INDEXER, $store);
+    }
+
+    /**
+     * Returns on/off setting for automatic catalog price rule updates
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     * @return bool
+     */
+    public function getUseAutomaticCatalogPriceRuleUpdates($store = null)
+    {
+        return (bool)Mage::getStoreConfig(self::XML_PATH_UPDATE_CATALOG_PRICE_RULES, $store);
+    }
+
+    /**
      * Returns on/off setting for SKUs
      *
      * @param Mage_Core_Model_Store|null $store the store model or null.
-     * @return boolean
+     * @return bool
      */
     public function getUseSkus($store = null)
     {
         return (bool)Mage::getStoreConfig(self::XML_PATH_USE_SKUS, $store);
     }
 
+   /**
+     * Returns on/off setting for custom fields
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     * @return boolean
+     */
+    public function getUseCustomFields($store = null)
+    {
+        return (bool)Mage::getStoreConfig(self::XML_PATH_USE_CUSTOM_FIELDS, $store);
+    }
+
     /**
      * Returns on/off setting for alternate image urls
      *
      * @param Mage_Core_Model_Store|null $store the store model or null.
-     * @return boolean
+     * @return bool
      */
     public function getUseAlternateImages($store = null)
     {
@@ -496,7 +549,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      * Returns on/off setting for inventory level
      *
      * @param Mage_Core_Model_Store|null $store the store model or null.
-     * @return boolean
+     * @return bool
      */
     public function getUseInventoryLevel($store = null)
     {
@@ -507,11 +560,22 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      * Returns on/off setting for using low stock
      *
      * @param Mage_Core_Model_Store|null $store the store model or null.
-     * @return boolean
+     * @return bool
      */
     public function getUseLowStock($store = null)
     {
         return (bool)Mage::getStoreConfig(self::XML_PATH_USE_LOW_STOCK, $store);
+    }
+
+    /**
+     * Returns is the sending add to cart event to nosto enabled
+     *
+     * @param Mage_Core_Model_Store $store
+     * @return bool
+     */
+    public function getSendAddToCartEvent($store)
+    {
+        return (bool)Mage::getStoreConfig(self::XML_PATH_SEND_ADD_TO_CART_EVENT, $store);
     }
 
     /**
@@ -637,6 +701,22 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         }
 
         return $version;
+    }
+
+    /**
+     * Returns boolean if all stores use product indexer
+     *
+     * @return bool
+     */
+    public function getAllStoresUseProductIndexer()
+    {
+        foreach ($this->getAllStoreViews() as $store) {
+            if (!$this->getUseProductIndexer($store)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
 

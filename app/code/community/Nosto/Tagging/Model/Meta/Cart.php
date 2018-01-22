@@ -41,6 +41,7 @@ class Nosto_Tagging_Model_Meta_Cart extends Nosto_Object_Cart_Cart
      * Loads the order info from a Magento quote model.
      *
      * @param Mage_Sales_Model_Quote $quote the quote model.
+     * @return bool
      */
     public function loadData(Mage_Sales_Model_Quote $quote)
     {
@@ -63,6 +64,8 @@ class Nosto_Tagging_Model_Meta_Cart extends Nosto_Object_Cart_Cart
                 'magentoQuote' => $quote
             )
         );
+
+        return true;
     }
 
     /**

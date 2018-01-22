@@ -26,30 +26,11 @@
  */
 
 /**
- * Meta data class which holds information about the current backend user.
+ * This install script will run only when installing the version 3.4.0 or above
  *
- * @category Nosto
- * @package  Nosto_Tagging
- * @author   Nosto Solutions Ltd <magento@nosto.com>
+ * Adds custom attribute `nosto_customer_reference` for the Customer object
  */
-class Nosto_Tagging_Model_Meta_User extends Nosto_Object_User
-{
-    /**
-     * Loads the user data from the active session.
-     *
-     * @return bool
-     */
-    public function loadData()
-    {
-        /** @var Mage_Admin_Model_User $user */
-        /** @noinspection PhpUndefinedMethodInspection */
-        $user = Mage::getSingleton('admin/session')->getUser();
-        if ($user) {
-            $this->setFirstName($user->getFirstname());
-            $this->setLastName($user->getLastname());
-            $this->setEmail($user->getEmail());
-        }
 
-        return true;
-    }
-}
+/** @var $setupHelper Nosto_Tagging_Helper_Setup */
+$setupHelper = Mage::helper('nosto_tagging/setup');
+$setupHelper->createNostoIndexTable($this);

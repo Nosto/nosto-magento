@@ -1,9 +1,9 @@
 <?php
 /**
  * Magento
- *  
+ *
  * NOTICE OF LICENSE
- *  
+ *
  * This source file is subject to the Open Software License (OSL 3.0)
  * that is bundled with this package in the file LICENSE.txt.
  * It is also available through the world-wide-web at this URL:
@@ -11,13 +11,13 @@
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
- *  
+ *
  * DISCLAIMER
- *  
+ *
  * Do not edit or add to this file if you wish to upgrade Magento to newer
  * versions in the future. If you wish to customize Magento for your
  * needs please refer to http://www.magentocommerce.com for more information.
- *  
+ *
  * @category  Nosto
  * @package   Nosto_Tagging
  * @author    Nosto Solutions Ltd <magento@nosto.com>
@@ -25,31 +25,40 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+use Nosto_Tagging_Helper_Log as NostoLog;
+
 /**
- * Meta data class which holds information about the current backend user.
+ * Handles sending cart updates to Nosto via the API.
  *
- * @category Nosto
- * @package  Nosto_Tagging
- * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_User extends Nosto_Object_User
+class Nosto_Tagging_Model_Service_Cart
 {
     /**
-     * Loads the user data from the active session.
+     * Sends a cart update to Nosto
      *
+     * @param Nosto_Object_Event_Cart_Update $cartUpdate
+     * @param Nosto_Object_Signup_Account $account
      * @return bool
      */
-    public function loadData()
+    public function update(
+        Nosto_Object_Event_Cart_Update $cartUpdate,
+        Nosto_Object_Signup_Account $account
+    )
     {
-        /** @var Mage_Admin_Model_User $user */
-        /** @noinspection PhpUndefinedMethodInspection */
-        $user = Mage::getSingleton('admin/session')->getUser();
-        if ($user) {
-            $this->setFirstName($user->getFirstname());
-            $this->setLastName($user->getLastname());
-            $this->setEmail($user->getEmail());
+        if (!$account || !$account->isConnectedToNosto()) {
+            return false;
         }
 
-        return true;
+        /* @var $helper Nosto_Tagging_Helper_Data */
+        $helper = Mage::helper('nosto_tagging');
+        $nostoCustomerId = $helper->getCookieId();
+        if (!$nostoCustomerId) {
+            NostoLog::error('Cannot find customer id from cookie');
+
+            return false;
+        }
+        $service = new Nosto_Operation_CartOperation($account);
+
+        return $service->updateCart($cartUpdate, $nostoCustomerId, $account->getName());
     }
 }

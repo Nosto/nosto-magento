@@ -1,5 +1,14 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.5.0
+* Introduce custom indexer for Nosto product data
+* Update Nosto product data after catalog price rules are saved and applied
+* Add user defined attributes as custom fields to Nosto product
+* Add boolean return for data loaders
+* Use fixed price for bundled product if defined
+
+### 3.4.0 (skipped)
+
 ### 3.3.7
 * Add validation for Nosto product before product tagging, sending product over the API and before exporting
 

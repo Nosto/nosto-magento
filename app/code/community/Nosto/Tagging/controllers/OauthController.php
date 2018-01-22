@@ -115,7 +115,7 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
      * the current store view (as defined by the parameter.)
      *
      * @param Nosto_Types_Signup_AccountInterface $account the account to save
-     * @return boolean a boolean value indicating whether the account was saved
+     * @return bool a boolean value indicating whether the account was saved
      */
     public function save(Nosto_Types_Signup_AccountInterface $account)
     {

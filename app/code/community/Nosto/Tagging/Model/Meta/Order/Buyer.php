@@ -40,6 +40,7 @@ class Nosto_Tagging_Model_Meta_Order_Buyer extends Nosto_Object_Order_Buyer
      * Loads the order buyer from the given order.
      *
      * @param Mage_Sales_Model_Order $order the order from which to load the buyer
+     * @return bool
      */
     public function loadData(Mage_Sales_Model_Order $order)
     {
@@ -53,5 +54,7 @@ class Nosto_Tagging_Model_Meta_Order_Buyer extends Nosto_Object_Order_Buyer
             $this->setPostcode($address->getPostcode());
             $this->setCountry($address->getCountry());
         }
+
+        return true;
     }
 }

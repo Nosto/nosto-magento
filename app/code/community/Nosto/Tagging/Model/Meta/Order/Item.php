@@ -41,6 +41,7 @@ abstract class Nosto_Tagging_Model_Meta_Order_Item extends Nosto_Object_Cart_Lin
      *
      * @param Mage_Sales_Model_Order_Item $item
      * @param $currencyCode
+     * @return bool
      */
     public function loadData(Mage_Sales_Model_Order_Item $item, $currencyCode)
     {
@@ -52,6 +53,8 @@ abstract class Nosto_Tagging_Model_Meta_Order_Item extends Nosto_Object_Cart_Lin
         parent::setPrice($nostoPriceHelper->getItemFinalPriceInclTax($item));
         parent::setPriceCurrencyCode($currencyCode);
         parent::setSkuId($this->buildSkuId($item));
+
+        return true;
     }
 
     /**

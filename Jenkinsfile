@@ -19,14 +19,6 @@ pipeline {
       }
     }
 
-    stage('Composer validation') {
-      steps {
-        catchError {
-          sh "composer validate --strict"
-        }
-      }
-    }
-
     stage('Code Sniffer') {
       steps {
         catchError {

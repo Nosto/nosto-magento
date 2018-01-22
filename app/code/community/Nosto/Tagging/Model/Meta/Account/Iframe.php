@@ -42,6 +42,7 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Nosto_Object_Iframe
      * Loads the meta data for the given store.
      *
      * @param Mage_Core_Model_Store $store the store view to load the data for.
+     * @return bool
      */
     public function loadData(Mage_Core_Model_Store $store)
     {
@@ -71,5 +72,7 @@ class Nosto_Tagging_Model_Meta_Account_Iframe extends Nosto_Object_Iframe
         $this->setPreviewUrlFront($urlHelper->getPreviewUrlFront($store));
         $this->setShopName($store->getName());
         $this->setModules($moduleHelper->getModulesForIntegration());
+
+        return true;
     }
 }

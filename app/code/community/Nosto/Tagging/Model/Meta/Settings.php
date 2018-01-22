@@ -39,6 +39,7 @@ class Nosto_Tagging_Model_Meta_Settings extends Nosto_Object_Settings
      * Loads the meta data for the given store.
      *
      * @param Mage_Core_Model_Store $store the store view to load the data for.
+     * @return bool
      */
     public function loadData(Mage_Core_Model_Store $store)
     {
@@ -80,5 +81,7 @@ class Nosto_Tagging_Model_Meta_Settings extends Nosto_Object_Settings
                 );
             }
         }
+
+        return true;
     }
 }
