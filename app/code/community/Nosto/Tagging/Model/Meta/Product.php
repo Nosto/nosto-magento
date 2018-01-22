@@ -36,7 +36,6 @@
  */
 class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
 {
-
     use Nosto_Tagging_Model_Meta_Product_Trait;
 
     /**
@@ -137,6 +136,9 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         } elseif ($dataHelper->isVariationEnabled($store)) {
             $this->amendVariations($product, $store);
         }
+        if ($dataHelper->getUseCustomFields($store)) {
+            $this->setCustomFields($this->loadCustomFields($product));
+        }
 
         Mage::dispatchEvent(
             Nosto_Tagging_Helper_Event::EVENT_NOSTO_PRODUCT_LOAD_AFTER,
@@ -159,9 +161,9 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      */
     protected function amendVariations(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
-        /* @var Nosto_Tagging_Helper_Variation $variationHelper  */
+        /* @var Nosto_Tagging_Helper_Variation $variationHelper */
         $variationHelper = Mage::helper('nosto_tagging/variation');
-        $this->setVariationId($variationHelper->getDefaultVariationId($store));
+        $this->setVariationId($variationHelper->getDefaultVariationId());
 
         /** @var Nosto_Tagging_Model_Meta_Variation_Collection $variationCollection */
         $variationCollection = Mage::getModel('nosto_tagging/meta_variation_collection');
@@ -312,7 +314,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      */
     protected function amendReviews(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
-        /* @var Nosto_Tagging_Helper_Data $dataHelper*/
+        /* @var Nosto_Tagging_Helper_Data $dataHelper */
         $dataHelper = Mage::helper('nosto_tagging');
         $ratingProvider = $dataHelper->getRatingsAndReviewsProvider($store);
         if ($ratingProvider) {
@@ -438,7 +440,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         if (method_exists($this, $compatibilityMethod)) {
             return $this->$compatibilityMethod($args);
         } else {
-            trigger_error('Call to undefined method '.__CLASS__.'::'.$method.'()', E_USER_ERROR); // @codingStandardsIgnoreLine
+            trigger_error('Call to undefined method ' . __CLASS__ . '::' . $method . '()', E_USER_ERROR); // @codingStandardsIgnoreLine
         }
     }
 

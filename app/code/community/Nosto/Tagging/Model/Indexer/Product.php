@@ -35,11 +35,6 @@
 class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstract
 {
     /**
-     * Data key for matching result to be saved in
-     */
-    const EVENT_MATCH_RESULT_KEY = 'nosto_indexer';
-
-    /**
      * Reindex price event type
      */
     const EVENT_TYPE_REINDEX_PRICE = 'catalog_reindex_price';

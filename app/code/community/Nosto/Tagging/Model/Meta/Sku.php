@@ -76,21 +76,55 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
             $this->setUrl($this->buildUrl($sku, $store));
         }
         $this->amendCustomizableAttributes($sku, $store);
+        $this->loadCustomFieldsFromConfigurableAttributes($sku, $parent, $store);
+        $this->loadCustomFieldsFromAttributeSet($sku, $store);
+    }
+
+    /**
+     * Tag the custom attributes
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @param Mage_Core_Model_Store $store
+     */
+    protected function loadCustomFieldsFromAttributeSet(
+        Mage_Catalog_Model_Product $product,
+        Mage_Core_Model_Store $store
+    )
+    {
+        /** @var Nosto_Tagging_Helper_Data $dataHelper */
+        $dataHelper = Mage::helper('nosto_tagging');
+        if ($dataHelper->getUseCustomFields($store)) {
+            $customFields = $this->loadCustomFields($product);
+            foreach ($customFields as $key => $value) {
+                $this->addCustomField($key, $value);
+            }
+        }
+    }
+
+    protected function loadCustomFieldsFromConfigurableAttributes(
+        Mage_Catalog_Model_Product $sku,
+        Mage_Catalog_Model_Product $parent,
+        Mage_Core_Model_Store $store
+    )
+    {
+        /** @var Nosto_Tagging_Helper_Data $dataHelper */
+        $dataHelper = Mage::helper('nosto_tagging');
+        if (!$dataHelper->getUseCustomFields($store)) {
+            return;
+        }
+
         /** @var Mage_Catalog_Model_Product_Type_Configurable $parentType */
         $parentType = $parent->getTypeInstance();
         if ($parentType instanceof Mage_Catalog_Model_Product_Type_Configurable) {
             $configurableAttributes = $parentType->getConfigurableAttributesAsArray($parent);
             foreach ($configurableAttributes as $configurableAttribute) {
                 try {
-                    $attributeValue = $this->getAttributeValue(
-                        $sku,
-                        $configurableAttribute['attribute_code']
-                    );
-                    if (!empty($attributeValue) && is_scalar($attributeValue)) {
-                        $this->addCustomField(
-                            $configurableAttribute['attribute_code'],
-                            $attributeValue
-                        );
+                    $attributeCode = $configurableAttribute['attribute_code'];
+                    if (!array_key_exists($this->getCustomFields(), $attributeCode)) {
+                        $attributeValue = $this->getAttributeValue($sku, $attributeCode);
+                        if (is_scalar($attributeValue)) {
+                            $this->addCustomField($attributeCode, $attributeValue);
+                        }
                     }
                 } catch (Exception $e) {
                     Nosto_Tagging_Helper_Log::exception($e);
