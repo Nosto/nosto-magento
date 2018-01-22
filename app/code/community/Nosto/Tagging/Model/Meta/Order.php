@@ -42,6 +42,8 @@ class Nosto_Tagging_Model_Meta_Order extends Nosto_Object_Order_Order
      * Loads the order info from a Magento order model.
      *
      * @param Mage_Sales_Model_Order $order the order model.
+     * @return bool
+     * @throws Nosto_NostoException
      */
     public function loadData(Mage_Sales_Model_Order $order)
     {
@@ -113,6 +115,8 @@ class Nosto_Tagging_Model_Meta_Order extends Nosto_Object_Order_Order
                 'magentoOrder' => $order
             )
         );
+
+        return true;
     }
 
     /**

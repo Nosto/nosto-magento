@@ -39,6 +39,7 @@ class Nosto_Tagging_Model_Collection_Rates extends Nosto_Object_ExchangeRateColl
      * Loads the currencies and exchange rates from a store
      *
      * @param Mage_Core_Model_Store|null $store the store to get the exchange rates for.
+     * @return bool
      */
     public function loadData(Mage_Core_Model_Store $store = null)
     {
@@ -54,5 +55,7 @@ class Nosto_Tagging_Model_Collection_Rates extends Nosto_Object_ExchangeRateColl
             }
             parent::addRate($code, new Nosto_Object_ExchangeRate($code, $rate));
         }
+
+        return true;
     }
 }

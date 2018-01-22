@@ -53,8 +53,9 @@ class Nosto_Tagging_Model_Meta_Cart_Builder
                 $simpleItem = Mage::getModel(
                     'nosto_tagging/meta_cart_item_simple'
                 );
-                $simpleItem->loadData($item, $currencyCode);
-                $nostoItem = $simpleItem;
+                if ($simpleItem->loadData($item, $currencyCode)) {
+                    $nostoItem = $simpleItem;
+                }
                 break;
 
             case Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE:
@@ -62,8 +63,9 @@ class Nosto_Tagging_Model_Meta_Cart_Builder
                 $configurableItem = Mage::getModel(
                     'nosto_tagging/meta_cart_item_configurable'
                 );
-                $configurableItem->loadData($item, $currencyCode);
-                $nostoItem = $configurableItem;
+                if ($configurableItem->loadData($item, $currencyCode)) {
+                    $nostoItem = $configurableItem;
+                }
                 break;
 
             case Mage_Catalog_Model_Product_Type::TYPE_GROUPED:
@@ -71,8 +73,9 @@ class Nosto_Tagging_Model_Meta_Cart_Builder
                 $groupedItem = Mage::getModel(
                     'nosto_tagging/meta_cart_item_grouped'
                 );
-                $groupedItem->loadData($item, $currencyCode);
-                $nostoItem = $groupedItem;
+                if ($groupedItem->loadData($item, $currencyCode)) {
+                    $nostoItem = $groupedItem;
+                }
                 break;
 
             case Mage_Catalog_Model_Product_Type::TYPE_BUNDLE:
@@ -80,8 +83,9 @@ class Nosto_Tagging_Model_Meta_Cart_Builder
                 $bundledItem = Mage::getModel(
                     'nosto_tagging/meta_cart_item_bundled'
                 );
-                $bundledItem->loadData($item, $currencyCode);
-                $nostoItem = $bundledItem;
+                if ($bundledItem->loadData($item, $currencyCode)) {
+                    $nostoItem = $bundledItem;
+                }
                 break;
         }
 

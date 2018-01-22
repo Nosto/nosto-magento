@@ -45,7 +45,7 @@ class Nosto_Tagging_Model_Meta_Product_Builder
      * @param bool $useIndex
      * @throws Nosto_NostoException
      *
-     * @return Nosto_Tagging_Model_Meta_Product
+     * @return Nosto_Tagging_Model_Meta_Product|null
      */
     public static function build(
         Mage_Catalog_Model_Product $product,
@@ -74,11 +74,11 @@ class Nosto_Tagging_Model_Meta_Product_Builder
         }
 
         $nostoProduct = Mage::getModel('nosto_tagging/meta_product');
-        $nostoProduct->loadData(
-            $product,
-            $store
-        );
+        if (!$nostoProduct->loadData($product, $store)) {
+            return null;
+        }
 
         return $nostoProduct;
+
     }
 }

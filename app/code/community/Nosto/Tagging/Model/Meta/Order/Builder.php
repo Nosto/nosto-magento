@@ -49,29 +49,33 @@ class Nosto_Tagging_Model_Meta_Order_Builder
             case Mage_Catalog_Model_Product_Type::TYPE_SIMPLE:
                 /** @var Nosto_Tagging_Model_Meta_Order_Item_Simple $simpleItem */
                 $simpleItem = Mage::getModel('nosto_tagging/meta_order_item_simple');
-                $simpleItem->loadData($item, $currencyCode);
-                $nostoItem = $simpleItem;
+                if ($simpleItem->loadData($item, $currencyCode)) {
+                    $nostoItem = $simpleItem;
+                }
                 break;
 
             case Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE:
                 /** @var Nosto_Tagging_Model_Meta_Order_Item_Configurable $configurableItem */
                 $configurableItem = Mage::getModel('nosto_tagging/meta_order_item_configurable');
-                $configurableItem->loadData($item, $currencyCode);
-                $nostoItem = $configurableItem;
+                if ($configurableItem->loadData($item, $currencyCode)) {
+                    $nostoItem = $configurableItem;
+                }
                 break;
 
             case Mage_Catalog_Model_Product_Type::TYPE_GROUPED:
                 /** @var Nosto_Tagging_Model_Meta_Order_Item_Grouped $groupedItem */
                 $groupedItem = Mage::getModel('nosto_tagging/meta_order_item_grouped');
-                $groupedItem->loadData($item, $currencyCode);
-                $nostoItem = $groupedItem;
+                if ($groupedItem->loadData($item, $currencyCode)) {
+                    $nostoItem = $groupedItem;
+                }
                 break;
 
             case Mage_Catalog_Model_Product_Type::TYPE_BUNDLE:
                 /** @var Nosto_Tagging_Model_Meta_Order_Item_Bundled $bundledItem */
                 $bundledItem = Mage::getModel('nosto_tagging/meta_order_item_bundled');
-                $bundledItem->loadData($item, $currencyCode);
-                $nostoItem = $bundledItem;
+                if ($bundledItem->loadData($item, $currencyCode)) {
+                    $nostoItem = $bundledItem;
+                }
                 break;
         }
 

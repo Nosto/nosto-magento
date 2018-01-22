@@ -37,7 +37,7 @@ class Nosto_Tagging_Model_Meta_Account_Owner extends Nosto_Object_Signup_Owner
 {
     /**
      * Loads the user data from the active session.
-     *
+     * @return bool
      */
     public function loadData()
     {
@@ -49,5 +49,7 @@ class Nosto_Tagging_Model_Meta_Account_Owner extends Nosto_Object_Signup_Owner
             $this->setLastName($user->getLastname());
             $this->setEmail($user->getEmail());
         }
+
+        return true;
     }
 }

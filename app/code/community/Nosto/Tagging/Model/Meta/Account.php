@@ -54,6 +54,7 @@ class Nosto_Tagging_Model_Meta_Account extends Nosto_Object_Signup_Signup
      * @param Mage_Core_Model_Store $store the store view to load the data for.
      * @param $signupDetails array the details of the signup qualification
      * @param Nosto_Types_Signup_OwnerInterface $owner the details of the signup owner
+     * @return bool
      */
     public function loadData(
         Mage_Core_Model_Store $store,
@@ -106,5 +107,7 @@ class Nosto_Tagging_Model_Meta_Account extends Nosto_Object_Signup_Signup
                 );
             }
         }
+
+        return true;
     }
 }

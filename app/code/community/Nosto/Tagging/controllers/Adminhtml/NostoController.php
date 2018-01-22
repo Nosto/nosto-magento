@@ -497,7 +497,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
     /**
      * Checks if logged in user has privilege to access Nosto settings
      *
-     * @return boolean
+     * @return bool
      */
     protected function _isAllowed()
     {

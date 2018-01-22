@@ -293,7 +293,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      *
      * @param Mage_Core_Model_Store|null $store the store model or null.
      *
-     * @return boolean
+     * @return bool
      */
     public function getUsePrettyProductUrls($store = null)
     {
@@ -483,7 +483,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      * Returns on/off setting for product API
      *
      * @param Mage_Core_Model_Store|null $store the store model or null.
-     * @return boolean
+     * @return bool
      */
     public function getUseProductApi($store = null)
     {
@@ -494,7 +494,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      * Returns on/off setting for product indexer
      *
      * @param Mage_Core_Model_Store|null $store the store model or null.
-     * @return boolean
+     * @return bool
      */
     public function getUseProductIndexer($store = null)
     {
@@ -505,7 +505,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      * Returns on/off setting for automatic catalog price rule updates
      *
      * @param Mage_Core_Model_Store|null $store the store model or null.
-     * @return boolean
+     * @return bool
      */
     public function getUseAutomaticCatalogPriceRuleUpdates($store = null)
     {
@@ -516,7 +516,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      * Returns on/off setting for SKUs
      *
      * @param Mage_Core_Model_Store|null $store the store model or null.
-     * @return boolean
+     * @return bool
      */
     public function getUseSkus($store = null)
     {
@@ -538,7 +538,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      * Returns on/off setting for alternate image urls
      *
      * @param Mage_Core_Model_Store|null $store the store model or null.
-     * @return boolean
+     * @return bool
      */
     public function getUseAlternateImages($store = null)
     {
@@ -549,7 +549,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      * Returns on/off setting for inventory level
      *
      * @param Mage_Core_Model_Store|null $store the store model or null.
-     * @return boolean
+     * @return bool
      */
     public function getUseInventoryLevel($store = null)
     {
@@ -560,7 +560,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      * Returns on/off setting for using low stock
      *
      * @param Mage_Core_Model_Store|null $store the store model or null.
-     * @return boolean
+     * @return bool
      */
     public function getUseLowStock($store = null)
     {
@@ -706,7 +706,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Returns boolean if all stores use product indexer
      *
-     * @return boolean
+     * @return bool
      */
     public function getAllStoresUseProductIndexer()
     {

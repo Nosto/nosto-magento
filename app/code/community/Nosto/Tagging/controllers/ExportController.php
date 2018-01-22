@@ -194,7 +194,7 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
                         Mage::app()->getStore(),
                         false
                     );
-                    if ($meta->isValid()) {
+                    if ($meta instanceof Nosto_Tagging_Model_Meta_Product && $meta->isValid()) {
                         // reindex the product as well if index is being used
                         if ($reindexProducts) {
                             $this->reindexIfNeeded($meta, $store);

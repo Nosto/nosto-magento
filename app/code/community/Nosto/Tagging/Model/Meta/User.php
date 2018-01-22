@@ -36,6 +36,8 @@ class Nosto_Tagging_Model_Meta_User extends Nosto_Object_User
 {
     /**
      * Loads the user data from the active session.
+     *
+     * @return bool
      */
     public function loadData()
     {
@@ -47,5 +49,7 @@ class Nosto_Tagging_Model_Meta_User extends Nosto_Object_User
             $this->setLastName($user->getLastname());
             $this->setEmail($user->getEmail());
         }
+
+        return true;
     }
 }
