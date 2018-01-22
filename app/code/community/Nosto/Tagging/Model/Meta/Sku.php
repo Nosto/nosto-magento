@@ -78,6 +78,8 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
         $this->amendCustomizableAttributes($sku, $store);
         $this->loadCustomFieldsFromConfigurableAttributes($sku, $parent, $store);
         $this->loadCustomFieldsFromAttributeSet($sku, $store);
+
+        return true;
     }
 
     /**
