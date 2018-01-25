@@ -310,7 +310,7 @@ class Nosto_Tagging_Model_Service_Product
         }
         /** @var Nosto_Tagging_Helper_Data $dataHelper */
         $dataHelper = Mage::helper('nosto_tagging');
-        if($dataHelper->getUseProductIndexer($store)) {
+        if ($dataHelper->getUseProductIndexer($store)) {
             $indexedProducts = Mage::getModel('nosto_tagging/index')
                 ->getCollection()
                 ->addFieldToFilter('product_id', array('in' => $productIds))
