@@ -118,7 +118,6 @@ class Nosto_Tagging_Model_Observer_Product
      * @param Varien_Event_Observer $observer the event observer.
      *
      * @return Nosto_Tagging_Model_Observer_Product
-     *
      */
     public function sendProductDelete(Varien_Event_Observer $observer)
     {
@@ -132,7 +131,11 @@ class Nosto_Tagging_Model_Observer_Product
             /* @var Nosto_Tagging_Model_Service_Product $productService */
             $productService = Mage::getModel('nosto_tagging/service_product');
             foreach (Mage::app()->getStores() as $store) {
-                $productService->discontinue($store, array($product->getId()));
+                try {
+                    $productService->discontinue($store, array($product->getId()));
+                } catch (\Exception $e) {
+                    Nosto_Tagging_Helper_Log::exception($e);
+                }
             }
         }
 
