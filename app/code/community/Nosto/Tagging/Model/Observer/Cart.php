@@ -91,12 +91,7 @@ class Nosto_Tagging_Model_Observer_Cart
             if ($dataHelper->getSendAddToCartEvent($store)) {
                 $quote = $quoteItem->getQuote();
                 if ($quote instanceof Mage_Sales_Model_Quote) {
-                    /** @var Nosto_TagginNOSTO_SERVER_URL=192.168.56.1:9000
-                    NOSTO_API_BASE_URL=http://api.dev.nos.to:9900
-                    NOSTO_OAUTH_BASE_URL=http://192.168.56.1:9000/oauth
-                    NOSTO_WEB_HOOK_BASE_URL=http://192.168.56.1:9000
-                    NOSTO_IFRAME_ORIGIN_REGEXP=.*
-                    g_Model_Meta_Cart $nostoCart */
+                    /** @var Nosto_Tagging_Model_Meta_Cart $nostoCart */
                     $nostoCart = Mage::getModel('nosto_tagging/meta_cart');
                     $nostoCart->loadData($quote);
                     $cartUpdate->setCart($nostoCart);
