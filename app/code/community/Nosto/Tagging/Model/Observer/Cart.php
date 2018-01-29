@@ -122,7 +122,7 @@ class Nosto_Tagging_Model_Observer_Cart
                         false
                     );
                 } else {
-                    NostoLog::info('Head sent already. Cannot set the cookie to trigger cart popup.');
+                    NostoLog::info('Headers sent already. Cannot set the cookie to trigger cart popup.');
                 }
             }
         } catch (\Exception $e) {
