@@ -42,6 +42,8 @@ use Nosto_Tagging_Helper_Log as NostoLog;
  */
 class Nosto_Tagging_Model_Observer_Cart
 {
+    const COOKIE_NAME = 'nosto.showAddToCartPopup';
+
     /**
      * Cart item added event handler
      *
@@ -72,10 +74,6 @@ class Nosto_Tagging_Model_Observer_Cart
                 return $this;
             }
 
-            if (!$dataHelper->getSendAddToCartEvent($store)) {
-                return $this;
-            }
-
             $quoteItem = $observer->getQuoteItem();
 
             if (!$quoteItem instanceof Mage_Sales_Model_Quote_Item) {
@@ -90,19 +88,48 @@ class Nosto_Tagging_Model_Observer_Cart
             $addedItem = Nosto_Tagging_Model_Meta_Cart_Builder::buildItem($quoteItem, $currencyCode);
             $cartUpdate->setAddedItems(array($addedItem));
 
-            $quote = $quoteItem->getQuote();
-            if ($quote instanceof Mage_Sales_Model_Quote) {
-                /** @var Nosto_Tagging_Model_Meta_Cart $nostoCart */
-                $nostoCart = Mage::getModel('nosto_tagging/meta_cart');
-                $nostoCart->loadData($quote);
-                $cartUpdate->setCart($nostoCart);
-            } else {
-                NostoLog::info('Cannot find quote from the event.');
-            }
+            if ($dataHelper->getSendAddToCartEvent($store)) {
+                $quote = $quoteItem->getQuote();
+                if ($quote instanceof Mage_Sales_Model_Quote) {
+                    /** @var Nosto_TagginNOSTO_SERVER_URL=192.168.56.1:9000
+                    NOSTO_API_BASE_URL=http://api.dev.nos.to:9900
+                    NOSTO_OAUTH_BASE_URL=http://192.168.56.1:9000/oauth
+                    NOSTO_WEB_HOOK_BASE_URL=http://192.168.56.1:9000
+                    NOSTO_IFRAME_ORIGIN_REGEXP=.*
+                    g_Model_Meta_Cart $nostoCart */
+                    $nostoCart = Mage::getModel('nosto_tagging/meta_cart');
+                    $nostoCart->loadData($quote);
+                    $cartUpdate->setCart($nostoCart);
+                } else {
+                    NostoLog::info('Cannot find quote from the event.');
+                }
 
-            /* @var Nosto_Tagging_Model_Service_Cart $service */
-            $service = Mage::getModel('nosto_tagging/service_cart');
-            $service->update($cartUpdate, $account);
+                /* @var Nosto_Tagging_Model_Service_Cart $service */
+                $service = Mage::getModel('nosto_tagging/service_cart');
+                $service->update($cartUpdate, $account);
+            } else {
+                //set the cookie to trigger add to cart popup
+                if (!headers_sent()) {
+                    $name = self::COOKIE_NAME;
+                    $path = '/';
+                    $period = 60;//60 seconds
+
+                    /** @var Mage_Core_Model_Cookie $cookie */
+                    $cookie = Mage::getModel('core/cookie');
+
+                    $cookie->set(
+                        $name,
+                        Nosto_Helper_SerializationHelper::serialize($cartUpdate),
+                        $period,
+                        $path,
+                        false,
+                        false,
+                        false
+                    );
+                } else {
+                    NostoLog::info('Head sent already. Cannot set the cookie to trigger cart popup.');
+                }
+            }
         } catch (\Exception $e) {
             NostoLog::exception($e);
         }
