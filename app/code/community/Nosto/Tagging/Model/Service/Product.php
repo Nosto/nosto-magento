@@ -294,6 +294,42 @@ class Nosto_Tagging_Model_Service_Product
     }
 
     /**
+     * Deletes / discontinues products
+     *
+     * @param Mage_Core_Model_Store $store
+     * @param array $productIds
+     * @throws Exception
+     */
+    public function discontinue(Mage_Core_Model_Store $store, array $productIds)
+    {
+        /** @var Nosto_Tagging_Helper_Account $helper */
+        $helper = Mage::helper('nosto_tagging/account');
+        $account = $helper->find($store);
+        if ($account === null || !$account->isConnectedToNosto()) {
+            return;
+        }
+        /** @var Nosto_Tagging_Helper_Data $dataHelper */
+        $dataHelper = Mage::helper('nosto_tagging');
+        if ($dataHelper->getUseProductIndexer($store)) {
+            $indexedProducts = Mage::getModel('nosto_tagging/index')
+                ->getCollection()
+                ->addFieldToFilter('product_id', array('in' => $productIds))
+                ->addFieldToFilter('store_id', $store->getId()); // @codingStandardsIgnoreLine
+            /* @var Nosto_Tagging_Model_Index $indexedProduct*/
+            foreach ($indexedProducts as $indexedProduct) {
+                $indexedProduct->delete();
+            }
+        }
+        $operation = new Nosto_Operation_DeleteProduct($account);
+        $operation->setProductIds($productIds);
+        try {
+            $operation->delete();
+        } catch (\Exception $e) {
+            Nosto_Tagging_Helper_Log::exception($e);
+        }
+    }
+
+    /**
      * Returns the wait timeout for product API call
      *
      * @return int
