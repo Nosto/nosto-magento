@@ -42,7 +42,7 @@ use Nosto_Tagging_Helper_Log as NostoLog;
  */
 class Nosto_Tagging_Model_Observer_Cart
 {
-    const COOKIE_NAME = 'nosto.showAddToCartPopup';
+    const COOKIE_NAME = 'nosto.itemsAddedToCart';
 
     /**
      * Cart item added event handler
@@ -103,7 +103,7 @@ class Nosto_Tagging_Model_Observer_Cart
                 $service = Mage::getModel('nosto_tagging/service_cart');
                 $service->update($cartUpdate, $account);
             } else {
-                //set the cookie to trigger add to cart popup
+                //set the cookie to trigger add to cart event
                 if (!headers_sent()) {
                     $name = self::COOKIE_NAME;
                     $path = '/';
@@ -122,7 +122,7 @@ class Nosto_Tagging_Model_Observer_Cart
                         false
                     );
                 } else {
-                    NostoLog::info('Headers sent already. Cannot set the cookie to trigger cart popup.');
+                    NostoLog::info('Headers sent already. Cannot set the cookie.');
                 }
             }
         } catch (\Exception $e) {
