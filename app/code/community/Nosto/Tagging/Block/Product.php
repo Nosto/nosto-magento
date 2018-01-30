@@ -80,14 +80,21 @@ class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
     public function getMetaProduct()
     {
         if ($this->_product === null) {
-            /** @var Nosto_Tagging_Model_Meta_Product $model */
-            $model = Mage::getModel('nosto_tagging/meta_product');
+            /* @var Nosto_Tagging_Helper_Data $dataHelper */
+            $dataHelper = Mage::helper('nosto_tagging');
             try {
-                $model->loadData($this->getProduct());
+                $store = Mage::app()->getStore();
+                $model = Nosto_Tagging_Model_Meta_Product_Builder::build(
+                    $this->getProduct(),
+                    $store,
+                    $dataHelper->getUseProductIndexer($store)
+                );
+                if ($model instanceof Nosto_Tagging_Model_Meta_Product) {
+                    $this->_product = $model;
+                }
             } catch (Nosto_NostoException $e) {
                 Nosto_Tagging_Helper_Log::exception($e);
             }
-            $this->_product = $model;
         }
         return $this->_product;
     }

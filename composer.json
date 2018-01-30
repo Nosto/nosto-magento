@@ -1,7 +1,7 @@
 {
     "name": "nosto/nosto-magento-extension",
     "description": "Nosto Magento extension",
-    "license": "OSL v3.0",
+    "license": "OSL-3.0",
     "type": "magento-module",
     "repositories": {
         "magento-eqp": {
@@ -23,7 +23,7 @@
     },
     "require": {
         "php": ">=5.4.0",
-        "nosto/php-sdk": "3.1.6"
+        "nosto/php-sdk": "3.2.0"
     },
     "require-dev": {
         "mridang/magazine": "0.1",

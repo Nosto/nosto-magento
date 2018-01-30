@@ -38,6 +38,7 @@ class Nosto_Tagging_Model_Meta_Oauth extends Nosto_OAuth
      * Loads the meta data for the given store.
      *
      * @param Mage_Core_Model_Store $store the store view to load the data for.
+     * @return bool
      */
     public function loadData(Mage_Core_Model_Store $store)
     {
@@ -48,5 +49,7 @@ class Nosto_Tagging_Model_Meta_Oauth extends Nosto_OAuth
         $this->setClientId('magento');
         $this->setClientSecret('magento');
         $this->setScopes(Nosto_Request_Api_Token::$tokenNames);
+
+        return true;
     }
 }

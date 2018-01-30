@@ -191,6 +191,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
      * Loads data based on klarna checkout id
      *
      * @param string $klarnaCheckoutId
+     * @throws Exception
      */
     public function loadOrderByKlarnaCheckoutId($klarnaCheckoutId)
     {
@@ -223,6 +224,8 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
      * Loads data from order
      *
      * @param Mage_Sales_Model_Order $order
+     * @return bool
+     * @throws Nosto_NostoException
      */
     public function loadData(Mage_Sales_Model_Order $order)
     {
@@ -244,6 +247,8 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
         } else {
             $this->setOrderNumber($klarnaCheckoutId);
         }
+
+        return true;
     }
 
     /**
@@ -251,6 +256,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
      *
      * @param $order
      * @return bool
+     * @throws Exception
      */
     public static function validateKlarnaOrder($order)
     {

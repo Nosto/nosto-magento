@@ -1,5 +1,22 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.5.1
+* Remove deleted products from Nosto index
+* Use discontinue endpoint for removing (discontinuing)products in Nosto 
+* Enable custom field tagging by default
+
+### 3.5.0
+* Introduce custom indexer for Nosto product data
+* Update Nosto product data after catalog price rules are saved and applied
+* Add user defined attributes as custom fields to Nosto product
+* Add boolean return for data loaders
+* Use fixed price for bundled product if defined
+
+### 3.4.0 (skipped)
+
+### 3.3.7
+* Add validation for Nosto product before product tagging, sending product over the API and before exporting
+
 ### 3.3.6
 * Fix currency conversion issue in cart tagging
 * Add SKU id in cart tagging and order tagging

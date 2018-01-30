@@ -48,8 +48,8 @@ $product = $this->getMetaProduct();
 $helper = Mage::helper('nosto_tagging');
 $priceHelper = Mage::helper('nosto_tagging/price');
 ?>
-
-    <!-- Nosto Product Tagging -->
+<!-- Nosto Product Tagging -->
+<?php if ($product instanceof Nosto_Types_Product_ProductInterface && $product->isValid()): ?>
     <div class="nosto_product<?php echo ($this->isOveridden() ? ' overridden' : ''); ?>" style="display:none">
         <span class="url"><?php echo $product->getUrl(); ?></span>
         <span class="product_id"><?php echo $product->getProductId(); ?></span>
@@ -102,6 +102,13 @@ $priceHelper = Mage::helper('nosto_tagging/price');
         <?php if ($product->getThumbUrl()): ?>
             <span class="thumb_url"><?php echo $helper->escapeHtml($product->getThumbUrl()); ?></span>
         <?php endif; ?>
+        <?php if ($product->getCustomFields() && is_array($product->getCustomFields())) : ?>
+            <span class="custom_fields">
+                <?php foreach ($product->getCustomFields() as $key=>$val) : ?>
+                    <span class="<?php echo $helper->escapeHtml($key); ?>"><?php echo $helper->escapeHtml($val); ?></span>
+                <?php endforeach; ?>
+            </span>
+        <?php endif; ?>
         <?php if ($product->getSkus() instanceof Nosto_Object_Product_SkuCollection) : ?>
             <?php /* @var Nosto_Types_Product_SkuInterface $sku */ ?>
             <?php foreach ($product->getSkus() as $sku) : ?>
@@ -114,13 +121,13 @@ $priceHelper = Mage::helper('nosto_tagging/price');
                 <span class="image_url"><?php echo $helper->escapeHtml($sku->getImageUrl()); ?></span>
                 <span class="gtin"><?php echo $helper->escapeHtml($sku->getGtin()); ?></span>
                 <span class="availability"><?php echo $helper->escapeHtml($sku->getAvailability()); ?></span>
-                <span class="custom_fields">
-                <?php if (is_array($sku->getCustomFields())) : ?>
-                    <?php foreach ($sku->getCustomFields() as $key=>$val) : ?>
-                        <span class="<?php echo $helper->escapeHtml($key); ?>"><?php echo $helper->escapeHtml($val); ?></span>
-                    <?php endforeach; ?>
+                <?php if ($sku->getCustomFields() && is_array($sku->getCustomFields())) : ?>
+                    <span class="custom_fields">
+                        <?php foreach ($sku->getCustomFields() as $key=>$val) : ?>
+                            <span class="<?php echo $helper->escapeHtml($key); ?>"><?php echo $helper->escapeHtml($val); ?></span>
+                        <?php endforeach; ?>
+                    </span>
                 <?php endif; ?>
-                </span>
             </span>
             <?php endforeach; ?>
         <?php endif; ?>
@@ -138,6 +145,7 @@ $priceHelper = Mage::helper('nosto_tagging/price');
             <?php endforeach; ?>
         <?php endif; ?>
     </div>
-<?php if ($this->getCurrentCategory()): ?>
-    <div class="nosto_category" style="display:none"><?php echo $helper->escapeHtml($this->getCurrentCategory()); ?></div>
+    <?php if ($this->getCurrentCategory()): ?>
+        <div class="nosto_category" style="display:none"><?php echo $helper->escapeHtml($this->getCurrentCategory()); ?></div>
+    <?php endif; ?>
 <?php endif; ?>

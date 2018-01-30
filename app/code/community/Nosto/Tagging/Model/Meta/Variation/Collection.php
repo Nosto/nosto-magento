@@ -41,6 +41,7 @@ class Nosto_Tagging_Model_Meta_Variation_Collection extends Nosto_Object_Product
      * @param string $productAvailability
      * @param string $currencyCode
      * @param Mage_Core_Model_Store $store
+     * @return bool
      */
     public function loadData(
         Mage_Catalog_Model_Product $product,
@@ -64,5 +65,7 @@ class Nosto_Tagging_Model_Meta_Variation_Collection extends Nosto_Object_Product
             $variation->loadData($product, $group, $productAvailability, $currencyCode, $store);
             $this->append($variation);
         }
+
+        return true;
     }
 }
