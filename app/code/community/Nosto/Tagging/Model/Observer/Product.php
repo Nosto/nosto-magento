@@ -118,7 +118,6 @@ class Nosto_Tagging_Model_Observer_Product
      * @param Varien_Event_Observer $observer the event observer.
      *
      * @return Nosto_Tagging_Model_Observer_Product
-     *
      */
     public function sendProductDelete(Varien_Event_Observer $observer)
     {
@@ -129,28 +128,14 @@ class Nosto_Tagging_Model_Observer_Product
             // Products are always deleted from all store views, regardless of
             // the store view scope switcher on the product edit page.
             /** @var Mage_Core_Model_Store $store */
+            /* @var Nosto_Tagging_Model_Service_Product $productService */
+            $productService = Mage::getModel('nosto_tagging/service_product');
             foreach (Mage::app()->getStores() as $store) {
-                /** @var Nosto_Tagging_Helper_Account $helper */
-                $helper = Mage::helper('nosto_tagging/account');
-                $account = $helper->find($store);
-
-                if ($account === null || !$account->isConnectedToNosto()) {
-                    continue;
-                }
-                /* @var Mage_Core_Model_App_Emulation $emulation */
-                $emulation = Mage::getSingleton('core/app_emulation');
-                $env = $emulation->startEnvironmentEmulation($store->getId());
-                /** @var Nosto_Tagging_Model_Meta_Product $model */
-                $model = Mage::getModel('nosto_tagging/meta_product');
-                $model->setProductId($product->getId());
                 try {
-                    $service = new Nosto_Operation_UpsertProduct($account);
-                    $service->addProduct($model);
-                    $service->upsert();
-                } catch (Nosto_NostoException $e) {
-                    NostoLog::exception($e);
+                    $productService->discontinue($store, array($product->getId()));
+                } catch (\Exception $e) {
+                    Nosto_Tagging_Helper_Log::exception($e);
                 }
-                $emulation->stopEnvironmentEmulation($env);
             }
         }
 
