@@ -1,5 +1,8 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.5.2
+* Improve add to cart popup trigger
+
 ### 3.5.1
 * Remove deleted products from Nosto index
 * Use discontinue endpoint for removing (discontinuing)products in Nosto 
