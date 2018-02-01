@@ -90,18 +90,14 @@ class Nosto_Tagging_Model_Observer_Cart
 
             //set the cookie to trigger add to cart event
             if (!headers_sent()) {
-                $name = self::COOKIE_NAME;
-                $path = '/';
-                $period = 60;//60 seconds
-
                 /** @var Mage_Core_Model_Cookie $cookie */
                 $cookie = Mage::getModel('core/cookie');
 
                 $cookie->set(
-                    $name,
+                    self::COOKIE_NAME,
                     Nosto_Helper_SerializationHelper::serialize($cartUpdate),
-                    $period,
-                    $path,
+                    60,     //60 seconds
+                    '/',    //path
                     false,
                     false,
                     false
