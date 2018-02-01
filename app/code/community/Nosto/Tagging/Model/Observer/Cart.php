@@ -102,28 +102,28 @@ class Nosto_Tagging_Model_Observer_Cart
                 /* @var Nosto_Tagging_Model_Service_Cart $service */
                 $service = Mage::getModel('nosto_tagging/service_cart');
                 $service->update($cartUpdate, $account);
+            }
+
+            //set the cookie to trigger add to cart event
+            if (!headers_sent()) {
+                $name = self::COOKIE_NAME;
+                $path = '/';
+                $period = 60;//60 seconds
+
+                /** @var Mage_Core_Model_Cookie $cookie */
+                $cookie = Mage::getModel('core/cookie');
+
+                $cookie->set(
+                    $name,
+                    Nosto_Helper_SerializationHelper::serialize($cartUpdate),
+                    $period,
+                    $path,
+                    false,
+                    false,
+                    false
+                );
             } else {
-                //set the cookie to trigger add to cart event
-                if (!headers_sent()) {
-                    $name = self::COOKIE_NAME;
-                    $path = '/';
-                    $period = 60;//60 seconds
-
-                    /** @var Mage_Core_Model_Cookie $cookie */
-                    $cookie = Mage::getModel('core/cookie');
-
-                    $cookie->set(
-                        $name,
-                        Nosto_Helper_SerializationHelper::serialize($cartUpdate),
-                        $period,
-                        $path,
-                        false,
-                        false,
-                        false
-                    );
-                } else {
-                    NostoLog::info('Headers sent already. Cannot set the cookie.');
-                }
+                NostoLog::info('Headers sent already. Cannot set the cookie.');
             }
         } catch (\Exception $e) {
             NostoLog::exception($e);
