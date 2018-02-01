@@ -1,5 +1,10 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.5.1
+* Remove deleted products from Nosto index
+* Use discontinue endpoint for removing (discontinuing)products in Nosto 
+* Enable custom field tagging by default
+
 ### 3.5.0
 * Introduce custom indexer for Nosto product data
 * Update Nosto product data after catalog price rules are saved and applied
