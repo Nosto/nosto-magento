@@ -88,22 +88,6 @@ class Nosto_Tagging_Model_Observer_Cart
             $addedItem = Nosto_Tagging_Model_Meta_Cart_Builder::buildItem($quoteItem, $currencyCode);
             $cartUpdate->setAddedItems(array($addedItem));
 
-            if ($dataHelper->getSendAddToCartEvent($store)) {
-                $quote = $quoteItem->getQuote();
-                if ($quote instanceof Mage_Sales_Model_Quote) {
-                    /** @var Nosto_Tagging_Model_Meta_Cart $nostoCart */
-                    $nostoCart = Mage::getModel('nosto_tagging/meta_cart');
-                    $nostoCart->loadData($quote);
-                    $cartUpdate->setCart($nostoCart);
-                } else {
-                    NostoLog::info('Cannot find quote from the event.');
-                }
-
-                /* @var Nosto_Tagging_Model_Service_Cart $service */
-                $service = Mage::getModel('nosto_tagging/service_cart');
-                $service->update($cartUpdate, $account);
-            }
-
             //set the cookie to trigger add to cart event
             if (!headers_sent()) {
                 $name = self::COOKIE_NAME;
@@ -124,6 +108,22 @@ class Nosto_Tagging_Model_Observer_Cart
                 );
             } else {
                 NostoLog::info('Headers sent already. Cannot set the cookie.');
+            }
+
+            if ($dataHelper->getSendAddToCartEvent($store)) {
+                $quote = $quoteItem->getQuote();
+                if ($quote instanceof Mage_Sales_Model_Quote) {
+                    /** @var Nosto_Tagging_Model_Meta_Cart $nostoCart */
+                    $nostoCart = Mage::getModel('nosto_tagging/meta_cart');
+                    $nostoCart->loadData($quote);
+                    $cartUpdate->setCart($nostoCart);
+                } else {
+                    NostoLog::info('Cannot find quote from the event.');
+                }
+
+                /* @var Nosto_Tagging_Model_Service_Cart $service */
+                $service = Mage::getModel('nosto_tagging/service_cart');
+                $service->update($cartUpdate, $account);
             }
         } catch (\Exception $e) {
             NostoLog::exception($e);
