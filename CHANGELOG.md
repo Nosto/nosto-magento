@@ -1,5 +1,8 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.5.3
+* Fix the issue that add to cart popup shows child product added to cart when adding a bundle product to cart
+
 ### 3.5.2
 * Improve add to cart popup trigger
 
