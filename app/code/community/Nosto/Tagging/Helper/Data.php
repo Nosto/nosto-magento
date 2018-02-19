@@ -523,7 +523,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         return (bool)Mage::getStoreConfig(self::XML_PATH_USE_SKUS, $store);
     }
 
-   /**
+    /**
      * Returns on/off setting for custom fields
      *
      * @param Mage_Core_Model_Store|null $store the store model or null.
@@ -718,5 +718,20 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
 
         return true;
     }
+
+    /**
+     * Returns an array with Nosto settings
+     *
+     * @param null $store
+     * @return Mage_Core_Model_Store[]
+     */
+    public function getNostoStoreConfig($store = null)
+    {
+        if ($store === null) {
+            $store = Mage::app()->getStore();
+        }
+        return Mage::getStoreConfig('nosto_tagging', $store);
+    }
+
 }
 

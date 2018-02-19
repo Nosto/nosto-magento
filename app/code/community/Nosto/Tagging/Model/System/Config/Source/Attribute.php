@@ -74,7 +74,6 @@ abstract class Nosto_Tagging_Model_System_Config_Source_Attribute
                 'attribute_code',
                 Varien_Data_Collection::SORT_ORDER_ASC
             );
-
         return $attributes;
     }
 
