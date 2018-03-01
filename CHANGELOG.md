@@ -1,5 +1,9 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.5.4
+* Invalidate Nosto index if settings affecting the product data has been changed
+* Revise some instructional texts
+
 ### 3.5.3
 * Fix the issue that add to cart popup shows child product added to cart when adding a bundle product to cart
 
