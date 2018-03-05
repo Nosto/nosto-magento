@@ -286,8 +286,8 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
             Nosto_Tagging_Helper_Log::error(
                 sprintf(
                     'Something went wrong on calculating bundle product list price.'
-                    . 'The min price got #%d, but min price from magento api is #%d',
-                    $sumPrice,
+                    . 'The min price got %s, but min price from magento api is %d',
+                    (string)$sumPrice,
                     $minBundlePrice
                 )
             );
