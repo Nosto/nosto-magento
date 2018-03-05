@@ -229,13 +229,13 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         $allOptional = true;
         /** @var Mage_Bundle_Model_Option $option */
         foreach ($options as $option) {
-            $selections  = $option->getSelections();
             if (!$option->getRequired()) {
                 continue;
             }
             $allOptional = false;
             $minSimpleProductPricePrice = null;
             $simpleProductListPrice = null;
+            $selections  = $option->getSelections();
             /**
              * @var Mage_Catalog_Model_Product $selection
              */
