@@ -1,5 +1,8 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.5.5
+* Fix the bundle product list price was incorrect if there is any optional item
+
 ### 3.5.4
 * Invalidate Nosto index if settings affecting the product data has been changed
 * Revise some instructional texts

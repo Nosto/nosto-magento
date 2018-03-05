@@ -224,12 +224,18 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
             false,
             Mage::helper('catalog/product')->getSkipSaleableCheck()
         );
+        $sumPrice = 0;
         $sumListPrice = 0;
+        $allOptional = true;
         /** @var Mage_Bundle_Model_Option $option */
         foreach ($options as $option) {
-            $selections  = $option->getSelections();
+            if (!$option->getRequired()) {
+                continue;
+            }
+            $allOptional = false;
             $minSimpleProductPricePrice = null;
             $simpleProductListPrice = null;
+            $selections  = $option->getSelections();
             /**
              * @var Mage_Catalog_Model_Product $selection
              */
@@ -244,6 +250,47 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
             }
 
             $sumListPrice += $simpleProductListPrice;
+            $sumPrice += $minSimpleProductPricePrice;
+        }
+
+        //None of them are required, take the cheapest item
+        if ($allOptional) {
+            $cheapestItemPrice = null;//Cheapest item across all the options
+            $cheapestItemListPrice = null;
+            /** @var Mage_Bundle_Model_Option $option */
+            foreach ($options as $option) {
+                $selections = $option->getSelections();
+                /**
+                 * @var Mage_Catalog_Model_Product $selection
+                 */
+                foreach ($selections as $selection) {
+                    if ($selection->isAvailable()) {
+                        $simpleProductPrice = $this->_getProductPrice($selection, true, $inclTax);
+                        if ($cheapestItemPrice === null || $simpleProductPrice < $cheapestItemPrice) {
+                            $cheapestItemPrice = $simpleProductPrice;
+                            $cheapestItemListPrice = $this->_getProductPrice($selection, false, $inclTax);
+                        }
+                    }
+                }
+            }
+            if ($cheapestItemListPrice !== null) {
+                $sumPrice = $cheapestItemPrice;
+                $sumListPrice = $cheapestItemListPrice;
+            }
+        }
+
+        //Check if the $sumPrice is not same as $minBundlePrice, it means some thing went wrong,
+        // use the final price instead
+        if ($minBundlePrice != $sumPrice) {
+            $sumListPrice = $minBundlePrice;
+            Nosto_Tagging_Helper_Log::error(
+                sprintf(
+                    'Something went wrong on calculating bundle product list price.'
+                    . 'The min price got %s, but min price from magento api is %d',
+                    (string)$sumPrice,
+                    $minBundlePrice
+                )
+            );
         }
 
         return max($sumListPrice, $minBundlePrice);
