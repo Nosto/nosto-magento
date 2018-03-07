@@ -1,5 +1,8 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### Not released
+* Improve error bubbling in Nosto account opening and in API calls
+
 ### 3.5.5
 * Fix the bundle product list price was incorrect if there is any optional item
 
