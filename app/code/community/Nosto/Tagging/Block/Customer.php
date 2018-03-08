@@ -60,7 +60,10 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
     }
 
     /*
-     * Returns the visitor's Nosto Id
+     * Returns the checksum for Nosto visit id
+     */
+    /**
+     * @return null|string
      */
     public function getVisitorChecksum()
     {
@@ -71,9 +74,30 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
     }
 
     /**
+     * Populates Nosto customer object
+     *
+     * @return Nosto_Object_Customer
+     */
+    public function getNostoCustomer()
+    {
+        $customer = $this->getCustomer();
+        $email = $customer->getEmail();
+        /** @var Nosto_Tagging_Helper_Email $emailHelper */
+        $emailHelper = Mage::helper('nosto_tagging/email');
+        $nostoCustomer = new Nosto_Object_Customer();
+        $nostoCustomer->setFirstName($customer->getFirstname());
+        $nostoCustomer->setLastName($customer->getLastname());
+        $nostoCustomer->setCustomerReference($this->getCustomerReference());
+        $nostoCustomer->setEmail($email);
+        $nostoCustomer->setOptedIn($emailHelper->isOptedIn($email));
+
+        return $nostoCustomer;
+    }
+
+    /**
      * Returns the customer reference of the customer
      */
-    protected function getCustomerReference()
+    private function getCustomerReference()
     {
         $ref = '';
 

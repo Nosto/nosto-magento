@@ -1,9 +1,9 @@
 <?php
 /**
  * Magento
- *  
+ *
  * NOTICE OF LICENSE
- *  
+ *
  * This source file is subject to the Open Software License (OSL 3.0)
  * that is bundled with this package in the file LICENSE.txt.
  * It is also available through the world-wide-web at this URL:
@@ -11,13 +11,13 @@
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
- *  
+ *
  * DISCLAIMER
- *  
+ *
  * Do not edit or add to this file if you wish to upgrade Magento to newer
  * versions in the future. If you wish to customize Magento for your
  * needs please refer to http://www.magentocommerce.com for more information.
- *  
+ *
  * @category  Nosto
  * @package   Nosto_Tagging
  * @author    Nosto Solutions Ltd <magento@nosto.com>
@@ -26,38 +26,43 @@
  */
 
 /**
- * Meta data class which holds information about the buyer of an order.
- * This is used during the order confirmation API request and the order history
- * export.
+ * Helper class for email related operations
  *
  * @category Nosto
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Order_Buyer extends Nosto_Object_Order_Buyer
+class Nosto_Tagging_Helper_Email extends Mage_Core_Helper_Abstract
 {
     /**
-     * Loads the order buyer from the given order.
+     * Fetches marketing email subscription for given email address
      *
-     * @param Mage_Sales_Model_Order $order the order from which to load the buyer
+     * @param $email
+     * @return Mage_Newsletter_Model_Subscriber|null
+     */
+    public function getNewsletterOptInForEmail($email)
+    {
+        return Mage::getModel('newsletter/subscriber')->loadByEmail($email);
+    }
+
+    /**
+     * Checks if marketing emails are allowed for given email address
+     *
+     * @param $email
      * @return bool
      */
-    public function loadData(Mage_Sales_Model_Order $order)
+    public function isOptedIn($email)
     {
-        $this->setFirstName($order->getCustomerFirstname());
-        $this->setLastName($order->getCustomerLastname());
-        $this->setEmail($order->getCustomerEmail());
-        /** @var Nosto_Tagging_Helper_Email $emailHelper */
-        $emailHelper = Mage::helper('nosto_tagging/email');
-        $optedIn = $emailHelper->isOptedIn($order->getCustomerEmail());
-        $this->setOptedIn((bool)$optedIn);
-        $address = $order->getBillingAddress();
-        if ($address instanceof Mage_Sales_Model_Order_Address) {
-            $this->setPhone($address->getTelephone());
-            $this->setPostcode($address->getPostcode());
-            $this->setCountry($address->getCountry());
+        try {
+            $subscription = $this->getNewsletterOptInForEmail($email);
+            if ($subscription->getStatus() == Mage_Newsletter_Model_Subscriber::STATUS_SUBSCRIBED) {
+
+                return true;
+            }
+        } catch (\Exception $e) {
+            Nosto_Tagging_Helper_Log::exception($e);
         }
 
-        return true;
+        return false;
     }
 }
