@@ -97,7 +97,7 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
     /**
      * Returns the customer reference of the customer
      */
-    private function getCustomerReference()
+    protected function getCustomerReference()
     {
         $ref = '';
 
