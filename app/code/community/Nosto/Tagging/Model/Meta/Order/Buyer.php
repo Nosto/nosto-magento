@@ -50,7 +50,7 @@ class Nosto_Tagging_Model_Meta_Order_Buyer extends Nosto_Object_Order_Buyer
         /** @var Nosto_Tagging_Helper_Email $emailHelper */
         $emailHelper = Mage::helper('nosto_tagging/email');
         $optedIn = $emailHelper->isOptedIn($order->getCustomerEmail());
-        $this->setOptedIn((bool)$optedIn);
+        $this->setMarketingPermission($optedIn);
         $address = $order->getBillingAddress();
         if ($address instanceof Mage_Sales_Model_Order_Address) {
             $this->setPhone($address->getTelephone());
