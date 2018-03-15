@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "cd2ad4df7246b61cb1ba561067e1e45d",
-    "content-hash": "0548dd4b0b584d8ec674fc318311e020",
+    "hash": "c1c829335823ceb8ea4af9a097e5bdd3",
+    "content-hash": "df621a2301bd8fd875b677254b1387a8",
     "packages": [
         {
             "name": "nosto/php-sdk",
-            "version": "3.2.2",
+            "version": "3.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Nosto/nosto-php-sdk.git",
-                "reference": "07cfa0d115fa4d451fa50ad506d54b99b656bd1c"
+                "reference": "f0aa9aee4eeb99527360e0a21e5358474a6b9718"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Nosto/nosto-php-sdk/zipball/07cfa0d115fa4d451fa50ad506d54b99b656bd1c",
-                "reference": "07cfa0d115fa4d451fa50ad506d54b99b656bd1c",
+                "url": "https://api.github.com/repos/Nosto/nosto-php-sdk/zipball/f0aa9aee4eeb99527360e0a21e5358474a6b9718",
+                "reference": "f0aa9aee4eeb99527360e0a21e5358474a6b9718",
                 "shasum": ""
             },
             "require": {
@@ -52,7 +52,7 @@
                 "BSD-3-Clause"
             ],
             "description": "PHP SDK for developing Nosto modules for e-commerce platforms",
-            "time": "2018-03-06 14:04:17"
+            "time": "2018-03-14 14:14:49"
         },
         {
             "name": "phpseclib/phpseclib",
