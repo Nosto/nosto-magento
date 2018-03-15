@@ -1,7 +1,8 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
-### Not released
+### 3.6.0
 * Improve error bubbling in Nosto account opening and in API calls
+* Add marketing permission constent for user tagging in order confirmation (GDPR compatibility) 
 
 ### 3.5.5
 * Fix the bundle product list price was incorrect if there is any optional item
