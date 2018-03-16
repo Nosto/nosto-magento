@@ -81,4 +81,5 @@ RUN        groupadd -r plugins -g 113 && \
            usermod -a -G www-data plugins
 
 USER       plugins
-ENTRYPOINT ["bash"]
+COPY       entrypoint.sh /
+ENTRYPOINT ["/entrypoint.sh"]
