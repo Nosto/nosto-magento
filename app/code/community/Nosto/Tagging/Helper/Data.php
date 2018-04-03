@@ -101,6 +101,11 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_UPDATE_CATALOG_PRICE_RULES = 'nosto_tagging/general/update_catalog_price_rules';
 
     /**
+     * Path to store config for sending customer data to Nosto or not
+     */
+    const XML_PATH_SEND_CUSTOMER_DATA = 'nosto_tagging/general/send_customer_data';
+
+    /**
      * Path to store config for using SKUs
      */
     const XML_PATH_USE_SKUS = 'nosto_tagging/general/use_skus';
@@ -510,6 +515,17 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     public function getUseAutomaticCatalogPriceRuleUpdates($store = null)
     {
         return (bool)Mage::getStoreConfig(self::XML_PATH_UPDATE_CATALOG_PRICE_RULES, $store);
+    }
+
+    /**
+     * Returns on/off setting for sending customer data to Nosto
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     * @return bool
+     */
+    public function getSendCustomerData($store = null)
+    {
+        return (bool)Mage::getStoreConfig(self::XML_PATH_SEND_CUSTOMER_DATA, $store);
     }
 
     /**
