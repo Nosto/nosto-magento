@@ -76,10 +76,16 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
     /**
      * Populates Nosto customer object
      *
-     * @return Nosto_Object_Customer
+     * @return Nosto_Object_Customer|null
      */
     public function getNostoCustomer()
     {
+        $helper = Mage::helper('nosto_tagging');
+        $store = Mage::app()->getStore();
+        /* @var Nosto_Tagging_Helper_Data $helper */
+        if (!$helper->getSendCustomerData($store)) {
+            return null;
+        }
         $customer = $this->getCustomer();
         $email = $customer->getEmail();
         /** @var Nosto_Tagging_Helper_Email $emailHelper */

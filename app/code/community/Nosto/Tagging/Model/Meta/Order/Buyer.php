@@ -44,6 +44,12 @@ class Nosto_Tagging_Model_Meta_Order_Buyer extends Nosto_Object_Order_Buyer
      */
     public function loadData(Mage_Sales_Model_Order $order)
     {
+        $taggingHelper = Mage::helper('nosto_tagging');
+        $store = Mage::app()->getStore();
+        /* @var Nosto_Tagging_Helper_Data $helper */
+        if (!$taggingHelper->getSendCustomerData($store)) {
+            return false;
+        }
         $this->setFirstName($order->getCustomerFirstname());
         $this->setLastName($order->getCustomerLastname());
         $this->setEmail($order->getCustomerEmail());

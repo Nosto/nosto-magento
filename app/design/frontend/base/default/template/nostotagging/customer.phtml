@@ -45,6 +45,9 @@
  * @var $nostoHelper Nosto_Tagging_Helper_Data
  */
 $customer = $this->getNostoCustomer();
+if ($customer === null) {
+  return;
+}
 $nostoHelper = Mage::helper('nosto_tagging');
 ?>
 
