@@ -1,5 +1,8 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.6.1
+* Add advanced setting to disable sending customer data to Nosto servers
+
 ### 3.6.0
 * Improve error bubbling in Nosto account opening and in API calls
 * Add marketing permission constent for user tagging in order confirmation (GDPR compatibility) 

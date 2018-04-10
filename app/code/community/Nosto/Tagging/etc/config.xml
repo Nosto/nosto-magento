@@ -28,7 +28,7 @@
 <config>
     <modules>
         <Nosto_Tagging>
-            <version>3.6.0</version>
+            <version>3.6.1</version>
         </Nosto_Tagging>
     </modules>
     <global>
@@ -256,6 +256,7 @@
                 <use_low_stock>0</use_low_stock>
                 <send_add_to_cart_event>0</send_add_to_cart_event>
                 <update_catalog_price_rules>0</update_catalog_price_rules>
+                <send_customer_data>1</send_customer_data>
             </general>
             <image_options>
                 <image_version>image</image_version>
