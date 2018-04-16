@@ -140,6 +140,17 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
             $this->setCustomFields($this->loadCustomFields($product));
         }
 
+        // Price variations must be enabled in the config panel in order to use FPT
+        if (Mage::helper('weee')->isEnabled($store) &&
+            Mage::helper('nosto_tagging')->isVariationEnabled()
+        ) {
+            try {
+                $this->processWeeeTaxes($product);
+            } catch (Nosto_NostoException $e) {
+                Nosto_Tagging_Helper_Log::exception($e);
+            }
+        }
+
         Mage::dispatchEvent(
             Nosto_Tagging_Helper_Event::EVENT_NOSTO_PRODUCT_LOAD_AFTER,
             array(
@@ -149,6 +160,42 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         );
 
         return true;
+    }
+
+
+    /**
+     * In case merchant make use of Fixed Product Taxes (FPT)
+     * this function will add the value into the product list price
+     * @param Mage_Catalog_Model_Product $product
+     */
+    public function processWeeeTaxes(Mage_Catalog_Model_Product $product)
+    {
+        $storeAllowedCountriesList = Mage::getModel('directory/country')
+            ->getResourceCollection()
+            ->loadByStore()
+            ->toOptionArray(true);
+
+        $weeeAttributekey = Mage::getModel('eav/entity_attribute')->getAttributeCodesByFrontendType('weee');
+        $weeeTaxes = $product->getData($weeeAttributekey[0]);
+
+        $variations = new Nosto_Object_Product_VariationCollection();
+        foreach ($storeAllowedCountriesList as $country) {
+            foreach ($weeeTaxes as $weeeTax) {
+                $variation = new Nosto_Tagging_Model_Meta_Variation();
+
+                if ($weeeTax['country'] === $country['value']) {
+                    $variation->setVariationId(strtoupper($country['label']));
+                    $variation->setPrice(floatval($product->getPrice()));
+                    $variation->setListPrice($product->getPrice() + $weeeTax['value']);
+                    $variations->append($variation);
+                }
+                // Set the list price based on the default tax destination calculation
+                if ($weeeTax['country'] === Mage::getStoreConfig('tax/defaults/country')) {
+                    $this->setListPrice($product->getPrice() + $weeeTax['value']);
+                }
+            }
+        }
+        $this->setVariations($variations);
     }
 
     /**
