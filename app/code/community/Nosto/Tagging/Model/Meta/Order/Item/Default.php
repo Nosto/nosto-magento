@@ -26,13 +26,13 @@
  */
 
 /**
- * Meta data class which holds information about a downloadable item included in an order.
+ * Default meta data for ordered item included in an order.
  *
  * @category Nosto
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Order_Item_Downloadable extends Nosto_Tagging_Model_Meta_Order_Item
+class Nosto_Tagging_Model_Meta_Order_Item_Default extends Nosto_Tagging_Model_Meta_Order_Item
 {
 
     /**

@@ -78,10 +78,11 @@ class Nosto_Tagging_Model_Meta_Order_Builder
                 }
                 break;
             case Mage_Downloadable_Model_Product_Type::TYPE_DOWNLOADABLE:
-                /** @var Nosto_Tagging_Model_Meta_Order_Item_Downloadable $downloadableItem */
-                $downloadableItem = Mage::getModel('nosto_tagging/meta_order_item_downloadable');
-                if ($downloadableItem->loadData($item, $currencyCode)) {
-                    $nostoItem = $downloadableItem;
+            case Mage_Catalog_Model_Product_Type::TYPE_VIRTUAL:
+                /** @var Nosto_Tagging_Model_Meta_Order_Item_Default $defaultItem */
+                $defaultItem = Mage::getModel('nosto_tagging/meta_order_item_default');
+                if ($defaultItem->loadData($item, $currencyCode)) {
+                    $nostoItem = $defaultItem;
                 }
                 break;
         }
