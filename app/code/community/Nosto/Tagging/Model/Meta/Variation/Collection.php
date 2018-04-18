@@ -52,7 +52,6 @@ class Nosto_Tagging_Model_Meta_Variation_Collection extends Nosto_Object_Product
     {
         /** @var $customerHelper Mage_Customer_Helper_Data */
         $customerHelper = Mage::helper('customer');
-        $defaultGroupId = $customerHelper->getDefaultCustomerGroupId($store);
         $groups = Mage::getModel('customer/group')->getCollection();
         /** @var Mage_Customer_Model_Group $group */
         foreach ($groups as $group) {
@@ -63,9 +62,86 @@ class Nosto_Tagging_Model_Meta_Variation_Collection extends Nosto_Object_Product
             /** @var Nosto_Tagging_Model_Meta_Variation $variation */
             $variation = Mage::getModel('nosto_tagging/meta_variation');
             $variation->loadData($product, $group, $productAvailability, $currencyCode, $store);
-            $this->append($variation);
+            // Price variations must be enabled in the config panel in order to use FPT
+            if (Mage::helper('weee')->isEnabled($store) &&
+                Mage::helper('nosto_tagging')->isVariationEnabled()
+            ) {
+                $productTaxesVariations = $this->getProductWeeeTaxesVariations($product, $productAvailability);
+                $productTaxesCurrenciesVariations = $this->getVariationsPermutatedWithStoreCurrencies($productTaxesVariations);
+                $finalVariations= $this->permutateExistingVariations($variation, $productTaxesCurrenciesVariations);
+                foreach ($finalVariations as $finalVariation) {
+                    $this->append($finalVariation);
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * @param Mage_Catalog_Model_Product $product
+     * @param string $productAvailability
+     * @return array
+     */
+    private function getProductWeeeTaxesVariations(Mage_Catalog_Model_Product $product, $productAvailability)
+    {
+        $weeeAttributekey = Mage::getModel('eav/entity_attribute')->getAttributeCodesByFrontendType('weee');
+        $weeeTaxes = $product->getData($weeeAttributekey[0]);
+
+        $variations = array();
+        foreach ($weeeTaxes as $weeeTax) {
+            $variation = new Nosto_Tagging_Model_Meta_Variation();
+            $variation->setVariationId(strtoupper($weeeTax['country']));
+            $variation->setPrice(floatval($product->getPrice())+ $weeeTax['value']);
+            $variation->setListPrice($product->getPrice());
+            $variation->setAvailability($productAvailability);
+            $variations[] = $variation;
         }
 
-        return true;
+        return $variations;
+    }
+
+    /**
+     * @param $productVariations
+     * @return array
+     */
+    private function getVariationsPermutatedWithStoreCurrencies($productVariations)
+    {
+        $currencies = Mage::app()->getStore()->getAvailableCurrencyCodes(true);
+        $currencyRates = Mage::getModel('directory/currency')
+            ->getCurrencyRates(Mage::app()->getBaseCurrencyCode(), array_values($currencies));
+
+        $variations = array();
+        foreach ($currencies as $currency) {
+            foreach ($productVariations as $productVariation) {
+                $variation = new Nosto_Tagging_Model_Meta_Variation();
+                $variation->setVariationId($productVariation->getVariationId() . ' ' . $currency);
+                $variation->setPrice($productVariation->getPrice() * $currencyRates[$currency]);
+                $variation->setListPrice($productVariation->getListPrice() * $currencyRates[$currency]);
+                $variation->setPriceCurrencyCode($currency);
+                $variation->setAvailability($productVariation->getAvailability());
+                $variations[] = $variation;
+            }
+        }
+        return $variations;
+    }
+
+    /**
+     * @param $existingVariation
+     * @param array $taxVariations
+     * @return array
+     */
+    private function permutateExistingVariations($existingVariation, array $taxVariations)
+    {
+        $variations = array();
+        foreach ($taxVariations as $taxVariation) {
+            $variation = new Nosto_Tagging_Model_Meta_Variation();
+            $variation->setVariationId($taxVariation->getVariationId() . ' ' . $existingVariation->getVariationId());
+            $variation->setPrice($taxVariation->getPrice());
+            $variation->setListPrice($taxVariation->getListPrice());
+            $variation->setPriceCurrencyCode($taxVariation->getPriceCurrencyCode());
+            $variation->setAvailability($taxVariation->getAvailability());
+            $variations[] = $variation;
+        }
+        return $variations;
     }
 }
