@@ -1,6 +1,6 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
-### not released
+### 3.6.2
 * Handle downloadable and virtual products in ordered items
 
 ### 3.6.1
