@@ -140,6 +140,15 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
             $this->setCustomFields($this->loadCustomFields($product));
         }
 
+        // Set the list price based on the default tax destination calculation
+        foreach ($this->getVariations() as $variation) {
+//            if ($variation->getVariationId() === Mage::getStoreConfig('tax/defaults/country')) {
+            if (strpos($variation->getVariationId(), Mage::getStoreConfig('tax/defaults/country')) !== null) {
+                $teste = $variation->getListPrice();
+                $this->setListPrice($variation->getListPrice());
+            }
+        }
+
         Mage::dispatchEvent(
             Nosto_Tagging_Helper_Event::EVENT_NOSTO_PRODUCT_LOAD_AFTER,
             array(
