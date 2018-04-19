@@ -142,7 +142,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
                     $finalPrice,
                     $inclTax
                 );
-                if (!$price) {
+                if (!$price || $price <= 0) {
                     /** @var Mage_Catalog_Model_Product_Type_Configurable $configurableProduct */
                     $configurableProduct = Mage::getModel('catalog/product_type_configurable');
                     $associatedProducts = $configurableProduct->getUsedProducts(null, $product);
@@ -194,7 +194,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         // pricing is used the list price for the bundled product is the sum of
         // list prices of the simple products included in the bundle.
         $fixedPrice = $this->_getDefaultFromProduct($product, $finalPrice, $inclTax);
-        if ($fixedPrice) {
+        if ($fixedPrice && $fixedPrice > 0) {
 
             return $fixedPrice;
         }
@@ -224,7 +224,6 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
             false,
             Mage::helper('catalog/product')->getSkipSaleableCheck()
         );
-        $sumPrice = 0;
         $sumListPrice = 0;
         $allOptional = true;
         /** @var Mage_Bundle_Model_Option $option */
@@ -250,7 +249,6 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
             }
 
             $sumListPrice += $simpleProductListPrice;
-            $sumPrice += $minSimpleProductPricePrice;
         }
 
         //None of them are required, take the cheapest item
@@ -274,23 +272,8 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
                 }
             }
             if ($cheapestItemListPrice !== null) {
-                $sumPrice = $cheapestItemPrice;
                 $sumListPrice = $cheapestItemListPrice;
             }
-        }
-
-        //Check if the $sumPrice is not same as $minBundlePrice, it means some thing went wrong,
-        // use the final price instead
-        if ($minBundlePrice != $sumPrice) {
-            $sumListPrice = $minBundlePrice;
-            Nosto_Tagging_Helper_Log::error(
-                sprintf(
-                    'Something went wrong on calculating bundle product list price.'
-                    . 'The min price got %s, but min price from magento api is %d',
-                    (string)$sumPrice,
-                    $minBundlePrice
-                )
-            );
         }
 
         return max($sumListPrice, $minBundlePrice);
