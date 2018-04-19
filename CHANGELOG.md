@@ -1,5 +1,8 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.6.3
+* Fix the issue that the price of discounted bundle products could be tagged as 0 
+
 ### 3.6.2
 * Handle downloadable and virtual products in ordered items
 
