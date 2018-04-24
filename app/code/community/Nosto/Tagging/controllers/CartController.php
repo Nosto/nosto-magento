@@ -75,7 +75,7 @@ class Nosto_Tagging_CartController extends Mage_Core_Controller_Front_Action
                     try {
                         $quote = $this->resolveQuote($restoreCartHash);
                         $checkoutSession->setQuoteId($quote->getId());
-                        $redirectUrl = $nostoUrlHelper->getUrlCart(
+                        $redirectUrl = $nostoUrlHelper->getRestoreCartRedirectUrl(
                             $store,
                             $urlParameters
                         );
@@ -87,13 +87,12 @@ class Nosto_Tagging_CartController extends Mage_Core_Controller_Front_Action
                     }
                 }
             } else {
-                $redirectUrl = $nostoUrlHelper->getUrlCart(
+                $redirectUrl = $nostoUrlHelper->getRestoreCartRedirectUrl(
                     $store,
                     $urlParameters
                 );
             }
         }
-
         $this->_redirectUrl($redirectUrl);
     }
 

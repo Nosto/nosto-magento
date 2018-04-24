@@ -99,6 +99,11 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
     const MAGENTO_PATH_CART = 'checkout/cart';
 
     /**
+     * Path to Magento's one page checkout
+     */
+    const MAGENTO_PATH_ONEPAGE_CHEKOUT = 'checkout/onepage';
+
+    /**
      * Path to Magento's add to cart controller
      */
     const MAGENTO_ADD_TO_CART_PATH = 'checkout/cart/add';
@@ -565,4 +570,40 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
 
         return $currentUrl;
     }
+
+    /**
+     * Gets the URL where to redirect visitor after cart restoring
+     *
+     * @param Mage_Core_Model_Store $store the store to get the url for.
+     *
+     * @param array $additionalParams
+     * @return string the url.
+     */
+    public function getRestoreCartRedirectUrl(
+        Mage_Core_Model_Store $store,
+        array $additionalParams = array()
+    )
+    {
+        /* @var Nosto_Tagging_Helper_Data $nostoHelper */
+        $nostoHelper = Mage::helper('nosto_tagging');
+        $path = $nostoHelper->getRestoreCartRedirectLocation($store);
+        $defaultParams = $this->getUrlOptionsWithNoSid($store);
+        $url = Mage::getUrl(
+            $path,
+            $defaultParams
+        );
+        if (!empty($additionalParams)) {
+            foreach ($additionalParams as $key => $val) {
+                $url = Nosto_Request_Http_HttpRequest::replaceQueryParamInUrl(
+                    $key,
+                    $val,
+                    $url
+                );
+            }
+
+        }
+
+        return $url;
+    }
+
 }

@@ -257,6 +257,7 @@
                 <send_add_to_cart_event>0</send_add_to_cart_event>
                 <update_catalog_price_rules>0</update_catalog_price_rules>
                 <send_customer_data>1</send_customer_data>
+                <restore_cart_location>checkout/cart</restore_cart_location>
             </general>
             <image_options>
                 <image_version>image</image_version>
