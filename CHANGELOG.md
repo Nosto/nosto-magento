@@ -1,5 +1,9 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.6.4
+* Fix the issue with additional URL parameters being escaped in restore cart redirection URL
+* Add setting for choosing the redirect location after cart has been restored
+
 ### 3.6.3
 * Fix the issue that the price of discounted bundle products could be tagged as 0 
 
