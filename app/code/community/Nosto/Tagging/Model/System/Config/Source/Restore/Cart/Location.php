@@ -26,12 +26,8 @@
  */
 
 /**
- * Extension system setting source model for choosing the multi-currency method
- * to use.
- *
- * Options are "Exchange Rate" and "Product Tagging". The former makes use of the built
- * in currency exchange rates and is the preferred method. The latter is the old
- * way of tagging all price variations on the product pages.
+ * Extension system setting source model for choosing where visitor should be redirected
+ * after the cart has been restored.
  *
  * @category Nosto
  * @package  Nosto_Tagging
@@ -41,7 +37,7 @@
 class Nosto_Tagging_Model_System_Config_Source_Restore_Cart_Location
 {
     /**
-     * Returns the method options to choose from.
+     * Returns the path options to choose from.
      *
      * @return array the options.
      */
