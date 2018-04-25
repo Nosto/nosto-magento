@@ -52,12 +52,10 @@ class Nosto_Tagging_CartController extends Mage_Core_Controller_Front_Action
     public function indexAction()
     {
         $store = Mage::app()->getStore();
-        /* @var Mage_Core_Helper_Url $mageUrlHelper */
-        $mageUrlHelper = Mage::helper('core/url');
-        $currentUrl = $mageUrlHelper->getCurrentUrl();
-        $urlParameters = Zend_Uri_Http::fromString($currentUrl)->getQueryAsArray();
         /* @var Nosto_Tagging_Helper_Url $nostoUrlHelper */
         $nostoUrlHelper = Mage::helper('nosto_tagging/url');
+        $currentUrl = $nostoUrlHelper->getCurrentUrl();
+        $urlParameters = Zend_Uri_Http::fromString($currentUrl)->getQueryAsArray();
         $frontPageUrl = $nostoUrlHelper->getFrontPageUrl($store);
         $redirectUrl = $frontPageUrl;
         if (Mage::helper('nosto_tagging/module')->isModuleEnabled()) {
@@ -77,7 +75,7 @@ class Nosto_Tagging_CartController extends Mage_Core_Controller_Front_Action
                     try {
                         $quote = $this->resolveQuote($restoreCartHash);
                         $checkoutSession->setQuoteId($quote->getId());
-                        $redirectUrl = $nostoUrlHelper->getUrlCart(
+                        $redirectUrl = $nostoUrlHelper->getRestoreCartRedirectUrl(
                             $store,
                             $urlParameters
                         );
@@ -89,13 +87,12 @@ class Nosto_Tagging_CartController extends Mage_Core_Controller_Front_Action
                     }
                 }
             } else {
-                $redirectUrl = $nostoUrlHelper->getUrlCart(
+                $redirectUrl = $nostoUrlHelper->getRestoreCartRedirectUrl(
                     $store,
                     $urlParameters
                 );
             }
         }
-
         $this->_redirectUrl($redirectUrl);
     }
 

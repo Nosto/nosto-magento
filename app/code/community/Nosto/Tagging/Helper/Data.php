@@ -111,6 +111,11 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_USE_SKUS = 'nosto_tagging/general/use_skus';
 
     /**
+     * Path to store config for restore cart redirection
+     */
+    const XML_PATH_RESTORE_CART_LOCATION = 'nosto_tagging/general/restore_cart_location';
+
+    /**
      * Path to store config for custom fields
      */
     const XML_PATH_USE_CUSTOM_FIELDS = 'nosto_tagging/general/use_custom_fields';
@@ -636,6 +641,18 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     public function getRatingsAndReviewsProvider($store = null)
     {
         return Mage::getStoreConfig(self::XML_PATH_RATING_PROVIDER, $store);
+    }
+
+    /**
+     * Return the restore cart redirect location
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     *
+     * @return string
+     */
+    public function getRestoreCartRedirectLocation($store = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_RESTORE_CART_LOCATION, $store);
     }
 
     /**
