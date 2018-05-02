@@ -122,7 +122,7 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
             foreach ($configurableAttributes as $configurableAttribute) {
                 try {
                     $attributeCode = $configurableAttribute['attribute_code'];
-                    if (!array_key_exists($this->getCustomFields(), $attributeCode)) {
+                    if (!array_key_exists($attributeCode, $this->getCustomFields())) {
                         $attributeValue = $this->getAttributeValue($sku, $attributeCode);
                         if (is_scalar($attributeValue)) {
                             $this->addCustomField($attributeCode, $attributeValue);
