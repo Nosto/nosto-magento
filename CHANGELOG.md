@@ -1,5 +1,9 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.6.5
+* Improve date time handling for Vaimo KCO orders
+* Fix duplicate check for custom fields in SKUs
+
 ### 3.6.4
 * Fix the issue with additional URL parameters being escaped in restore cart redirection URL
 * Add setting for choosing the redirect location after cart has been restored
