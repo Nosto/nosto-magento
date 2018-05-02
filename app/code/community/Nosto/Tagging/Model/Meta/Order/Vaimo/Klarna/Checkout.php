@@ -78,7 +78,14 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
         /** @noinspection PhpUndefinedMethodInspection */
         $checkoutId = $quote->getKlarnaCheckoutId();
         $this->setOrderNumber($checkoutId);
-        $this->setCreatedAt(DateTime::createFromFormat('Y-m-d h:i:s', $quote->getCreatedAt()));
+        $createdAt = \DateTime::createFromFormat(
+            'Y-m-d H:i:s', $quote->getCreatedAt()
+        );
+        if ($createdAt instanceof \DateTime) {
+            $this->setCreatedAt($createdAt);
+        } else {
+            $this->setCreatedAt(new \DateTime('now'));
+        }
         $orderStatus = new Nosto_Object_Order_OrderStatus();
         $orderStatus->setCode(self::DEFAULT_ORDER_STATUS);
         $orderStatus->setLabel(self::DEFAULT_ORDER_STATUS);
