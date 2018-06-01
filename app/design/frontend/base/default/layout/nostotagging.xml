@@ -156,8 +156,7 @@
     <cms_index_index>
         <!-- Add 4 content placeholders after the home page content -->
         <reference name="content">
-            <block type="nosto_tagging/pagetype" name="nosto.page.type.front" after="-"
-                   template="nostotagging/pagetype.phtml">
+            <block type="nosto_tagging/pagetype" name="nosto.page.type.front" after="-">
                 <action method="setData">
                     <name>page_type</name>
                     <value>front</value>
