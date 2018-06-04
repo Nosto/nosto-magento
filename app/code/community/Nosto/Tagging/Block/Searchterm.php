@@ -42,6 +42,14 @@ class Nosto_Tagging_Block_Searchterm extends Mage_Core_Block_Template
      */
     protected function _toHtml()
     {
+        /** @var Nosto_Tagging_Helper_Account $helper */
+        $helper = Mage::helper('nosto_tagging/account');
+        if (!$helper->existsAndIsConnected()
+            || $this->getSearchTerm() === null
+            || !Mage::helper('nosto_tagging/module')->isModuleEnabled()
+        ) {
+            return '';
+        }
         return (new Nosto_Object_SearchTerm($this->getSearchTerm()))->toHtml();
     }
 
