@@ -54,7 +54,7 @@
 
         <!-- Tag shopping cart -->
         <reference name="after_body_start">
-            <block type="nosto_tagging/cart" name="nosto.cart" template="nostotagging/cart.phtml"/>
+            <block type="nosto_tagging/cart" name="nosto.cart"/>
         </reference>
 
         <!-- Tag customer -->
