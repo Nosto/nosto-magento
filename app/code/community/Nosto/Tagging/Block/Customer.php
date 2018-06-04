@@ -42,21 +42,21 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
      * the module is enabled for the current store.
      *
      * @return string
+     * @throws Varien_Exception
      */
     protected function _toHtml()
     {
         /** @var Nosto_Tagging_Helper_Account $helper */
         $helper = Mage::helper('nosto_tagging/account');
         /** @noinspection PhpUndefinedMethodInspection */
-        if (
-            !Mage::helper('nosto_tagging/module')->isModuleEnabled()
-            || !$helper->existsAndIsConnected()
+        if (!$helper->existsAndIsConnected()
+            || $this->getNostoCustomer() === null
+            ||!Mage::helper('nosto_tagging/module')->isModuleEnabled()
             || !$this->helper('customer')->isLoggedIn()
         ) {
             return '';
         }
-
-        return parent::_toHtml();
+        return $this->getNostoCustomer()->toHtml();
     }
 
     /*

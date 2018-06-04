@@ -45,9 +45,9 @@ class Nosto_Tagging_Block_Cart extends Mage_Checkout_Block_Cart_Abstract
     {
         /** @var Nosto_Tagging_Helper_Account $helper */
         $helper = Mage::helper('nosto_tagging/account');
-        if (
-            !Mage::helper('nosto_tagging/module')->isModuleEnabled()
-            || !$helper->existsAndIsConnected()
+        if (!$helper->existsAndIsConnected()
+            || $this->getCart() === null
+            ||!Mage::helper('nosto_tagging/module')->isModuleEnabled()
         ) {
             return '';
         }
@@ -69,8 +69,7 @@ class Nosto_Tagging_Block_Cart extends Mage_Checkout_Block_Cart_Abstract
             $customerHelper = Mage::helper('nosto_tagging/customer');
             $customerHelper->updateNostoId();
         }
-
-        return parent::_toHtml();
+        return $this->getCart()->toHtml();
     }
 
     /**
