@@ -84,7 +84,7 @@
     <!-- Tag product -->
     <catalog_product_view>
         <reference name="after_body_start">
-            <block type="nosto_tagging/product" name="nosto.product" template="nostotagging/product.phtml"/>
+            <block type="nosto_tagging/product" name="nosto.product"/>
         </reference>
     </catalog_product_view>
 
