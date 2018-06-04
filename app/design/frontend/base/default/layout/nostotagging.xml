@@ -59,7 +59,7 @@
 
         <!-- Tag customer -->
         <reference name="after_body_start">
-            <block type="nosto_tagging/customer" name="nosto.customer" template="nostotagging/customer.phtml"/>
+            <block type="nosto_tagging/customer" name="nosto.customer"/>
         </reference>
 
         <!-- Tag currency variation -->
