@@ -91,13 +91,13 @@
     <!-- Tag checkout -->
     <checkout_onepage_success>
         <reference name="after_body_start">
-            <block type="nosto_tagging/order" name="nosto.order" template="nostotagging/order.phtml"/>
+            <block type="nosto_tagging/order" name="nosto.order"/>
         </reference>
     </checkout_onepage_success>
 
     <checkout_klarna_success>
         <reference name="after_body_start">
-            <block type="nosto_tagging/order" name="nosto.order.klarna" template="nostotagging/order.phtml"/>
+            <block type="nosto_tagging/order" name="nosto.order.klarna"/>
         </reference>
     </checkout_klarna_success>
 
