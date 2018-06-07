@@ -61,13 +61,16 @@ $formKey = $session->getFormKey();
         Nosto.postAddToCartForm(fields, "<?php echo $formAction; ?>");
     };
 
-    Nosto.addMultipleProductsToCart = function (productIds, element) {
-        productIds.forEach(function(product) {
-            Nosto.trackAddToCartClick(product, element);
+    // Products must be and array of objects [{productId: "123", skuId: "321"}]
+    Nosto.addMultipleProductsToCart = function (products, element) {
+        var skus = [];
+        products.forEach(function(product) {
+            Nosto.trackAddToCartClick(product.productId, element);
+            skus.push(product.skuId);
         });
         var fields = {};
-        fields["product"] = productIds.pop();
-        fields["related_product"] = productIds;
+        fields["product"] = skus.pop();
+        fields["related_product"] = skus;
         fields["form_key"]= "<?php echo $formKey; ?>";
         Nosto.postAddToCartForm(fields, "<?php echo $formAction; ?>");
     };
