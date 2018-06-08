@@ -1,5 +1,9 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.7.0
+* Implement support to add multiple products to cart via Javascript 
+* Implement programmatic tagging generation 
+
 ### 3.6.5
 * Improve date time handling for Vaimo KCO orders
 * Fix duplicate check for custom fields in SKUs

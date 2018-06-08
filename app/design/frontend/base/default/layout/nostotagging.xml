@@ -54,12 +54,12 @@
 
         <!-- Tag shopping cart -->
         <reference name="after_body_start">
-            <block type="nosto_tagging/cart" name="nosto.cart" template="nostotagging/cart.phtml"/>
+            <block type="nosto_tagging/cart" name="nosto.cart"/>
         </reference>
 
         <!-- Tag customer -->
         <reference name="after_body_start">
-            <block type="nosto_tagging/customer" name="nosto.customer" template="nostotagging/customer.phtml"/>
+            <block type="nosto_tagging/customer" name="nosto.customer"/>
         </reference>
 
         <!-- Tag currency variation -->
@@ -77,27 +77,27 @@
     </catalog_category_layered>
     <nosto_tagging_category>
         <reference name="after_body_start">
-            <block type="nosto_tagging/category" name="nosto.category" template="nostotagging/category.phtml"/>
+            <block type="nosto_tagging/category" name="nosto.category"/>
         </reference>
     </nosto_tagging_category>
 
     <!-- Tag product -->
     <catalog_product_view>
         <reference name="after_body_start">
-            <block type="nosto_tagging/product" name="nosto.product" template="nostotagging/product.phtml"/>
+            <block type="nosto_tagging/product" name="nosto.product"/>
         </reference>
     </catalog_product_view>
 
     <!-- Tag checkout -->
     <checkout_onepage_success>
         <reference name="after_body_start">
-            <block type="nosto_tagging/order" name="nosto.order" template="nostotagging/order.phtml"/>
+            <block type="nosto_tagging/order" name="nosto.order"/>
         </reference>
     </checkout_onepage_success>
 
     <checkout_klarna_success>
         <reference name="after_body_start">
-            <block type="nosto_tagging/order" name="nosto.order.klarna" template="nostotagging/order.phtml"/>
+            <block type="nosto_tagging/order" name="nosto.order.klarna"/>
         </reference>
     </checkout_klarna_success>
 
@@ -156,8 +156,7 @@
     <cms_index_index>
         <!-- Add 4 content placeholders after the home page content -->
         <reference name="content">
-            <block type="nosto_tagging/pagetype" name="nosto.page.type.front" after="-"
-                   template="nostotagging/pagetype.phtml">
+            <block type="nosto_tagging/pagetype" name="nosto.page.type.front" after="-">
                 <action method="setData">
                     <name>page_type</name>
                     <value>front</value>
@@ -198,8 +197,7 @@
     <checkout_cart_index>
         <!-- Adds 3 content placeholders after the cart content -->
         <reference name="content">
-            <block type="nosto_tagging/pagetype" name="nosto.page.type.cart" after="-"
-                   template="nostotagging/pagetype.phtml">
+            <block type="nosto_tagging/pagetype" name="nosto.page.type.cart" after="-">
                 <action method="setData">
                     <name>page_type</name>
                     <value>cart</value>
@@ -233,8 +231,7 @@
     <catalog_product_view>
         <!-- Adds 3 content placeholders after the product info -->
         <reference name="content">
-            <block type="nosto_tagging/pagetype" name="nosto.page.type.product" after="-"
-                   template="nostotagging/pagetype.phtml">
+            <block type="nosto_tagging/pagetype" name="nosto.page.type.product" after="-">
                 <action method="setData">
                     <name>page_type</name>
                     <value>product</value>
@@ -274,8 +271,7 @@
     <nosto_tagging_catalog_category>
         <!-- Adds 2 content placeholders; 1 before and 1 after the products -->
         <reference name="content">
-            <block type="nosto_tagging/pagetype" name="nosto.page.type.category" after="-"
-                   template="nostotagging/pagetype.phtml">
+            <block type="nosto_tagging/pagetype" name="nosto.page.type.category" after="-">
                 <action method="setData">
                     <name>page_type</name>
                     <value>category</value>
@@ -302,8 +298,7 @@
     <catalogsearch_result_index>
         <!-- Adds 2 content placeholders; 1 before and 1 after the search result -->
         <reference name="content">
-            <block type="nosto_tagging/pagetype" name="nosto.page.type.search" after="-"
-                   template="nostotagging/pagetype.phtml">
+            <block type="nosto_tagging/pagetype" name="nosto.page.type.search" after="-">
                 <action method="setData">
                     <name>page_type</name>
                     <value>search</value>
@@ -323,8 +318,7 @@
                     <value>nosto-page-search2</value>
                 </action>
             </block>
-            <block type="nosto_tagging/searchterm" name="nosto.page.searchterm1" after="nosto.page.search2"
-                   template="nostotagging/searchterm.phtml">
+            <block type="nosto_tagging/searchterm" name="nosto.page.searchterm1" after="nosto.page.search2">
             </block>
         </reference>
     </catalogsearch_result_index>
@@ -332,8 +326,7 @@
     <!-- 404 Not found page -->
     <cms_index_noroute>
         <reference name="content">
-            <block type="nosto_tagging/pagetype" name="nosto.page.type.notfound" after="-"
-                   template="nostotagging/pagetype.phtml">
+            <block type="nosto_tagging/pagetype" name="nosto.page.type.notfound" after="-">
                 <action method="setData">
                     <name>page_type</name>
                     <value>notfound</value>
@@ -366,8 +359,7 @@
     <!-- Order confirmation page -->
     <checkout_onepage_success>
         <reference name="content">
-            <block type="nosto_tagging/pagetype" name="nosto.page.type.order" after="-"
-                   template="nostotagging/pagetype.phtml">
+            <block type="nosto_tagging/pagetype" name="nosto.page.type.order" after="-">
                 <action method="setData">
                     <name>page_type</name>
                     <value>order</value>
@@ -393,8 +385,7 @@
     <!-- Klarna Order confirmation page -->
     <checkout_klarna_success>
         <reference name="content">
-            <block type="nosto_tagging/pagetype" name="nosto.page.type.order" after="-"
-                   template="nostotagging/pagetype.phtml">
+            <block type="nosto_tagging/pagetype" name="nosto.page.type.order" after="-">
                 <action method="setData">
                     <name>page_type</name>
                     <value>order</value>

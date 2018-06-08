@@ -44,13 +44,16 @@ class Nosto_Tagging_Block_Variation extends Mage_Core_Block_Template
     {
         /** @var Nosto_Tagging_Helper_Account $helper */
         $helper = Mage::helper('nosto_tagging/account');
-        if (!Mage::helper('nosto_tagging/module')->isModuleEnabled()
-            || !$helper->existsAndIsConnected()
+        if (!$helper->existsAndIsConnected()
+            ||!$this->useMultiCurrencyOrPriceVariation()
+            || !Mage::helper('nosto_tagging/module')->isModuleEnabled()
         ) {
             return '';
         }
-
-        return parent::_toHtml();
+        return (new Nosto_Object_MarkupableString(
+            $this->getVariationId(),
+            'nosto_variation'
+        ))->toHtml();
     }
 
     /**
