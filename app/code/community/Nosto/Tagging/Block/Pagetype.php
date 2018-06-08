@@ -50,6 +50,13 @@ class Nosto_Tagging_Block_Pagetype extends Mage_Core_Block_Template
      */
     protected function _toHtml()
     {
+        $helper = Mage::helper('nosto_tagging/account');
+        if (!$helper->existsAndIsConnected()
+            || $this->getPageTypeName() !== null
+            || !Mage::helper('nosto_tagging/module')->isModuleEnabled()
+        ) {
+            return '';
+        }
         return (new Nosto_Object_PageType($this->getPageTypeName()))->toHtml();
     }
 
