@@ -47,14 +47,13 @@ class Nosto_Tagging_Block_Order extends Mage_Checkout_Block_Success
     {
         /** @var Nosto_Tagging_Helper_Account $helper */
         $helper = Mage::helper('nosto_tagging/account');
-        if (
-            !Mage::helper('nosto_tagging/module')->isModuleEnabled()
-            || !$helper->existsAndIsConnected()
+        if (!$helper->existsAndIsConnected()
+            ||$this->getLastOrder() === null
+            || !Mage::helper('nosto_tagging/module')->isModuleEnabled()
         ) {
             return '';
         }
-
-        return parent::_toHtml();
+        return $this->getLastOrder()->toHtml();
     }
 
     /**
