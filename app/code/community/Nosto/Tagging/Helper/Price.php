@@ -147,6 +147,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
                     $configurableProduct = Mage::getModel('catalog/product_type_configurable');
                     $associatedProducts = $configurableProduct->getUsedProducts(null, $product);
                     $lowestPrice = false;
+                    $lowestUnavailablePrice = false;
                     /** @var Mage_Catalog_Model_Product $associatedProduct */
                     foreach ($associatedProducts as $associatedProduct) {
                         /* @var Mage_Catalog_Model_Product $productModel */
@@ -158,9 +159,18 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
                             if (!$lowestPrice || $variationPrice < $lowestPrice) {
                                 $lowestPrice = $variationPrice;
                             }
+                        // If no SKU is available, we use the lowest price of them all
+                        } elseif ($productModel && $lowestPrice === false) {
+                            $variationPrice = $this->_getProductPrice($productModel, $finalPrice, $inclTax);
+                            if (!$lowestUnavailablePrice || $variationPrice < $lowestUnavailablePrice) {
+                                $lowestUnavailablePrice = $variationPrice;
+                            }
                         }
                     }
                     $price = $lowestPrice;
+                    if ($price === false) {
+                        $price = $lowestUnavailablePrice;
+                    }
                 }
                 break;
             default:
