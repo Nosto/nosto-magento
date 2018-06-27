@@ -52,7 +52,7 @@ class Nosto_Tagging_Block_Pagetype extends Mage_Core_Block_Template
     {
         $helper = Mage::helper('nosto_tagging/account');
         if (!$helper->existsAndIsConnected()
-            || $this->getPageTypeName() !== null
+            || $this->getPageTypeName() === null
             || !Mage::helper('nosto_tagging/module')->isModuleEnabled()
         ) {
             return '';
