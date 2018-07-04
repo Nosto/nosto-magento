@@ -26,7 +26,6 @@
  */
 
 use Nosto_Object_Signup_Account as NostoSDKAccount;
-use Nosto_Operation_MarketingPermission as NostoSDKMarketingPermission;
 
 /**
  * Handles sending the customer updates to Nosto via the API.
@@ -48,12 +47,13 @@ class Nosto_Tagging_Model_Service_Customer
             || $email === null
             || !$account->isConnectedToNosto()
         ) {
+            Nosto_Tagging_Helper_Log::warning('Could not update marketing permission');
             return false;
         }
         /** @var Nosto_Tagging_Helper_Email $emailHelper */
         $emailHelper = Mage::helper('nosto_tagging/email');
         $newsletter = $emailHelper->isOptedIn($email);
-        $service = new NostoSDKMarketingPermission($account);
-        return $service->update($email, $newsletter);
+        $operation = new Nosto_Operation_MarketingPermission($account);
+        return $operation->update($email, $newsletter);
     }
 }

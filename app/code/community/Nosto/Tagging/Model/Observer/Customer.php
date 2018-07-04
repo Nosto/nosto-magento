@@ -43,7 +43,6 @@ class Nosto_Tagging_Model_Observer_Customer
      * Event 'customer_save_commit_after'.
      *
      * @param Varien_Event_Observer $observer the event observer.
-     *
      * @return Nosto_Tagging_Model_Observer_Customer
      */
     public function customerUpdated(Varien_Event_Observer $observer)
