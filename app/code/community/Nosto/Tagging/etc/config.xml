@@ -177,6 +177,15 @@
                     </nosto_tagging_custom>
                 </observers>
             </review_delete_after>
+            <customer_save_commit_after>
+                <observers>
+                    <nosto_tagging_custom>
+                        <type>singleton</type>
+                        <class>Nosto_Tagging_Model_Observer_Customer</class>
+                        <method>customerUpdated</method>
+                    </nosto_tagging_custom>
+                </observers>
+            </customer_save_commit_after>
         </events>
         <index>
             <indexer>
