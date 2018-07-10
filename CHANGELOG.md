@@ -1,5 +1,8 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.7.2
+* Fix customer tagging throwing too many exceptions when user is not logged-in
+
 ### 3.7.1
 * Fix an issue that prevents the Page Type to be rendered in the Nosto Debug Toolbar
 
