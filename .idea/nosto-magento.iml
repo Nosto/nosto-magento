@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="WEB_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/vendor/arvenil/ninja-mutex" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/composer" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/felixfbecker/advanced-json-rpc" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/magento-ecg/coding-standard" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/magento/marketplace-eqp" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/mridang/magazine" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/mridang/pearify" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/netresearch/jsonmapper" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/nikic/php-parser" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/nosto/php-sdk" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/openmage/magento-mirror" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/pdepend/pdepend" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phan/phan" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phing/phing" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phpdocumentor/reflection-common" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phpdocumentor/reflection-docblock" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phpdocumentor/type-resolver" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phpmd/phpmd" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phpseclib/phpseclib" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phpunit/php-timer" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/psr/container" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/psr/log" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sabre/event" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/finder-facade" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/phpcpd" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/version" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/shopsys/phpstorm-inspect" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/squizlabs/php_codesniffer" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/config" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/console" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/debug" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/dependency-injection" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/filesystem" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/finder" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/polyfill-ctype" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/polyfill-mbstring" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/yaml" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/theseer/fdomdocument" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/vlucas/phpdotenv" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/webmozart/assert" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/wimg/php-compatibility" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
