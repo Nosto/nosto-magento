@@ -58,4 +58,4 @@ Open Software License ("OSL") v3.0
 
 ## Dependencies
 
-Magento Community Edition v1.6.x.x - v1.9.x.x
+Magento Community Edition v1.6.x.x - v1.9.x.x or Magento Enterprise Edition v1.11.x - v1.14.x
