@@ -1,5 +1,8 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.7.3
+* Add missing hcid from customer block and cart meta
+
 ### 3.7.2
 * Fix customer tagging throwing too many exceptions when user is not logged-in
 
