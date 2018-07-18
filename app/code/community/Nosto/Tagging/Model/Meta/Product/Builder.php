@@ -74,7 +74,7 @@ class Nosto_Tagging_Model_Meta_Product_Builder
         }
 
         $nostoProduct = Mage::getModel('nosto_tagging/meta_product');
-        if (!$nostoProduct->loadData($product, $store)) {
+        if ($nostoProduct->loadData($product, $store) === false) {
             return null;
         }
 
