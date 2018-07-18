@@ -59,7 +59,12 @@ class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
         ) {
             return '';
         }
-        return $this->getMetaProduct()->toHtml();
+        $nostoProduct = $this->getMetaProduct();
+        if ($nostoProduct instanceof Nosto_AbstractObject) {
+            return $nostoProduct->toHtml();
+        } else {
+            return '';
+        }
     }
 
     /**
