@@ -102,6 +102,9 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
         $nostoCustomer->setCustomerReference($this->getCustomerReference());
         $nostoCustomer->setEmail($email);
         $nostoCustomer->setMarketingPermission($emailHelper->isOptedIn($email));
+        $dataHelper = Mage::helper('nosto_tagging/data');
+        /* @var Nosto_Tagging_Helper_Data $dataHelper */
+        $nostoCustomer->setHcid($dataHelper->getVisitorChecksum());
 
         return $nostoCustomer;
     }
