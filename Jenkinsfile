@@ -14,7 +14,7 @@ pipeline {
         }
         // PhpStorm Inspections
         stage('Prepare PhpStorm environment') {
-          agent { docker { image 'supercid/phpstorm:2018.2-eap' } }
+          agent { docker { image 'nosto/phpstorm:2018.2-eap' } }
           steps {
             checkout scm
           }
@@ -32,7 +32,7 @@ pipeline {
     }
     
     stage('PhpStorm Inspections') {
-      agent { docker { image 'supercid/phpstorm:2018.2-eap' } }
+      agent { docker { image 'nosto/phpstorm:2018.2-eap' } }
       steps {
         script {
           sh "/home/plugins/PhpStorm-182.3684.37/bin/inspect.sh || true"
