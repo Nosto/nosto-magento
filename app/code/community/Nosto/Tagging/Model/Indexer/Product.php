@@ -563,7 +563,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
         $changed = 0;
         $batches = array_chunk($ids, self::$maxBatchSize);
         foreach ($batches as $productIds) {
-            /* @var Nosto_Tagging_Model_Resource_Product_Collection $products */
+            /* @var /Nosto_Tagging_Model_Resource_Product_Collection $products */
             $products = Mage::getModel('nosto_tagging/product')->getCollection();
             $products->addStoreFilter($store->getId())
                 ->addFieldToFilter('entity_id', array('in' => $productIds));

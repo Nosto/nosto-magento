@@ -283,6 +283,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
     {
         $rules = sprintf('requiredFieldsFor%s', ucfirst($type));
         $empty = false;
+        /** @noinspection PhpVariableVariableInspection */
         foreach (self::$$rules as $field) {
             if (is_object($entity)) {
                 if (get_class($entity) === 'Varien_Object') {
