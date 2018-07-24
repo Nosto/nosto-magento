@@ -2,26 +2,20 @@
 
 pipeline {
   agent none
+
   stages {
-  
-    stage('Prepare Images') {
-      parallel {
-        stage('Prepare environment') {
-          agent { dockerfile true }
-          steps {
-            checkout scm
-          }
-        }
-        // PhpStorm Inspections
-        stage('Prepare PhpStorm environment') {
-          agent { docker { image 'nosto/phpstorm:2018.2-eap' } }
-          steps {
-            checkout scm
-          }
-        }
+    stage('Prepare environment') {
+      agent { dockerfile true }
+      steps {
+        checkout scm
       }
     }
-
+    stage('Prepare PhpStorm environment') {
+      agent { docker { image 'nosto/phpstorm:2018.2-eap' } }
+      steps {
+        checkout scm
+      }
+    }
     stage('Update Dependencies') {
       agent { dockerfile true }
       steps {
@@ -30,13 +24,13 @@ pipeline {
         sh "./vendor/bin/pearify process ."
       }
     }
-    
+
     stage('PhpStorm Inspections') {
       agent { docker { image 'nosto/phpstorm:2018.2-eap' } }
       steps {
         script {
-          sh "/home/plugins/PhpStorm-182.3684.37/bin/inspect.sh || true"
-          sh "./vendor/bin/phpstorm-inspect /home/plugins/PhpStorm-182.3684.37/bin/inspect.sh ~/.PhpStorm2018.2/system . .idea/inspectionProfiles/Project_Default.xml ./app"
+          sh "/home/plugins/PhpStorm-182.3684.37/bin/inspect.sh || true" /* Initializes the IDE and the user preferences directory */
+          sh "./vendor/bin/phpstorm-inspect /home/plugins/PhpStorm-182.3684.37/bin/inspect.sh ~/.PhpStorm2018.2/system . .idea/inspectionProfiles/Project_Default.xml ./app || true"
         }
       }
     }
@@ -92,9 +86,11 @@ pipeline {
 
   post {
     always {
-      checkstyle pattern: 'chk*.xml', unstableTotalAll:'0'
-      pmd pattern: 'pmd*.xml', unstableTotalAll:'0'
-      deleteDir()
+      node('master') {
+        checkstyle pattern: 'chk*.xml', unstableTotalAll:'0'
+        pmd pattern: 'pmd*.xml', unstableTotalAll:'0'
+        deleteDir()
+      }
     }
   }
 }
