@@ -137,5 +137,6 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
             Mage::logException($e);
             return $this->_goBack();
         }
+        return $this;
     }
 }
