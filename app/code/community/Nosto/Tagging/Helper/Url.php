@@ -549,7 +549,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
         /** @var Mage_Adminhtml_Helper_Data $adminHtmlHelper */
         $adminHtmlHelper = Mage::helper('adminhtml');
 
-        return $adminHtmlHelper->getUrl(self::URL_PATH_NOSTO_CONFIG, $params);
+        return $adminHtmlHelper::getUrl(self::URL_PATH_NOSTO_CONFIG, $params);
     }
 
     /**

@@ -65,7 +65,7 @@ class Nosto_Tagging_Model_Meta_Settings extends Nosto_Object_Settings
         } elseif ($helper->isVariationEnabled($store)) {
             /* @var Nosto_Tagging_Helper_Variation $variationHelper  */
             $variationHelper = Mage::helper('nosto_tagging/variation');
-            $this->setDefaultVariantId($variationHelper->getDefaultVariationId($store));
+            $this->setDefaultVariantId($variationHelper->getDefaultVariationId());
         } else {
             $this->setDefaultVariantId("");
         }

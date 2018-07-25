@@ -29,6 +29,7 @@
 $nostoBootstrapHelper = Mage::helper('nosto_tagging/bootstrap');
 $nostoBootstrapHelper->init();
 
+/** @noinspection PhpIncludeInspection */
 require_once 'Mage/Checkout/controllers/CartController.php';
 
 /**
