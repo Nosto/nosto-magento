@@ -97,12 +97,11 @@ class Nosto_Tagging_Model_Service_Order
             }
             if (!empty($productIds)) {
                 /* @var Nosto_Tagging_Model_Resource_Product_Collection $productIds*/
-                $products= Mage::getModel('nosto_tagging/product')
+                $products = Mage::getModel('nosto_tagging/product')
                     ->getCollection()
                     ->addAttributeToSelect('*')
                     ->addIdFilter($productIds);
-                if (
-                    $products instanceof Nosto_Tagging_Model_Resource_Product_Collection
+                if ($products instanceof Nosto_Tagging_Model_Resource_Product_Collection
                     && !empty($products)
                 ) {
                     /* @var Nosto_Tagging_Helper_Data $dataHelper */
@@ -117,7 +116,6 @@ class Nosto_Tagging_Model_Service_Order
                     /* @var Nosto_Tagging_Model_Indexer_Product $indexer */
                     $indexer = Mage::getModel('nosto_tagging/indexer_product');
                     $indexer->reindexAndUpdateMany($products);
-
                 }
             }
         }

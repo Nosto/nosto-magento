@@ -323,7 +323,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
     /**
      * Reindexes a product in all store views and updates product to Nosto
      *
-     * @param Mage_Catalog_Model_Product[] $products
+     * @param Mage_Catalog_Model_Product[]|Nosto_Tagging_Model_Resource_Product_Collection $products
      */
     public function reindexAndUpdateMany($products)
     {

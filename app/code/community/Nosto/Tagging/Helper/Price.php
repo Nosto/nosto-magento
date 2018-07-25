@@ -213,8 +213,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         $minBundlePrice = $model->getTotalPrices($product, 'min', $inclTax, $finalPrice);
 
         if ($finalPrice) {
-
-            return $minBundlePrice;
+            return (float)$minBundlePrice;
         }
 
         /** @var Mage_Bundle_Model_Product_Type $typeInstance */

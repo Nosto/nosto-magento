@@ -101,6 +101,7 @@ class Nosto_Tagging_Helper_Setup extends Mage_Core_Helper_Abstract
      */
     public function alterCustomerReferenceInputType(Mage_Eav_Model_Entity_Setup $installer)
     {
+        /** @noinspection PhpParamsInspection */
         $installer->updateAttribute(
             'customer',
             Nosto_Tagging_Helper_Data::NOSTO_CUSTOMER_REFERENCE_ATTRIBUTE_NAME,
