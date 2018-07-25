@@ -73,12 +73,10 @@ class Nosto_Tagging_Model_Observer_Product
     /**
      * Event handler for the "catalogrule_after_apply" event.
      *
-     * @param Varien_Event_Observer $observer the event observer.
-     *
      * @return Nosto_Tagging_Model_Observer_Product
      * @codingStandardsIgnoreStart
      */
-    public function afterCatalogPriceRule(Varien_Event_Observer $observer)
+    public function afterCatalogPriceRule()
     {
         if (Mage::helper('nosto_tagging/module')->isModuleEnabled()) {
             /* @var Nosto_Tagging_Helper_Account $accountHelper */
