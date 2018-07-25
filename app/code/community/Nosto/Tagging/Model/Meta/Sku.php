@@ -103,6 +103,12 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
         }
     }
 
+    /**
+     * @param Mage_Catalog_Model_Product $sku
+     * @param Mage_Catalog_Model_Product $parent
+     * @param Mage_Core_Model_Store $store
+     * @return bool|void
+     */
     protected function loadCustomFieldsFromConfigurableAttributes(
         Mage_Catalog_Model_Product $sku,
         Mage_Catalog_Model_Product $parent,

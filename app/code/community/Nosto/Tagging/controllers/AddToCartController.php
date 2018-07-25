@@ -40,7 +40,11 @@ require_once 'Mage/Checkout/controllers/CartController.php';
  */
 class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
 {
-
+    /**
+     * Add item to cart action
+     *
+     * @return Mage_Checkout_CartController|Mage_Core_Controller_Varien_Action
+     */
     public function addAction()
     {
         if (!$this->_validateFormKey()) {

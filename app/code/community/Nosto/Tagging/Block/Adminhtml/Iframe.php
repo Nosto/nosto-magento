@@ -151,6 +151,11 @@ class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
         return $account;
     }
 
+    /**
+     * Returns URL for the configuration section
+     *
+     * @return string
+     */
     public function getConfigurationUrl()
     {
         /** @var Nosto_Tagging_Helper_Url $urlHelper */

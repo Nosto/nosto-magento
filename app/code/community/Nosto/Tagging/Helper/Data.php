@@ -457,6 +457,12 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         return ($method === self::MULTI_CURRENCY_DISABLED);
     }
 
+    /**
+     * Check if price variations are enabled
+     *
+     * @param null $store
+     * @return bool
+     */
     public function isVariationEnabled($store = null)
     {
         return (bool)Mage::getStoreConfig(self::XML_PATH_VARIATION_SWITCH, $store);

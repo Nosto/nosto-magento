@@ -101,8 +101,10 @@ class Nosto_Tagging_Block_Order extends Mage_Checkout_Block_Success
         return $nostoOrder;
     }
 
-    /*
+    /**
      * Returns the visitor's Nosto Id
+     *
+     * @return null|string
      */
     public function getVisitorChecksum()
     {

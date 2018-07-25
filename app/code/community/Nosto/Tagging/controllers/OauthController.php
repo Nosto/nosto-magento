@@ -54,6 +54,9 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
         self::connect();
     }
 
+    /**
+     * @return Mage_Core_Model_Store
+     */
     public function getStore()
     {
         if (($storeCode = $this->getParam('___store')) !== null) {

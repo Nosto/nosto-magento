@@ -34,6 +34,10 @@
  */
 class Nosto_Tagging_Block_Adminhtml_System_Config_Variation_Switch extends Mage_Adminhtml_Block_System_Config_Form_Field
 {
+    /**
+     * @param Varien_Data_Form_Element_Abstract $element
+     * @return string
+     */
     protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)
     {
         $store = $store = Mage::app()->getStore();
@@ -48,7 +52,6 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Variation_Switch extends Mage_
                 'comment', $comment
             );
         }
-
         return parent::_getElementHtml($element);
     }
 }
