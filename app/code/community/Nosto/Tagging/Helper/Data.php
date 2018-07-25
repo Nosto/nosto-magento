@@ -271,7 +271,9 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         $installationId = Mage::getStoreConfig(self::XML_PATH_INSTALLATION_ID);
         if (empty($installationId)) {
             // Running bin2hex() will make the ID string length 64 characters.
-            $installationId = Mage::helper('core')->getRandomString($length = 64);
+            /** @var Mage_Core_Helper_Data $dataHelper */
+            $dataHelper = Mage::helper('core');
+            $installationId = $dataHelper->getRandomString($length = 64);
             /** @var Mage_Core_Model_Config $config */
             $config = Mage::getModel('core/config');
             $config->saveConfig(

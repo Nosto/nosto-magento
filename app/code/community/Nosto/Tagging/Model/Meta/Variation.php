@@ -59,6 +59,7 @@ class Nosto_Tagging_Model_Meta_Variation extends Nosto_Object_Product_Variation
         //It has to be a new instance of the Product. Because magento product takes customer group Id once only
         /** @var Mage_Catalog_Model_Product $tmpProduct */
         $tmpProduct = Mage::getModel('catalog/product')->load($product->getId());
+        /** @noinspection PhpUndefinedMethodInspection */
         $tmpProduct->setCustomerGroupId($group->getCustomerGroupId());
         /* @var Nosto_Tagging_Helper_Variation $variationHelper  */
         $variationHelper = Mage::helper('nosto_tagging/variation');

@@ -407,6 +407,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
 
         /** @var Nosto_Tagging_Helper_Data $helper */
         $helper = Mage::helper('nosto_tagging');
+        /** @var Mage_Catalog_Model_Resource_Category_Collection $categoryCollection */
         $categoryCollection = $product->getCategoryCollection();
         $categoryCollection->addAttributeToFilter('is_active', 1);
         foreach ($categoryCollection as $category) {

@@ -74,6 +74,7 @@ class Nosto_Tagging_Model_Observer_Cart
                 return $this;
             }
 
+            /** @noinspection PhpUndefinedMethodInspection */
             $quoteItem = $observer->getQuoteItem();
 
             if (!$quoteItem instanceof Mage_Sales_Model_Quote_Item) {

@@ -106,6 +106,7 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
                 ->setPageSize(1)
                 ->setCurPage(1)
                 ->getFirstItem(); // @codingStandardsIgnoreLine
+            /** @noinspection PhpUndefinedMethodInspection */
             if ($indexedProduct instanceof Nosto_Tagging_Model_Index === false
                 || !$indexedProduct->getId()
             ) {

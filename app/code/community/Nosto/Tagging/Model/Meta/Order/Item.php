@@ -108,7 +108,7 @@ abstract class Nosto_Tagging_Model_Meta_Order_Item extends Nosto_Object_Cart_Lin
         $skus = $item->getChildrenItems();
         /* @var Mage_Sales_Model_Order_Item $sku */
         if (isset($skus[0]) && $skus[0] instanceof Mage_Sales_Model_Order_Item) {
-
+            /** @var Mage_Sales_Model_Order_Item[] $skus */
             return $skus[0]->getProductId();
         }
 

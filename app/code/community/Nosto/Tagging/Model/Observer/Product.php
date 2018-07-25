@@ -149,9 +149,11 @@ class Nosto_Tagging_Model_Observer_Product
     public function onReviewUpdated(Varien_Event_Observer $observer)
     {
         if (Mage::helper('nosto_tagging/module')->isModuleEnabled()) {
+            /** @noinspection PhpUndefinedMethodInspection */
             $object = $observer->getEvent()->getObject();
-            /** @var Mage_Catalog_Model_Product $product */
+            /** @var Mage_Review_Model_Review_Summary $object */
             $productId = $object->getEntityPkValue();
+            /** @var Mage_Catalog_Model_Product $product */
             $product = Mage::getModel('catalog/product')->load($productId);
             if ($product instanceof Mage_Catalog_Model_Product) {
                 try {

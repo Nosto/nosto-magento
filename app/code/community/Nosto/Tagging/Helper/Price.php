@@ -75,10 +75,9 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         $finalPrice = false
     )
     {
-        /** @var Mage_Tax_Helper_Data $helper */
+        /** @var Mage_Tax_Helper_Data $taxHelper */
         $taxHelper = Mage::helper('tax');
-        $inclTax = $taxHelper->displayPriceIncludingTax($store);
-
+        $inclTax = $taxHelper->displayPriceIncludingTax();
         return $this->_getProductPrice($product, $finalPrice, $inclTax);
     }
 
@@ -228,10 +227,12 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
             $product
         );
 
+        /** @var Mage_Catalog_Helper_Product $productHelper */
+        $productHelper = Mage::helper('catalog/product');
         $options = $optionCollection->appendSelections(
             $selectionCollection,
             false,
-            Mage::helper('catalog/product')->getSkipSaleableCheck()
+            $productHelper->getSkipSaleableCheck()
         );
         $sumListPrice = 0;
         $allOptional = true;
@@ -243,7 +244,8 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
             $allOptional = false;
             $minSimpleProductPricePrice = null;
             $simpleProductListPrice = null;
-            $selections  = $option->getSelections();
+            /** @noinspection PhpUndefinedMethodInspection */
+            $selections = $option->getSelections();
             /**
              * @var Mage_Catalog_Model_Product $selection
              */
@@ -266,6 +268,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
             $cheapestItemListPrice = null;
             /** @var Mage_Bundle_Model_Option $option */
             foreach ($options as $option) {
+                /** @noinspection PhpUndefinedMethodInspection */
                 $selections = $option->getSelections();
                 /**
                  * @var Mage_Catalog_Model_Product $selection
@@ -305,8 +308,11 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         /** @var Mage_Tax_Helper_Data $helper */
         $helper = Mage::helper('tax');
         if ($finalPrice) {
-            $timestamp = Mage::getSingleton('core/date')->gmtTimestamp();
+            /** @var Mage_Core_Model_Date $codeModel */
+            $codeModel = Mage::getSingleton('core/date');
+            $timestamp = $codeModel->gmtTimestamp();
             /* @var Mage_CatalogRule_Model_Resource_Rule $priceRule */
+            /** @noinspection PhpUndefinedMethodInspection */
             $customerGroupId = $product->getCustomerGroupId() ? $product->getCustomerGroupId() : 0;
             $rulePrice = Mage::getResourceModel('catalogrule/rule')
                 ->getRulePrice(
@@ -467,7 +473,9 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
     {
         /* @var Mage_CatalogRule_Model_Resource_Rule_Collection $rules */
         $rules = Mage::getModel('catalogrule/rule')->getCollection();
-        $date = Mage::getSingleton('core/date')->gmtDate();
+        /** @var Mage_Core_Model_Date $dateModel */
+        $dateModel = Mage::getSingleton('core/date');
+        $date = $dateModel->gmtDate();
         $rules
             ->addIsActiveFilter()
             ->addFieldToFilter(

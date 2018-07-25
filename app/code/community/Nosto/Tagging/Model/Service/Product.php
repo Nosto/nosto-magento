@@ -166,7 +166,9 @@ class Nosto_Tagging_Model_Service_Product
      */
     public function updateOutOfSyncToNosto()
     {
-        $storesWithNosto = Mage::helper('nosto_tagging/account')->getAllStoreViewsWithNostoAccount();
+        /** @var Nosto_Tagging_Helper_Account $accountHelper */
+        $accountHelper = Mage::helper('nosto_tagging/account');
+        $storesWithNosto = $accountHelper->getAllStoreViewsWithNostoAccount();
         foreach ($storesWithNosto as $store) {
             $start = microtime(true);
             /** @var Nosto_Tagging_Helper_Account $helper */

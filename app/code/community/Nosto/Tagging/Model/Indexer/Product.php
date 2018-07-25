@@ -225,6 +225,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
         // Check if we're handling simple product with parents
         $products = Nosto_Tagging_Util_Product::toParentProducts($catalogProduct);
         foreach ($products as $product) {
+            /** @var Mage_Catalog_Model_Product $product */
             foreach ($product->getStoreIds() as $storeId) {
                 $this->addToReindexQueue($product, $storeId);
             }

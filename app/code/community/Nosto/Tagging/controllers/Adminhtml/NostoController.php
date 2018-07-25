@@ -86,7 +86,9 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
     public function indexAction()
     {
         if (!class_exists('Nosto_Nosto', true)) {
-            Mage::getSingleton('core/session')->addError(
+            /** @var Mage_Core_Model_Session $sessionModel */
+            $sessionModel = Mage::getSingleton('core/session');
+            $sessionModel->addError(
                 $this->__(
                     'The Nosto extension for Magento is missing some required files. Apart from files in '
                     . 'app/code/community/Nosto/Tagging, the extension requires certain libraries in the '
@@ -107,12 +109,13 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                 $storeId = $website->getDefaultGroup()->getDefaultStoreId();
                 if (!empty($storeId)) {
                     $this->_redirect('*/*/index', array('store' => $storeId));
-                    return; // stop execution after redirect is set.
+                    return null; // stop execution after redirect is set.
                 }
             }
         }
         $this->loadLayout();
         $this->renderLayout();
+        return null;
     }
 
     /**

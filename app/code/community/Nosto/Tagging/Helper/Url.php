@@ -560,8 +560,9 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
      */
     public function getCurrentUrl()
     {
-        /* @var Mage_Core_Helper_Url $mageUrlHelper */
-        $mageUrl = Mage::helper('core/url')->getCurrentUrl();
+        /* @var Mage_Core_Helper_Url $coreUrlHelper */
+        $coreUrlHelper = Mage::helper('core/url');
+        $mageUrl = $coreUrlHelper->getCurrentUrl();
         // There's a bug in Magento's Mage_Core_Helper_Url::getCurrentUrl that
         // calls htmlspecialchars for URL which ends up breaking the URL
         // parameter separator
