@@ -71,7 +71,6 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
      */
     public function getDisplayPriceInStore(
         Mage_Catalog_Model_Product $product,
-        Mage_Core_Model_Store $store,
         $finalPrice = false
     )
     {
@@ -435,7 +434,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         $isFinalPrice
     )
     {
-        $basePrice = $this->getDisplayPriceInStore($product, $store, $isFinalPrice);
+        $basePrice = $this->getDisplayPriceInStore($product, $isFinalPrice);
 
         return $this->getTaggingPrice(
             $basePrice,
