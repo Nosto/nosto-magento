@@ -110,7 +110,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
         $vaimoKlarnaOrder = $klarna->getKlarnaOrderRaw($quote->getKlarnaCheckoutId());
         try {
             self::validateKlarnaOrder($vaimoKlarnaOrder);
-        } catch (Nosto_NostoException $e) {
+        } catch (Exception $e) {
             NostoLog::exception($e);
             return false;
         }

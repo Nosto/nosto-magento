@@ -45,6 +45,7 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
      * Add item to cart action
      *
      * @return Mage_Checkout_CartController|Mage_Core_Controller_Varien_Action
+     * @throws Mage_Exception
      */
     public function addAction()
     {
@@ -112,25 +113,6 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
                     $this->_getSession()->addSuccess($message);
                 }
                 $this->_goBack();
-            }
-        } catch (Mage_Core_Exception $e) {
-            /** @noinspection PhpUndefinedMethodInspection */
-            if ($this->_getSession()->getUseNotice(true)) {
-                $this->_getSession()->addNotice(Mage::helper('core')->escapeHtml($e->getMessage()));
-            } else {
-                $messages = array_unique(explode("\n", $e->getMessage()));
-                foreach ($messages as $message) {
-                    $this->_getSession()->addError(Mage::helper('core')->escapeHtml($message));
-                }
-            }
-
-            /** @noinspection PhpUndefinedMethodInspection */
-            $url = $this->_getSession()->getRedirectUrl(true);
-            if ($url) {
-                $this->getResponse()->setRedirect($url);
-            } else {
-                /** @noinspection PhpUndefinedMethodInspection */
-                $this->_redirectReferer(Mage::helper('checkout/cart')->getCartUrl());
             }
         } catch (Exception $e) {
             $this->_getSession()->addException($e, $this->__('Cannot add the item to shopping cart.'));
