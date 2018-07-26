@@ -45,7 +45,6 @@ class Nosto_Tagging_Model_Observer_Exchange
      * Only stores that have the scheduled update enabled, have more currencies
      * than the default one defined and has a Nosto account are synced.
      *
-     * @throws Mage_Cron_Exception
      */
     public function scheduledCurrencyExchangeRateUpdate()
     {

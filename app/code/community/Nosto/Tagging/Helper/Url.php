@@ -25,6 +25,8 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+use Nosto_Tagging_Helper_Log as NostoLog;
+
 /**
  * Helper class for building urls.
  * Includes getters for all preview urls for the Nosto account configuration
@@ -183,7 +185,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
 
                         return $productUrl;
                     }
-                } catch (Nosto_NostoException $e) {
+                } catch (\Exception $e) {
                     Nosto_Tagging_Helper_Log::exception($e);
                 }
             }
@@ -227,11 +229,15 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
             // Since the Mage_Catalog_Model_Category::getUrl() doesn't
             // accept any arguments and always returns an url with SID,
             // we'll need to remove the sid manually from the URL
-            $url = $this->removeQueryParamFromUrl(
-                $url,
-                self::MAGENTO_URL_PARAMETER_SID
-            );
-            $categoryUrl = $this->addNostoPreviewParameter($url);
+            try {
+                $url = $this->removeQueryParamFromUrl(
+                    $url,
+                    self::MAGENTO_URL_PARAMETER_SID
+                );
+                $categoryUrl = $this->addNostoPreviewParameter($url);
+            } catch (\Exception $e) {
+                NostoLog::exception($e);
+            }
         }
 
         return $categoryUrl;
@@ -380,10 +386,15 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
         );
         $productUrl = $product->getUrlInStore($urlParams);
         if ($helper->getUsePrettyProductUrls($store)) {
-            $productUrl = $this->removeQueryParamFromUrl(
-                $productUrl,
-                self::MAGENTO_URL_PARAMETER_STORE
-            );
+            try {
+                $productUrl = $this->removeQueryParamFromUrl(
+                    $productUrl,
+                    self::MAGENTO_URL_PARAMETER_STORE
+                );
+            } catch (\Exception $e) {
+                NostoLog::exception($e);
+                return $productUrl;
+            }
         }
 
         //Skip the product url has the string '_ignore_category'
@@ -413,6 +424,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
      * @param $url
      * @param $param
      * @return string
+     * @throws Zend_Uri_Exception
      */
     public function removeQueryParamFromUrl($url, $param)
     {

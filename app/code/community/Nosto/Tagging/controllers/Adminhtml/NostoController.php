@@ -194,6 +194,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
 
     /**
      * Creates a new Nosto account for the current scope using the Nosto API.
+     * @throws Zend_Validate_Exception
      */
     public function createAccountAction()
     {

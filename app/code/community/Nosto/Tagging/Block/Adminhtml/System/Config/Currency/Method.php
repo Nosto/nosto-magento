@@ -25,6 +25,8 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+use Nosto_Tagging_Helper_Log as NostoLog;
+
 /**
  * Extension system setting source model for choosing the multi-currency method
  * to use.
@@ -47,8 +49,12 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Currency_Method extends Mage_A
     {
         $store = null;
         $disabled = false;
-        if ($code = $this->getRequest()->getParam('store')) {
-            $store = Mage::getModel('core/store')->load($code);
+        try {
+            if ($code = $this->getRequest()->getParam('store')) {
+                $store = Mage::getModel('core/store')->load($code);
+            }
+        } catch (Exception $e) {
+            NostoLog::exception($e);
         }
         if ($store instanceof Mage_Core_Model_Store) {
             /* @var Nosto_Tagging_Helper_Account $accountHelper */

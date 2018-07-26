@@ -30,6 +30,7 @@ $nostoBootstrapHelper = Mage::helper('nosto_tagging/bootstrap');
 $nostoBootstrapHelper->init();
 
 use Nosto_NostoException as NostoException;
+use Nosto_Tagging_Helper_Log as NostoLog;
 
 /**
  * Restores an abandoned cart
@@ -48,6 +49,7 @@ class Nosto_Tagging_CartController extends Mage_Core_Controller_Front_Action
     /**
      * Restores a cart based on hash. On succesful restoration redirects user
      * to the cart page
+     * @throws Zend_Uri_Exception
      */
     public function indexAction()
     {
@@ -68,7 +70,7 @@ class Nosto_Tagging_CartController extends Mage_Core_Controller_Front_Action
             if (!$checkoutSession->getQuoteId()) {
                 $restoreCartHash = $this->getRequest()->getParam(self::HASH_PARAM);
                 if (!$restoreCartHash) {
-                    Nosto_Tagging_Helper_Log::exception(
+                    NostoLog::exception(
                         new NostoException(
                             'No hash provided for restore cart'
                         )
@@ -82,7 +84,7 @@ class Nosto_Tagging_CartController extends Mage_Core_Controller_Front_Action
                             $urlParameters
                         );
                     } catch (Exception $e) {
-                        Nosto_Tagging_Helper_Log::exception($e);
+                        NostoLog::exception($e);
                         $coreSession->addError(
                             $this->__('Sorry, we could not find your cart')
                         );

@@ -159,7 +159,6 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      *
      * @param Mage_Catalog_Model_Product $product
      * @param Mage_Core_Model_Store $store
-     * @throws Nosto_NostoException
      */
     protected function amendVariations(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {

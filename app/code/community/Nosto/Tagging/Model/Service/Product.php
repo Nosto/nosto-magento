@@ -222,7 +222,11 @@ class Nosto_Tagging_Model_Service_Product
                         $operation->addProduct($nostoProduct);
                     }
                     $indexedProduct->setInSync(1);
-                    $indexedProduct->save();
+                    try {
+                        $indexedProduct->save();
+                    } catch (\Exception $e) {
+                        Nosto_Tagging_Helper_Log::exception($e);
+                    }
                 }
                 try {
                     $operation->upsert();

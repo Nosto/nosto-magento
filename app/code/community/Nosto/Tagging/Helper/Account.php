@@ -145,8 +145,12 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
                     if (!in_array($name, Nosto_Request_Api_Token::$tokenNames)) {
                         continue;
                     }
-                    $token = new Nosto_Request_Api_Token($name, $value);
-                    $account->addApiToken($token);
+                    try {
+                        $token = new Nosto_Request_Api_Token($name, $value);
+                        $account->addApiToken($token);
+                    } catch (Nosto_NostoException $e) {
+                        NostoLog::exception($e);
+                    }
                 }
             }
             return $account;

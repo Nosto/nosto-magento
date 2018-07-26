@@ -25,6 +25,8 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+use Nosto_Tagging_Helper_Log as NostoLog;
+
 /* @var Nosto_Tagging_Helper_Bootstrap $nostoBootstrapHelper */
 $nostoBootstrapHelper = Mage::helper('nosto_tagging/bootstrap');
 $nostoBootstrapHelper->init();
@@ -146,7 +148,11 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
                 $helper = Mage::helper('nosto_tagging/class');
                 /** @var Nosto_Tagging_Model_Meta_Order $meta */
                 $meta = $helper->getOrderClass($order);
-                $meta->loadData($order);
+                try {
+                    $meta->loadData($order);
+                } catch (Nosto_NostoException $e) {
+                    NostoLog::exception($e);
+                }
                 $collection->append($meta);
             }
             $this->export($collection);

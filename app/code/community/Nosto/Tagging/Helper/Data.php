@@ -626,7 +626,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      * Return the attributes to be tagged in Nosto tags
      *
      * @param string $tagId the name / identifier of the tag (e.g. tag1, tag2).
-     * @param Mage_Core_Model_Store|null $store the store model or null.
+     * @param mixed $store the store model or null.
      *
      * @throws Nosto_NostoException
      * @return array

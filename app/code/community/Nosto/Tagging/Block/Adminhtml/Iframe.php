@@ -25,6 +25,8 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+use Nosto_Tagging_Helper_Log as NostoLog;
+
 /**
  * Nosto iframe block.
  * Adds an iframe for configuring a Nosto account.
@@ -74,14 +76,18 @@ class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
             }
         }
         $params['v'] = self::IFRAME_VERSION;
-        $store = $this->getSelectedStore();
-        /* @var Mage_Core_Model_App_Emulation $emulation */
-        $emulation = Mage::getSingleton('core/app_emulation');
-        $env = $emulation->startEnvironmentEmulation($store->getId());
-        $this->_iframeUrl = self::buildURL($params);
-        $emulation->stopEnvironmentEmulation($env);
-
-        return $this->_iframeUrl;
+        try {
+            $store = $this->getSelectedStore();
+            /* @var Mage_Core_Model_App_Emulation $emulation */
+            $emulation = Mage::getSingleton('core/app_emulation');
+            $env = $emulation->startEnvironmentEmulation($store->getId());
+            $this->_iframeUrl = self::buildURL($params);
+            $emulation->stopEnvironmentEmulation($env);
+            return $this->_iframeUrl;
+        } catch (Exception $e) {
+            NostoLog::exception($e);
+            return '';
+        }
     }
 
     /**
@@ -125,7 +131,11 @@ class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
     {
         /** @var Nosto_Tagging_Model_Meta_Account_Iframe $iframeParams */
         $iframeParams = Mage::getModel('nosto_tagging/meta_account_iframe');
-        $iframeParams->loadData($this->getSelectedStore());
+        try {
+            $iframeParams->loadData($this->getSelectedStore());
+        } catch (Exception $e) {
+            NostoLog::exception($e);
+        }
         return $iframeParams;
     }
 
@@ -147,8 +157,13 @@ class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
     {
         /** @var Nosto_Tagging_Helper_Account $helper */
         $helper = Mage::helper('nosto_tagging/account');
-        $account = $helper->find($this->getSelectedStore());
-        return $account;
+        try {
+            $account = $helper->find($this->getSelectedStore());
+            return $account;
+        } catch (Exception $e) {
+            NostoLog::exception($e);
+            return null;
+        }
     }
 
     /**
@@ -160,8 +175,12 @@ class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
     {
         /** @var Nosto_Tagging_Helper_Url $urlHelper */
         $urlHelper = Mage::helper('nosto_tagging/url');
-        $store = $this->getSelectedStore();
-
-        return $urlHelper->getAdminNostoConfiguratioUrl($store);
+        try {
+            $store = $this->getSelectedStore();
+            return $urlHelper->getAdminNostoConfiguratioUrl($store);
+        } catch (Exception $e) {
+            NostoLog::exception($e);
+            return '';
+        }
     }
 }

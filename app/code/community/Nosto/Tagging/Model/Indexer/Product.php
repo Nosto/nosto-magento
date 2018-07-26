@@ -25,6 +25,8 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+use Nosto_Tagging_Helper_Log as NostoLog;
+
 /**
  * Class for indexing Nosto products
  *
@@ -523,7 +525,11 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
         $dataHelper = Mage::helper('nosto_tagging');
         foreach ($stores as $store) {
             if ($dataHelper->getUseProductIndexer($store)) {
-                $this->reindexAllInStore($store);
+                try {
+                    $this->reindexAllInStore($store);
+                } catch (Exception $e) {
+                    NostoLog::exception($e);
+                }
             }
         }
         /* @var Nosto_Tagging_Model_Service_Product $service */

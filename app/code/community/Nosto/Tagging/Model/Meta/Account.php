@@ -25,6 +25,8 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+use Nosto_Tagging_Helper_Log as NostoLog;
+
 /**
  * Meta data class which holds information about a new Nosto account.
  * This is used during the Nosto account creation.
@@ -102,9 +104,14 @@ class Nosto_Tagging_Model_Meta_Account extends Nosto_Object_Signup_Signup
             /** @var Nosto_Tagging_Helper_Currency $currencyHelper */
             $currencyHelper = Mage::helper('nosto_tagging/currency');
             foreach ($currencyCodes as $currencyCode) {
-                $this->addCurrency(
-                    $currencyCode, $currencyHelper->getCurrencyObject($storeLocale, $currencyCode)
-                );
+                try {
+                    $this->addCurrency(
+                        $currencyCode, $currencyHelper->getCurrencyObject($storeLocale, $currencyCode)
+                    );
+                } catch (\Exception $e) {
+                    NostoLog::exception($e);
+                    return false;
+                }
             }
         }
 

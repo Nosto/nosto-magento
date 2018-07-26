@@ -49,6 +49,7 @@ class Nosto_Tagging_Model_Service_Order
      *
      * @param Mage_Sales_Model_Order $mageOrder
      * @return bool
+     * @throws Nosto_NostoException
      */
     public function confirm(Mage_Sales_Model_Order $mageOrder)
     {
