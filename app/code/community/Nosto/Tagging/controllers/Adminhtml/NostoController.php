@@ -231,6 +231,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                 $signup->loadData($store, $signupDetails, $accountOwner);
 
                 $operation = new Nosto_Operation_AccountSignup($signup);
+                /** @var Nosto_Object_Signup_Account $account */
                 $account = $operation->create();
                 if ($accountHelper->save($account, $store)) {
                     $accountHelper->updateCurrencyExchangeRates($account, $store);
