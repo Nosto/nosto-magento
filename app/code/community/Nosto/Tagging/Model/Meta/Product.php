@@ -86,6 +86,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      * @param Mage_Core_Model_Store|null $store the store to get the product data for.
      * @return bool
      * @throws Nosto_NostoException
+     * @throws Mage_Core_Exception
      */
     public function loadData(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store = null)
     {
@@ -182,6 +183,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      *
      * @param Mage_Catalog_Model_Product $product the product model.
      * @param Mage_Core_Model_Store $store
+     * @throws Mage_Core_Exception
      */
     protected function amendSkus(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
@@ -621,6 +623,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      * @param Mage_Core_Model_Store $store the store to get the product data for.
      *
      * @return bool returns false if the product is not available in a given store
+     * @throws Mage_Core_Exception
      */
     public function reloadData(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {

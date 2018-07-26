@@ -44,6 +44,7 @@ class Nosto_Tagging_Model_Meta_Product_Builder
      * @param Mage_Core_Model_Store|null $store
      * @param bool $useIndex
      * @throws Nosto_NostoException
+     * @throws Mage_Core_Exception
      *
      * @return Nosto_Tagging_Model_Meta_Product|null
      */

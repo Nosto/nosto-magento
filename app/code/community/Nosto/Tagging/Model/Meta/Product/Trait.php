@@ -68,6 +68,7 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
      * @param Mage_Core_Model_Store $store the store model.
      *
      * @return null|string
+     * @throws Mage_Core_Exception
      */
     protected function buildImageUrl(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
@@ -80,6 +81,7 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
         if ($this->isValidImage($img)) {
             // We build the image url manually in order get the correct base
             // url, even if this product is populated in the backend.
+            /** @noinspection PhpUnhandledExceptionInspection */
             $baseUrl = rtrim($store->getBaseUrl('media'), '/');
             $file = str_replace(DS, '/', $img);
             $file = ltrim($file, '/');

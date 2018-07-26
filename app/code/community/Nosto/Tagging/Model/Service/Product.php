@@ -52,6 +52,7 @@ class Nosto_Tagging_Model_Service_Product
      *
      * @param Mage_Catalog_Model_Product[] $products
      * @return bool
+     * @throws Mage_Core_Exception
      */
     protected function update(array $products)
     {
@@ -64,6 +65,7 @@ class Nosto_Tagging_Model_Service_Product
             }
             ++$counter;
             if ($product instanceof Mage_Catalog_Model_Product === false) {
+                /** @noinspection PhpUnhandledExceptionInspection */
                 Mage::throwException(
                     sprintf(
                         'Invalid data type, expecting Mage_Catalog_Model_Product' .
@@ -144,6 +146,7 @@ class Nosto_Tagging_Model_Service_Product
      * @param Nosto_Tagging_Model_Resource_Product_Collection $products
      * @return bool
      *
+     * @throws Mage_Core_Exception
      */
     public function updateBatch(Nosto_Tagging_Model_Resource_Product_Collection $products)
     {
@@ -157,6 +160,7 @@ class Nosto_Tagging_Model_Service_Product
      * @param Mage_Catalog_Model_Product $product
      * @return bool
      *
+     * @throws Mage_Core_Exception
      */
     public function updateProduct(Mage_Catalog_Model_Product $product)
     {

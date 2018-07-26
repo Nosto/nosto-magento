@@ -448,7 +448,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
         );
 
         return $url;
-    }
+    }/** @noinspection PhpDocMissingThrowsInspection */
 
     /**
      * Returns front page URL of the store
@@ -461,12 +461,14 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
         /* @var Nosto_Tagging_Helper_Data $helper */
         $helper = Mage::helper('nosto_tagging');
         if (!$helper->getUsePrettyProductUrls($store)) {
+            /** @noinspection PhpUnhandledExceptionInspection */
             $url = Nosto_Request_Http_HttpRequest::replaceQueryParamInUrl(
                 self::MAGENTO_URL_PARAMETER_STORE,
                 $store->getCode(),
                 $store->getBaseUrl(self::$urlType)
             );
         } else {
+            /** @noinspection PhpUnhandledExceptionInspection */
             $url = $store->getBaseUrl(self::$urlType);
         }
 

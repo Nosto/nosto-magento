@@ -46,10 +46,12 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
      *
      * @return Mage_Checkout_CartController|Mage_Core_Controller_Varien_Action
      * @throws Mage_Exception
+     * @throws Mage_Core_Exception
      */
     public function addAction()
     {
         if (!$this->_validateFormKey()) {
+            /** @noinspection PhpUnhandledExceptionInspection */
             Mage::throwException('Invalid form key');
         }
         $cart = $this->_getCart();

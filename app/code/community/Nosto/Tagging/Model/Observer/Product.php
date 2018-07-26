@@ -49,6 +49,7 @@ class Nosto_Tagging_Model_Observer_Product
      * @param Varien_Event_Observer $observer the event observer.
      *
      * @return Nosto_Tagging_Model_Observer_Product
+     * @throws Mage_Core_Exception
      */
     public function sendProductUpdate(Varien_Event_Observer $observer)
     {

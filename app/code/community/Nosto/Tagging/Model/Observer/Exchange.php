@@ -71,6 +71,7 @@ class Nosto_Tagging_Model_Observer_Exchange
                 }
             }
             if ($error) {
+                /** @noinspection PhpUnhandledExceptionInspection */
                 throw Mage::exception(
                     'Mage_Cron',
                     sprintf(

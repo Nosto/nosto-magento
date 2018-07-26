@@ -47,6 +47,7 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
      * @param Mage_Core_Model_Store|null $store the store to get the product data for.
      * @return bool
      * @throws Nosto_NostoException
+     * @throws Mage_Core_Exception
      */
     public function loadData(
         Mage_Catalog_Model_Product $sku,

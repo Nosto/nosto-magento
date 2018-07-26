@@ -76,7 +76,7 @@ class Nosto_Tagging_Model_Meta_Rating_Yotpo_Yotpo extends Nosto_Tagging_Model_Me
             );
         }
         $this->resetRegistryProduct();
-    }
+    }/** @noinspection PhpDocMissingThrowsInspection */
 
     /**
      * Sets product to Mage registry
@@ -87,6 +87,7 @@ class Nosto_Tagging_Model_Meta_Rating_Yotpo_Yotpo extends Nosto_Tagging_Model_Me
     {
         $this->_originalRegistryProduct = Mage::registry(self::REGISTRY_PRODUCT);
         Mage::unregister(self::REGISTRY_PRODUCT);
+        /** @noinspection PhpUnhandledExceptionInspection */
         Mage::register(self::REGISTRY_PRODUCT, $product);
     }
 
@@ -96,6 +97,7 @@ class Nosto_Tagging_Model_Meta_Rating_Yotpo_Yotpo extends Nosto_Tagging_Model_Me
     protected function resetRegistryProduct()
     {
         Mage::unregister(self::REGISTRY_PRODUCT);
+        /** @noinspection PhpUnhandledExceptionInspection */
         Mage::register(self::REGISTRY_PRODUCT, $this->_originalRegistryProduct);
     }
 }
