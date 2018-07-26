@@ -65,9 +65,9 @@ class Nosto_Tagging_Block_Variation extends Mage_Core_Block_Template
     {
         /** @var Nosto_Tagging_Helper_Data $dataHelper */
         $dataHelper = Mage::helper('nosto_tagging');
-        if ($dataHelper->isMultiCurrencyMethodExchangeRate(Mage::app()->getStore())) {
-            return Mage::app()->getStore()->getCurrentCurrencyCode();
-        } elseif ($dataHelper->isVariationEnabled(Mage::app()->getStore())) {
+        if ($dataHelper->isMultiCurrencyMethodExchangeRate($dataHelper->getStore())) {
+            return $dataHelper->getStore()->getCurrentCurrencyCode();
+        } elseif ($dataHelper->isVariationEnabled($dataHelper->getStore())) {
             /** @var Mage_Customer_Model_Session $sessionModel */
             $sessionModel = Mage::getSingleton('customer/session');
             $groupId = $sessionModel->getCustomerGroupId();
@@ -93,9 +93,9 @@ class Nosto_Tagging_Block_Variation extends Mage_Core_Block_Template
         /** @var Nosto_Tagging_Helper_Data $helper */
         $helper = Mage::helper('nosto_tagging');
 
-        $enabled = $helper->isMultiCurrencyMethodExchangeRate(Mage::app()->getStore());
+        $enabled = $helper->isMultiCurrencyMethodExchangeRate($helper->getStore());
         if (!$enabled) {
-            $enabled = $helper->isVariationEnabled(Mage::app()->getStore());
+            $enabled = $helper->isVariationEnabled($helper->getStore());
         }
 
         return $enabled;

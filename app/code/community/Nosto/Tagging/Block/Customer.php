@@ -81,7 +81,7 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
     {
         /* @var Nosto_Tagging_Helper_Data $helper */
         $helper = Mage::helper('nosto_tagging');
-        $store = Mage::app()->getStore();
+        $store = $helper->getStore();
         $customer = $this->getCustomer();
         /** @noinspection PhpUndefinedMethodInspection */
         if (!$customer instanceof Mage_Customer_Model_Customer

@@ -90,7 +90,9 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
     public function loadData(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store = null)
     {
         if ($store === null) {
-            $store = Mage::app()->getStore();
+            /** @var Nosto_Tagging_Helper_Data $helper */
+            $helper = (Mage::helper('nosto_tagging'));
+            $store = $helper->getStore();
         }
         /** @var Nosto_Tagging_Helper_Data $dataHelper */
         $dataHelper = Mage::helper('nosto_tagging');

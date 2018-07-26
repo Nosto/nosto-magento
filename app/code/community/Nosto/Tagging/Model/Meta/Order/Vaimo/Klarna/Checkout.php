@@ -146,7 +146,9 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
     public function buildItemsFromQuote(Mage_Sales_Model_Quote $quote)
     {
         $discountFactor = $this->calcDiscountFactor($quote);
-        $currencyCode = Mage::app()->getStore()->getCurrentCurrencyCode();
+        /** @var Nosto_Tagging_Helper_Data $helper */
+        $helper = (Mage::helper('nosto_tagging'));
+        $currencyCode = $helper->getStore()->getCurrentCurrencyCode();
         /* @var Mage_Sales_Model_Quote_Item $quoteItem */
         foreach ($quote->getAllItems() as $quoteItem) {
             $nostoItem = CartBuilder::buildItem($quoteItem, $currencyCode);

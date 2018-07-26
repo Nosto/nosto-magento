@@ -389,7 +389,9 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         /** @var Mage_Core_Model_Store[] $stores */
         $storeId = $this->getRequest()->getParam('store');
         if (!empty($storeId)) {
-            $stores = array(Mage::app()->getStore($storeId));
+            /** @var Nosto_Tagging_Helper_Data $helper */
+            $helper = (Mage::helper('nosto_tagging'));
+            $stores = array($helper->getStore($storeId));
         } else {
             $stores = Mage::app()->getStores();
         }
@@ -443,7 +445,9 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         /** @var Mage_Core_Model_Store[] $stores */
         $storeId = $this->getRequest()->getParam('store');
         if (!empty($storeId)) {
-            $stores = array(Mage::app()->getStore($storeId));
+            /** @var Nosto_Tagging_Helper_Data $helper */
+            $helper = (Mage::helper('nosto_tagging'));
+            $stores = array($helper->getStore($storeId));
         } else {
             $stores = Mage::app()->getStores();
         }
@@ -489,9 +493,13 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
     protected function getSelectedStore()
     {
         if (Mage::app()->isSingleStoreMode()) {
-            return Mage::app()->getStore(true);
+            /** @var Nosto_Tagging_Helper_Data $helper */
+            $helper = (Mage::helper('nosto_tagging'));
+            return $helper->getStore(true);
         } elseif (($storeId = (int)$this->getRequest()->getParam('store')) !== 0) {
-            return Mage::app()->getStore($storeId);
+            /** @var Nosto_Tagging_Helper_Data $helper */
+            $helper = (Mage::helper('nosto_tagging'));
+            return $helper->getStore($storeId);
         } else {
             return null;
         }

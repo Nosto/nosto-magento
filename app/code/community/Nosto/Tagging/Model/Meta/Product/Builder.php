@@ -54,7 +54,9 @@ class Nosto_Tagging_Model_Meta_Product_Builder
     ) 
     {
         if ($store === null) {
-            $store = Mage::app()->getStore();
+            /** @var Nosto_Tagging_Helper_Data $helper */
+            $helper = (Mage::helper('nosto_tagging'));
+            $store = $helper->getStore();
         }
         if ($useIndex === true) {
             /* @var Nosto_Tagging_Model_Meta_Product $nostoProduct */

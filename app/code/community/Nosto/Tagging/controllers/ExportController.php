@@ -130,7 +130,9 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
             /** @var Mage_Sales_Model_Resource_Order_Collection $orders */
             $orders = Mage::getModel('sales/order')->getCollection();
             $this->applyIdFilters($orders);
-            $orders->addFieldToFilter('store_id', Mage::app()->getStore()->getId())
+            /** @var Nosto_Tagging_Helper_Data $helper */
+            $helper = (Mage::helper('nosto_tagging'));
+            $orders->addFieldToFilter('store_id', $helper->getStore()->getId())
                 ->setPageSize($pageSize)
                 ->setCurPage($currentPage)
                 ->setOrder(self::CREATED_AT, Varien_Data_Collection::SORT_ORDER_DESC);
@@ -158,8 +160,9 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
     public function productAction()
     {
         if (Mage::helper('nosto_tagging/module')->isModuleEnabled()) {
-            /* @var Mage_Core_Model_Store $store */
-            $store = Mage::app()->getStore();
+            /** @var Nosto_Tagging_Helper_Data $helper */
+            $helper = (Mage::helper('nosto_tagging'));
+            $store = $helper->getStore();
             $storeId = $store->getId();
             /* @var Nosto_Tagging_Helper_Data $dataHelper */
             $dataHelper = Mage::helper('nosto_tagging');
@@ -195,7 +198,7 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
                 try {
                     $meta = Nosto_Tagging_Model_Meta_Product_Builder::build(
                         $product,
-                        Mage::app()->getStore(),
+                        $store,
                         false
                     );
                     if ($meta instanceof Nosto_Tagging_Model_Meta_Product && $meta->isValid()) {

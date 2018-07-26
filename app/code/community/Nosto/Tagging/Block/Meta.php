@@ -72,6 +72,8 @@ class Nosto_Tagging_Block_Meta extends Mage_Core_Block_Template
      */
     public function getLanguageIsoCode()
     {
-        return substr(Mage::app()->getStore()->getConfig('general/locale/code'), 0, 2);
+        /** @var Nosto_Tagging_Helper_Data $helper */
+        $helper = (Mage::helper('nosto_tagging'));
+        return substr($helper->getStore()->getConfig('general/locale/code'), 0, 2);
     }
 }

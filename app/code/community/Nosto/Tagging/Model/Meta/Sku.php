@@ -55,7 +55,9 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
     )
     {
         if ($store === null) {
-            $store = Mage::app()->getStore();
+            /** @var Nosto_Tagging_Helper_Data $helper */
+            $helper = (Mage::helper('nosto_tagging'));
+            $store = $helper->getStore();
         }
 
         if ($sku->getTypeId() !== Mage_Catalog_Model_Product_Type::TYPE_SIMPLE) {
