@@ -70,7 +70,7 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Currency_Formats extends Mage_
             NostoLog::exception($e);
         }
         /** @var Nosto_Tagging_Helper_Data $helper */
-        $helper = (Mage::helper('nosto_tagging'));
+        $helper = Mage::helper('nosto_tagging');
         /** @var Mage_Core_Model_Store[] $stores */
         if (!empty($storeId)) {
             $stores = array($helper->getStore($storeId));

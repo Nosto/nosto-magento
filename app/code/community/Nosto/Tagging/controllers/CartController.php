@@ -54,7 +54,7 @@ class Nosto_Tagging_CartController extends Mage_Core_Controller_Front_Action
     public function indexAction()
     {
         /** @var Nosto_Tagging_Helper_Data $helper */
-        $helper = (Mage::helper('nosto_tagging'));
+        $helper = Mage::helper('nosto_tagging');
         $store = $helper->getStore();
         /* @var Nosto_Tagging_Helper_Url $nostoUrlHelper */
         $nostoUrlHelper = Mage::helper('nosto_tagging/url');

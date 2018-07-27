@@ -66,7 +66,7 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
     {
         if ($store === null) {
             /** @var Nosto_Tagging_Helper_Data $helper */
-            $helper = (Mage::helper('nosto_tagging'));
+            $helper = Mage::helper('nosto_tagging');
             $store = $helper->getStore();
         }
         if ((int)$store->getId() < 1) {
@@ -131,7 +131,7 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
     {
         if ($store === null) {
             /** @var Nosto_Tagging_Helper_Data $helper */
-            $helper = (Mage::helper('nosto_tagging'));
+            $helper = Mage::helper('nosto_tagging');
             $store = $helper->getStore();
         }
         $accountName = $store->getConfig(self::XML_PATH_ACCOUNT);
@@ -277,7 +277,7 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
     {
         if ($store === null) {
             /** @var Nosto_Tagging_Helper_Data $helper */
-            $helper = (Mage::helper('nosto_tagging'));
+            $helper = Mage::helper('nosto_tagging');
             $store = $helper->getStore();
         }
         if ((int)$store->getId() < 1) {

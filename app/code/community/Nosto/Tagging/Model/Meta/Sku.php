@@ -57,7 +57,7 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
     {
         if ($store === null) {
             /** @var Nosto_Tagging_Helper_Data $helper */
-            $helper = (Mage::helper('nosto_tagging'));
+            $helper = Mage::helper('nosto_tagging');
             $store = $helper->getStore();
         }
 

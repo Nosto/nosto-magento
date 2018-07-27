@@ -147,7 +147,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
     {
         $discountFactor = $this->calcDiscountFactor($quote);
         /** @var Nosto_Tagging_Helper_Data $helper */
-        $helper = (Mage::helper('nosto_tagging'));
+        $helper = Mage::helper('nosto_tagging');
         $currencyCode = $helper->getStore()->getCurrentCurrencyCode();
         /* @var Mage_Sales_Model_Quote_Item $quoteItem */
         foreach ($quote->getAllItems() as $quoteItem) {

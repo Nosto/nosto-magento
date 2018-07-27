@@ -92,7 +92,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
     {
         if ($store === null) {
             /** @var Nosto_Tagging_Helper_Data $helper */
-            $helper = (Mage::helper('nosto_tagging'));
+            $helper = Mage::helper('nosto_tagging');
             $store = $helper->getStore();
         }
         /** @var Nosto_Tagging_Helper_Data $dataHelper */

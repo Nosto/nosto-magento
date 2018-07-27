@@ -60,7 +60,7 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
     public function getStore()
     {
         /** @var Nosto_Tagging_Helper_Data $helper */
-        $helper = (Mage::helper('nosto_tagging'));
+        $helper = Mage::helper('nosto_tagging');
         if (($storeCode = $this->getParam('___store')) !== null) {
             $store = $helper->getStore($storeCode);
             if ($store && $store->getId() !== $helper->getStore()->getId()) {

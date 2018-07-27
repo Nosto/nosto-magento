@@ -91,7 +91,7 @@ class Nosto_Tagging_Model_Service_Product
         // Batch ready - process batches for each store
         foreach ($productsInStore as $storeId => $productBatches) {
             /** @var Nosto_Tagging_Helper_Data $helper */
-            $helper = (Mage::helper('nosto_tagging'));
+            $helper = Mage::helper('nosto_tagging');
             $store = $helper->getStore($storeId);
             /** @var Nosto_Tagging_Helper_Account $helper */
             $helper = Mage::helper('nosto_tagging/account');
