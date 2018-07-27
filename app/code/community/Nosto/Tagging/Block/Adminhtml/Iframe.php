@@ -155,11 +155,10 @@ class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
      */
     public function getAccount()
     {
-        /** @var Nosto_Tagging_Helper_Account $helper */
-        $helper = Mage::helper('nosto_tagging/account');
+        /** @var Nosto_Tagging_Helper_Account $accountHelper */
+        $accountHelper = Mage::helper('nosto_tagging/account');
         try {
-            $account = $helper->find($this->getSelectedStore());
-            return $account;
+            return $accountHelper->find($this->getSelectedStore());
         } catch (Exception $e) {
             NostoLog::exception($e);
             return null;

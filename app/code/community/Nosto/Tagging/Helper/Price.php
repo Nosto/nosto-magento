@@ -306,9 +306,9 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         /** @var Mage_Tax_Helper_Data $helper */
         $helper = Mage::helper('tax');
         if ($finalPrice) {
-            /** @var Mage_Core_Model_Date $codeModel */
-            $codeModel = Mage::getSingleton('core/date');
-            $timestamp = $codeModel->gmtTimestamp();
+            /** @var Mage_Core_Model_Date $coreModel */
+            $coreModel = Mage::getSingleton('core/date');
+            $timestamp = $coreModel->gmtTimestamp();
             /* @var Mage_CatalogRule_Model_Resource_Rule $priceRule */
             /** @noinspection PhpUndefinedMethodInspection */
             $customerGroupId = $product->getCustomerGroupId() ? $product->getCustomerGroupId() : 0;

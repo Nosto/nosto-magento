@@ -49,12 +49,14 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Currency_Method extends Mage_A
     {
         $store = null;
         $disabled = false;
+        $code = null;
         try {
-            if ($code = $this->getRequest()->getParam('store')) {
-                $store = Mage::getModel('core/store')->load($code);
-            }
+            $code = $this->getRequest()->getParam('store');
         } catch (Exception $e) {
             NostoLog::exception($e);
+        }
+        if ($code) {
+            $store = Mage::getModel('core/store')->load($code);
         }
         if ($store instanceof Mage_Core_Model_Store) {
             /* @var Nosto_Tagging_Helper_Account $accountHelper */
