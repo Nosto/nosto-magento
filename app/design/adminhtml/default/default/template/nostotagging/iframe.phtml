@@ -33,7 +33,7 @@
  */
 /** @noinspection PhpUnhandledExceptionInspection */
 $selectStoreId = $this->getSelectedStore()->getId();
-$params = array('store' => $id, 'isAjax' => true);
+$params = array('store' => $selectStoreId, 'isAjax' => true);
 ?>
 <iframe id="nosto_iframe" src='<?php echo $this->getIframeUrl(); ?>' width='100%' frameborder='0' scrolling='no' style="min-height: 600px;"></iframe>
 <script type="text/javascript">
