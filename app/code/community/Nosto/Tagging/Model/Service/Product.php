@@ -130,7 +130,7 @@ class Nosto_Tagging_Model_Service_Product
                         }
                     }
                     $operation->upsert();
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     Nosto_Tagging_Helper_Log::exception($e);
                 }
             }

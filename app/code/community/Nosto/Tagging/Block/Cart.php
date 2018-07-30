@@ -71,7 +71,7 @@ class Nosto_Tagging_Block_Cart extends Mage_Checkout_Block_Cart_Abstract
             $customerHelper = Mage::helper('nosto_tagging/customer');
             try {
                 $customerHelper->updateNostoId();
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 NostoLog::exception($e);
             }
         }

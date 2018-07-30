@@ -110,7 +110,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
         $vaimoKlarnaOrder = $klarna->getKlarnaOrderRaw($quote->getKlarnaCheckoutId());
         try {
             self::validateKlarnaOrder($vaimoKlarnaOrder);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             NostoLog::exception($e);
             return false;
         }
@@ -128,7 +128,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
         $this->setCustomer($orderBuyer);
         try {
             $this->buildItemsFromQuote($quote);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             NostoLog::error(
                 'Could not find klarnaCheckoutId from quote #%d. Error: %s',
                 array($quote->getId(), $e->getMessage())

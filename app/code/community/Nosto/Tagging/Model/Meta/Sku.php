@@ -138,7 +138,7 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
                             $this->addCustomField($attributeCode, $attributeValue);
                         }
                     }
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     Nosto_Tagging_Helper_Log::exception($e);
                 }
             }

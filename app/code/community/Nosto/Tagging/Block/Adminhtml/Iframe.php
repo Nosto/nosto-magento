@@ -84,7 +84,7 @@ class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
             $this->_iframeUrl = self::buildURL($params);
             $emulation->stopEnvironmentEmulation($env);
             return $this->_iframeUrl;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             NostoLog::exception($e);
             return '';
         }
@@ -133,7 +133,7 @@ class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
         $iframeParams = Mage::getModel('nosto_tagging/meta_account_iframe');
         try {
             $iframeParams->loadData($this->getSelectedStore());
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             NostoLog::exception($e);
         }
         return $iframeParams;
@@ -159,7 +159,7 @@ class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
         $accountHelper = Mage::helper('nosto_tagging/account');
         try {
             return $accountHelper->find($this->getSelectedStore());
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             NostoLog::exception($e);
             return null;
         }
@@ -177,7 +177,7 @@ class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
         try {
             $store = $this->getSelectedStore();
             return $urlHelper->getAdminNostoConfiguratioUrl($store);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             NostoLog::exception($e);
             return '';
         }

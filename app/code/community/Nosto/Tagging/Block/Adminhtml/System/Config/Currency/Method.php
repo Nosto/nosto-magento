@@ -52,7 +52,7 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Currency_Method extends Mage_A
         $code = null;
         try {
             $code = $this->getRequest()->getParam('store');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             NostoLog::exception($e);
         }
         if ($code) {

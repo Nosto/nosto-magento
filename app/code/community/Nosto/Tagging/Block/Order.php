@@ -94,7 +94,7 @@ class Nosto_Tagging_Block_Order extends Mage_Checkout_Block_Success
                 $nostoOrder = Mage::getModel('nosto_tagging/meta_order');
                 $nostoOrder->loadData($order);
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             NostoLog::exception($e);
         }
 

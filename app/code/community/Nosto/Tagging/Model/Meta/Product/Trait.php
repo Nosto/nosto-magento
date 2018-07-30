@@ -217,7 +217,7 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
                         $customFields[$attributeCode] = $attributeValue;
                     }
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 Nosto_Tagging_Helper_Log::exception($e);
             }
         }

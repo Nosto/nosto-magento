@@ -268,7 +268,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         $stockHelper = Mage::helper('nosto_tagging/stock');
         try {
             $this->setInventoryLevel($stockHelper->getQty($product));
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             Nosto_Tagging_Helper_Log::error(
                 'Failed to resolve inventory level for product %d to tags. Error message was: %s',
                 array(
@@ -382,7 +382,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
                             $this->addTag3(sprintf('%s:%s', $key, $attributeValue));
                             break;
                     }
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     Nosto_Tagging_Helper_Log::exception($e);
                 }
             }
@@ -468,7 +468,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         if (method_exists($this, $setter)) {
             try {
                 $this->$setter($value);
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 Nosto_Tagging_Helper_Log::exception($e);
             }
         }
@@ -494,7 +494,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         if (method_exists($this, $getter)) {
             try {
                 $value = $this->$getter();
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 Nosto_Tagging_Helper_Log::exception($e);
             }
         }

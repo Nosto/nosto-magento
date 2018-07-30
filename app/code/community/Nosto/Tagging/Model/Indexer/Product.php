@@ -527,7 +527,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
             if ($dataHelper->getUseProductIndexer($store)) {
                 try {
                     $this->reindexAllInStore($store);
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     NostoLog::exception($e);
                 }
             }

@@ -91,7 +91,7 @@ class Nosto_Tagging_Helper_Setup extends Mage_Core_Helper_Abstract
 
             try {
                 $attribute->save();
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 NostoLog::exception($e);
             }
         }
