@@ -52,24 +52,21 @@ pipeline {
       }
     }
 
-    stage('Parallel Phan & PhpStorm Inspections') {
-      parallel {
-        stage('Phan Analysis') {
-          agent { dockerfile true }
-          steps {
-            catchError {
-              sh "./vendor/bin/phan --config-file=phan.php --output-mode=checkstyle --output=chkphan.xml"
-            }
-          }
+    stage('Phan Analysis') {
+      agent { dockerfile true }
+      steps {
+        catchError {
+          sh "./vendor/bin/phan --config-file=phan.php --output-mode=checkstyle --output=chkphan.xml"
         }
-        stage('PhpStorm Inspections') {
-          agent { docker { image 'nosto/phpstorm:2018.2-eap' } }
-          steps {
-            catchError {
-              sh "/home/plugins/PhpStorm-182.3684.37/bin/inspect.sh || true" /* Initializes the IDE and the user preferences directory */
-              sh "./vendor/bin/phpstorm-inspect /home/plugins/PhpStorm-182.3684.37/bin/inspect.sh ~/.PhpStorm2018.2/system . .idea/inspectionProfiles/Project_Default.xml ./app checkstyle > chkintellij.xml"
-            }
-          }
+      }
+    }
+    
+    stage('PhpStorm Inspections') {
+      agent { docker { image 'nosto/phpstorm:2018.2-eap' } }
+      steps {
+        catchError {
+          sh "/home/plugins/PhpStorm-182.3684.37/bin/inspect.sh || true" /* Initializes the IDE and the user preferences directory */
+          sh "./vendor/bin/phpstorm-inspect /home/plugins/PhpStorm-182.3684.37/bin/inspect.sh ~/.PhpStorm2018.2/system . .idea/inspectionProfiles/Project_Default.xml ./app checkstyle > chkintellij.xml"
         }
       }
     }
