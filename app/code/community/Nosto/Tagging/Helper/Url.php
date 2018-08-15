@@ -560,10 +560,10 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
         $params = array(
             self::MAGENTO_URL_OPTION_STORE_CODE => $store->getCode()
         );
-        /** @var Mage_Adminhtml_Helper_Data $adminHtmlHelper */
-        $adminHtmlHelper = Mage::helper('adminhtml');
+        /** @var Mage_Adminhtml_Model_Url $adminHtmlUrlModel */
+        $adminHtmlUrlModel = Mage::getModel('adminhtml/url');
 
-        return $adminHtmlHelper::getUrl(self::URL_PATH_NOSTO_CONFIG, $params);
+        return $adminHtmlUrlModel->getUrl(self::URL_PATH_NOSTO_CONFIG, $params);
     }
 
     /**
