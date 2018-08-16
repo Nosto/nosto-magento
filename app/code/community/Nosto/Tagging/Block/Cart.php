@@ -25,6 +25,8 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+use Nosto_Tagging_Helper_Log as NostoLog;
+
 /**
  * Shopping cart content tagging block.
  * Adds meta-data to the HTML document for shopping cart content.
@@ -67,7 +69,11 @@ class Nosto_Tagging_Block_Cart extends Mage_Checkout_Block_Cart_Abstract
         if (!empty($items)) {
             /** @var Nosto_Tagging_Helper_Customer $customerHelper */
             $customerHelper = Mage::helper('nosto_tagging/customer');
-            $customerHelper->updateNostoId();
+            try {
+                $customerHelper->updateNostoId();
+            } catch (\Exception $e) {
+                NostoLog::exception($e);
+            }
         }
         return $this->getCart()->toHtml();
     }

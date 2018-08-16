@@ -25,6 +25,8 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+use Nosto_Tagging_Helper_Log as NostoLog;
+
 /* @var Nosto_Tagging_Helper_Bootstrap $nostoBootstrapHelper */
 $nostoBootstrapHelper = Mage::helper('nosto_tagging/bootstrap');
 $nostoBootstrapHelper->init();
@@ -55,6 +57,9 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
         )
     );
 
+    /**
+     * @param $collection
+     */
     protected function applyIdFilters(&$collection)
     {
         /** @var Mage_Sales_Model_Resource_Collection_Abstract $collection */
@@ -103,6 +108,7 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
                 ->setPageSize(1)
                 ->setCurPage(1)
                 ->getFirstItem(); // @codingStandardsIgnoreLine
+            /** @noinspection PhpUndefinedMethodInspection */
             if ($indexedProduct instanceof Nosto_Tagging_Model_Index === false
                 || !$indexedProduct->getId()
             ) {
@@ -126,7 +132,9 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
             /** @var Mage_Sales_Model_Resource_Order_Collection $orders */
             $orders = Mage::getModel('sales/order')->getCollection();
             $this->applyIdFilters($orders);
-            $orders->addFieldToFilter('store_id', Mage::app()->getStore()->getId())
+            /** @var Nosto_Tagging_Helper_Data $helper */
+            $helper = Mage::helper('nosto_tagging');
+            $orders->addFieldToFilter('store_id', $helper->getStore()->getId())
                 ->setPageSize($pageSize)
                 ->setCurPage($currentPage)
                 ->setOrder(self::CREATED_AT, Varien_Data_Collection::SORT_ORDER_DESC);
@@ -140,7 +148,11 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
                 $helper = Mage::helper('nosto_tagging/class');
                 /** @var Nosto_Tagging_Model_Meta_Order $meta */
                 $meta = $helper->getOrderClass($order);
-                $meta->loadData($order);
+                try {
+                    $meta->loadData($order);
+                } catch (Nosto_NostoException $e) {
+                    NostoLog::exception($e);
+                }
                 $collection->append($meta);
             }
             $this->export($collection);
@@ -150,12 +162,14 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
     /**
      * Exports visible products from the current store.
      * Result can be limited by the `limit` and `offset` GET parameters.
+     * @throws Mage_Core_Exception
      */
     public function productAction()
     {
         if (Mage::helper('nosto_tagging/module')->isModuleEnabled()) {
-            /* @var Mage_Core_Model_Store $store */
-            $store = Mage::app()->getStore();
+            /** @var Nosto_Tagging_Helper_Data $helper */
+            $helper = Mage::helper('nosto_tagging');
+            $store = $helper->getStore();
             $storeId = $store->getId();
             /* @var Nosto_Tagging_Helper_Data $dataHelper */
             $dataHelper = Mage::helper('nosto_tagging');
@@ -191,7 +205,7 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
                 try {
                     $meta = Nosto_Tagging_Model_Meta_Product_Builder::build(
                         $product,
-                        Mage::app()->getStore(),
+                        $store,
                         false
                     );
                     if ($meta instanceof Nosto_Tagging_Model_Meta_Product && $meta->isValid()) {

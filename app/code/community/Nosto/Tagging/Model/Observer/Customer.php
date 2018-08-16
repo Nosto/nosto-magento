@@ -49,7 +49,9 @@ class Nosto_Tagging_Model_Observer_Customer
     {
         if (Mage::helper('nosto_tagging/module')->isModuleEnabled()) {
             try {
+                /** @noinspection PhpUndefinedMethodInspection */
                 $mageCustomer = $observer->getEvent()->getCustomer();
+                /** @var Nosto_Tagging_Model_Service_Customer $service */
                 $service = Mage::getModel('nosto_tagging/service_customer');
                 $service->update($mageCustomer);
             } catch (\Exception $e) {

@@ -42,7 +42,9 @@ class Nosto_Tagging_Helper_Email extends Mage_Core_Helper_Abstract
      */
     public function getNewsletterOptInForEmail($email)
     {
-        return Mage::getModel('newsletter/subscriber')->loadByEmail($email);
+        /** @var Mage_Newsletter_Model_Subscriber $subscriberModel */
+        $subscriberModel = Mage::getModel('newsletter/subscriber');
+        return $subscriberModel->loadByEmail($email);
     }
 
     /**

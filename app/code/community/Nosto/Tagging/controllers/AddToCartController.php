@@ -29,6 +29,7 @@
 $nostoBootstrapHelper = Mage::helper('nosto_tagging/bootstrap');
 $nostoBootstrapHelper->init();
 
+/** @noinspection PhpIncludeInspection */
 require_once 'Mage/Checkout/controllers/CartController.php';
 
 /**
@@ -40,10 +41,17 @@ require_once 'Mage/Checkout/controllers/CartController.php';
  */
 class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
 {
-
+    /**
+     * Add item to cart action
+     *
+     * @return Mage_Checkout_CartController|Mage_Core_Controller_Varien_Action
+     * @throws Mage_Exception
+     * @throws Mage_Core_Exception
+     */
     public function addAction()
     {
         if (!$this->_validateFormKey()) {
+            /** @noinspection PhpUnhandledExceptionInspection */
             Mage::throwException('Invalid form key');
         }
         $cart = $this->_getCart();
@@ -65,7 +73,9 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
                 $configurableAttributes = $parentType->getConfigurableAttributesAsArray($product);
                 foreach ($configurableAttributes as $configurableAttribute) {
                     $attributeCode = $configurableAttribute['attribute_code'];
-                    $attribute = $skuProduct->getResource()->getAttribute($attributeCode);
+                    /** @var \Mage_Catalog_Model_Resource_Product $productResource */
+                    $productResource = $skuProduct->getResource();
+                    $attribute = $productResource->getAttribute($attributeCode);
                     if ($attribute instanceof Mage_Catalog_Model_Resource_Eav_Attribute) {
                         $attributeId = $attribute->getId();
                         $attributeValueId = $skuProduct->getData($attributeCode);
@@ -86,6 +96,7 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
             /* Below is cannibalized from parent */
             $cart->addProduct($product, $params);
             $cart->save();
+            /** @noinspection PhpUndefinedMethodInspection */
             $this->_getSession()->setCartWasUpdated(true);
 
             Mage::dispatchEvent(
@@ -93,7 +104,9 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
                 array('product' => $product, 'request' => $this->getRequest(), 'response' => $this->getResponse())
             );
 
+            /** @noinspection PhpUndefinedMethodInspection */
             if (!$this->_getSession()->getNoCartRedirect(true)) {
+                /** @noinspection PhpUndefinedMethodInspection */
                 if (!$cart->getQuote()->getHasError()) {
                     $message = $this->__(
                         '%s was added to your shopping cart.',
@@ -101,28 +114,13 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
                     );
                     $this->_getSession()->addSuccess($message);
                 }
-                $this->_goBack();
+                return $this->_goBack();
             }
-        } catch (Mage_Core_Exception $e) {
-            if ($this->_getSession()->getUseNotice(true)) {
-                $this->_getSession()->addNotice(Mage::helper('core')->escapeHtml($e->getMessage()));
-            } else {
-                $messages = array_unique(explode("\n", $e->getMessage()));
-                foreach ($messages as $message) {
-                    $this->_getSession()->addError(Mage::helper('core')->escapeHtml($message));
-                }
-            }
-
-            $url = $this->_getSession()->getRedirectUrl(true);
-            if ($url) {
-                $this->getResponse()->setRedirect($url);
-            } else {
-                $this->_redirectReferer(Mage::helper('checkout/cart')->getCartUrl());
-            }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->_getSession()->addException($e, $this->__('Cannot add the item to shopping cart.'));
             Mage::logException($e);
-            $this->_goBack();
+            return $this->_goBack();
         }
+        return $this;
     }
 }

@@ -56,6 +56,7 @@ class Nosto_Tagging_Helper_Customer extends Mage_Core_Helper_Abstract
      * Update the Nosto ID form the current quote if it exists.
      * The Nosto ID is present in a cookie set by the JavaScript loaded from
      * Nosto.
+     * @throws Exception
      */
     public function updateNostoId()
     {

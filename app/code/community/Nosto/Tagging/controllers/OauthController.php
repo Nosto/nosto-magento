@@ -54,15 +54,20 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
         self::connect();
     }
 
+    /**
+     * @return Mage_Core_Model_Store
+     */
     public function getStore()
     {
+        /** @var Nosto_Tagging_Helper_Data $helper */
+        $helper = Mage::helper('nosto_tagging');
         if (($storeCode = $this->getParam('___store')) !== null) {
-            $store = Mage::app()->getStore($storeCode);
-            if ($store && $store->getId() !== Mage::app()->getStore()->getId()) {
+            $store = $helper->getStore($storeCode);
+            if ($store && $store->getId() !== $helper->getStore()->getId()) {
                 Mage::app()->setCurrentStore($store->getCode());
             }
         }
-        return Mage::app()->getStore();
+        return $helper->getStore();
     }
 
     /**

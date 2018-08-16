@@ -65,7 +65,9 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
     )
     {
         if ($store === null) {
-            $store = Mage::app()->getStore();
+            /** @var Nosto_Tagging_Helper_Data $helper */
+            $helper = Mage::helper('nosto_tagging');
+            $store = $helper->getStore();
         }
         if ((int)$store->getId() < 1) {
             return false;
@@ -128,7 +130,9 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
     public function find(Mage_Core_Model_Store $store = null)
     {
         if ($store === null) {
-            $store = Mage::app()->getStore();
+            /** @var Nosto_Tagging_Helper_Data $helper */
+            $helper = Mage::helper('nosto_tagging');
+            $store = $helper->getStore();
         }
         $accountName = $store->getConfig(self::XML_PATH_ACCOUNT);
         if (!empty($accountName)) {
@@ -141,8 +145,12 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
                     if (!in_array($name, Nosto_Request_Api_Token::$tokenNames)) {
                         continue;
                     }
-                    $token = new Nosto_Request_Api_Token($name, $value);
-                    $account->addApiToken($token);
+                    try {
+                        $token = new Nosto_Request_Api_Token($name, $value);
+                        $account->addApiToken($token);
+                    } catch (Nosto_NostoException $e) {
+                        NostoLog::exception($e);
+                    }
                 }
             }
             return $account;
@@ -224,7 +232,7 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
             return $service->update($collection);
         } catch (Nosto_NostoException $e) {
             NostoLog::exception($e);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             Mage::log("\n" . $e, Zend_Log::ERR, Nosto_Tagging_Model_Base::LOG_FILE_NAME);
         }
 
@@ -268,7 +276,9 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
     public function resetAccountSettings(Mage_Core_Model_Store $store = null)
     {
         if ($store === null) {
-            $store = Mage::app()->getStore();
+            /** @var Nosto_Tagging_Helper_Data $helper */
+            $helper = Mage::helper('nosto_tagging');
+            $store = $helper->getStore();
         }
         if ((int)$store->getId() < 1) {
             return false;

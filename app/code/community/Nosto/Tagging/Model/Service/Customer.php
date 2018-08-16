@@ -42,7 +42,7 @@ class Nosto_Tagging_Model_Service_Customer
     {
         /** @noinspection PhpUndefinedMethodInspection */
         $email = $mageCustomer->getEmail();
-        $account = Nosto_Tagging_Helper_Account::find();
+        $account = (new Nosto_Tagging_Helper_Account())->find();
         if (!$account instanceof NostoSDKAccount
             || $email === null
             || !$account->isConnectedToNosto()

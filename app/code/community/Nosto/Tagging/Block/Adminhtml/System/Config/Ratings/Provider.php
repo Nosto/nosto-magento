@@ -70,6 +70,10 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Ratings_Provider
         return $html;
     }
 
+    /**
+     * @param $item
+     * @return string
+     */
     protected function renderOption($item)
     {
         $tdCss = 'vertical-align: middle; border-bottom: 1px gainsboro solid; padding: 4px 0 4px 0';
