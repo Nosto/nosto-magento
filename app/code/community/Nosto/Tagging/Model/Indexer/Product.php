@@ -25,6 +25,8 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+use Nosto_Tagging_Helper_Log as NostoLog;
+
 /**
  * Class for indexing Nosto products
  *
@@ -225,6 +227,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
         // Check if we're handling simple product with parents
         $products = Nosto_Tagging_Util_Product::toParentProducts($catalogProduct);
         foreach ($products as $product) {
+            /** @var Mage_Catalog_Model_Product $product */
             foreach ($product->getStoreIds() as $storeId) {
                 $this->addToReindexQueue($product, $storeId);
             }
@@ -323,7 +326,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
     /**
      * Reindexes a product in all store views and updates product to Nosto
      *
-     * @param Mage_Catalog_Model_Product[] $products
+     * @param Mage_Catalog_Model_Product[]|Nosto_Tagging_Model_Resource_Product_Collection $products
      */
     public function reindexAndUpdateMany($products)
     {
@@ -522,7 +525,11 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
         $dataHelper = Mage::helper('nosto_tagging');
         foreach ($stores as $store) {
             if ($dataHelper->getUseProductIndexer($store)) {
-                $this->reindexAllInStore($store);
+                try {
+                    $this->reindexAllInStore($store);
+                } catch (\Exception $e) {
+                    NostoLog::exception($e);
+                }
             }
         }
         /* @var Nosto_Tagging_Model_Service_Product $service */

@@ -25,6 +25,8 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+use Nosto_Tagging_Helper_Log as NostoLog;
+
 /**
  * Helper class for initing user agent and load the .env file
  *
@@ -48,15 +50,19 @@ class Nosto_Tagging_Helper_Bootstrap extends Mage_Core_Helper_Abstract
                 'Magento', Mage::getVersion(),
                 $nostoHelper->getExtensionVersion()
             );
-            $validator = new Zend_Validate_File_Exists();
-            $validator->addDirectory(__DIR__ . '/../');
-            if ($validator->isValid('.env')) {
-                $dotenv = new Dotenv_Dotenv(
-                    $validator->getDirectory()
-                );
-                $dotenv->load();
+            try {
+                $validator = new Zend_Validate_File_Exists();
+                $validator->addDirectory(__DIR__ . '/../');
+                if ($validator->isValid('.env')) {
+                    $dotenv = new Dotenv_Dotenv(
+                        $validator->getDirectory()
+                    );
+                    $dotenv->load();
+                }
+                $loaded = true;
+            } catch (Zend_Validate_Exception $e) {
+                NostoLog::exception($e);
             }
-            $loaded = true;
         }
     }
 }

@@ -47,6 +47,7 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
      * @param Mage_Core_Model_Store|null $store the store to get the product data for.
      * @return bool
      * @throws Nosto_NostoException
+     * @throws Mage_Core_Exception
      */
     public function loadData(
         Mage_Catalog_Model_Product $sku,
@@ -55,7 +56,9 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
     )
     {
         if ($store === null) {
-            $store = Mage::app()->getStore();
+            /** @var Nosto_Tagging_Helper_Data $helper */
+            $helper = Mage::helper('nosto_tagging');
+            $store = $helper->getStore();
         }
 
         if ($sku->getTypeId() !== Mage_Catalog_Model_Product_Type::TYPE_SIMPLE) {
@@ -72,6 +75,7 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
         $this->setPrice($this->buildProductPrice($sku, $store));
         $this->setListPrice($this->buildProductListPrice($sku, $store));
         $this->setAvailability($this->buildAvailability($sku));
+        /** @noinspection PhpUndefinedMethodInspection */
         if ((int)$sku->getVisibility() != Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE) {
             $this->setUrl($this->buildUrl($sku, $store));
         }
@@ -103,6 +107,12 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
         }
     }
 
+    /**
+     * @param Mage_Catalog_Model_Product $sku
+     * @param Mage_Catalog_Model_Product $parent
+     * @param Mage_Core_Model_Store $store
+     * @return bool
+     */
     protected function loadCustomFieldsFromConfigurableAttributes(
         Mage_Catalog_Model_Product $sku,
         Mage_Catalog_Model_Product $parent,
@@ -112,7 +122,7 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
         /** @var Nosto_Tagging_Helper_Data $dataHelper */
         $dataHelper = Mage::helper('nosto_tagging');
         if (!$dataHelper->getUseCustomFields($store)) {
-            return;
+            return false;
         }
 
         /** @var Mage_Catalog_Model_Product_Type_Configurable $parentType */
@@ -128,12 +138,11 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
                             $this->addCustomField($attributeCode, $attributeValue);
                         }
                     }
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     Nosto_Tagging_Helper_Log::exception($e);
                 }
             }
         }
-
         return true;
     }
 

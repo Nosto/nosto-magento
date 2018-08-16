@@ -86,11 +86,14 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      * @param Mage_Core_Model_Store|null $store the store to get the product data for.
      * @return bool
      * @throws Nosto_NostoException
+     * @throws Mage_Core_Exception
      */
     public function loadData(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store = null)
     {
         if ($store === null) {
-            $store = Mage::app()->getStore();
+            /** @var Nosto_Tagging_Helper_Data $helper */
+            $helper = Mage::helper('nosto_tagging');
+            $store = $helper->getStore();
         }
         /** @var Nosto_Tagging_Helper_Data $dataHelper */
         $dataHelper = Mage::helper('nosto_tagging');
@@ -157,7 +160,6 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      *
      * @param Mage_Catalog_Model_Product $product
      * @param Mage_Core_Model_Store $store
-     * @throws Nosto_NostoException
      */
     protected function amendVariations(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
@@ -181,6 +183,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      *
      * @param Mage_Catalog_Model_Product $product the product model.
      * @param Mage_Core_Model_Store $store
+     * @throws Mage_Core_Exception
      */
     protected function amendSkus(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
@@ -265,7 +268,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         $stockHelper = Mage::helper('nosto_tagging/stock');
         try {
             $this->setInventoryLevel($stockHelper->getQty($product));
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             Nosto_Tagging_Helper_Log::error(
                 'Failed to resolve inventory level for product %d to tags. Error message was: %s',
                 array(
@@ -379,7 +382,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
                             $this->addTag3(sprintf('%s:%s', $key, $attributeValue));
                             break;
                     }
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     Nosto_Tagging_Helper_Log::exception($e);
                 }
             }
@@ -407,6 +410,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
 
         /** @var Nosto_Tagging_Helper_Data $helper */
         $helper = Mage::helper('nosto_tagging');
+        /** @var Mage_Catalog_Model_Resource_Category_Collection $categoryCollection */
         $categoryCollection = $product->getCategoryCollection();
         $categoryCollection->addAttributeToFilter('is_active', 1);
         foreach ($categoryCollection as $category) {
@@ -442,6 +446,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         } else {
             trigger_error('Call to undefined method ' . __CLASS__ . '::' . $method . '()', E_USER_ERROR); // @codingStandardsIgnoreLine
         }
+        return null;
     }
 
     /**
@@ -463,7 +468,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         if (method_exists($this, $setter)) {
             try {
                 $this->$setter($value);
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 Nosto_Tagging_Helper_Log::exception($e);
             }
         }
@@ -489,7 +494,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         if (method_exists($this, $getter)) {
             try {
                 $value = $this->$getter();
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 Nosto_Tagging_Helper_Log::exception($e);
             }
         }
@@ -618,6 +623,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      * @param Mage_Core_Model_Store $store the store to get the product data for.
      *
      * @return bool returns false if the product is not available in a given store
+     * @throws Mage_Core_Exception
      */
     public function reloadData(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {

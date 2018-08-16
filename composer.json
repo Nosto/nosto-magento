@@ -26,7 +26,6 @@
         "nosto/php-sdk": "3.5.0"
     },
     "require-dev": {
-        "shopsys/phpstorm-inspect": "^1.1",
         "mridang/magazine": "0.1",
         "phing/phing": "2.*",
         "phan/phan": "0.8.9",

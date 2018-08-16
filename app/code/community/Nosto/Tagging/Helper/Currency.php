@@ -40,6 +40,8 @@ class Nosto_Tagging_Helper_Currency extends Mage_Core_Helper_Abstract
      * @param string $locale the locale to get the currency format in.
      * @param string $currencyCode the currency ISO 4217 code to get the currency in.
      * @return Nosto_Object_Format the parsed currency.
+     * @throws Zend_Currency_Exception
+     * @throws Zend_Locale_Exception
      */
     public function getCurrencyObject($locale, $currencyCode)
     {

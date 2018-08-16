@@ -51,7 +51,9 @@ class Nosto_Tagging_Helper_Variation extends Mage_Core_Helper_Abstract
      */
     public function generateVariationId(Mage_Customer_Model_Group $group)
     {
-        $slug = Mage::getModel('catalog/product_url')->formatUrlKey($group->getCode());
+        /** @var Mage_Catalog_Model_Product_Url $productUrlModel */
+        $productUrlModel = Mage::getModel('catalog/product_url');
+        $slug = $productUrlModel->formatUrlKey($group->getCode());
 
         return strtoupper($slug);
     }
