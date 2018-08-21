@@ -30,6 +30,7 @@ $nostoBootstrapHelper = Mage::helper('nosto_tagging/bootstrap');
 $nostoBootstrapHelper->init();
 
 use Nosto_NostoException as NostoException;
+use Nosto_Tagging_Helper_Log as NostoLog;
 
 /**
  * Restores an abandoned cart
@@ -48,16 +49,17 @@ class Nosto_Tagging_CartController extends Mage_Core_Controller_Front_Action
     /**
      * Restores a cart based on hash. On succesful restoration redirects user
      * to the cart page
+     * @throws Zend_Uri_Exception
      */
     public function indexAction()
     {
-        $store = Mage::app()->getStore();
-        /* @var Mage_Core_Helper_Url $mageUrlHelper */
-        $mageUrlHelper = Mage::helper('core/url');
-        $currentUrl = $mageUrlHelper->getCurrentUrl();
-        $urlParameters = Zend_Uri_Http::fromString($currentUrl)->getQueryAsArray();
+        /** @var Nosto_Tagging_Helper_Data $helper */
+        $helper = Mage::helper('nosto_tagging');
+        $store = $helper->getStore();
         /* @var Nosto_Tagging_Helper_Url $nostoUrlHelper */
         $nostoUrlHelper = Mage::helper('nosto_tagging/url');
+        $currentUrl = $nostoUrlHelper->getCurrentUrl();
+        $urlParameters = Zend_Uri_Http::fromString($currentUrl)->getQueryAsArray();
         $frontPageUrl = $nostoUrlHelper->getFrontPageUrl($store);
         $redirectUrl = $frontPageUrl;
         if (Mage::helper('nosto_tagging/module')->isModuleEnabled()) {
@@ -68,7 +70,7 @@ class Nosto_Tagging_CartController extends Mage_Core_Controller_Front_Action
             if (!$checkoutSession->getQuoteId()) {
                 $restoreCartHash = $this->getRequest()->getParam(self::HASH_PARAM);
                 if (!$restoreCartHash) {
-                    Nosto_Tagging_Helper_Log::exception(
+                    NostoLog::exception(
                         new NostoException(
                             'No hash provided for restore cart'
                         )
@@ -77,25 +79,24 @@ class Nosto_Tagging_CartController extends Mage_Core_Controller_Front_Action
                     try {
                         $quote = $this->resolveQuote($restoreCartHash);
                         $checkoutSession->setQuoteId($quote->getId());
-                        $redirectUrl = $nostoUrlHelper->getUrlCart(
+                        $redirectUrl = $nostoUrlHelper->getRestoreCartRedirectUrl(
                             $store,
                             $urlParameters
                         );
-                    } catch (Exception $e) {
-                        Nosto_Tagging_Helper_Log::exception($e);
+                    } catch (\Exception $e) {
+                        NostoLog::exception($e);
                         $coreSession->addError(
                             $this->__('Sorry, we could not find your cart')
                         );
                     }
                 }
             } else {
-                $redirectUrl = $nostoUrlHelper->getUrlCart(
+                $redirectUrl = $nostoUrlHelper->getRestoreCartRedirectUrl(
                     $store,
                     $urlParameters
                 );
             }
         }
-
         $this->_redirectUrl($redirectUrl);
     }
 

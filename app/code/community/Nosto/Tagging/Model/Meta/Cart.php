@@ -45,7 +45,9 @@ class Nosto_Tagging_Model_Meta_Cart extends Nosto_Object_Cart_Cart
      */
     public function loadData(Mage_Sales_Model_Quote $quote)
     {
-        $store = Mage::app()->getStore();
+        /** @var Nosto_Tagging_Helper_Data $helper */
+        $helper = Mage::helper('nosto_tagging');
+        $store = $helper->getStore();
         $currencyCode = $store->getCurrentCurrencyCode();
         /** @var Mage_Sales_Model_Quote_Item $item */
         foreach ($quote->getAllVisibleItems() as $item) {
@@ -54,9 +56,10 @@ class Nosto_Tagging_Model_Meta_Cart extends Nosto_Object_Cart_Cart
                 $this->addItem($nostoItem);
             }
         }
-
         $this->amendRestoreCartUrl($quote, $store);
-
+        $dataHelper = Mage::helper('nosto_tagging/data');
+        /* @var Nosto_Tagging_Helper_Data $dataHelper */
+        $this->setHcid($dataHelper->getVisitorChecksum());
         Mage::dispatchEvent(
             Nosto_Tagging_Helper_Event::EVENT_NOSTO_CART_LOAD_AFTER,
             array(

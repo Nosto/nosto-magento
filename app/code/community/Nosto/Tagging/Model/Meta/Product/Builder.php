@@ -44,6 +44,7 @@ class Nosto_Tagging_Model_Meta_Product_Builder
      * @param Mage_Core_Model_Store|null $store
      * @param bool $useIndex
      * @throws Nosto_NostoException
+     * @throws Mage_Core_Exception
      *
      * @return Nosto_Tagging_Model_Meta_Product|null
      */
@@ -54,7 +55,9 @@ class Nosto_Tagging_Model_Meta_Product_Builder
     ) 
     {
         if ($store === null) {
-            $store = Mage::app()->getStore();
+            /** @var Nosto_Tagging_Helper_Data $helper */
+            $helper = Mage::helper('nosto_tagging');
+            $store = $helper->getStore();
         }
         if ($useIndex === true) {
             /* @var Nosto_Tagging_Model_Meta_Product $nostoProduct */
@@ -74,7 +77,7 @@ class Nosto_Tagging_Model_Meta_Product_Builder
         }
 
         $nostoProduct = Mage::getModel('nosto_tagging/meta_product');
-        if (!$nostoProduct->loadData($product, $store)) {
+        if ($nostoProduct->loadData($product, $store) === false) {
             return null;
         }
 

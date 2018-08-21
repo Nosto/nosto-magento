@@ -26,31 +26,32 @@
  */
 
 /**
- * Alters saving the cron schedule for exhange rates
+ * Extension system setting source model for choosing where visitor should be redirected
+ * after the cart has been restored.
  *
  * @category Nosto
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
+ * @suppress PhanUnreferencedClass
  */
-class Nosto_Tagging_Model_System_Config_Backend_Currency_Exchange_Rate_Time
-    extends Mage_Core_Model_Config_Data
+class Nosto_Tagging_Model_System_Config_Source_Restore_Cart_Location
 {
-
     /**
-     * If the cron is ran hourly the first drop down field is not sent as it's
-     * disabled in Magento's Nosto settings. We need to set an artificial value
-     * for the "minute" in order to render the selected form values correctly.
+     * Returns the path options to choose from.
      *
-     * @inheritdoc
-     * @suppress PhanTypeMismatchArgument
+     * @return array the options.
      */
-    protected function _beforeSave()
+    public function toOptionArray()
     {
-        $values = $this->getValue();
-        if (is_array($values) && count($values) < 3) {// @codingStandardsIgnoreLine
-            array_unshift($values, '00');
-            return $this->setValue($values);
-        }
-        return $this;
+        return array(
+            array(
+                'value' => Nosto_Tagging_Helper_Url::MAGENTO_PATH_CART,
+                'label' => 'Cart page',
+            ),
+            array(
+                'value' => Nosto_Tagging_Helper_Url::MAGENTO_PATH_ONEPAGE_CHEKOUT,
+                'label' => 'One page checkout',
+            )
+        );
     }
 }

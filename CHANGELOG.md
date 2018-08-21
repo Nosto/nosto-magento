@@ -1,5 +1,55 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.7.4
+* Add explicit boolean check for product building
+
+### 3.7.3
+* Add missing hcid from customer block and cart meta
+
+### 3.7.2
+* Fix customer tagging throwing too many exceptions when user is not logged-in
+
+### 3.7.1
+* Fix an issue that prevents the Page Type to be rendered in the Nosto Debug Toolbar
+
+### 3.7.0
+* Implement support to add multiple products to cart via Javascript 
+* Implement programmatic tagging generation 
+
+### 3.6.5
+* Improve date time handling for Vaimo KCO orders
+* Fix duplicate check for custom fields in SKUs
+
+### 3.6.4
+* Fix the issue with additional URL parameters being escaped in restore cart redirection URL
+* Add setting for choosing the redirect location after cart has been restored
+
+### 3.6.3
+* Fix the issue that the price of discounted bundle products could be tagged as 0 
+
+### 3.6.2
+* Handle downloadable and virtual products in ordered items
+
+### 3.6.1
+* Add advanced setting to disable sending customer data to Nosto servers
+
+### 3.6.0
+* Improve error bubbling in Nosto account opening and in API calls
+* Add marketing permission constent for user tagging in order confirmation (GDPR compatibility) 
+
+### 3.5.5
+* Fix the bundle product list price was incorrect if there is any optional item
+
+### 3.5.4
+* Invalidate Nosto index if settings affecting the product data has been changed
+* Revise some instructional texts
+
+### 3.5.3
+* Fix the issue that add to cart popup shows child product added to cart when adding a bundle product to cart
+
+### 3.5.2
+* Improve add to cart popup trigger
+
 ### 3.5.1
 * Remove deleted products from Nosto index
 * Use discontinue endpoint for removing (discontinuing)products in Nosto 

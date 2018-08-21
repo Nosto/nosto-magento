@@ -55,6 +55,7 @@ class Nosto_Tagging_Model_Meta_Cart_Item_Simple extends Nosto_Tagging_Model_Meta
                 foreach ($attributes as $id => $value) {
                     /** @var Mage_Catalog_Model_Resource_Eav_Attribute $attribute */
                     $attribute = Mage::getModel('catalog/resource_eav_attribute')->load($id);
+                    /** @noinspection PhpUnhandledExceptionInspection */
                     $label = $attribute->getSource()->getOptionText($value);
                     if (!empty($label)) {
                         $optNames[] = $label;

@@ -25,6 +25,8 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+use Nosto_Tagging_Helper_Log as NostoLog;
+
 /**
  * Helper class for common operations.
  *
@@ -101,9 +103,19 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_UPDATE_CATALOG_PRICE_RULES = 'nosto_tagging/general/update_catalog_price_rules';
 
     /**
+     * Path to store config for sending customer data to Nosto or not
+     */
+    const XML_PATH_SEND_CUSTOMER_DATA = 'nosto_tagging/general/send_customer_data';
+
+    /**
      * Path to store config for using SKUs
      */
     const XML_PATH_USE_SKUS = 'nosto_tagging/general/use_skus';
+
+    /**
+     * Path to store config for restore cart redirection
+     */
+    const XML_PATH_RESTORE_CART_LOCATION = 'nosto_tagging/general/restore_cart_location';
 
     /**
      * Path to store config for custom fields
@@ -266,7 +278,9 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         $installationId = Mage::getStoreConfig(self::XML_PATH_INSTALLATION_ID);
         if (empty($installationId)) {
             // Running bin2hex() will make the ID string length 64 characters.
-            $installationId = Mage::helper('core')->getRandomString($length = 64);
+            /** @var Mage_Core_Helper_Data $dataHelper */
+            $dataHelper = Mage::helper('core');
+            $installationId = $dataHelper->getRandomString($length = 64);
             /** @var Mage_Core_Model_Config $config */
             $config = Mage::getModel('core/config');
             $config->saveConfig(
@@ -432,7 +446,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     public function getMultiCurrencyMethod($store = null)
     {
         if ($store instanceof Mage_Core_Model_Store === false) {
-            $store = Mage::app()->getStore();
+            $store = $this->getStore();
         }
         return Mage::getStoreConfig(self::XML_PATH_MULTI_CURRENCY_METHOD, $store);
     }
@@ -452,6 +466,12 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         return ($method === self::MULTI_CURRENCY_DISABLED);
     }
 
+    /**
+     * Check if price variations are enabled
+     *
+     * @param null $store
+     * @return bool
+     */
     public function isVariationEnabled($store = null)
     {
         return (bool)Mage::getStoreConfig(self::XML_PATH_VARIATION_SWITCH, $store);
@@ -518,6 +538,17 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Returns on/off setting for sending customer data to Nosto
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     * @return bool
+     */
+    public function getSendCustomerData($store = null)
+    {
+        return (bool)Mage::getStoreConfig(self::XML_PATH_SEND_CUSTOMER_DATA, $store);
+    }
+
+    /**
      * Returns on/off setting for SKUs
      *
      * @param Mage_Core_Model_Store|null $store the store model or null.
@@ -528,7 +559,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         return (bool)Mage::getStoreConfig(self::XML_PATH_USE_SKUS, $store);
     }
 
-   /**
+    /**
      * Returns on/off setting for custom fields
      *
      * @param Mage_Core_Model_Store|null $store the store model or null.
@@ -611,7 +642,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      * Return the attributes to be tagged in Nosto tags
      *
      * @param string $tagId the name / identifier of the tag (e.g. tag1, tag2).
-     * @param Mage_Core_Model_Store|null $store the store model or null.
+     * @param mixed $store the store model or null.
      *
      * @throws Nosto_NostoException
      * @return array
@@ -639,6 +670,18 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Return the restore cart redirect location
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     *
+     * @return string
+     */
+    public function getRestoreCartRedirectLocation($store = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_RESTORE_CART_LOCATION, $store);
+    }
+
+    /**
      * Set the ratings and reviews provider
      *
      * @param string $provider
@@ -647,7 +690,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     public function setRatingsAndReviewsProvider($provider, $store = null)
     {
         if ($store === null) {
-            $store = Mage::app()->getStore();
+            $store = $this->getStore();
         }
         /** @var Mage_Core_Model_Config $config */
         $config = Mage::getModel('core/config');
@@ -734,5 +777,36 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
 
         return true;
     }
+
+    /**
+     * Returns an array with Nosto settings
+     *
+     * @param null $store
+     * @return Mage_Core_Model_Store[]
+     */
+    public function getNostoStoreConfig($store = null)
+    {
+        if ($store === null) {
+            $store = $this->getStore();
+        }
+        return Mage::getStoreConfig('nosto_tagging', $store);
+    }
+
+    /**
+     * Wrapper to return the current store
+     *
+     * @param null|string|bool|int|Mage_Core_Model_Store $id
+     * @return Mage_Core_Model_Store|null
+     */
+    public function getStore($id = null)
+    {
+        try {
+            return Mage::app()->getStore($id);
+        } catch (Mage_Core_Model_Store_Exception $e) {
+            NostoLog::exception($e);
+        }
+        return null;
+    }
+
 }
 

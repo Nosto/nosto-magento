@@ -25,32 +25,35 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-/**
- * Alters saving the cron schedule for exhange rates
- *
- * @category Nosto
- * @package  Nosto_Tagging
- * @author   Nosto Solutions Ltd <magento@nosto.com>
- */
-class Nosto_Tagging_Model_System_Config_Backend_Currency_Exchange_Rate_Time
-    extends Mage_Core_Model_Config_Data
-{
+use Nosto_Object_Signup_Account as NostoSDKAccount;
 
+/**
+ * Handles sending the customer updates to Nosto via the API.
+ */
+class Nosto_Tagging_Model_Service_Customer
+{
     /**
-     * If the cron is ran hourly the first drop down field is not sent as it's
-     * disabled in Magento's Nosto settings. We need to set an artificial value
-     * for the "minute" in order to render the selected form values correctly.
+     * Sends an customer update to Nosto
      *
-     * @inheritdoc
-     * @suppress PhanTypeMismatchArgument
+     * @param Mage_Customer_Model_Customer $mageCustomer
+     * @return bool
      */
-    protected function _beforeSave()
+    public function update(Mage_Customer_Model_Customer $mageCustomer)
     {
-        $values = $this->getValue();
-        if (is_array($values) && count($values) < 3) {// @codingStandardsIgnoreLine
-            array_unshift($values, '00');
-            return $this->setValue($values);
+        /** @noinspection PhpUndefinedMethodInspection */
+        $email = $mageCustomer->getEmail();
+        $account = (new Nosto_Tagging_Helper_Account())->find();
+        if (!$account instanceof NostoSDKAccount
+            || $email === null
+            || !$account->isConnectedToNosto()
+        ) {
+            Nosto_Tagging_Helper_Log::warning('Could not update marketing permission');
+            return false;
         }
-        return $this;
+        /** @var Nosto_Tagging_Helper_Email $emailHelper */
+        $emailHelper = Mage::helper('nosto_tagging/email');
+        $newsletter = $emailHelper->isOptedIn($email);
+        $operation = new Nosto_Operation_MarketingPermission($account);
+        return $operation->update($email, $newsletter);
     }
 }

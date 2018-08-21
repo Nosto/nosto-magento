@@ -47,14 +47,13 @@ class Nosto_Tagging_Block_Order extends Mage_Checkout_Block_Success
     {
         /** @var Nosto_Tagging_Helper_Account $helper */
         $helper = Mage::helper('nosto_tagging/account');
-        if (
-            !Mage::helper('nosto_tagging/module')->isModuleEnabled()
-            || !$helper->existsAndIsConnected()
+        if (!$helper->existsAndIsConnected()
+            ||$this->getLastOrder() === null
+            || !Mage::helper('nosto_tagging/module')->isModuleEnabled()
         ) {
             return '';
         }
-
-        return parent::_toHtml();
+        return $this->getLastOrder()->toHtml();
     }
 
     /**
@@ -95,15 +94,17 @@ class Nosto_Tagging_Block_Order extends Mage_Checkout_Block_Success
                 $nostoOrder = Mage::getModel('nosto_tagging/meta_order');
                 $nostoOrder->loadData($order);
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             NostoLog::exception($e);
         }
 
         return $nostoOrder;
     }
 
-    /*
+    /**
      * Returns the visitor's Nosto Id
+     *
+     * @return null|string
      */
     public function getVisitorChecksum()
     {

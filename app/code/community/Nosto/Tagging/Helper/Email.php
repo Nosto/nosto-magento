@@ -26,43 +26,45 @@
  */
 
 /**
- * Collection class of Variation
+ * Helper class for email related operations
  *
  * @category Nosto
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Variation_Collection extends Nosto_Object_Product_VariationCollection
+class Nosto_Tagging_Helper_Email extends Mage_Core_Helper_Abstract
 {
     /**
-     * Build price variations.
+     * Fetches marketing email subscription for given email address
      *
-     * @param Mage_Catalog_Model_Product $product
-     * @param string $productAvailability
-     * @param string $currencyCode
-     * @param Mage_Core_Model_Store $store
+     * @param $email
+     * @return Mage_Newsletter_Model_Subscriber|null
+     */
+    public function getNewsletterOptInForEmail($email)
+    {
+        /** @var Mage_Newsletter_Model_Subscriber $subscriberModel */
+        $subscriberModel = Mage::getModel('newsletter/subscriber');
+        return $subscriberModel->loadByEmail($email);
+    }
+
+    /**
+     * Checks if marketing emails are allowed for given email address
+     *
+     * @param $email
      * @return bool
      */
-    public function loadData(
-        Mage_Catalog_Model_Product $product,
-        $productAvailability,
-        $currencyCode,
-        Mage_Core_Model_Store $store
-    )
+    public function isOptedIn($email)
     {
-        $groups = Mage::getModel('customer/group')->getCollection();
-        /** @var Mage_Customer_Model_Group $group */
-        foreach ($groups as $group) {
-            // skip the default customer group
-            if ($group->getId() == Nosto_Tagging_Helper_Variation::DEFAULT_CUSTOMER_GROUP_ID) {
-                continue;
+        try {
+            $subscription = $this->getNewsletterOptInForEmail($email);
+            if ($subscription->getStatus() == Mage_Newsletter_Model_Subscriber::STATUS_SUBSCRIBED) {
+
+                return true;
             }
-            /** @var Nosto_Tagging_Model_Meta_Variation $variation */
-            $variation = Mage::getModel('nosto_tagging/meta_variation');
-            $variation->loadData($product, $group, $productAvailability, $currencyCode, $store);
-            $this->append($variation);
+        } catch (\Exception $e) {
+            Nosto_Tagging_Helper_Log::exception($e);
         }
 
-        return true;
+        return false;
     }
 }

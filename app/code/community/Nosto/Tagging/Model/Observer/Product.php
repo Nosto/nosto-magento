@@ -49,6 +49,7 @@ class Nosto_Tagging_Model_Observer_Product
      * @param Varien_Event_Observer $observer the event observer.
      *
      * @return Nosto_Tagging_Model_Observer_Product
+     * @throws Mage_Core_Exception
      */
     public function sendProductUpdate(Varien_Event_Observer $observer)
     {
@@ -73,12 +74,10 @@ class Nosto_Tagging_Model_Observer_Product
     /**
      * Event handler for the "catalogrule_after_apply" event.
      *
-     * @param Varien_Event_Observer $observer the event observer.
-     *
      * @return Nosto_Tagging_Model_Observer_Product
      * @codingStandardsIgnoreStart
      */
-    public function afterCatalogPriceRule(Varien_Event_Observer $observer)
+    public function afterCatalogPriceRule()
     {
         if (Mage::helper('nosto_tagging/module')->isModuleEnabled()) {
             /* @var Nosto_Tagging_Helper_Account $accountHelper */
@@ -151,9 +150,11 @@ class Nosto_Tagging_Model_Observer_Product
     public function onReviewUpdated(Varien_Event_Observer $observer)
     {
         if (Mage::helper('nosto_tagging/module')->isModuleEnabled()) {
+            /** @noinspection PhpUndefinedMethodInspection */
             $object = $observer->getEvent()->getObject();
-            /** @var Mage_Catalog_Model_Product $product */
+            /** @var Mage_Review_Model_Review_Summary $object */
             $productId = $object->getEntityPkValue();
+            /** @var Mage_Catalog_Model_Product $product */
             $product = Mage::getModel('catalog/product')->load($productId);
             if ($product instanceof Mage_Catalog_Model_Product) {
                 try {

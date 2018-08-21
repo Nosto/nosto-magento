@@ -75,10 +75,10 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         $finalPrice = false
     )
     {
-        /** @var Mage_Tax_Helper_Data $helper */
+        /** @var Mage_Tax_Helper_Data $taxHelper */
         $taxHelper = Mage::helper('tax');
+        /** @noinspection PhpMethodParametersCountMismatchInspection */
         $inclTax = $taxHelper->displayPriceIncludingTax($store);
-
         return $this->_getProductPrice($product, $finalPrice, $inclTax);
     }
 
@@ -142,11 +142,12 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
                     $finalPrice,
                     $inclTax
                 );
-                if (!$price) {
+                if (!$price || $price <= 0) {
                     /** @var Mage_Catalog_Model_Product_Type_Configurable $configurableProduct */
                     $configurableProduct = Mage::getModel('catalog/product_type_configurable');
                     $associatedProducts = $configurableProduct->getUsedProducts(null, $product);
                     $lowestPrice = false;
+                    $lowestUnavailablePrice = false;
                     /** @var Mage_Catalog_Model_Product $associatedProduct */
                     foreach ($associatedProducts as $associatedProduct) {
                         /* @var Mage_Catalog_Model_Product $productModel */
@@ -158,9 +159,18 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
                             if (!$lowestPrice || $variationPrice < $lowestPrice) {
                                 $lowestPrice = $variationPrice;
                             }
+                        // If no SKU is available, we use the lowest price of them all
+                        } elseif ($productModel && $lowestPrice === false) {
+                            $variationPrice = $this->_getProductPrice($productModel, $finalPrice, $inclTax);
+                            if (!$lowestUnavailablePrice || $variationPrice < $lowestUnavailablePrice) {
+                                $lowestUnavailablePrice = $variationPrice;
+                            }
                         }
                     }
                     $price = $lowestPrice;
+                    if ($price === false) {
+                        $price = $lowestUnavailablePrice;
+                    }
                 }
                 break;
             default:
@@ -194,7 +204,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         // pricing is used the list price for the bundled product is the sum of
         // list prices of the simple products included in the bundle.
         $fixedPrice = $this->_getDefaultFromProduct($product, $finalPrice, $inclTax);
-        if ($fixedPrice) {
+        if ($fixedPrice && $fixedPrice > 0) {
 
             return $fixedPrice;
         }
@@ -203,8 +213,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         $minBundlePrice = $model->getTotalPrices($product, 'min', $inclTax, $finalPrice);
 
         if ($finalPrice) {
-
-            return $minBundlePrice;
+            return (float)$minBundlePrice;
         }
 
         /** @var Mage_Bundle_Model_Product_Type $typeInstance */
@@ -219,17 +228,25 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
             $product
         );
 
+        /** @var Mage_Catalog_Helper_Product $productHelper */
+        $productHelper = Mage::helper('catalog/product');
         $options = $optionCollection->appendSelections(
             $selectionCollection,
             false,
-            Mage::helper('catalog/product')->getSkipSaleableCheck()
+            $productHelper->getSkipSaleableCheck()
         );
         $sumListPrice = 0;
+        $allOptional = true;
         /** @var Mage_Bundle_Model_Option $option */
         foreach ($options as $option) {
-            $selections  = $option->getSelections();
+            if (!$option->getRequired()) {
+                continue;
+            }
+            $allOptional = false;
             $minSimpleProductPricePrice = null;
             $simpleProductListPrice = null;
+            /** @noinspection PhpUndefinedMethodInspection */
+            $selections = $option->getSelections();
             /**
              * @var Mage_Catalog_Model_Product $selection
              */
@@ -244,6 +261,32 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
             }
 
             $sumListPrice += $simpleProductListPrice;
+        }
+
+        //None of them are required, take the cheapest item
+        if ($allOptional) {
+            $cheapestItemPrice = null;//Cheapest item across all the options
+            $cheapestItemListPrice = null;
+            /** @var Mage_Bundle_Model_Option $option */
+            foreach ($options as $option) {
+                /** @noinspection PhpUndefinedMethodInspection */
+                $selections = $option->getSelections();
+                /**
+                 * @var Mage_Catalog_Model_Product $selection
+                 */
+                foreach ($selections as $selection) {
+                    if ($selection->isAvailable()) {
+                        $simpleProductPrice = $this->_getProductPrice($selection, true, $inclTax);
+                        if ($cheapestItemPrice === null || $simpleProductPrice < $cheapestItemPrice) {
+                            $cheapestItemPrice = $simpleProductPrice;
+                            $cheapestItemListPrice = $this->_getProductPrice($selection, false, $inclTax);
+                        }
+                    }
+                }
+            }
+            if ($cheapestItemListPrice !== null) {
+                $sumListPrice = $cheapestItemListPrice;
+            }
         }
 
         return max($sumListPrice, $minBundlePrice);
@@ -266,8 +309,11 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         /** @var Mage_Tax_Helper_Data $helper */
         $helper = Mage::helper('tax');
         if ($finalPrice) {
-            $timestamp = Mage::getSingleton('core/date')->gmtTimestamp();
+            /** @var Mage_Core_Model_Date $coreModel */
+            $coreModel = Mage::getSingleton('core/date');
+            $timestamp = $coreModel->gmtTimestamp();
             /* @var Mage_CatalogRule_Model_Resource_Rule $priceRule */
+            /** @noinspection PhpUndefinedMethodInspection */
             $customerGroupId = $product->getCustomerGroupId() ? $product->getCustomerGroupId() : 0;
             $rulePrice = Mage::getResourceModel('catalogrule/rule')
                 ->getRulePrice(
@@ -428,7 +474,9 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
     {
         /* @var Mage_CatalogRule_Model_Resource_Rule_Collection $rules */
         $rules = Mage::getModel('catalogrule/rule')->getCollection();
-        $date = Mage::getSingleton('core/date')->gmtDate();
+        /** @var Mage_Core_Model_Date $dateModel */
+        $dateModel = Mage::getSingleton('core/date');
+        $date = $dateModel->gmtDate();
         $rules
             ->addIsActiveFilter()
             ->addFieldToFilter(

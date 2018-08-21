@@ -25,44 +25,40 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+use Nosto_Tagging_Helper_Log as NostoLog;
+
 /**
- * Collection class of Variation
+ * Event observer model for Customer.
+ * Used to interact with Magento events.
  *
  * @category Nosto
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Meta_Variation_Collection extends Nosto_Object_Product_VariationCollection
+class Nosto_Tagging_Model_Observer_Customer
 {
     /**
-     * Build price variations.
+     * Makes an API call to Nosto when a customer is registered/updated.
      *
-     * @param Mage_Catalog_Model_Product $product
-     * @param string $productAvailability
-     * @param string $currencyCode
-     * @param Mage_Core_Model_Store $store
-     * @return bool
+     * Event 'customer_save_commit_after'.
+     *
+     * @param Varien_Event_Observer $observer the event observer.
+     * @return Nosto_Tagging_Model_Observer_Customer
      */
-    public function loadData(
-        Mage_Catalog_Model_Product $product,
-        $productAvailability,
-        $currencyCode,
-        Mage_Core_Model_Store $store
-    )
+    public function customerUpdated(Varien_Event_Observer $observer)
     {
-        $groups = Mage::getModel('customer/group')->getCollection();
-        /** @var Mage_Customer_Model_Group $group */
-        foreach ($groups as $group) {
-            // skip the default customer group
-            if ($group->getId() == Nosto_Tagging_Helper_Variation::DEFAULT_CUSTOMER_GROUP_ID) {
-                continue;
+        if (Mage::helper('nosto_tagging/module')->isModuleEnabled()) {
+            try {
+                /** @noinspection PhpUndefinedMethodInspection */
+                $mageCustomer = $observer->getEvent()->getCustomer();
+                /** @var Nosto_Tagging_Model_Service_Customer $service */
+                $service = Mage::getModel('nosto_tagging/service_customer');
+                $service->update($mageCustomer);
+            } catch (\Exception $e) {
+                NostoLog::exception($e);
             }
-            /** @var Nosto_Tagging_Model_Meta_Variation $variation */
-            $variation = Mage::getModel('nosto_tagging/meta_variation');
-            $variation->loadData($product, $group, $productAvailability, $currencyCode, $store);
-            $this->append($variation);
         }
 
-        return true;
+        return $this;
     }
 }

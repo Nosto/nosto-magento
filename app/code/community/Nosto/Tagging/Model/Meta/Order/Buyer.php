@@ -44,14 +44,25 @@ class Nosto_Tagging_Model_Meta_Order_Buyer extends Nosto_Object_Order_Buyer
      */
     public function loadData(Mage_Sales_Model_Order $order)
     {
+        $taggingHelper = Mage::helper('nosto_tagging');
+        /** @var Nosto_Tagging_Helper_Data $helper */
+        $helper = Mage::helper('nosto_tagging');
+        $store = $helper->getStore();
+        /* @var Nosto_Tagging_Helper_Data $taggingHelper */
+        if (!$taggingHelper->getSendCustomerData($store)) {
+            return false;
+        }
         $this->setFirstName($order->getCustomerFirstname());
         $this->setLastName($order->getCustomerLastname());
         $this->setEmail($order->getCustomerEmail());
-
+        /** @var Nosto_Tagging_Helper_Email $emailHelper */
+        $emailHelper = Mage::helper('nosto_tagging/email');
+        $optedIn = $emailHelper->isOptedIn($order->getCustomerEmail());
+        $this->setMarketingPermission($optedIn);
         $address = $order->getBillingAddress();
         if ($address instanceof Mage_Sales_Model_Order_Address) {
             $this->setPhone($address->getTelephone());
-            $this->setPostcode($address->getPostcode());
+            $this->setPostCode($address->getPostcode());
             $this->setCountry($address->getCountry());
         }
 

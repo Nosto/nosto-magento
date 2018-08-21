@@ -26,31 +26,20 @@
  */
 
 /**
- * Alters saving the cron schedule for exhange rates
+ * Default meta data for ordered item included in an order.
  *
  * @category Nosto
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_System_Config_Backend_Currency_Exchange_Rate_Time
-    extends Mage_Core_Model_Config_Data
+class Nosto_Tagging_Model_Meta_Order_Item_Default extends Nosto_Tagging_Model_Meta_Order_Item
 {
 
     /**
-     * If the cron is ran hourly the first drop down field is not sent as it's
-     * disabled in Magento's Nosto settings. We need to set an artificial value
-     * for the "minute" in order to render the selected form values correctly.
-     *
      * @inheritdoc
-     * @suppress PhanTypeMismatchArgument
      */
-    protected function _beforeSave()
+    public function buildItemName(Mage_Sales_Model_Order_Item $item)
     {
-        $values = $this->getValue();
-        if (is_array($values) && count($values) < 3) {// @codingStandardsIgnoreLine
-            array_unshift($values, '00');
-            return $this->setValue($values);
-        }
-        return $this;
+        return $item->getName();
     }
 }

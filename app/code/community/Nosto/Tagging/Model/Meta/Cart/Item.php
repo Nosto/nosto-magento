@@ -51,10 +51,9 @@ abstract class Nosto_Tagging_Model_Meta_Cart_Item extends Nosto_Object_Cart_Line
         parent::setName($this->buildItemName($item));
         parent::setPriceCurrencyCode($currencyCode);
         parent::setSkuId($this->buildSkuId($item));
-        $store = Mage::app()->getStore();
-        /** @var Mage_Tax_Helper_Data $helper */
+        /** @var Mage_Tax_Helper_Data $taxHelper */
         $taxHelper = Mage::helper('tax');
-        $inclTax = $taxHelper->displayCartPriceInclTax($store);
+        $inclTax = $taxHelper->displayCartPriceInclTax();
 
         if ($inclTax) {
             $unitPrice = $item->getPriceInclTax();
@@ -91,6 +90,9 @@ abstract class Nosto_Tagging_Model_Meta_Cart_Item extends Nosto_Object_Cart_Line
     protected function buildItemProductId(Mage_Sales_Model_Quote_Item $item)
     {
         $parentItem = $item->getOptionByCode('product_type');
+        if ($parentItem === null) {
+            $parentItem = $item->getParentItem();
+        }
         if ($parentItem !== null) {
             return (string) $parentItem->getProductId();
         } elseif ($item->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_SIMPLE) {
@@ -120,7 +122,7 @@ abstract class Nosto_Tagging_Model_Meta_Cart_Item extends Nosto_Object_Cart_Line
         $skus = $item->getChildren();
         /* @var Mage_Sales_Model_Quote_Item $sku */
         if (isset($skus[0]) && $skus[0] instanceof Mage_Sales_Model_Quote_Item) {
-
+            /** @var Mage_Sales_Model_Quote_Item[] $skus*/
             return $skus[0]->getProductId();
         }
 

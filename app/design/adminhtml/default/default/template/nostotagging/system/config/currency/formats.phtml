@@ -41,7 +41,8 @@
         </legend>
         <ul>
             <?php foreach ($formats as $format): ?>
-                <li><?php echo $format->toCurrency('1234.56'); ?></li>
+                <li><?php /** @noinspection PhpUnhandledExceptionInspection */
+                        echo $format->toCurrency('1234.56'); ?></li>
             <?php endforeach; ?>
         </ul>
     </fieldset>

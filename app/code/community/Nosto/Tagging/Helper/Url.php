@@ -25,6 +25,8 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+use Nosto_Tagging_Helper_Log as NostoLog;
+
 /**
  * Helper class for building urls.
  * Includes getters for all preview urls for the Nosto account configuration
@@ -99,6 +101,11 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
     const MAGENTO_PATH_CART = 'checkout/cart';
 
     /**
+     * Path to Magento's one page checkout
+     */
+    const MAGENTO_PATH_ONEPAGE_CHEKOUT = 'checkout/onepage';
+
+    /**
      * Path to Magento's add to cart controller
      */
     const MAGENTO_ADD_TO_CART_PATH = 'checkout/cart/add';
@@ -151,7 +158,6 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
      */
     public function getPreviewUrlProduct(Mage_Core_Model_Store $store)
     {
-        $productUrl = '';
         /** @var Mage_Catalog_Model_Resource_Product_Collection $collection */
         $collection = Mage::getModel('catalog/product')
             ->getCollection()
@@ -179,7 +185,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
 
                         return $productUrl;
                     }
-                } catch (Nosto_NostoException $e) {
+                } catch (\Exception $e) {
                     Nosto_Tagging_Helper_Log::exception($e);
                 }
             }
@@ -223,11 +229,15 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
             // Since the Mage_Catalog_Model_Category::getUrl() doesn't
             // accept any arguments and always returns an url with SID,
             // we'll need to remove the sid manually from the URL
-            $url = $this->removeQueryParamFromUrl(
-                $url,
-                self::MAGENTO_URL_PARAMETER_SID
-            );
-            $categoryUrl = $this->addNostoPreviewParameter($url);
+            try {
+                $url = $this->removeQueryParamFromUrl(
+                    $url,
+                    self::MAGENTO_URL_PARAMETER_SID
+                );
+                $categoryUrl = $this->addNostoPreviewParameter($url);
+            } catch (\Exception $e) {
+                NostoLog::exception($e);
+            }
         }
 
         return $categoryUrl;
@@ -376,10 +386,15 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
         );
         $productUrl = $product->getUrlInStore($urlParams);
         if ($helper->getUsePrettyProductUrls($store)) {
-            $productUrl = $this->removeQueryParamFromUrl(
-                $productUrl,
-                self::MAGENTO_URL_PARAMETER_STORE
-            );
+            try {
+                $productUrl = $this->removeQueryParamFromUrl(
+                    $productUrl,
+                    self::MAGENTO_URL_PARAMETER_STORE
+                );
+            } catch (\Exception $e) {
+                NostoLog::exception($e);
+                return $productUrl;
+            }
         }
 
         //Skip the product url has the string '_ignore_category'
@@ -409,6 +424,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
      * @param $url
      * @param $param
      * @return string
+     * @throws Zend_Uri_Exception
      */
     public function removeQueryParamFromUrl($url, $param)
     {
@@ -432,7 +448,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
         );
 
         return $url;
-    }
+    }/** @noinspection PhpDocMissingThrowsInspection */
 
     /**
      * Returns front page URL of the store
@@ -445,12 +461,14 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
         /* @var Nosto_Tagging_Helper_Data $helper */
         $helper = Mage::helper('nosto_tagging');
         if (!$helper->getUsePrettyProductUrls($store)) {
+            /** @noinspection PhpUnhandledExceptionInspection */
             $url = Nosto_Request_Http_HttpRequest::replaceQueryParamInUrl(
                 self::MAGENTO_URL_PARAMETER_STORE,
                 $store->getCode(),
                 $store->getBaseUrl(self::$urlType)
             );
         } else {
+            /** @noinspection PhpUnhandledExceptionInspection */
             $url = $store->getBaseUrl(self::$urlType);
         }
 
@@ -542,9 +560,64 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
         $params = array(
             self::MAGENTO_URL_OPTION_STORE_CODE => $store->getCode()
         );
-        /** @var Mage_Adminhtml_Helper_Data $adminHtmlHelper */
-        $adminHtmlHelper = Mage::helper('adminhtml');
+        /** @var Mage_Adminhtml_Model_Url $adminHtmlUrlModel */
+        $adminHtmlUrlModel = Mage::getModel('adminhtml/url');
 
-        return $adminHtmlHelper->getUrl(self::URL_PATH_NOSTO_CONFIG, $params);
+        return $adminHtmlUrlModel->getUrl(self::URL_PATH_NOSTO_CONFIG, $params);
     }
+
+    /**
+     * Returns the current URL and reverts the htmlspecialchars
+     * for Magento's Mage_Core_Helper_Url::getCurrentUrl() bug
+     *
+     * @return string
+     */
+    public function getCurrentUrl()
+    {
+        /* @var Mage_Core_Helper_Url $coreUrlHelper */
+        $coreUrlHelper = Mage::helper('core/url');
+        $mageUrl = $coreUrlHelper->getCurrentUrl();
+        // There's a bug in Magento's Mage_Core_Helper_Url::getCurrentUrl that
+        // calls htmlspecialchars for URL which ends up breaking the URL
+        // parameter separator
+        $currentUrl = str_replace('&amp;', '&', $mageUrl);
+
+        return $currentUrl;
+    }
+
+    /**
+     * Gets the URL where to redirect visitor after cart restoring
+     *
+     * @param Mage_Core_Model_Store $store the store to get the url for.
+     *
+     * @param array $additionalParams
+     * @return string the url.
+     */
+    public function getRestoreCartRedirectUrl(
+        Mage_Core_Model_Store $store,
+        array $additionalParams = array()
+    )
+    {
+        /* @var Nosto_Tagging_Helper_Data $nostoHelper */
+        $nostoHelper = Mage::helper('nosto_tagging');
+        $path = $nostoHelper->getRestoreCartRedirectLocation($store);
+        $defaultParams = $this->getUrlOptionsWithNoSid($store);
+        $url = Mage::getUrl(
+            $path,
+            $defaultParams
+        );
+        if (!empty($additionalParams)) {
+            foreach ($additionalParams as $key => $val) {
+                $url = Nosto_Request_Http_HttpRequest::replaceQueryParamInUrl(
+                    $key,
+                    $val,
+                    $url
+                );
+            }
+
+        }
+
+        return $url;
+    }
+
 }

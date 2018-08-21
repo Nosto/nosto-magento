@@ -80,6 +80,18 @@
                         </update_catalog_price_rules>
                     </fields>
                     <fields>
+                        <send_customer_data translate="label">
+                            <label>Enable customer data sending</label>
+                            <comment>Set this to no if customer's data should not be sent to Nosto</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>13</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </send_customer_data>
+                    </fields>
+                    <fields>
                         <use_skus translate="label">
                             <label>Send SKU / variation data to Nosto</label>
                             <comment>Set this to no if you don't need product variations in recommendations</comment>
@@ -91,7 +103,7 @@
                             <show_in_store>1</show_in_store>
                         </use_skus>
                         <use_custom_fields translate="label">
-                            <label>Send attributes from product attribute set to nosto as custom fields</label>
+                            <label>Send product attributes as custom fields to Nosto</label>
                             <comment>Set this to true if you would like send attributes from product attribute set to nosto as custom fields</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -160,6 +172,18 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </send_add_to_cart_event>
+                    </fields>
+                    <fields>
+                        <restore_cart_location translate="label">
+                            <label>Redirect location after cart restore</label>
+                            <comment>Choose where the visitor will be redirected after the cart has been restored</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>nosto_tagging/system_config_source_restore_cart_location</source_model>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </restore_cart_location>
                     </fields>
                 </general>
                 <currency_formats translate="label">

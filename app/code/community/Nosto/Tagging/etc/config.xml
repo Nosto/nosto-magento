@@ -28,7 +28,7 @@
 <config>
     <modules>
         <Nosto_Tagging>
-            <version>3.3.6</version>
+            <version>3.7.4</version>
         </Nosto_Tagging>
     </modules>
     <global>
@@ -160,6 +160,15 @@
                     </nosto_tagging_custom>
                 </observers>
             </admin_system_config_changed_section_nosto_tagging>
+            <model_config_data_save_before>
+                <observers>
+                    <nosto_tagging_custom>
+                        <type>singleton</type>
+                        <class>Nosto_Tagging_Model_Observer_Setting</class>
+                        <method>checkNostoSettingsHaveChanged</method>
+                    </nosto_tagging_custom>
+                </observers>
+            </model_config_data_save_before>
             <review_save_after>
                 <observers>
                     <nosto_tagging_custom>
@@ -178,6 +187,15 @@
                     </nosto_tagging_custom>
                 </observers>
             </review_delete_after>
+            <customer_save_commit_after>
+                <observers>
+                    <nosto_tagging_custom>
+                        <type>singleton</type>
+                        <class>Nosto_Tagging_Model_Observer_Customer</class>
+                        <method>customerUpdated</method>
+                    </nosto_tagging_custom>
+                </observers>
+            </customer_save_commit_after>
         </events>
         <index>
             <indexer>
@@ -258,6 +276,8 @@
                 <personalized_category_sorting>1</personalized_category_sorting>
                 <send_add_to_cart_event>0</send_add_to_cart_event>
                 <update_catalog_price_rules>0</update_catalog_price_rules>
+                <send_customer_data>1</send_customer_data>
+                <restore_cart_location>checkout/cart</restore_cart_location>
             </general>
             <image_options>
                 <image_version>image</image_version>
