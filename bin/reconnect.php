@@ -176,6 +176,26 @@ class ReconnectCommand extends Mage_Shell_Abstract
         }
         return null;
     }
+
+    /**
+     * Retrieve Usage Help Message
+     *
+     */
+    public function usageHelp()
+    {
+        return <<<USAGE
+Usage:  php -f script.php -- [options]
+  --account-id        The Nosto account id to be reconnected
+  --products_token    Products token
+  --sso_token         SSO token
+  --settings_token    Settings token
+  --rates_token       API exchange rates token
+  --scope-code        Store view code
+  --override          Force override tokens
+  -h                  Short alias for help
+  help                This help
+USAGE;
+    }
 }
 
 // Run the command
