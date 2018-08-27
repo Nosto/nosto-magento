@@ -39,6 +39,7 @@ class ReconnectCommand extends Mage_Shell_Abstract
     const NOSTO_ACCOUNT_ID = 'account-id';
     const TOKEN_SUFFIX = '_token';
     const SCOPE_CODE = 'scope-code';
+    const OVERRIDE = 'override';
 
     /*
     * @var NostoAccountHelper
@@ -66,15 +67,14 @@ class ReconnectCommand extends Mage_Shell_Abstract
 
     public function run()
     {
-        if(!$this->checkArgs())
-        {
+        if(!$this->checkArgs()) {
             exit(1);
         }
         $accountId = $this->getArg(self::NOSTO_ACCOUNT_ID);
         $scopeCode = $this->getArg(self::SCOPE_CODE);
         $tokens = $this->generateTokens();
         if ($this->updateNostoTokens($tokens, $accountId, $scopeCode)) {
-            echo "Ok...";
+            echo "Account saved. \n";
         }
 
         return 0;
@@ -89,8 +89,7 @@ class ReconnectCommand extends Mage_Shell_Abstract
     {
         foreach ($this->arguments as $argument) {
             if (!$this->getArg($argument)) {
-                //TODO: Format this error output
-                echo 'Missing ' . $argument;
+                echo 'Missing ' . $argument . "\n";
                 return false;
             }
         }
@@ -115,17 +114,19 @@ class ReconnectCommand extends Mage_Shell_Abstract
         $storeAccountId = $store->getConfig(Nosto_Tagging_Helper_Account::XML_PATH_ACCOUNT);
         $account = $this->accountHelper->find($store);
         if ($account && $storeAccountId === $accountId) {
-            echo('Local account found. Overriding Tokens...');
-            $account->setTokens($tokens);
-            return $this->accountHelper->save($account, $store);
-        } else {
-            echo('Local account not found. Saving local account...');
-            $account = new NostoSignupAccount($accountId);
+            if (!$this->getArg(self::OVERRIDE)) {
+                echo("Local account found. To overriding use the '--override' option \n");
+                return false;
+            }
+            echo "Local account found. Overriding Tokens... \n";
             $account->setTokens($tokens);
             return $this->accountHelper->save($account, $store);
         }
+        echo "Local account not found. Saving local account...\n";
+        $account = new NostoSignupAccount($accountId);
+        $account->setTokens($tokens);
+        return $this->accountHelper->save($account, $store);
     }
-
 
     /**
      * Generate Tokens to connect account
