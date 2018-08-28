@@ -49,13 +49,13 @@ class ReconnectCommand extends Mage_Shell_Abstract
     /**
      * @var
      */
-    protected $arguments;
+    protected $requiredArguments;
 
     public function __construct() {
         parent::__construct();
         set_time_limit(0);
         $this->accountHelper = new Nosto_Tagging_Helper_Account();
-        $this->arguments = [
+        $this->requiredArguments = [
             self::NOSTO_ACCOUNT_ID,
             Token::API_SSO . self::TOKEN_SUFFIX,
             Token::API_PRODUCTS . self::TOKEN_SUFFIX,
@@ -67,9 +67,8 @@ class ReconnectCommand extends Mage_Shell_Abstract
 
     public function run()
     {
-        if(!$this->checkArgs()) {
-            exit(1);
-        }
+        $this->checkArgs();
+
         $accountId = $this->getArg(self::NOSTO_ACCOUNT_ID);
         $scopeCode = $this->getArg(self::SCOPE_CODE);
         $tokens = $this->generateTokens();
@@ -87,10 +86,11 @@ class ReconnectCommand extends Mage_Shell_Abstract
      */
     private function checkArgs()
     {
-        foreach ($this->arguments as $argument) {
+        foreach ($this->requiredArguments as $argument) {
             if (!$this->getArg($argument)) {
-                echo 'Missing ' . $argument . "\n";
-                return false;
+                echo sprintf("Missing %s \n", $argument );
+                echo $this->usageHelp();
+                exit(1);
             }
         }
         return true;
@@ -109,14 +109,15 @@ class ReconnectCommand extends Mage_Shell_Abstract
         $store = $this->getStoreByStoreViewCode($scopeCode);
         if(!$store){
             echo ('Store not found. Check your input.');
-            return false;
+            exit(1);
         }
         $storeAccountId = $store->getConfig(Nosto_Tagging_Helper_Account::XML_PATH_ACCOUNT);
         $account = $this->accountHelper->find($store);
         if ($account && $storeAccountId === $accountId) {
             if (!$this->getArg(self::OVERRIDE)) {
-                echo("Local account found. To overriding use the '--override' option \n");
-                return false;
+                echo "Local account found. To overriding use the '--override' option \n";
+                echo $this->usageHelp();
+                exit(1);
             }
             echo "Local account found. Overriding Tokens... \n";
             $account->setTokens($tokens);
@@ -184,12 +185,13 @@ class ReconnectCommand extends Mage_Shell_Abstract
     public function usageHelp()
     {
         return <<<USAGE
-Usage:  php -f script.php -- [options]
+Usage:  php -f reconnect.php -- [options]
   --account-id        The Nosto account id to be reconnected
   --products_token    Products token
   --sso_token         SSO token
   --settings_token    Settings token
   --rates_token       API exchange rates token
+  --email_token       Email token (optional)
   --scope-code        Store view code
   --override          Force override tokens
   -h                  Short alias for help
