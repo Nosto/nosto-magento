@@ -668,7 +668,10 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      * @return array|null
      * @throws Nosto_NostoException
      */
-    protected function getAmendedAttributesCustomFields(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
+    protected function getAmendedAttributesCustomFields(
+        Mage_Catalog_Model_Product $product,
+        Mage_Core_Model_Store $store
+    )
     {
         $customFields = $this->loadCustomFields($product);
         $attributes = $this->getAttributesFromAllTags($store);
