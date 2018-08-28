@@ -140,7 +140,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
             $this->amendVariations($product, $store);
         }
         if ($dataHelper->getUseCustomFields($store)) {
-            $this->setCustomFields($this->loadCustomFields($product));
+            $this->setCustomFields($this->amendAttributesCustomFields($product, $store));
         }
 
         Mage::dispatchEvent(
@@ -658,5 +658,54 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         }
 
         return $availability;
+    }
+
+    /**
+     * Adds selected attributes to all tags also in the custom fields section
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @param Mage_Core_Model_Store $store
+     * @return array|null
+     * @throws Nosto_NostoException
+     */
+    protected function amendAttributesCustomFields(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
+    {
+        $customFields = $this->loadCustomFields($product);
+        $attributes = $this->getAttributesFromAllTags($store);
+        /* @var Mage_Catalog_Model_Resource_Eav_Attribute $productAttribute */
+        foreach ($product->getAttributes() as $key => $productAttribute) {
+            if (in_array($key, $attributes, false)) {
+                $attributeValue = $this->getAttributeValue($product, $key);
+                if (empty($attributeValue)) {
+                    continue;
+                }
+                $customFields[$key] = $attributeValue;
+            }
+        }
+        return $customFields;
+    }
+
+    /**
+     * Returns unique selected attributes from all tags
+     *
+     * @param Mage_Core_Model_Store $store
+     * @return array
+     * @throws Nosto_NostoException
+     */
+    protected function getAttributesFromAllTags(Mage_Core_Model_Store $store)
+    {
+        $attributes = array();
+        /* @var Nosto_Tagging_Helper_Data $nostoHelper */
+        $nostoHelper = Mage::helper("nosto_tagging");
+        foreach (Nosto_Tagging_Helper_Data::$validTags as $tagId) {
+            $attributesToTag = $nostoHelper->getAttributesToTag($tagId, $store->getId());
+            if (empty($attributesToTag) || !is_array($attributesToTag)) {
+                continue;
+            }
+            foreach ($attributesToTag as $tagAttribute) {
+                $attributes[] = $tagAttribute;
+            }
+        }
+        return array_unique($attributes);
     }
 }
