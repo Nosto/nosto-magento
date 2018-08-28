@@ -140,7 +140,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
             $this->amendVariations($product, $store);
         }
         if ($dataHelper->getUseCustomFields($store)) {
-            $this->setCustomFields($this->amendAttributesCustomFields($product, $store));
+            $this->setCustomFields($this->getAmendedAttributesCustomFields($product, $store));
         }
 
         Mage::dispatchEvent(
@@ -668,7 +668,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      * @return array|null
      * @throws Nosto_NostoException
      */
-    protected function amendAttributesCustomFields(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
+    protected function getAmendedAttributesCustomFields(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
         $customFields = $this->loadCustomFields($product);
         $attributes = $this->getAttributesFromAllTags($store);
@@ -676,7 +676,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         foreach ($product->getAttributes() as $key => $productAttribute) {
             if (in_array($key, $attributes, false)) {
                 $attributeValue = $this->getAttributeValue($product, $key);
-                if (empty($attributeValue)) {
+                if ($attributeValue ===null || $attributeValue === '') {
                     continue;
                 }
                 $customFields[$key] = $attributeValue;
