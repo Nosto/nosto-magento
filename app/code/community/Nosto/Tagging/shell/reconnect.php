@@ -47,7 +47,7 @@ class ReconnectCommand extends Mage_Shell_Abstract
     protected $accountHelper;
 
     /**
-     * @var
+     * @var array
      */
     protected $requiredArguments;
 
