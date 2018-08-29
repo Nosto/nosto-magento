@@ -55,6 +55,7 @@ class Nosto_Tagging_Model_Service_Recommendation_Category
         if (!$limit) {
             $limit = 20;
         }
+
         $recoOperation = new Nosto_Operation_Recommendation_Category(
             $nostoAccount,
             $category,
@@ -62,11 +63,9 @@ class Nosto_Tagging_Model_Service_Recommendation_Category
             $limit
         );
 
-        $recoOperation->setConnectTimeout($this->getConnectTimeout());
-        $recoOperation->setResponseTimeout($this->getResponseTimeout());
         $productIds = array();
         try {
-            $productIds = $recoOperation->get()->getJsonResult();
+            $productIds = $recoOperation->execute();
         } catch (\Exception $e) {
             Nosto_Tagging_Helper_Log::exception($e);
         }
