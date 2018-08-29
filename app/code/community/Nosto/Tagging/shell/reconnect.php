@@ -29,7 +29,7 @@
 use Nosto_Request_Api_Token as Token;
 use Nosto_Object_Signup_Account as NostoSignupAccount;
 
-require_once __DIR__ . '/../../../shell/abstract.php';
+require_once __DIR__ . '/../../../../../../../../shell/abstract.php';
 
 /**
  * Class ReconnectCommand
