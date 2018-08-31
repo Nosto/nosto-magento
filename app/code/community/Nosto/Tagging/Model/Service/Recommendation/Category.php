@@ -62,12 +62,16 @@ class Nosto_Tagging_Model_Service_Recommendation_Category
             $nostoCustomerId,
             $limit
         );
-
-        $productIds = array();
         try {
-            $productIds = $recoOperation->execute();
+            $response = $recoOperation->execute();
         } catch (\Exception $e) {
             Nosto_Tagging_Helper_Log::exception($e);
+        }
+        $productIds = array();
+
+        // ToDo - wrap this into a nice result set in SDK
+        foreach ($response->data->updateSession->recos->category_ids->primary as $item) {
+            $productIds[] = $item->productId;
         }
 
         return $productIds;
