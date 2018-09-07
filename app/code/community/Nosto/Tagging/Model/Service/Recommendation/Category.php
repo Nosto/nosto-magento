@@ -41,27 +41,34 @@ class Nosto_Tagging_Model_Service_Recommendation_Category
      * @param Nosto_Object_Signup_Account $nostoAccount
      * @param $nostoCustomerId
      * @param $category
-     * @param null $limit
      *
+     * @param $type
      * @return array
      */
-    public function getSortedProductIds(
+    public function getSortedProductIdsForToplist(
         Nosto_Object_Signup_Account $nostoAccount,
         $nostoCustomerId,
         $category,
-        $limit = null
+        $type
     )
     {
-        if (!$limit) {
-            $limit = 20;
+        switch ($type){
+            case Nosto_Tagging_Model_Category_Config::NOSTO_PERSONALIZED_KEY:
+                $recoOperation = new Nosto_Operation_Recommendation_CategoryBrowsingHistory(
+                    $nostoAccount,
+                    $nostoCustomerId
+                );
+                break;
+            default:
+                $recoOperation = new Nosto_Operation_Recommendation_CategoryTopList(
+                    $nostoAccount,
+                    $nostoCustomerId
+                );
+                break;
         }
 
-        $recoOperation = new Nosto_Operation_Recommendation_Category(
-            $nostoAccount,
-            $category,
-            $nostoCustomerId,
-            $limit
-        );
+        $recoOperation->setCategory($category);
+
         try {
             $response = $recoOperation->execute();
         } catch (\Exception $e) {

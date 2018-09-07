@@ -34,7 +34,8 @@
  */
 class Nosto_Tagging_Model_Category_Config extends Mage_Catalog_Model_Config
 {
-    const NOSTO_RELEVANCE_KEY = 'nosto-personalized';
+    const NOSTO_PERSONALIZED_KEY = 'nosto-personalized';
+    const NOSTO_TOPLIST_KEY = 'nosto-toplist';
 
     /**
      * Add relevance attribute as a sorting option
@@ -52,7 +53,8 @@ class Nosto_Tagging_Model_Category_Config extends Mage_Catalog_Model_Config
         if ($dataHelper->getUsePersonalizedCategorySorting($store)
             && $accountHelper->find($store) !== null
         ) {
-            $options[self::NOSTO_RELEVANCE_KEY] = Mage::helper('catalog')->__('Personalized for you');
+            $options[self::NOSTO_PERSONALIZED_KEY] = Mage::helper('catalog')->__('Personalized for you');
+            $options[self::NOSTO_TOPLIST_KEY] = Mage::helper('catalog')->__('Top products');
         }
 
         return $options;
