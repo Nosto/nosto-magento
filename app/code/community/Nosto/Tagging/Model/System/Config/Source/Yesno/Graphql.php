@@ -26,43 +26,53 @@
  */
 
 /**
- * Adds relevance attribute to the sorting options for category products
+ * Source model for grapqhl related settings
  *
  * @category Nosto
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
+ * @suppress PhanUnreferencedClass
  */
-class Nosto_Tagging_Model_Category_Config extends Mage_Catalog_Model_Config
+class Nosto_Tagging_Model_System_Config_Source_Yesno_Graphql
+    extends Nosto_Tagging_Model_System_Config_Source_Yesno_Base
 {
-    const NOSTO_PERSONALIZED_KEY = 'nosto-personalized';
-    const NOSTO_TOPLIST_KEY = 'nosto-toplist';
-
     /**
-     * Add relevance attribute as a sorting option
-     *
-     * @return array
+     * @inheritdoc
      */
-    public function getAttributeUsedForSortByArray()
+    protected function featureAvailable()
     {
-        $options = parent::getAttributeUsedForSortByArray();
-        /* @var Nosto_Tagging_Helper_Data $dataHelper */
-        $dataHelper = Mage::helper('nosto_tagging');
-        $store = Mage::app()->getStore();
+        $storeCode = Mage::getSingleton('adminhtml/config_data')->getStore();
         /* @var Nosto_Tagging_Helper_Account $accountHelper */
         $accountHelper = Mage::helper('nosto_tagging/account');
-        $nostoAccount = $accountHelper->find($store);
+        $accounts = array();
+        if (empty($storeCode)) {
+           $stores = $accountHelper->getAllStoreViewsWithNostoAccount();
+           foreach ($stores as $store) {
+               $accounts[] = $accountHelper->find($store);
+           }
+        } else {
+            $store = Mage::getModel('core/store')->load($storeCode);
+            $account = $accountHelper->find($store);
+            if ($account instanceof Nosto_Types_Signup_AccountInterface) {
+                $accounts[] = $account;
+            }
+        }
+        foreach ($accounts as $account) {
+            $featureService = new Nosto_Service_FeatureAccess($account);
+            if ($featureService->canUseGraphql()) {
 
-        if ($nostoAccount instanceof Nosto_Types_Signup_AccountInterface) {
-            $featureAccessService = new Nosto_Service_FeatureAccess($nostoAccount);
-            if ($dataHelper->getUsePersonalizedCategorySorting($store)
-                && $featureAccessService->canUseGraphql()
-
-            ) {
-                $options[self::NOSTO_PERSONALIZED_KEY] = Mage::helper('catalog')->__('Personalized for you');
-                $options[self::NOSTO_TOPLIST_KEY] = Mage::helper('catalog')->__('Top products');
+                return true;
             }
         }
 
-        return $options;
+        return false;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getDisabledMessage()
+    {
+        return 'No (missing access token)';
     }
 }

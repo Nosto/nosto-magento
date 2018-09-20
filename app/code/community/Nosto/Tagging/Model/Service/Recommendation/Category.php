@@ -52,6 +52,11 @@ class Nosto_Tagging_Model_Service_Recommendation_Category
         $type
     )
     {
+        $productIds = array();
+        $featureAccess = new Nosto_Service_FeatureAccess($nostoAccount);
+        if ($featureAccess->canUseGraphql()) {
+            return $productIds;
+        }
         switch ($type){
             case Nosto_Tagging_Model_Category_Config::NOSTO_PERSONALIZED_KEY:
                 $recoOperation = new Nosto_Operation_Recommendation_CategoryBrowsingHistory(
@@ -66,10 +71,7 @@ class Nosto_Tagging_Model_Service_Recommendation_Category
                 );
                 break;
         }
-
-        $recoOperation->setCategory($category);
-
-        $productIds = array();
+       $recoOperation->setCategory($category);
         try {
             $result = $recoOperation->execute();
             foreach ($result as $item) {
