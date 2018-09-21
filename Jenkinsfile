@@ -13,6 +13,7 @@ pipeline {
 
     stage('Update Dependencies') {
       steps {
+        sh "composer clear-cache"
         sh "composer install --no-progress --no-suggest"
         sh "composer dump-autoload --optimize"
         sh "./vendor/bin/pearify process ."
