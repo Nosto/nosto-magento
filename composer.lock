@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "860cc663dbbbcfcb47be80d3e8efd2f9",
-    "content-hash": "247a5fb8c0bf5f38631c1797de4438be",
+    "hash": "9b544a51bde740af785dd395fa41b50e",
+    "content-hash": "754c140956eddb7b490421d9e1fd26e3",
     "packages": [
         {
             "name": "nosto/php-sdk",
-            "version": "dev-feature/category-sorting-api",
+            "version": "3.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Nosto/nosto-php-sdk.git",
-                "reference": "e77472bcff3a3a8f8c1adb5dc8973896e84d397f"
+                "reference": "92b8497ae6498608b10cc0a882e1995ca032aade"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Nosto/nosto-php-sdk/zipball/e77472bcff3a3a8f8c1adb5dc8973896e84d397f",
-                "reference": "e77472bcff3a3a8f8c1adb5dc8973896e84d397f",
+                "url": "https://api.github.com/repos/Nosto/nosto-php-sdk/zipball/92b8497ae6498608b10cc0a882e1995ca032aade",
+                "reference": "92b8497ae6498608b10cc0a882e1995ca032aade",
                 "shasum": ""
             },
             "require": {
@@ -52,7 +52,7 @@
                 "BSD-3-Clause"
             ],
             "description": "PHP SDK for developing Nosto modules for e-commerce platforms",
-            "time": "2018-09-20 13:32:25"
+            "time": "2018-09-21 11:24:20"
         },
         {
             "name": "phpseclib/phpseclib",
@@ -2058,9 +2058,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "nosto/php-sdk": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
