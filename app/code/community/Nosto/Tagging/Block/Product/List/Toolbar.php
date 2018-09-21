@@ -63,7 +63,8 @@ class Nosto_Tagging_Block_Product_List_Toolbar
             $this->_collection->setCurPage($this->getCurrentPage());
             $sortIds = array_reverse($this->getSortIds($this->getCurrentOrder()));
             if (!empty($sortIds)) {
-                $orderByIds = sprintf('FIELD(product_id, %s) DESC',
+                $orderByIds = sprintf(
+                    'FIELD(product_id, %s) DESC',
                     implode(',', $sortIds)
                 );
                 $this->_collection->getSelect()->order($orderByIds);
@@ -76,9 +77,11 @@ class Nosto_Tagging_Block_Product_List_Toolbar
     /**
      * Returns the product ids
      *
+     * @param string $type
      * @return array
      */
-    protected function getSortIds($type) {
+    protected function getSortIds($type)
+    {
         /* @var Nosto_Tagging_Model_Service_Recommendation_Category $categoryService */
         $categoryService = Mage::getModel('nosto_tagging/service_recommendation_category');
         $nostoVisitId = Mage::getModel('core/cookie')->get(Nosto_Tagging_Helper_Data::COOKIE_NAME);
@@ -90,6 +93,11 @@ class Nosto_Tagging_Block_Product_List_Toolbar
         $helper = Mage::helper('nosto_tagging/account');
         $account = $helper->find();
 
-        return $categoryService->getSortedProductIdsForToplist($account, $nostoVisitId, $category, $type);
+        return $categoryService->getSortedProductIdsForToplist(
+            $account,
+            $nostoVisitId,
+            $category,
+            $type
+        );
     }
 }

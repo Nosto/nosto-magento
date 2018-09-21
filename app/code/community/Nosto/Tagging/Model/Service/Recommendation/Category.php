@@ -39,10 +39,10 @@ class Nosto_Tagging_Model_Service_Recommendation_Category
      * Returns an of product ids sorted by relevance
      *
      * @param Nosto_Object_Signup_Account $nostoAccount
-     * @param $nostoCustomerId
-     * @param $category
+     * @param string $nostoCustomerId
+     * @param string $category
      *
-     * @param $type
+     * @param string $type
      * @return array
      */
     public function getSortedProductIdsForToplist(
