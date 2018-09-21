@@ -165,6 +165,10 @@ class ReconnectCommand extends Mage_Shell_Abstract
         if ($emailToken) {
             $tokens[] = new Token(Token::API_EMAIL, $emailToken);
         }
+        $appsToken = $this->getArg(Token::API_GRAPHQL . self::TOKEN_SUFFIX);
+        if ($appsToken) {
+            $tokens[] = new Token(Token::API_GRAPHQL, $appsToken);
+        }
         return $tokens;
     }
 
@@ -202,6 +206,7 @@ Usage:  php -f reconnect.php -- [options]
   --settings_token    Settings token
   --rates_token       API exchange rates token
   --email_token       Email token (optional)
+  --apps_token        GraphQL apps token (optional)
   --scope-code        Store view code
   --override          Force override tokens
   -h                  Short alias for help
