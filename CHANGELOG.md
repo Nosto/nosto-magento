@@ -1,5 +1,8 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.8.0-RC1
+* Add support for category personalization
+
 ### 3.7.4
 * Add explicit boolean check for product building
 
