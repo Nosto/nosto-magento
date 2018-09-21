@@ -36,7 +36,7 @@ class Nosto_Tagging_Model_Service_Recommendation_Category
     extends Nosto_Tagging_Model_Service_Recommendation_Base
 {
     /**
-     * Returns an of product ids sorted by relevance
+     * Returns an array of product ids sorted by relevance
      *
      * @param Nosto_Object_Signup_Account $nostoAccount
      * @param string $nostoCustomerId
