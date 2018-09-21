@@ -71,7 +71,7 @@ class Nosto_Tagging_Model_Service_Recommendation_Category
                 );
                 break;
         }
-       $recoOperation->setCategory($category);
+        $recoOperation->setCategory($category);
         try {
             $result = $recoOperation->execute();
             foreach ($result as $item) {
