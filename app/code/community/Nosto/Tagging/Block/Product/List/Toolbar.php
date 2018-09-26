@@ -93,7 +93,7 @@ class Nosto_Tagging_Block_Product_List_Toolbar
         $helper = Mage::helper('nosto_tagging/account');
         $account = $helper->find();
 
-        return $categoryService->getSortedProductIdsForToplist(
+        return $categoryService->getSortedProductIds(
             $account,
             $nostoVisitId,
             $category,

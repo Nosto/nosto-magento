@@ -45,7 +45,7 @@ class Nosto_Tagging_Model_Service_Recommendation_Category
      * @param string $type
      * @return array
      */
-    public function getSortedProductIdsForToplist(
+    public function getSortedProductIds(
         Nosto_Object_Signup_Account $nostoAccount,
         $nostoCustomerId,
         $category,
@@ -54,7 +54,7 @@ class Nosto_Tagging_Model_Service_Recommendation_Category
     {
         $productIds = array();
         $featureAccess = new Nosto_Service_FeatureAccess($nostoAccount);
-        if ($featureAccess->canUseGraphql()) {
+        if (!$featureAccess->canUseGraphql()) {
             return $productIds;
         }
         switch ($type){

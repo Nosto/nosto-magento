@@ -1,5 +1,9 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.8.0-RC2
+* Fix bug for checking if graphql feature is available
+* Refactor method names
+
 ### 3.8.0-RC1
 * Add support for category personalization
 
@@ -38,7 +42,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ### 3.6.0
 * Improve error bubbling in Nosto account opening and in API calls
-* Add marketing permission constent for user tagging in order confirmation (GDPR compatibility) 
+* Add marketing permission consent for user tagging in order confirmation (GDPR compatibility) 
 
 ### 3.5.5
 * Fix the bundle product list price was incorrect if there is any optional item
