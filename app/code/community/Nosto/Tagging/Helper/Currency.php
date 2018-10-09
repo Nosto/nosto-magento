@@ -34,6 +34,27 @@
  */
 class Nosto_Tagging_Helper_Currency extends Mage_Core_Helper_Abstract
 {
+    /* List of zero decimal currencies in compliance with ISO-4217 */
+    const ZERO_DECIMAL_CURRENCIES = [
+        'XOF',
+        'BIF',
+        'XAF',
+        'CLP',
+        'KMF',
+        'DJF',
+        'GNF',
+        'ISK',
+        'JPY',
+        'KRW',
+        'PYG',
+        'RWF',
+        'UGX',
+        'UYI',
+        'VUV',
+        'VND',
+        'XPF'
+    ];
+
     /**
      * Parses the format for a currency into a Nosto currency object.
      *
@@ -58,17 +79,7 @@ class Nosto_Tagging_Helper_Currency extends Mage_Core_Helper_Abstract
 
         // Remove all other characters than "0", "#", "." and ",",
         $format = preg_replace('/[^0\#\.,]/', '', $format);
-        // Calculate the decimal precision.
-        $precision = 0;
-        if (($decimalPos = strpos($format, '.')) !== false) { // @codingStandardsIgnoreLine
-            $precision = (strlen($format) - (strrpos($format, '.') + 1));
-        } else {
-            $decimalPos = strlen($format);
-        }
-        $decimalFormat = substr($format, $decimalPos);
-        if (($pos = strpos($decimalFormat, '#')) !== false) {
-            $precision = strlen($decimalFormat) - $pos - $precision;
-        }
+        $precision = $this->getPrecision($format, $currencyCode);
 
         // If the symbol is missing for the current locale, use the ISO code.
         $currencySymbol = $currency->getSymbol();
@@ -83,5 +94,31 @@ class Nosto_Tagging_Helper_Currency extends Mage_Core_Helper_Abstract
             $symbols['group'],
             $precision
         );
+    }
+
+    /**
+     * Calculates the amount of decimal digits for the given format and currency code.
+     * If the currency code has no decimal part according to ISO-4217 returns 0.
+     *
+     * @param $format
+     * @param $currencyCode
+     * @return bool|int
+     */
+    private function getPrecision($format, $currencyCode)
+    {
+        if (in_array($currencyCode, self::ZERO_DECIMAL_CURRENCIES, false)) {
+            return 0;
+        }
+        $precision = 0;
+        if (($decimalPos = strpos($format, '.')) !== false) { // @codingStandardsIgnoreLine
+            $precision = (strlen($format) - (strrpos($format, '.') + 1));
+        } else {
+            $decimalPos = strlen($format);
+        }
+        $decimalFormat = substr($format, $decimalPos);
+        if (($pos = strpos($decimalFormat, '#')) !== false) {
+            $precision = strlen($decimalFormat) - $pos - $precision;
+        }
+        return $precision;
     }
 }
