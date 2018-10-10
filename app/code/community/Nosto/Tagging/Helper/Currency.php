@@ -35,7 +35,7 @@
 class Nosto_Tagging_Helper_Currency extends Mage_Core_Helper_Abstract
 {
     /* List of zero decimal currencies in compliance with ISO-4217 */
-    protected $_zeroDecimalCurrencies = array(
+    protected static $_zeroDecimalCurrencies = array(
         'XOF',
         'BIF',
         'XAF',
