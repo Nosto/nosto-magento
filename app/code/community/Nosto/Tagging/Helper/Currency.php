@@ -35,7 +35,7 @@
 class Nosto_Tagging_Helper_Currency extends Mage_Core_Helper_Abstract
 {
     /* List of zero decimal currencies in compliance with ISO-4217 */
-    const ZERO_DECIMAL_CURRENCIES = [
+    private $zeroDecimalCurrencies = array(
         'XOF',
         'BIF',
         'XAF',
@@ -53,7 +53,7 @@ class Nosto_Tagging_Helper_Currency extends Mage_Core_Helper_Abstract
         'VUV',
         'VND',
         'XPF'
-    ];
+    );
 
     /**
      * Parses the format for a currency into a Nosto currency object.
@@ -94,7 +94,7 @@ class Nosto_Tagging_Helper_Currency extends Mage_Core_Helper_Abstract
      * @return null|string|string[]
      * @throws Zend_Locale_Exception
      */
-    private function getCleanFormatFromLocale($locale)
+    protected function getCleanFormatFromLocale($locale)
     {
         $format = $this->buildFormatFromLocale($locale);
         return $this->clearCurrencyFormat($format);
@@ -107,7 +107,7 @@ class Nosto_Tagging_Helper_Currency extends Mage_Core_Helper_Abstract
      * @param $format
      * @return bool
      */
-    private function isSymbolBeforeAmount($format)
+    protected function isSymbolBeforeAmount($format)
     {
         return strpos(trim($format), '¤') === 0;
     }
@@ -119,7 +119,7 @@ class Nosto_Tagging_Helper_Currency extends Mage_Core_Helper_Abstract
      * @return bool|string
      * @throws Zend_Locale_Exception
      */
-    private function buildFormatFromLocale($locale)
+    protected function buildFormatFromLocale($locale)
     {
         $format = Zend_Locale_Data::getContent($locale, 'currencynumber');
         // Remove extra part, e.g. "¤ #,##0.00; (¤ #,##0.00)" => "¤ #,##0.00".
@@ -135,7 +135,7 @@ class Nosto_Tagging_Helper_Currency extends Mage_Core_Helper_Abstract
      * @param $format
      * @return null|string|string[]
      */
-    private function clearCurrencyFormat($format)
+    protected function clearCurrencyFormat($format)
     {
         return preg_replace('/[^0\#\.,]/', '', $format);
     }
@@ -148,9 +148,9 @@ class Nosto_Tagging_Helper_Currency extends Mage_Core_Helper_Abstract
      * @param $currencyCode
      * @return bool|int
      */
-    private function getPrecision($format, $currencyCode)
+    protected function getPrecision($format, $currencyCode)
     {
-        if (in_array($currencyCode, self::ZERO_DECIMAL_CURRENCIES, false)) {
+        if (in_array($currencyCode, $this->zeroDecimalCurrencies, false)) {
             return 0;
         }
         $precision = 0;
