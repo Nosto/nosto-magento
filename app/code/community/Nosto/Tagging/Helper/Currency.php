@@ -67,33 +67,77 @@ class Nosto_Tagging_Helper_Currency extends Mage_Core_Helper_Abstract
     public function getCurrencyObject($locale, $currencyCode)
     {
         $currency = new Zend_Currency($locale, $currencyCode);
-        $format = Zend_Locale_Data::getContent($locale, 'currencynumber');
         $symbols = Zend_Locale_Data::getList($locale, 'symbols');
-
-        // Remove extra part, e.g. "¤ #,##0.00; (¤ #,##0.00)" => "¤ #,##0.00".
-        if (($pos = strpos($format, ';')) !== false) {
-            $format = substr($format, 0, $pos);
-        }
-        // Check if the currency symbol is before or after the amount.
-        $symbolPosition = strpos(trim($format), '¤') === 0;
-
-        // Remove all other characters than "0", "#", "." and ",",
-        $format = preg_replace('/[^0\#\.,]/', '', $format);
+        $format = $this->getCleanFormatFromLocale($locale);
         $precision = $this->getPrecision($format, $currencyCode);
 
-        // If the symbol is missing for the current locale, use the ISO code.
         $currencySymbol = $currency->getSymbol();
         if ($currencySymbol === null) {
+            // If the symbol is missing for the current locale, use the ISO code.
             $currencySymbol = $currencyCode;
         }
 
         return new Nosto_Object_Format(
-            $symbolPosition,
+            $this->isSymbolBeforeAmount($format),
             $currencySymbol,
             $symbols['decimal'],
             $symbols['group'],
             $precision
         );
+    }
+
+    /**
+     * Returns currency format from locale without currency symbol and
+     * and any other characters than ["0", "#", ".", ","]
+     *
+     * @param $locale
+     * @return null|string|string[]
+     * @throws Zend_Locale_Exception
+     */
+    private function getCleanFormatFromLocale($locale)
+    {
+        $format = $this->buildFormatFromLocale($locale);
+        return $this->clearCurrencyFormat($format);
+    }
+
+    /**
+     * Check if the currency symbol is before or after the amount.
+     * Returns true is symbol is before the amount.
+     *
+     * @param $format
+     * @return bool
+     */
+    private function isSymbolBeforeAmount($format)
+    {
+        return strpos(trim($format), '¤') === 0;
+    }
+
+    /**
+     * Returns the complete currency format including the symbol for the given locale.
+     *
+     * @param $locale
+     * @return bool|string
+     * @throws Zend_Locale_Exception
+     */
+    private function buildFormatFromLocale($locale)
+    {
+        $format = Zend_Locale_Data::getContent($locale, 'currencynumber');
+        // Remove extra part, e.g. "¤ #,##0.00; (¤ #,##0.00)" => "¤ #,##0.00".
+        if (($pos = strpos($format, ';')) !== false) {
+            $format = substr($format, 0, $pos);
+        }
+        return $format;
+    }
+
+    /**
+     * Remove all other characters than "0", "#", "." and ",",
+     *
+     * @param $format
+     * @return null|string|string[]
+     */
+    private function clearCurrencyFormat($format)
+    {
+        return preg_replace('/[^0\#\.,]/', '', $format);
     }
 
     /**
