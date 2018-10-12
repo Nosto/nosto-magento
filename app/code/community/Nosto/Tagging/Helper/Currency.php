@@ -34,6 +34,27 @@
  */
 class Nosto_Tagging_Helper_Currency extends Mage_Core_Helper_Abstract
 {
+    /* List of zero decimal currencies in compliance with ISO-4217 */
+    protected $_zeroDecimalCurrencies = array(
+        'XOF',
+        'BIF',
+        'XAF',
+        'CLP',
+        'KMF',
+        'DJF',
+        'GNF',
+        'ISK',
+        'JPY',
+        'KRW',
+        'PYG',
+        'RWF',
+        'UGX',
+        'UYI',
+        'VUV',
+        'VND',
+        'XPF'
+    );
+
     /**
      * Parses the format for a currency into a Nosto currency object.
      *
@@ -46,19 +67,92 @@ class Nosto_Tagging_Helper_Currency extends Mage_Core_Helper_Abstract
     public function getCurrencyObject($locale, $currencyCode)
     {
         $currency = new Zend_Currency($locale, $currencyCode);
-        $format = Zend_Locale_Data::getContent($locale, 'currencynumber');
         $symbols = Zend_Locale_Data::getList($locale, 'symbols');
+        $format = $this->getCleanFormatFromLocale($locale);
+        $precision = $this->getPrecision($format, $currencyCode);
 
+        $currencySymbol = $currency->getSymbol();
+        if ($currencySymbol === null) {
+            // If the symbol is missing for the current locale, use the ISO code.
+            $currencySymbol = $currencyCode;
+        }
+
+        return new Nosto_Object_Format(
+            $this->isSymbolBeforeAmount($format),
+            $currencySymbol,
+            $symbols['decimal'],
+            $symbols['group'],
+            $precision
+        );
+    }
+
+    /**
+     * Returns currency format from locale without currency symbol and
+     * and any other characters than ["0", "#", ".", ","]
+     *
+     * @param $locale
+     * @return null|string|string[]
+     * @throws Zend_Locale_Exception
+     */
+    protected function getCleanFormatFromLocale($locale)
+    {
+        $format = $this->buildFormatFromLocale($locale);
+        return $this->clearCurrencyFormat($format);
+    }
+
+    /**
+     * Check if the currency symbol is before or after the amount.
+     * Returns true is symbol is before the amount.
+     *
+     * @param $format
+     * @return bool
+     */
+    protected function isSymbolBeforeAmount($format)
+    {
+        return strpos(trim($format), '¤') === 0;
+    }
+
+    /**
+     * Returns the complete currency format including the symbol for the given locale.
+     *
+     * @param $locale
+     * @return bool|string
+     * @throws Zend_Locale_Exception
+     */
+    protected function buildFormatFromLocale($locale)
+    {
+        $format = Zend_Locale_Data::getContent($locale, 'currencynumber');
         // Remove extra part, e.g. "¤ #,##0.00; (¤ #,##0.00)" => "¤ #,##0.00".
         if (($pos = strpos($format, ';')) !== false) {
             $format = substr($format, 0, $pos);
         }
-        // Check if the currency symbol is before or after the amount.
-        $symbolPosition = strpos(trim($format), '¤') === 0;
+        return $format;
+    }
 
-        // Remove all other characters than "0", "#", "." and ",",
-        $format = preg_replace('/[^0\#\.,]/', '', $format);
-        // Calculate the decimal precision.
+    /**
+     * Remove all other characters than "0", "#", "." and ",",
+     *
+     * @param $format
+     * @return null|string|string[]
+     */
+    protected function clearCurrencyFormat($format)
+    {
+        return preg_replace('/[^0\#\.,]/', '', $format);
+    }
+
+    /**
+     * Calculates the amount of decimal digits for the given format and currency code.
+     * If the currency code has no decimal part according to ISO-4217 returns 0.
+     *
+     * @param $format
+     * @param $currencyCode
+     * @return bool|int
+     */
+    protected function getPrecision($format, $currencyCode)
+    {
+        if (in_array($currencyCode, $this->_zeroDecimalCurrencies, false)) {
+            return 0;
+        }
         $precision = 0;
         if (($decimalPos = strpos($format, '.')) !== false) { // @codingStandardsIgnoreLine
             $precision = (strlen($format) - (strrpos($format, '.') + 1));
@@ -69,19 +163,6 @@ class Nosto_Tagging_Helper_Currency extends Mage_Core_Helper_Abstract
         if (($pos = strpos($decimalFormat, '#')) !== false) {
             $precision = strlen($decimalFormat) - $pos - $precision;
         }
-
-        // If the symbol is missing for the current locale, use the ISO code.
-        $currencySymbol = $currency->getSymbol();
-        if ($currencySymbol === null) {
-            $currencySymbol = $currencyCode;
-        }
-
-        return new Nosto_Object_Format(
-            $symbolPosition,
-            $currencySymbol,
-            $symbols['decimal'],
-            $symbols['group'],
-            $precision
-        );
+        return $precision;
     }
 }
