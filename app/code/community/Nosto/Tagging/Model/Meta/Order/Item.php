@@ -93,7 +93,12 @@ abstract class Nosto_Tagging_Model_Meta_Order_Item extends Nosto_Object_Cart_Lin
                 return $parentIds[0];
             }
         }
-        return (string) $item->getProductId();
+        $productId = (string)$item->getProductId();
+        if (trim($productId) === '') {
+            return Nosto_Object_Cart_LineItem::PSEUDO_PRODUCT_ID;
+        }
+
+        return $productId;
     }
 
     /**
