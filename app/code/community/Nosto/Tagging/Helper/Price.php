@@ -142,7 +142,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
                     $finalPrice,
                     $inclTax
                 );
-                if (!$price || $price <= 0) {
+                if ((!$price && $price !== 0) || $price < 0) {
                     /** @var Mage_Catalog_Model_Product_Type_Configurable $configurableProduct */
                     $configurableProduct = Mage::getModel('catalog/product_type_configurable');
                     $associatedProducts = $configurableProduct->getUsedProducts(null, $product);
