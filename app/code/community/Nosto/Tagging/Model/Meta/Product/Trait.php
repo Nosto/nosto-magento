@@ -114,7 +114,7 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
 
         /** @var Nosto_Tagging_Helper_Data $dataHelper */
         $dataHelper = Mage::helper('nosto_tagging/data');
-        if ($dataHelper->isVariationEnabled()) {
+        if ($dataHelper->isVariationEnabled($store)) {
             $product->setGroupPrice(Nosto_Tagging_Helper_Variation::DEFAULT_CUSTOMER_GROUP_ID);
         }
         return $priceHelper->getProductTaggingPrice($product, $store, true);
