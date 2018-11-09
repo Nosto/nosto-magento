@@ -1,5 +1,9 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.7.5
+* Handle line items without concrete product in order confirmation
+* Fix price variation when customer group variation has zero price
+
 ### 3.7.4
 * Add explicit boolean check for product building
 
