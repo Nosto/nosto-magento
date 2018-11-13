@@ -94,6 +94,8 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
         $emailHelper = Mage::helper('nosto_tagging/email');
         /** @noinspection PhpUndefinedMethodInspection */
         $email = $customer->getEmail();
+        $groupName = Mage::getModel('customer/group')->load($customer->getGroupId())->getCustomerGroupCode();
+        $dateOfBirth = $customer->getDob();
         $nostoCustomer = new Nosto_Object_Customer();
         /** @noinspection PhpUndefinedMethodInspection */
         $nostoCustomer->setFirstName($customer->getFirstname());
@@ -101,12 +103,33 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
         $nostoCustomer->setLastName($customer->getLastname());
         $nostoCustomer->setCustomerReference($this->getCustomerReference());
         $nostoCustomer->setEmail($email);
+        $nostoCustomer->setGender($this->getGenderName($customer));
+        $nostoCustomer->setCustomerGroup($groupName);
+        $nostoCustomer->setDateOfBirth(DateTime::createFromFormat("Y-m-d H:i:s", $dateOfBirth));
         $nostoCustomer->setMarketingPermission($emailHelper->isOptedIn($email));
         $dataHelper = Mage::helper('nosto_tagging/data');
         /* @var Nosto_Tagging_Helper_Data $dataHelper */
         $nostoCustomer->setHcid($dataHelper->getVisitorChecksum());
 
         return $nostoCustomer;
+    }
+
+    /**
+     * @param Mage_Customer_Model_Customer $customer
+     * @return null|string
+     */
+    private function getGenderName(Mage_Customer_Model_Customer $customer)
+    {
+        $gender = $customer->getGender();
+
+        if ($gender === "1") {
+            return "Male";
+        }
+        elseif ($gender === "2") {
+            return "Female";
+        }
+
+        return null;
     }
 
     /**
