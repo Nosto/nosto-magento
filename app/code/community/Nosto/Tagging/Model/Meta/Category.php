@@ -90,8 +90,7 @@ class Nosto_Tagging_Model_Meta_Category
         if ($visibleInMenu === "1") {
             return true;
         }
-        elseif ($visibleInMenu === "0") {
-            return false;
-        }
+
+        return false;
     }
 }

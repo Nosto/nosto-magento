@@ -57,8 +57,7 @@ class Nosto_Tagging_Block_Category extends Mage_Core_Block_Template
         ) {
             return '';
         }
-        $nostoCategory = $this->getCategory();
-        return $nostoCategory->toHtml();
+        return $this->getCategory()->toHtml();
     }
 
     /**
@@ -71,11 +70,7 @@ class Nosto_Tagging_Block_Category extends Mage_Core_Block_Template
 
         try {
             $category = Mage::registry('current_category');
-            $model = Nosto_Tagging_Model_Meta_Category_Builder::build(
-               $category
-            );
-            return $model;
-
+            return Nosto_Tagging_Model_Meta_Category_Builder::build($category);
         } catch (Nosto_NostoException $e) {
             Nosto_Tagging_Helper_Log::exception($e);
         }

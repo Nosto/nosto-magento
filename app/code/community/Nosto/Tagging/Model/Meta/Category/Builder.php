@@ -34,10 +34,7 @@
  */
 class Nosto_Tagging_Model_Meta_Category_Builder
 {
-    public static function build
-    (
-        Mage_Catalog_Model_Category $category
-    )
+    public static function build(Mage_Catalog_Model_Category $category)
     {
         $nostoCategory = new Nosto_Tagging_Model_Meta_Category();
         return $nostoCategory->loadData($category);

@@ -122,14 +122,11 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
     {
         $gender = $customer->getGender();
 
-        if ($gender === "1") {
-            return "Male";
+        switch ($gender) {
+            case "1": return "Male"; break;
+            case "2": return "Female"; break;
+            default : return null;
         }
-        elseif ($gender === "2") {
-            return "Female";
-        }
-
-        return null;
     }
 
     /**
