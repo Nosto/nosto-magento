@@ -73,10 +73,10 @@ class Nosto_Tagging_Model_Meta_Category
             }
         }
         if (!empty($data)) {
-            return DS . implode(DS, $data);
-        } else {
-            return '';
+            return '/'. implode('/', $data);
         }
+
+        return '';
     }
 
     /**
@@ -87,10 +87,6 @@ class Nosto_Tagging_Model_Meta_Category
     {
         $visibleInMenu = $category->getIncludeInMenu();
 
-        if ($visibleInMenu === "1") {
-            return true;
-        }
-
-        return false;
+        return $visibleInMenu === "1";
     }
 }
