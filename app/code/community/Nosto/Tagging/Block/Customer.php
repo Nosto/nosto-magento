@@ -105,7 +105,9 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
         $nostoCustomer->setEmail($email);
         $nostoCustomer->setGender($this->getGenderName($customer));
         $nostoCustomer->setCustomerGroup($groupName);
-        $nostoCustomer->setDateOfBirth(DateTime::createFromFormat("Y-m-d H:i:s", $dateOfBirth));
+        if ($dateOfBirth !== null) {
+            $nostoCustomer->setDateOfBirth(DateTime::createFromFormat("Y-m-d H:i:s", $dateOfBirth));
+        }
         $nostoCustomer->setMarketingPermission($emailHelper->isOptedIn($email));
         $dataHelper = Mage::helper('nosto_tagging/data');
         /* @var Nosto_Tagging_Helper_Data $dataHelper */
