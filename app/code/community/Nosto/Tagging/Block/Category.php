@@ -63,16 +63,16 @@ class Nosto_Tagging_Block_Category extends Mage_Core_Block_Template
     /**
      * Return the current product category
      *
-     * @return string
+     * @return Nosto_Object_Category
      */
     public function getCategory()
     {
-
         try {
             $category = Mage::registry('current_category');
             return Nosto_Tagging_Model_Meta_Category_Builder::build($category);
-        } catch (Nosto_NostoException $e) {
+        } catch (\Exception $e) {
             Nosto_Tagging_Helper_Log::exception($e);
+            return null;
         }
     }
 }
