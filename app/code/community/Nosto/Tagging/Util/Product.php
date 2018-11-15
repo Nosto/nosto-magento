@@ -75,8 +75,13 @@ class Nosto_Tagging_Util_Product
             $parentIds = $model->getParentIdsByChild($product->getId());
             if (!empty($parentIds)) {
                 foreach ($parentIds as $productId) {
-                    $configurable = Mage::getModel('catalog/product')->load($productId);
-                    $parents[] = $configurable;
+                    try {
+                        $configurable = Mage::getModel('catalog/product')->load($productId);
+                        $parents[] = $configurable;
+                    } catch (\Exception $e) {
+                        Nosto_Tagging_Helper_Log::exception($e);
+                        continue;
+                    }
                 }
             }
         }
