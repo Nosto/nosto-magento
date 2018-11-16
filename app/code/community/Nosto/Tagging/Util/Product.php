@@ -64,6 +64,8 @@ class Nosto_Tagging_Util_Product
      * product in array if no other parents were found.
      *
      * @param Mage_Catalog_Model_Product $product
+     * @suppress PhanUndeclaredClassInstanceof
+     * @suppress PhanTypeMismatchArgument
      * @return array
      */
     public static function toParentProducts(Mage_Catalog_Model_Product $product)
@@ -75,8 +77,14 @@ class Nosto_Tagging_Util_Product
             $parentIds = $model->getParentIdsByChild($product->getId());
             if (!empty($parentIds)) {
                 foreach ($parentIds as $productId) {
-                    $configurable = Mage::getModel('catalog/product')->load($productId);
-                    $parents[] = $configurable;
+                    try {
+                        $configurable = Mage::getModel('catalog/product')->load($productId);
+                        $parents[] = $configurable;
+                    } catch (\Exception $e) {
+                        if ($e instanceof \Enterprise_AdminGws_Controller_Exception) {
+                            Nosto_Tagging_Helper_Log::exception($e);
+                        }
+                    }
                 }
             }
         }

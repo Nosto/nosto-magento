@@ -10,6 +10,9 @@ All notable changes to this project will be documented in this file. This projec
 ### 3.8.0-RC1
 * Add support for category personalization
 
+### 3.7.6
+* Fix an issue in Magento Enterprise that would prevent to save a simple product if the logged user does not have permission to see the parent product.
+
 ### 3.7.5
 * Handle line items without concrete product in order confirmation
 * Fix price variation when customer group variation has zero price
