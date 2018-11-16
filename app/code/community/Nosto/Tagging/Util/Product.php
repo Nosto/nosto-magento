@@ -64,6 +64,8 @@ class Nosto_Tagging_Util_Product
      * product in array if no other parents were found.
      *
      * @param Mage_Catalog_Model_Product $product
+     * @suppress PhanUndeclaredClassInstanceof
+     * @suppress PhanTypeMismatchArgument
      * @return array
      */
     public static function toParentProducts(Mage_Catalog_Model_Product $product)
