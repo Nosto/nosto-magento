@@ -43,7 +43,7 @@ class Nosto_Tagging_Model_Meta_Category
     public function loadData(Mage_Catalog_Model_Category $category)
     {
         $nostoCategory = new Nosto_Object_Category();
-        $nostoCategory->setCategoryString($this->getCategoryString($category));
+        $nostoCategory->setCategoryString($this->buildCategoryString($category));
         $nostoCategory->setId($category->getEntityId());
         $nostoCategory->setParentId($category->getParentId());
         $nostoCategory->setName($category->getName());
@@ -51,6 +51,15 @@ class Nosto_Tagging_Model_Meta_Category
         $nostoCategory->setImageUrl($category->getImageUrl());
         $nostoCategory->setLevel($category->getLevel());
         $nostoCategory->setVisibleInMenu($this->getCategoryVisibleInMenu($category));
+
+        Mage::dispatchEvent(
+            Nosto_Tagging_Helper_Event::EVENT_NOSTO_CATEGORY_LOAD_AFTER,
+            array(
+                'category' => $this,
+                'magentoCategory' => $category
+            )
+        );
+
         return $nostoCategory;
 
     }
@@ -59,7 +68,7 @@ class Nosto_Tagging_Model_Meta_Category
      * @param Mage_Catalog_Model_Category $category
      * @return string
      */
-    private function getCategoryString(Mage_Catalog_Model_Category $category)
+    private function buildCategoryString(Mage_Catalog_Model_Category $category)
     {
         $categories = $category->getParentCategories();
         $path = $category->getPathInStore();

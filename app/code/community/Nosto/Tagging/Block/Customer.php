@@ -37,6 +37,11 @@ use Nosto_Tagging_Helper_Log as NostoLog;
  */
 class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
 {
+    const GENDER_MALE = 'Male';
+    const GENDER_FEMALE = 'Female';
+    const GENDER_MALE_ID = '1';
+    const GENDER_FEMALE_ID = '2';
+
     /**
      * Render customer info as hidden meta data if the customer is logged in,
      * the module is enabled for the current store.
@@ -126,9 +131,15 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
         $gender = $customer->getGender();
 
         switch ($gender) {
-            case "1": return "Male"; break;
-            case "2": return "Female"; break;
-            default : return null;
+            case self::GENDER_MALE_ID:
+                return self::GENDER_MALE;
+                break;
+            case self::GENDER_FEMALE_ID:
+                return self::GENDER_FEMALE;
+                break;
+            default :
+                return null;
+                break;
         }
     }
 
