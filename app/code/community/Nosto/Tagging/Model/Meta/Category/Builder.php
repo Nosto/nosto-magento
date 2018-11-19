@@ -26,7 +26,7 @@
  */
 
 /**
- * Trait for building the cart
+ * Meta data class which holds information about a category
  *
  * @category Nosto
  * @package  Nosto_Tagging
