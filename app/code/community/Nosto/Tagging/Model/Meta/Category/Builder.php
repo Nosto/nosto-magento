@@ -36,7 +36,37 @@ class Nosto_Tagging_Model_Meta_Category_Builder
 {
     public static function build(Mage_Catalog_Model_Category $category)
     {
-        $nostoCategory = new Nosto_Tagging_Model_Meta_Category();
-        return $nostoCategory->loadData($category);
+        $nostoDataHelper = new Nosto_Tagging_Helper_Data();
+
+        $nostoCategory = new Nosto_Object_Category();
+        $nostoCategory->setCategoryString($nostoDataHelper->buildCategoryString($category));
+        $nostoCategory->setId($category->getEntityId());
+        $nostoCategory->setParentId($category->getParentId());
+        $nostoCategory->setName($category->getName());
+        $nostoCategory->setUrl($category->getUrl());
+        $nostoCategory->setImageUrl($category->getImageUrl());
+        $nostoCategory->setLevel($category->getLevel());
+        $nostoCategory->setVisibleInMenu(self::getCategoryVisibleInMenu($category));
+
+        Mage::dispatchEvent(
+            Nosto_Tagging_Helper_Event::EVENT_NOSTO_CATEGORY_LOAD_AFTER,
+            array(
+                'category' => $nostoCategory,
+                'magentoCategory' => $category
+            )
+        );
+
+        return $nostoCategory;
+    }
+
+    /**
+     * @param Mage_Catalog_Model_Category $category
+     * @return bool
+     */
+    private static function getCategoryVisibleInMenu(Mage_Catalog_Model_Category $category)
+    {
+        $visibleInMenu = $category->getIncludeInMenu();
+
+        return $visibleInMenu === "1";
     }
 }
