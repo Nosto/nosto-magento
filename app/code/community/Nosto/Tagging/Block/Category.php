@@ -63,7 +63,7 @@ class Nosto_Tagging_Block_Category extends Mage_Core_Block_Template
     /**
      * Return the current product category
      *
-     * @return Nosto_Object_Category
+     * @return null|Nosto_Object_Category
      */
     public function getCategory()
     {
