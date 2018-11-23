@@ -126,20 +126,17 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
      * @param Mage_Customer_Model_Customer $customer
      * @return null|string
      */
-    private function getGenderName(Mage_Customer_Model_Customer $customer)
+    protected function getGenderName(Mage_Customer_Model_Customer $customer)
     {
         $gender = $customer->getGender();
 
         switch ($gender) {
             case self::GENDER_MALE_ID:
                 return self::GENDER_MALE;
-                break;
             case self::GENDER_FEMALE_ID:
                 return self::GENDER_FEMALE;
-                break;
             default :
                 return null;
-                break;
         }
     }
 

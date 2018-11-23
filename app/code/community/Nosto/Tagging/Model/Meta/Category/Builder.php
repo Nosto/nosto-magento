@@ -63,7 +63,7 @@ class Nosto_Tagging_Model_Meta_Category_Builder
      * @param Mage_Catalog_Model_Category $category
      * @return bool
      */
-    private static function getCategoryVisibleInMenu(Mage_Catalog_Model_Category $category)
+    protected static function getCategoryVisibleInMenu(Mage_Catalog_Model_Category $category)
     {
         $visibleInMenu = $category->getIncludeInMenu();
 
