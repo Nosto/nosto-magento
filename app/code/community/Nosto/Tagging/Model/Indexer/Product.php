@@ -43,8 +43,9 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
 
     /**
      * The time after which the product will reindex
+     * 4 hours
      */
-    const INDEXED_PRODUCT_EXPIRATION_TIME = 4 * 60 * 60;
+    const INDEXED_PRODUCT_EXPIRATION_TIME = 14400;
 
     /**
      * A queue for products to be updated
@@ -521,7 +522,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
     }
 
     /**
-     * Check if indexed product is older than 4h
+     * Check if indexed product is older than INDEXED_PRODUCT_EXPIRATION_TIME
      *
      * @param Nosto_Tagging_Model_Index $indexedProduct
      * @return bool
