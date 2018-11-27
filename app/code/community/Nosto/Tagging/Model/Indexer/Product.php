@@ -497,7 +497,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
             $indexedMetaProduct = $indexedProduct->getNostoMetaProduct();
 
             if ($indexedMetaProduct instanceof Nosto_Tagging_Model_Meta_Product === false
-                || $this->checkExpirationTime($indexedProduct)
+                || $this->isExpired($indexedProduct)
                 || $indexedMetaProduct != $nostoProduct
             ) {
                 $indexedProduct->setNostoMetaProduct($nostoProduct);
@@ -527,7 +527,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
      * @param Nosto_Tagging_Model_Index $indexedProduct
      * @return bool
      */
-    protected function checkExpirationTime(Nosto_Tagging_Model_Index $indexedProduct)
+    protected function isExpired(Nosto_Tagging_Model_Index $indexedProduct)
     {
         /** @var Mage_Core_Model_Date $coreModel */
         $coreModel = Mage::getSingleton('core/date');
