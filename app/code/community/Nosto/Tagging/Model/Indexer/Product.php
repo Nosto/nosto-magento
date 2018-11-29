@@ -536,7 +536,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
         $updatedAt = strtotime($indexedProduct->getUpdatedAt());
 
         if (!is_numeric($updatedAt)) {
-            return false;
+            return true;
         }
 
         return ($timestamp - $updatedAt > self::INDEXED_PRODUCT_EXPIRATION_TIME);
