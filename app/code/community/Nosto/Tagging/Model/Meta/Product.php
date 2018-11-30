@@ -116,7 +116,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         }
         $brandAttribute = $dataHelper->getBrandAttribute($store);
         if ($product->hasData($brandAttribute)) {
-            $this->setBrand($this->getAttributeValue($product, $brandAttribute));
+            $this->setBrand($this->getAttributeValue($product, $brandAttribute, $store->getId()));
         }
         if (($tags = $this->buildTags($product, $store)) !== array()) {
             $this->setTag1($tags);
@@ -133,7 +133,6 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         if ($dataHelper->getUseSkus($store)) {
             $this->amendSkus($product, $store);
         }
-
         if ($dataHelper->isMultiCurrencyMethodExchangeRate($store)) {
             $this->setVariationId($store->getBaseCurrencyCode());
         } elseif ($dataHelper->isVariationEnabled($store)) {
@@ -366,7 +365,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
                     continue;
                 }
                 try {
-                    $attributeValue = $this->getAttributeValue($product, $key);
+                    $attributeValue = $this->getAttributeValue($product, $key, $store->getId());
                     if (empty($attributeValue)) {
                         continue;
                     }
@@ -506,22 +505,30 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      *
      * @param Mage_Catalog_Model_Product $product
      * @param string $attributeName
+     * @param null|int $storeId The id of the current store
      * @return string|null
      * @suppress PhanUndeclaredMethod
      */
-    protected function getAttributeValue(Mage_Catalog_Model_Product $product, $attributeName)
+    protected function getAttributeValue(
+        Mage_Catalog_Model_Product $product,
+        $attributeName,
+        $storeId = null
+    )
     {
         $attribute = $product->getResource()->getAttribute($attributeName);
         if ($attribute instanceof Mage_Catalog_Model_Resource_Eav_Attribute) {
             /** @noinspection PhpParamsInspection */
+            if ($storeId && method_exists($product, 'setStoreId')) {
+                $product->setStoreId($storeId);
+            }
             $attributeValue = $product->getAttributeText($attributeName);
             if (empty($attributeValue)) {
                 $attributeValue = $product->getData($attributeName);
             }
-
             if (is_scalar($attributeValue)) {
                 return trim($attributeValue);
-            } elseif (is_array($attributeValue)) {
+            }
+            if (is_array($attributeValue)) {
                 return implode(',', $attributeValue);
             }
         }

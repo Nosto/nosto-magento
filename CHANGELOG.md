@@ -10,6 +10,9 @@ All notable changes to this project will be documented in this file. This projec
 ### 3.8.0-RC1
 * Add support for category personalization
 
+### 3.7.7
+* Fix an issue that would cause product attributes and custom fields to have a wrong translation 
+
 ### 3.7.6
 * Fix an issue in Magento Enterprise that would prevent to save a simple product if the logged user does not have permission to see the parent product.
 
