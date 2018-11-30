@@ -161,7 +161,7 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
         foreach ($attributes as $mageAttr => $nostoAttr) {
             $mapped = $nostoHelper->getMappedAttribute($mageAttr, $store);
             if ($mapped) {
-                $value = $this->getAttributeValue($product, $mapped);
+                $value = $this->getAttributeValue($product, $mapped, $store->getId());
                 if (!empty($value)) {
                     $method = sprintf('set%s', ucfirst($nostoAttr));
                     $this->$method($value);
@@ -175,13 +175,21 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
      *
      * @param Mage_Catalog_Model_Product $product
      * @param string $attributeName
+     * @param null|int $storeId
      * @return string
      * @suppress PhanUndeclaredMethod
      */
-    protected function getAttributeValue(Mage_Catalog_Model_Product $product, $attributeName)
+    protected function getAttributeValue(
+        Mage_Catalog_Model_Product $product,
+        $attributeName,
+        $storeId = null
+    )
     {
         $attribute = $product->getResource()->getAttribute($attributeName);
         if ($attribute instanceof Mage_Catalog_Model_Resource_Eav_Attribute) {
+            if ($storeId && method_exists($product, 'setStoreId')) {
+                $product->setStoreId($storeId);
+            }
             $attributeData = $product->getData($attributeName);
             /** @noinspection PhpParamsInspection */
             $attributeValue = $product->getAttributeText($attributeName);
@@ -199,9 +207,10 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
      * Get the custom attributes
      *
      * @param Mage_Catalog_Model_Product $product
+     * @param Mage_Core_Model_Store $store
      * @return array|null custom fields
      */
-    protected function loadCustomFields(Mage_Catalog_Model_Product $product)
+    protected function loadCustomFields(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
         $customFields = array();
 
@@ -217,7 +226,7 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
                     )
                 ) {
                     $attributeCode = $attribute->getAttributeCode();
-                    $attributeValue = $this->getAttributeValue($product, $attributeCode);
+                    $attributeValue = $this->getAttributeValue($product, $attributeCode, $store->getId());
                     if (is_scalar($attributeValue)) {
                         $customFields[$attributeCode] = $attributeValue;
                     }

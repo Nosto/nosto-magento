@@ -96,7 +96,7 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
         /** @var Nosto_Tagging_Helper_Data $dataHelper */
         $dataHelper = Mage::helper('nosto_tagging');
         if ($dataHelper->getUseCustomFields($store)) {
-            $customFields = $this->loadCustomFields($product);
+            $customFields = $this->loadCustomFields($product, $store);
             foreach ($customFields as $key => $value) {
                 $this->addCustomField($key, $value);
             }
@@ -123,7 +123,7 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
                 try {
                     $attributeCode = $configurableAttribute['attribute_code'];
                     if (!array_key_exists($attributeCode, $this->getCustomFields())) {
-                        $attributeValue = $this->getAttributeValue($sku, $attributeCode);
+                        $attributeValue = $this->getAttributeValue($sku, $attributeCode, $store->getId());
                         if (is_scalar($attributeValue)) {
                             $this->addCustomField($attributeCode, $attributeValue);
                         }
