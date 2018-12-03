@@ -680,7 +680,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         Mage_Core_Model_Store $store
     )
     {
-        $customFields = $this->loadCustomFields($product);
+        $customFields = $this->loadCustomFields($product, $store);
         $attributes = $this->getAttributesFromAllTags($store);
         /* @var Mage_Catalog_Model_Resource_Eav_Attribute $productAttribute */
         foreach ($product->getAttributes() as $key => $productAttribute) {
