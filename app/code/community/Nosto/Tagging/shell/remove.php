@@ -89,7 +89,7 @@ class RemoveCommand extends Mage_Shell_Abstract
 
     /**
      * @param $storeCode
-     * @return Mage_Core_Model_Store
+     * @return Mage_Core_Model_Store|null
      */
     protected function getStoreWithNostoByCode($storeCode)
     {
