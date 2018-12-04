@@ -77,6 +77,7 @@ class RemoveCommand extends Mage_Shell_Abstract
             exit(1);
         }
         if ($this->_accountHelper->resetAccountSettings($store)) {
+            Mage::app()->getCacheInstance()->cleanType('config');
             echo "Account removed from store. \n";
         } else {
             echo sprintf("Operation failed");
