@@ -71,9 +71,9 @@ class RemoveCommand extends Mage_Shell_Abstract
      */
     protected function removeConnectedNostoAccount($storeCode)
     {
-        $store = $this->getStoreByCode($storeCode);
+        $store = $this->getStoreWithNostoByCode($storeCode);
         if (!$store) {
-            echo sprintf("Store not found with this code");
+            echo sprintf("Nosto account not found for this store view. \n");
             exit(1);
         }
         if ($this->_accountHelper->resetAccountSettings($store)) {
@@ -91,7 +91,7 @@ class RemoveCommand extends Mage_Shell_Abstract
      * @param $storeCode
      * @return Mage_Core_Model_Store
      */
-    protected function getStoreByCode($storeCode)
+    protected function getStoreWithNostoByCode($storeCode)
     {
         $stores = $this->_accountHelper->getAllStoreViewsWithNostoAccount();
         foreach ($stores as $store) {
@@ -99,9 +99,8 @@ class RemoveCommand extends Mage_Shell_Abstract
                 return $store;
             }
         }
+        return null;
     }
-
-
 
     /**
      * Check if all required arguments were given to the function
