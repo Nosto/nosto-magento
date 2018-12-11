@@ -69,7 +69,9 @@ class Nosto_Tagging_Model_Service_Order
         if ($account !== null && $account->isConnectedToNosto()) {
             $operation = new Nosto_Operation_OrderConfirm($account);
             $operation->send($order, $customerId);
-            if ($dataHelper->getUseInventoryLevel($store)) {
+            if ($dataHelper->getUseInventoryLevel($store)
+                && $dataHelper->getSendInventoryLevelAfterPurchase($store)
+            ) {
                 $this->syncInventoryLevel($order);
             }
         }
