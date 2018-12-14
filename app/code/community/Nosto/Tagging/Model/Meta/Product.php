@@ -521,7 +521,6 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
             if ($storeId && method_exists($product, 'setStoreId')) {
                 $product->setStoreId($storeId);
             }
-
             try {
                 /** @noinspection PhpUndefinedMethodInspection */
                 $attributeValue = $product->getResource()
@@ -529,11 +528,9 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
                     ->setStoreId($storeId)
                     ->getSource()
                     ->getOptionText($product->getData($attributeName));
-
             } catch (\Exception $e) {
                 Nosto_Tagging_Helper_Log::exception($e);
             }
-
             if (empty($attributeValue)) {
                 $attributeValue = $product->getData($attributeName);
             }
