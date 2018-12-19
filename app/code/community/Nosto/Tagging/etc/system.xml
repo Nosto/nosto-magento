@@ -138,7 +138,7 @@
                         </use_inventory_level>
                     </fields>
                     <fields>
-                        <send_inventory_level_after_purchase_switch translate="label">
+                        <send_inventory_level_after_purchase translate="label">
                             <label>Send inventory level to Nosto after purchase (API only) </label>
                             <comment>This option enables the sending of product inventory level to Nosto after an order is completed.</comment>
                             <frontend_type>select</frontend_type>
@@ -148,7 +148,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </send_inventory_level_after_purchase_switch>
+                        </send_inventory_level_after_purchase>
                     </fields>
                     <fields>
                         <use_low_stock translate="label">
