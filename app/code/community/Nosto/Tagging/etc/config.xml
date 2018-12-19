@@ -272,6 +272,7 @@
                 <use_custom_fields>1</use_custom_fields>
                 <use_alternate_images>1</use_alternate_images>
                 <use_inventory_level>0</use_inventory_level>
+                <send_inventory_level_after_purchase>0</send_inventory_level_after_purchase>
                 <use_low_stock>0</use_low_stock>
                 <personalized_category_sorting>1</personalized_category_sorting>
                 <send_add_to_cart_event>0</send_add_to_cart_event>
