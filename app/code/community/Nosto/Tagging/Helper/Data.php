@@ -72,7 +72,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * Path to store config of sending inventory level
      */
-    const XML_PATH_SYNC_LEVEL_SWITCH = 'nosto_tagging/general/send_inventory_level_after_purchase_switch';
+    const XML_PATH_SEND_INVENTORY_LEVEL_AFTER_PURCHASE = 'nosto_tagging/general/send_inventory_level_after_purchase';
 
     /**
      * Path to store config scheduled currency exchange rate update enabled setting.
@@ -139,11 +139,6 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      * Path to store config for using inventory level
      */
     const XML_PATH_USE_INVENTORY_LEVEL = 'nosto_tagging/general/use_inventory_level';
-
-    /**
-     * Path to store config for sending inventory level after purchase
-     */
-    const XML_PATH_SEND_INVENTORY_LEVEL_AFTER_PURCHASE = 'nosto_tagging/general/send_inventory_level_after_purchase';
 
     /**
      * Path to store config for tagging low stock
