@@ -28,7 +28,7 @@
 <config>
     <modules>
         <Nosto_Tagging>
-            <version>3.7.7</version>
+            <version>3.7.8</version>
         </Nosto_Tagging>
     </modules>
     <global>

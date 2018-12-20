@@ -1,5 +1,8 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.7.8
+* Add a feature flag to disable the sending of inventory level when an order is made
+
 ### 3.7.7
 * Fix an issue that would cause product attributes and custom fields to have a wrong translation 
 
