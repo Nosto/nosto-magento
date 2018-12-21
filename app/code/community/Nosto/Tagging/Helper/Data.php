@@ -70,6 +70,11 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_VARIATION_SWITCH = 'nosto_tagging/variation/switch';
 
     /**
+     * Path to store config of sending inventory level
+     */
+    const XML_PATH_SEND_INVENTORY_LEVEL_AFTER_PURCHASE = 'nosto_tagging/general/send_inventory_level_after_purchase';
+
+    /**
      * Path to store config scheduled currency exchange rate update enabled setting.
      */
     const XML_PATH_SCHEDULED_CURRENCY_EXCHANGE_RATE_UPDATE_ENABLED
@@ -575,6 +580,17 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     public function getUseInventoryLevel($store = null)
     {
         return (bool)Mage::getStoreConfig(self::XML_PATH_USE_INVENTORY_LEVEL, $store);
+    }
+
+    /**
+     * Returns on/off setting for sending inventory level after purchase
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     * @return boolean
+     */
+    public function getSendInventoryLevelAfterPurchase($store = null)
+    {
+        return (bool)Mage::getStoreConfig(self::XML_PATH_SEND_INVENTORY_LEVEL_AFTER_PURCHASE, $store);
     }
 
     /**
