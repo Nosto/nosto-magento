@@ -1,16 +1,10 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
-### 3.8.0-RC4
+### 3.8.0
 * Add expiry check for Nosto indexed products
-
-### 3.8.0-RC3
 * Add possibility to define quantity for Nosto’s add to cart
-
-### 3.8.0-RC2
 * Fix bug for checking if graphql feature is available
 * Refactor method names
-
-### 3.8.0-RC1
 * Add support for category personalization
 
 ### 3.7.8
