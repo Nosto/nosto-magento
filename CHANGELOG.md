@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file. This projec
 * Add possibility to define quantity for Nosto’s add to cart
 * Fix bug for checking if graphql feature is available
 * Refactor method names
-* Add support for fetching category list sorting from Nosto
+* Add support for fetching category list sorting from Nosto (experimental)
 * Escape search term in tagging
 
 ### 3.7.8
