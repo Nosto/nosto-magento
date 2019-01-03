@@ -115,6 +115,19 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
             $nostoCustomer->setDateOfBirth(DateTime::createFromFormat("Y-m-d H:i:s", $dateOfBirth));
         }
         $nostoCustomer->setMarketingPermission($emailHelper->isOptedIn($email));
+        $customerAddress = $customer->getPrimaryShippingAddress();
+        if ($customerAddress instanceof Mage_Customer_Model_Address) {
+            try {
+                $nostoCustomer->setCity($customerAddress->getCity());
+                $nostoCustomer->setStreet($customerAddress->getStreet()[0].' '.$customerAddress->getStreet()[1]);
+                $customerRegion = $customerAddress->getRegion();
+                if ($customerRegion) {
+                    $nostoCustomer->setRegion($customerRegion);
+                }
+            } catch (Exception $e) {
+                Mage::logException($e);
+            }
+        }
         $dataHelper = Mage::helper('nosto_tagging/data');
         /* @var Nosto_Tagging_Helper_Data $dataHelper */
         $nostoCustomer->setHcid($dataHelper->getVisitorChecksum());
