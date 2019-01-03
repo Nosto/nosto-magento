@@ -117,8 +117,12 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
         $nostoCustomer->setMarketingPermission($emailHelper->isOptedIn($email));
         $customerAddress = $customer->getPrimaryShippingAddress();
         if ($customerAddress) {
-            $nostoCustomer->setCity($customerAddress->getCity());
-            $nostoCustomer->setStreet($customerAddress->getStreet()[0]);
+            try {
+                $nostoCustomer->setCity($customerAddress->getCity());
+            } catch (Exception $e) {
+                Mage::logException($e);
+            }
+            $nostoCustomer->setStreet($customerAddress->getStreet()[0].' '.$customerAddress->getStreet()[1]);
             $customerRegion = $customerAddress->getRegion();
             if ($customerRegion) {
                 $nostoCustomer->setRegion($customerRegion);
