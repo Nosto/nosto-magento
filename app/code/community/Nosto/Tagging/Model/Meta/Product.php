@@ -508,6 +508,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      * @param null|int $storeId The id of the current store
      * @return string|null
      * @suppress PhanUndeclaredMethod
+     * @suppress PhanTypeMismatchArgument
      */
     protected function getAttributeValue(
         Mage_Catalog_Model_Product $product,
