@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file. This projec
 * Fix bug for checking if graphql feature is available
 * Refactor method names
 * Add support for fetching category list sorting from Nosto
+* Escape search term in tagging
 
 ### 3.7.8
 * Add a feature flag to disable the sending of inventory level when an order is made
