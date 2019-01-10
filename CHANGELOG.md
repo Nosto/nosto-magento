@@ -1,5 +1,15 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.8.0
+* Add expiry check for Nosto indexed products
+* Add possibility to define quantity for Nosto’s add to cart
+* Fix bug for checking if graphql feature is available
+* Refactor method names
+* Add support for fetching category list sorting from Nosto (experimental)
+* Escape search term in tagging
+* Update Marketing Permission Via Api Call
+* Introduce CLI tools for reconnecting and removing Nosto account
+
 ### 3.7.8
 * Add a feature flag to disable the sending of inventory level when an order is made
 
@@ -48,7 +58,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ### 3.6.0
 * Improve error bubbling in Nosto account opening and in API calls
-* Add marketing permission constent for user tagging in order confirmation (GDPR compatibility) 
+* Add marketing permission consent for user tagging in order confirmation (GDPR compatibility) 
 
 ### 3.5.5
 * Fix the bundle product list price was incorrect if there is any optional item

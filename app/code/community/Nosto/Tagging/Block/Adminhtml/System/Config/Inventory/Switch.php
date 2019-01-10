@@ -40,7 +40,9 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Inventory_Switch extends Mage_
      */
     protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)
     {
-        $store = Mage::app()->getStore();
+        /** @var Nosto_Tagging_Helper_Data $helper */
+        $helper = Mage::helper('nosto_tagging');
+        $store = $helper->getStore();
         /** @var Nosto_Tagging_Helper_Data $dataHelper */
         $dataHelper = Mage::helper('nosto_tagging');
         if (!$dataHelper->getUseInventoryLevel($store)) {

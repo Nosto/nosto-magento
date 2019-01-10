@@ -25,6 +25,8 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+use Nosto_Tagging_Helper_Log as NostoLog;
+
 /**
  * Class for indexing Nosto products
  *
@@ -38,6 +40,12 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
      * Reindex price event type
      */
     const EVENT_TYPE_REINDEX_PRICE = 'catalog_reindex_price';
+
+    /**
+     * The time after which the product will reindex
+     * 4 hours
+     */
+    const INDEXED_PRODUCT_EXPIRATION_TIME = 14400;
 
     /**
      * A queue for products to be updated
@@ -134,7 +142,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
     protected function addToReindexQueue(
         Mage_Catalog_Model_Product $product,
         $storeId
-    ) 
+    )
     {
         if (!isset($this->_reindexQueue[$storeId])) {
             $this->_reindexQueue[$storeId] = array();
@@ -154,7 +162,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
     protected function isProcessed(
         Mage_Catalog_Model_Product $product,
         Mage_Core_Model_Store $store
-    ) 
+    )
     {
         $storeId = $store->getId();
         if (!isset($this->_processed[$storeId])) {
@@ -176,7 +184,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
     protected function setProcessed(
         Mage_Catalog_Model_Product $product,
         Mage_Core_Model_Store $store
-    ) 
+    )
     {
         $storeId = $store->getId();
         if (empty($this->_processed[$storeId])) {
@@ -225,6 +233,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
         // Check if we're handling simple product with parents
         $products = Nosto_Tagging_Util_Product::toParentProducts($catalogProduct);
         foreach ($products as $product) {
+            /** @var Mage_Catalog_Model_Product $product */
             foreach ($product->getStoreIds() as $storeId) {
                 $this->addToReindexQueue($product, $storeId);
             }
@@ -323,7 +332,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
     /**
      * Reindexes a product in all store views and updates product to Nosto
      *
-     * @param Mage_Catalog_Model_Product[] $products
+     * @param Mage_Catalog_Model_Product[]|Nosto_Tagging_Model_Resource_Product_Collection $products
      */
     public function reindexAndUpdateMany($products)
     {
@@ -430,7 +439,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
     protected function reindexMagentoProductInStore(
         Mage_Catalog_Model_Product $product,
         Mage_Core_Model_Store $store
-    ) 
+    )
     {
         $changed = 0;
         if ($this->isProcessed($product, $store)) {
@@ -472,7 +481,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
         Nosto_Tagging_Model_Meta_Product $nostoProduct,
         Mage_Core_Model_Store $store,
         $setSynced = false
-    ) 
+    )
     {
         /** @var Mage_Core_Model_Date $dateHelper */
         $dateHelper = Mage::getSingleton('core/date');
@@ -486,7 +495,9 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
             ->getFirstItem(); // @codingStandardsIgnoreLine
         if ($indexedProduct instanceof Nosto_Tagging_Model_Index) {
             $indexedMetaProduct = $indexedProduct->getNostoMetaProduct();
+
             if ($indexedMetaProduct instanceof Nosto_Tagging_Model_Meta_Product === false
+                || $this->isExpired($indexedProduct)
                 || $indexedMetaProduct != $nostoProduct
             ) {
                 $indexedProduct->setNostoMetaProduct($nostoProduct);
@@ -511,6 +522,27 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
     }
 
     /**
+     * Check if indexed product is older than INDEXED_PRODUCT_EXPIRATION_TIME
+     *
+     * @param Nosto_Tagging_Model_Index $indexedProduct
+     * @return bool
+     */
+    protected function isExpired(Nosto_Tagging_Model_Index $indexedProduct)
+    {
+        /** @var Mage_Core_Model_Date $coreModel */
+        $coreModel = Mage::getSingleton('core/date');
+        $timestamp = (int) $coreModel->gmtTimestamp();
+
+        $updatedAt = strtotime($indexedProduct->getUpdatedAt());
+
+        if (!is_numeric($updatedAt)) {
+            return true;
+        }
+
+        return ($timestamp - $updatedAt > self::INDEXED_PRODUCT_EXPIRATION_TIME);
+    }
+
+    /**
      * Reindex all products in all stores where Nosto is installed
      */
     public function reindexAll()
@@ -522,7 +554,11 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
         $dataHelper = Mage::helper('nosto_tagging');
         foreach ($stores as $store) {
             if ($dataHelper->getUseProductIndexer($store)) {
-                $this->reindexAllInStore($store);
+                try {
+                    $this->reindexAllInStore($store);
+                } catch (\Exception $e) {
+                    NostoLog::exception($e);
+                }
             }
         }
         /* @var Nosto_Tagging_Model_Service_Product $service */
@@ -540,7 +576,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
     public function reindexByProductIdsInStore(
         array $ids,
         Mage_Core_Model_Store $store
-    ) 
+    )
     {
         $start = microtime(true);
         Nosto_Tagging_Helper_Log::info(
@@ -563,7 +599,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
         $changed = 0;
         $batches = array_chunk($ids, self::$maxBatchSize);
         foreach ($batches as $productIds) {
-            /* @var Nosto_Tagging_Model_Resource_Product_Collection $products */
+            /* @var /Nosto_Tagging_Model_Resource_Product_Collection $products */
             $products = Mage::getModel('nosto_tagging/product')->getCollection();
             $products->addStoreFilter($store->getId())
                 ->addFieldToFilter('entity_id', array('in' => $productIds));
@@ -598,7 +634,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
     protected function getProductBatch(
         Mage_Core_Model_Store $store,
         $pageNumber = 1
-    ) 
+    )
     {
         $products = Mage::getModel('nosto_tagging/product')->getCollection();
         $products->addStoreFilter($store->getId())

@@ -76,11 +76,13 @@ $formKey = $session->getFormKey();
     };
 
     // Product object must have fields productId and skuId {productId: 123, skuId: 321}
-    Nosto.addSkuToCart = function (product, element) {
+    Nosto.addSkuToCart = function (product, element, quantity) {
+        quantity = quantity || 1;
         Nosto.trackAddToCartClick(product.productId, element);
         var fields = {
             "product": product.productId,
             "sku": product.skuId,
+            "qty": quantity,
             "form_key": "<?php echo $formKey; ?>"
         };
         Nosto.postAddToCartForm(fields, "<?php echo $this->getAddSkuToCartUrl(); ?>");

@@ -25,6 +25,8 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+use Nosto_Tagging_Helper_Log as NostoLog;
+
 /**
  * Helper class for common operations.
  *
@@ -144,6 +146,11 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      * Path to store config for tagging low stock
      */
     const XML_PATH_USE_LOW_STOCK = 'nosto_tagging/general/use_low_stock';
+
+    /**
+     * Path to setting if personalized category sorting is enabled
+     */
+    const XML_PATH_USE_PERSONALIZED_CATEGORY_SORTING = 'nosto_tagging/general/personalized_category_sorting';
 
     /**
      * @var boolean the path for setting for product urls
@@ -276,7 +283,9 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         $installationId = Mage::getStoreConfig(self::XML_PATH_INSTALLATION_ID);
         if (empty($installationId)) {
             // Running bin2hex() will make the ID string length 64 characters.
-            $installationId = Mage::helper('core')->getRandomString($length = 64);
+            /** @var Mage_Core_Helper_Data $dataHelper */
+            $dataHelper = Mage::helper('core');
+            $installationId = $dataHelper->getRandomString($length = 64);
             /** @var Mage_Core_Model_Config $config */
             $config = Mage::getModel('core/config');
             $config->saveConfig(
@@ -308,7 +317,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      *
      * @param Mage_Core_Model_Store|null $store the store model or null.
      *
-     * @return bool
+     * @return boolean
      */
     public function getUsePrettyProductUrls($store = null)
     {
@@ -442,7 +451,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     public function getMultiCurrencyMethod($store = null)
     {
         if ($store instanceof Mage_Core_Model_Store === false) {
-            $store = Mage::app()->getStore();
+            $store = $this->getStore();
         }
         return Mage::getStoreConfig(self::XML_PATH_MULTI_CURRENCY_METHOD, $store);
     }
@@ -462,6 +471,12 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         return ($method === self::MULTI_CURRENCY_DISABLED);
     }
 
+    /**
+     * Check if price variations are enabled
+     *
+     * @param null $store
+     * @return bool
+     */
     public function isVariationEnabled($store = null)
     {
         return (bool)Mage::getStoreConfig(self::XML_PATH_VARIATION_SWITCH, $store);
@@ -498,7 +513,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      * Returns on/off setting for product API
      *
      * @param Mage_Core_Model_Store|null $store the store model or null.
-     * @return bool
+     * @return boolean
      */
     public function getUseProductApi($store = null)
     {
@@ -542,7 +557,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      * Returns on/off setting for SKUs
      *
      * @param Mage_Core_Model_Store|null $store the store model or null.
-     * @return bool
+     * @return boolean
      */
     public function getUseSkus($store = null)
     {
@@ -564,7 +579,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      * Returns on/off setting for alternate image urls
      *
      * @param Mage_Core_Model_Store|null $store the store model or null.
-     * @return bool
+     * @return boolean
      */
     public function getUseAlternateImages($store = null)
     {
@@ -575,7 +590,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      * Returns on/off setting for inventory level
      *
      * @param Mage_Core_Model_Store|null $store the store model or null.
-     * @return bool
+     * @return boolean
      */
     public function getUseInventoryLevel($store = null)
     {
@@ -597,7 +612,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      * Returns on/off setting for using low stock
      *
      * @param Mage_Core_Model_Store|null $store the store model or null.
-     * @return bool
+     * @return boolean
      */
     public function getUseLowStock($store = null)
     {
@@ -613,6 +628,17 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     public function getSendAddToCartEvent($store)
     {
         return (bool)Mage::getStoreConfig(self::XML_PATH_SEND_ADD_TO_CART_EVENT, $store);
+    }
+
+    /**
+     * Returns on/off setting for using personalized category sorting
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     * @return boolean
+     */
+    public function getUsePersonalizedCategorySorting($store = null)
+    {
+        return (bool)Mage::getStoreConfig(self::XML_PATH_USE_PERSONALIZED_CATEGORY_SORTING, $store);
     }
 
     /**
@@ -632,7 +658,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      * Return the attributes to be tagged in Nosto tags
      *
      * @param string $tagId the name / identifier of the tag (e.g. tag1, tag2).
-     * @param Mage_Core_Model_Store|null $store the store model or null.
+     * @param mixed $store the store model or null.
      *
      * @throws Nosto_NostoException
      * @return array
@@ -680,7 +706,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     public function setRatingsAndReviewsProvider($provider, $store = null)
     {
         if ($store === null) {
-            $store = Mage::app()->getStore();
+            $store = $this->getStore();
         }
         /** @var Mage_Core_Model_Config $config */
         $config = Mage::getModel('core/config');
@@ -777,9 +803,25 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     public function getNostoStoreConfig($store = null)
     {
         if ($store === null) {
-            $store = Mage::app()->getStore();
+            $store = $this->getStore();
         }
         return Mage::getStoreConfig('nosto_tagging', $store);
+    }
+
+    /**
+     * Wrapper to return the current store
+     *
+     * @param null|string|bool|int|Mage_Core_Model_Store $id
+     * @return Mage_Core_Model_Store|null
+     */
+    public function getStore($id = null)
+    {
+        try {
+            return Mage::app()->getStore($id);
+        } catch (Mage_Core_Model_Store_Exception $e) {
+            NostoLog::exception($e);
+        }
+        return null;
     }
 
 }

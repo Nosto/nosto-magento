@@ -43,6 +43,8 @@ class Nosto_Tagging_Model_Service_Order
      *
      * @param Mage_Sales_Model_Order $mageOrder
      * @return bool
+     * @throws Nosto_NostoException
+     * @throws Mage_Core_Exception
      */
     public function confirm(Mage_Sales_Model_Order $mageOrder)
     {
@@ -53,13 +55,13 @@ class Nosto_Tagging_Model_Service_Order
         /** @var Nosto_Tagging_Model_Meta_Order $order */
         $order = $classHelper->getOrderClass($mageOrder);
         $order->loadData($mageOrder);
-        /** @var Nosto_Tagging_Helper_Account $helper */
-        $classHelper = Mage::helper('nosto_tagging/account');
+        /** @var Nosto_Tagging_Helper_Account $accountHelper */
+        $accountHelper = Mage::helper('nosto_tagging/account');
         $store = $mageOrder->getStore();
-        $account = $classHelper->find($store);
-        /** @var Nosto_Tagging_Helper_Customer $helper */
-        $classHelper = Mage::helper('nosto_tagging/customer');
-        $customerId = $classHelper->getNostoId($mageOrder);
+        $account = $accountHelper->find($store);
+        /** @var Nosto_Tagging_Helper_Customer $customerHelper */
+        $customerHelper = Mage::helper('nosto_tagging/customer');
+        $customerId = $customerHelper->getNostoId($mageOrder);
         if ($account !== null && $account->isConnectedToNosto()) {
             $operation = new Nosto_Operation_OrderConfirm($account);
             $operation->send($order, $customerId);
@@ -77,6 +79,7 @@ class Nosto_Tagging_Model_Service_Order
      * Sends product updates to Nosto to keep up with the inventory level
      *
      * @param Nosto_Tagging_Model_Meta_Order $order
+     * @throws Mage_Core_Exception
      */
     public function syncInventoryLevel(Nosto_Tagging_Model_Meta_Order $order)
     {
@@ -92,12 +95,11 @@ class Nosto_Tagging_Model_Service_Order
         }
         if (!empty($productIds)) {
             /* @var Nosto_Tagging_Model_Resource_Product_Collection $productIds*/
-            $products= Mage::getModel('nosto_tagging/product')
+            $products = Mage::getModel('nosto_tagging/product')
                 ->getCollection()
                 ->addAttributeToSelect('*')
                 ->addIdFilter($productIds);
-            if (
-                $products instanceof Nosto_Tagging_Model_Resource_Product_Collection
+            if ($products instanceof Nosto_Tagging_Model_Resource_Product_Collection
                 && !empty($products)
             ) {
                 /* @var Nosto_Tagging_Helper_Data $dataHelper */
@@ -112,7 +114,6 @@ class Nosto_Tagging_Model_Service_Order
                 /* @var Nosto_Tagging_Model_Indexer_Product $indexer */
                 $indexer = Mage::getModel('nosto_tagging/indexer_product');
                 $indexer->reindexAndUpdateMany($products);
-
             }
         }
     }

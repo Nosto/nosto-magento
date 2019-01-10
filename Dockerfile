@@ -47,9 +47,11 @@ RUN        php -r "readfile('https://getcomposer.org/installer');" > composer-se
            php composer-setup.php --install-dir=/usr/local/bin --filename=composer && \
            php -r "unlink('composer-setup.php');"
 
+# Set Permissions
 RUN        groupadd -r plugins -g 113 && \
            useradd -ms /bin/bash -u 113 -r -g plugins plugins && \
            usermod -a -G www-data plugins
+
 
 USER       plugins
 #ENTRYPOINT ["bash"]

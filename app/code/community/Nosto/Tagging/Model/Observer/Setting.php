@@ -152,7 +152,9 @@ class Nosto_Tagging_Model_Observer_Setting
                             self::restructureTagsKey($persistedConfig['attribute_to_tag']);
                     }
                     if (self::getDiffNostoSettingsInPost($postGroups, $persistedConfig) != array()) {
-                        Mage::getSingleton('index/indexer')
+                        /** @var Mage_Index_Model_Indexer $indexerModel */
+                        $indexerModel = Mage::getSingleton('index/indexer');
+                        $indexerModel
                             ->getProcessByCode('nosto_indexer')
                             ->changeStatus(Mage_Index_Model_Process::STATUS_REQUIRE_REINDEX);
                         return $this;

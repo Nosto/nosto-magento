@@ -37,6 +37,11 @@ use Nosto_Tagging_Helper_Log as NostoLog;
  */
 class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
 {
+    const GENDER_MALE = 'Male';
+    const GENDER_FEMALE = 'Female';
+    const GENDER_MALE_ID = '1';
+    const GENDER_FEMALE_ID = '2';
+
     /**
      * Render customer info as hidden meta data if the customer is logged in,
      * the module is enabled for the current store.
@@ -81,7 +86,7 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
     {
         /* @var Nosto_Tagging_Helper_Data $helper */
         $helper = Mage::helper('nosto_tagging');
-        $store = Mage::app()->getStore();
+        $store = $helper->getStore();
         $customer = $this->getCustomer();
         /** @noinspection PhpUndefinedMethodInspection */
         if (!$customer instanceof Mage_Customer_Model_Customer
@@ -94,6 +99,9 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
         $emailHelper = Mage::helper('nosto_tagging/email');
         /** @noinspection PhpUndefinedMethodInspection */
         $email = $customer->getEmail();
+        $customerGroup = Mage::getModel('customer/group')->load($customer->getGroupId());
+        $groupName = $customerGroup->getCustomerGroupCode();
+        $dateOfBirth = $customer->getDob();
         $nostoCustomer = new Nosto_Object_Customer();
         /** @noinspection PhpUndefinedMethodInspection */
         $nostoCustomer->setFirstName($customer->getFirstname());
@@ -101,12 +109,48 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
         $nostoCustomer->setLastName($customer->getLastname());
         $nostoCustomer->setCustomerReference($this->getCustomerReference());
         $nostoCustomer->setEmail($email);
+        $nostoCustomer->setGender($this->getGenderName($customer));
+        $nostoCustomer->setCustomerGroup($groupName);
+        if ($dateOfBirth !== null) {
+            $nostoCustomer->setDateOfBirth(DateTime::createFromFormat("Y-m-d H:i:s", $dateOfBirth));
+        }
         $nostoCustomer->setMarketingPermission($emailHelper->isOptedIn($email));
+        $customerAddress = $customer->getPrimaryShippingAddress();
+        if ($customerAddress instanceof Mage_Customer_Model_Address) {
+            try {
+                $nostoCustomer->setCity($customerAddress->getCity());
+                $nostoCustomer->setStreet($customerAddress->getStreet()[0].' '.$customerAddress->getStreet()[1]);
+                $customerRegion = $customerAddress->getRegion();
+                if ($customerRegion) {
+                    $nostoCustomer->setRegion($customerRegion);
+                }
+            } catch (Exception $e) {
+                Mage::logException($e);
+            }
+        }
         $dataHelper = Mage::helper('nosto_tagging/data');
         /* @var Nosto_Tagging_Helper_Data $dataHelper */
         $nostoCustomer->setHcid($dataHelper->getVisitorChecksum());
 
         return $nostoCustomer;
+    }
+
+    /**
+     * @param Mage_Customer_Model_Customer $customer
+     * @return null|string
+     */
+    protected function getGenderName(Mage_Customer_Model_Customer $customer)
+    {
+        $gender = $customer->getGender();
+
+        switch ($gender) {
+            case self::GENDER_MALE_ID:
+                return self::GENDER_MALE;
+            case self::GENDER_FEMALE_ID:
+                return self::GENDER_FEMALE;
+            default :
+                return null;
+        }
     }
 
     /**

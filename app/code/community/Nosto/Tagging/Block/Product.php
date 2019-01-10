@@ -48,6 +48,7 @@ class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
      * available.
      *
      * @return string
+     * @throws Mage_Core_Exception
      */
     protected function _toHtml()
     {
@@ -71,6 +72,7 @@ class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
      * Helper method that checks if the product object has been overidden
      *
      * @return bool a boolean value indicating the state
+     * @throws Mage_Core_Exception
      */
     public function isOveridden()
     {
@@ -81,6 +83,7 @@ class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
      * Returns the product meta data to tag.
      *
      * @return Nosto_Tagging_Model_Meta_Product the meta data.
+     * @throws Mage_Core_Exception
      */
     public function getMetaProduct()
     {
@@ -88,7 +91,7 @@ class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
             /* @var Nosto_Tagging_Helper_Data $dataHelper */
             $dataHelper = Mage::helper('nosto_tagging');
             try {
-                $store = Mage::app()->getStore();
+                $store = $dataHelper->getStore();
                 $model = Nosto_Tagging_Model_Meta_Product_Builder::build(
                     $this->getProduct(),
                     $store,

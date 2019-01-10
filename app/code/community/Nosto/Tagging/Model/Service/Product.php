@@ -52,6 +52,7 @@ class Nosto_Tagging_Model_Service_Product
      *
      * @param Mage_Catalog_Model_Product[] $products
      * @return bool
+     * @throws Mage_Core_Exception
      */
     protected function update(array $products)
     {
@@ -64,6 +65,7 @@ class Nosto_Tagging_Model_Service_Product
             }
             ++$counter;
             if ($product instanceof Mage_Catalog_Model_Product === false) {
+                /** @noinspection PhpUnhandledExceptionInspection */
                 Mage::throwException(
                     sprintf(
                         'Invalid data type, expecting Mage_Catalog_Model_Product' .
@@ -88,7 +90,9 @@ class Nosto_Tagging_Model_Service_Product
         }
         // Batch ready - process batches for each store
         foreach ($productsInStore as $storeId => $productBatches) {
-            $store = Mage::app()->getStore($storeId);
+            /** @var Nosto_Tagging_Helper_Data $helper */
+            $helper = Mage::helper('nosto_tagging');
+            $store = $helper->getStore($storeId);
             /** @var Nosto_Tagging_Helper_Account $helper */
             $helper = Mage::helper('nosto_tagging/account');
             $account = $helper->find($store);
@@ -126,7 +130,7 @@ class Nosto_Tagging_Model_Service_Product
                         }
                     }
                     $operation->upsert();
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     Nosto_Tagging_Helper_Log::exception($e);
                 }
             }
@@ -142,6 +146,7 @@ class Nosto_Tagging_Model_Service_Product
      * @param Nosto_Tagging_Model_Resource_Product_Collection $products
      * @return bool
      *
+     * @throws Mage_Core_Exception
      */
     public function updateBatch(Nosto_Tagging_Model_Resource_Product_Collection $products)
     {
@@ -155,6 +160,7 @@ class Nosto_Tagging_Model_Service_Product
      * @param Mage_Catalog_Model_Product $product
      * @return bool
      *
+     * @throws Mage_Core_Exception
      */
     public function updateProduct(Mage_Catalog_Model_Product $product)
     {
@@ -166,7 +172,9 @@ class Nosto_Tagging_Model_Service_Product
      */
     public function updateOutOfSyncToNosto()
     {
-        $storesWithNosto = Mage::helper('nosto_tagging/account')->getAllStoreViewsWithNostoAccount();
+        /** @var Nosto_Tagging_Helper_Account $accountHelper */
+        $accountHelper = Mage::helper('nosto_tagging/account');
+        $storesWithNosto = $accountHelper->getAllStoreViewsWithNostoAccount();
         foreach ($storesWithNosto as $store) {
             $start = microtime(true);
             /** @var Nosto_Tagging_Helper_Account $helper */
@@ -218,7 +226,11 @@ class Nosto_Tagging_Model_Service_Product
                         $operation->addProduct($nostoProduct);
                     }
                     $indexedProduct->setInSync(1);
-                    $indexedProduct->save();
+                    try {
+                        $indexedProduct->save();
+                    } catch (\Exception $e) {
+                        Nosto_Tagging_Helper_Log::exception($e);
+                    }
                 }
                 try {
                     $operation->upsert();

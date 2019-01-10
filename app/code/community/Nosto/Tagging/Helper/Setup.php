@@ -25,6 +25,8 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+use Nosto_Tagging_Helper_Log as NostoLog;
+
 /**
  * Helper class for Nosto related setups
  *
@@ -87,7 +89,11 @@ class Nosto_Tagging_Helper_Setup extends Mage_Core_Helper_Abstract
                 ->setData("is_visible", 1)
                 ->setData("sort_order", 100);
 
-            $attribute->save();
+            try {
+                $attribute->save();
+            } catch (\Exception $e) {
+                NostoLog::exception($e);
+            }
         }
         $installer->endSetup();
     }
@@ -101,6 +107,7 @@ class Nosto_Tagging_Helper_Setup extends Mage_Core_Helper_Abstract
      */
     public function alterCustomerReferenceInputType(Mage_Eav_Model_Entity_Setup $installer)
     {
+        /** @noinspection PhpParamsInspection */
         $installer->updateAttribute(
             'customer',
             Nosto_Tagging_Helper_Data::NOSTO_CUSTOMER_REFERENCE_ATTRIBUTE_NAME,
@@ -139,6 +146,7 @@ class Nosto_Tagging_Helper_Setup extends Mage_Core_Helper_Abstract
      *
      * @param Mage_Eav_Model_Entity_Setup $installer
      * @suppress PhanTypeMismatchArgument
+     * @throws Zend_Db_Exception
      */
     public function createNostoIndexTable(Mage_Eav_Model_Entity_Setup $installer)
     {

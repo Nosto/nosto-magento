@@ -59,6 +59,11 @@ class Nosto_Tagging_Model_Service_Cart
         }
         $service = new Nosto_Operation_CartOperation($account);
 
-        return $service->updateCart($cartUpdate, $nostoCustomerId, $account->getName());
+        try {
+            return $service->updateCart($cartUpdate, $nostoCustomerId, $account->getName());
+        } catch (Nosto_Request_Http_Exception_AbstractHttpException $e) {
+            NostoLog::exception($e);
+        }
+        return false;
     }
 }

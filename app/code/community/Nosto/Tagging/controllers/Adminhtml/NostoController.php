@@ -86,7 +86,9 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
     public function indexAction()
     {
         if (!class_exists('Nosto_Nosto', true)) {
-            Mage::getSingleton('core/session')->addError(
+            /** @var Mage_Core_Model_Session $sessionModel */
+            $sessionModel = Mage::getSingleton('core/session');
+            $sessionModel->addError(
                 $this->__(
                     'The Nosto extension for Magento is missing some required files. Apart from files in '
                     . 'app/code/community/Nosto/Tagging, the extension requires certain libraries in the '
@@ -107,12 +109,13 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                 $storeId = $website->getDefaultGroup()->getDefaultStoreId();
                 if (!empty($storeId)) {
                     $this->_redirect('*/*/index', array('store' => $storeId));
-                    return; // stop execution after redirect is set.
+                    return null; // stop execution after redirect is set.
                 }
             }
         }
         $this->loadLayout();
         $this->renderLayout();
+        return null;
     }
 
     /**
@@ -191,6 +194,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
 
     /**
      * Creates a new Nosto account for the current scope using the Nosto API.
+     * @throws Zend_Validate_Exception
      */
     public function createAccountAction()
     {
@@ -227,6 +231,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                 $signup->loadData($store, $signupDetails, $accountOwner);
 
                 $operation = new Nosto_Operation_AccountSignup($signup);
+                /** @var Nosto_Object_Signup_Account $account */
                 $account = $operation->create();
                 if ($accountHelper->save($account, $store)) {
                     $accountHelper->updateCurrencyExchangeRates($account, $store);
@@ -386,7 +391,9 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         /** @var Mage_Core_Model_Store[] $stores */
         $storeId = $this->getRequest()->getParam('store');
         if (!empty($storeId)) {
-            $stores = array(Mage::app()->getStore($storeId));
+            /** @var Nosto_Tagging_Helper_Data $helper */
+            $helper = Mage::helper('nosto_tagging');
+            $stores = array($helper->getStore($storeId));
         } else {
             $stores = Mage::app()->getStores();
         }
@@ -440,7 +447,9 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         /** @var Mage_Core_Model_Store[] $stores */
         $storeId = $this->getRequest()->getParam('store');
         if (!empty($storeId)) {
-            $stores = array(Mage::app()->getStore($storeId));
+            /** @var Nosto_Tagging_Helper_Data $helper */
+            $helper = Mage::helper('nosto_tagging');
+            $stores = array($helper->getStore($storeId));
         } else {
             $stores = Mage::app()->getStores();
         }
@@ -486,9 +495,13 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
     protected function getSelectedStore()
     {
         if (Mage::app()->isSingleStoreMode()) {
-            return Mage::app()->getStore(true);
+            /** @var Nosto_Tagging_Helper_Data $helper */
+            $helper = Mage::helper('nosto_tagging');
+            return $helper->getStore(true);
         } elseif (($storeId = (int)$this->getRequest()->getParam('store')) !== 0) {
-            return Mage::app()->getStore($storeId);
+            /** @var Nosto_Tagging_Helper_Data $helper */
+            $helper = Mage::helper('nosto_tagging');
+            return $helper->getStore($storeId);
         } else {
             return null;
         }

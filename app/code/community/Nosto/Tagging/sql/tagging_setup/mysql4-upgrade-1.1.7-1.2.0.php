@@ -41,6 +41,7 @@ $installer->getConnection()->delete(
     '`path` LIKE "nosto_tagging/%"'
 );
 
+/** @noinspection PhpUnhandledExceptionInspection */
 $table = $installer
     ->getConnection()
     ->newTable($installer->getTable('nosto_tagging/customer'))
@@ -82,6 +83,7 @@ $table = $installer
             'type' => Varien_Db_Adapter_Interface::INDEX_TYPE_UNIQUE
         )
     );
+/** @noinspection PhpUnhandledExceptionInspection */
 $installer->getConnection()->createTable($table);
 
 $installer->endSetup();

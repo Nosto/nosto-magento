@@ -28,7 +28,7 @@
 <config>
     <modules>
         <Nosto_Tagging>
-            <version>3.7.8</version>
+            <version>3.8.0</version>
         </Nosto_Tagging>
     </modules>
     <global>
@@ -72,6 +72,11 @@
             <nosto_tagging>
                 <class>Nosto_Tagging_Block</class>
             </nosto_tagging>
+            <catalog>
+                <rewrite>
+                    <product_list_toolbar>Nosto_Tagging_Block_Product_List_Toolbar</product_list_toolbar>
+                </rewrite>
+            </catalog>
         </blocks>
         <helpers>
             <nosto_tagging>
@@ -94,6 +99,11 @@
                     </index>
                 </entities>
             </nosto_tagging_resource>
+            <catalog>
+                <rewrite>
+                    <config>Nosto_Tagging_Model_Category_Config</config>
+                </rewrite>
+            </catalog>
         </models>
         <events>
             <after_reindex_process_catalog_product_price>
@@ -177,6 +187,15 @@
                     </nosto_tagging_custom>
                 </observers>
             </review_delete_after>
+            <customer_save_commit_after>
+                <observers>
+                    <nosto_tagging_custom>
+                        <type>singleton</type>
+                        <class>Nosto_Tagging_Model_Observer_Customer</class>
+                        <method>customerUpdated</method>
+                    </nosto_tagging_custom>
+                </observers>
+            </customer_save_commit_after>
         </events>
         <index>
             <indexer>
@@ -255,6 +274,7 @@
                 <use_inventory_level>0</use_inventory_level>
                 <send_inventory_level_after_purchase>0</send_inventory_level_after_purchase>
                 <use_low_stock>0</use_low_stock>
+                <personalized_category_sorting>1</personalized_category_sorting>
                 <send_add_to_cart_event>0</send_add_to_cart_event>
                 <update_catalog_price_rules>0</update_catalog_price_rules>
                 <send_customer_data>1</send_customer_data>

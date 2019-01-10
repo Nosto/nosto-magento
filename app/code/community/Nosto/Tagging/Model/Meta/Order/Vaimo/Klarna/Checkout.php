@@ -110,7 +110,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
         $vaimoKlarnaOrder = $klarna->getKlarnaOrderRaw($quote->getKlarnaCheckoutId());
         try {
             self::validateKlarnaOrder($vaimoKlarnaOrder);
-        } catch (Nosto_NostoException $e) {
+        } catch (\Exception $e) {
             NostoLog::exception($e);
             return false;
         }
@@ -128,7 +128,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
         $this->setCustomer($orderBuyer);
         try {
             $this->buildItemsFromQuote($quote);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             NostoLog::error(
                 'Could not find klarnaCheckoutId from quote #%d. Error: %s',
                 array($quote->getId(), $e->getMessage())
@@ -146,7 +146,9 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
     public function buildItemsFromQuote(Mage_Sales_Model_Quote $quote)
     {
         $discountFactor = $this->calcDiscountFactor($quote);
-        $currencyCode = Mage::app()->getStore()->getCurrentCurrencyCode();
+        /** @var Nosto_Tagging_Helper_Data $helper */
+        $helper = Mage::helper('nosto_tagging');
+        $currencyCode = $helper->getStore()->getCurrentCurrencyCode();
         /* @var Mage_Sales_Model_Quote_Item $quoteItem */
         foreach ($quote->getAllItems() as $quoteItem) {
             $nostoItem = CartBuilder::buildItem($quoteItem, $currencyCode);
@@ -283,6 +285,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
     {
         $rules = sprintf('requiredFieldsFor%s', ucfirst($type));
         $empty = false;
+        /** @noinspection PhpVariableVariableInspection */
         foreach (self::$$rules as $field) {
             if (is_object($entity)) {
                 if (get_class($entity) === 'Varien_Object') {
