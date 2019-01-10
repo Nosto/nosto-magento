@@ -60,8 +60,8 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
             /* @var Mage_Catalog_Model_Product $product */
             $product = $this->_initProduct();
             if (!$product
-            || $product->getTypeId() !== Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE
-            || empty($skuId)
+                || $product->getTypeId() !== Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE
+                || empty($skuId)
             ) {
                 return $this->_goBack();
             }
@@ -79,7 +79,6 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
                     if ($attribute instanceof Mage_Catalog_Model_Resource_Eav_Attribute) {
                         $attributeId = $attribute->getId();
                         $attributeValueId = $skuProduct->getData($attributeCode);
-
                         if ($attributeId && $attributeValueId) {
                             $attributeOptions[$attributeId] = $attributeValueId;
                         }
@@ -92,7 +91,10 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
                 return $this->_goBack();
             }
             $params = array('super_attribute' => $attributeOptions);
-
+            $qty = $this->getRequest()->getParam('qty');
+            if ($qty !== null) {
+                $params['qty'] = $qty;
+            }
             /* Below is cannibalized from parent */
             $cart->addProduct($product, $params);
             $cart->save();

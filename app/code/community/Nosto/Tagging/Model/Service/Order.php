@@ -36,12 +36,6 @@
  */
 class Nosto_Tagging_Model_Service_Order
 {
-    /**
-     * Flag for disabling inventory sync for slow connections
-     *
-     * @var bool
-     */
-    public static $syncInventoriesAfterOrder = true;
 
     /**
      * Sends an order confirmation to Nosto and also batch updates all products
@@ -71,7 +65,9 @@ class Nosto_Tagging_Model_Service_Order
         if ($account !== null && $account->isConnectedToNosto()) {
             $operation = new Nosto_Operation_OrderConfirm($account);
             $operation->send($order, $customerId);
-            if ($dataHelper->getUseInventoryLevel($store)) {
+            if ($dataHelper->getUseInventoryLevel($store)
+                && $dataHelper->getSendInventoryLevelAfterPurchase($store)
+            ) {
                 $this->syncInventoryLevel($order);
             }
         }
@@ -87,39 +83,37 @@ class Nosto_Tagging_Model_Service_Order
      */
     public function syncInventoryLevel(Nosto_Tagging_Model_Meta_Order $order)
     {
-        if (self::$syncInventoriesAfterOrder === true) {
-            $purchasedItems = $order->getPurchasedItems();
-            $productIds = array();
-            /* @var Nosto_Tagging_Model_Meta_Order_Item $item */
-            foreach ($purchasedItems as $item) {
-                $productId = $item->getProductId();
-                if (empty($productId) || $productId < 0) {
-                    continue;
-                }
-                $productIds[] = $productId;
+        $purchasedItems = $order->getPurchasedItems();
+        $productIds = array();
+        /* @var Nosto_Tagging_Model_Meta_Order_Item $item */
+        foreach ($purchasedItems as $item) {
+            $productId = $item->getProductId();
+            if (empty($productId) || $productId < 0) {
+                continue;
             }
-            if (!empty($productIds)) {
-                /* @var Nosto_Tagging_Model_Resource_Product_Collection $productIds*/
-                $products = Mage::getModel('nosto_tagging/product')
-                    ->getCollection()
-                    ->addAttributeToSelect('*')
-                    ->addIdFilter($productIds);
-                if ($products instanceof Nosto_Tagging_Model_Resource_Product_Collection
-                    && !empty($products)
-                ) {
-                    /* @var Nosto_Tagging_Helper_Data $dataHelper */
-                    $dataHelper = Mage::helper('nosto_tagging');
-                    if (!$dataHelper->getAllStoresUseProductIndexer()) {
-                        /* @var Nosto_Tagging_Model_Service_Product $productService */
-                        $productService = Mage::getModel(
-                            'nosto_tagging/service_product'
-                        );
-                        $productService->updateBatch($products);
-                    }
-                    /* @var Nosto_Tagging_Model_Indexer_Product $indexer */
-                    $indexer = Mage::getModel('nosto_tagging/indexer_product');
-                    $indexer->reindexAndUpdateMany($products);
+            $productIds[] = $productId;
+        }
+        if (!empty($productIds)) {
+            /* @var Nosto_Tagging_Model_Resource_Product_Collection $productIds*/
+            $products = Mage::getModel('nosto_tagging/product')
+                ->getCollection()
+                ->addAttributeToSelect('*')
+                ->addIdFilter($productIds);
+            if ($products instanceof Nosto_Tagging_Model_Resource_Product_Collection
+                && !empty($products)
+            ) {
+                /* @var Nosto_Tagging_Helper_Data $dataHelper */
+                $dataHelper = Mage::helper('nosto_tagging');
+                if (!$dataHelper->getAllStoresUseProductIndexer()) {
+                    /* @var Nosto_Tagging_Model_Service_Product $productService */
+                    $productService = Mage::getModel(
+                        'nosto_tagging/service_product'
+                    );
+                    $productService->updateBatch($products);
                 }
+                /* @var Nosto_Tagging_Model_Indexer_Product $indexer */
+                $indexer = Mage::getModel('nosto_tagging/indexer_product');
+                $indexer->reindexAndUpdateMany($products);
             }
         }
     }

@@ -51,29 +51,29 @@ class Nosto_Tagging_Block_Category extends Mage_Core_Block_Template
     {
         /** @var Nosto_Tagging_Helper_Account $helper */
         $helper = Mage::helper('nosto_tagging/account');
+        $category = $this->getCategory();
         if (!$helper->existsAndIsConnected()
-            || $this->getCategory() === null
+            || $category === null
             || !Mage::helper('nosto_tagging/module')->isModuleEnabled()
         ) {
             return '';
         }
-        return (new Nosto_Object_Category($this->getCategory()))->toHtml();
+        return $category->toHtml();
     }
 
     /**
-     * Return the current product category string for the category tagging.
+     * Return the current product category
      *
-     * @return string
+     * @return null|Nosto_Object_Category
      */
     public function getCategory()
     {
-        if (!$this->_category) {
+        try {
             $category = Mage::registry('current_category');
-            /** @var Nosto_Tagging_Helper_Data $helper */
-            $helper = Mage::helper('nosto_tagging');
-            $this->_category = $helper->buildCategoryString($category);
+            return Nosto_Tagging_Model_Meta_Category_Builder::build($category);
+        } catch (\Exception $e) {
+            Nosto_Tagging_Helper_Log::exception($e);
+            return null;
         }
-
-        return $this->_category;
     }
 }

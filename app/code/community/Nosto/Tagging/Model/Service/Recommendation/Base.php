@@ -1,9 +1,9 @@
 <?php
 /**
  * Magento
- *  
+ *
  * NOTICE OF LICENSE
- *  
+ *
  * This source file is subject to the Open Software License (OSL 3.0)
  * that is bundled with this package in the file LICENSE.txt.
  * It is also available through the world-wide-web at this URL:
@@ -11,13 +11,13 @@
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
- *  
+ *
  * DISCLAIMER
- *  
+ *
  * Do not edit or add to this file if you wish to upgrade Magento to newer
  * versions in the future. If you wish to customize Magento for your
  * needs please refer to http://www.magentocommerce.com for more information.
- *  
+ *
  * @category  Nosto
  * @package   Nosto_Tagging
  * @author    Nosto Solutions Ltd <magento@nosto.com>
@@ -26,43 +26,34 @@
  */
 
 /**
- * Search term tagging block.
- * Adds search term tag to the HTML document.
+ * Abstract base class for recommendation services
  *
  * @category Nosto
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Block_Searchterm extends Mage_Core_Block_Template
+abstract class Nosto_Tagging_Model_Service_Recommendation_Base
 {
+    const DEFAULT_API_TIMEOUT = 0.5;
+
     /**
-     * Render shopping search term content
+     * Returns the default API timeout for connecting to Nosto API
+     * or a value from the ENV
      *
-     * @return string
+     * Return float
      */
-    protected function _toHtml()
+    protected function getConnectTimeout()
     {
-        /** @var Nosto_Tagging_Helper_Account $helper */
-        $helper = Mage::helper('nosto_tagging/account');
-        if (!$helper->existsAndIsConnected()
-            || $this->getSearchTerm() === null
-            || !Mage::helper('nosto_tagging/module')->isModuleEnabled()
-        ) {
-            return '';
-        }
-        $searchTerm = new Nosto_Object_SearchTerm($this->escapeHtml($this->getSearchTerm()));
-        return $searchTerm->toHtml();
+        return (float)Nosto_Nosto::getEnvVariable('NOSTO_RECOMMENDATION_API_TIMEOUT', self::DEFAULT_API_TIMEOUT);
     }
 
     /**
-     * Returns the search term
+     * Returns the default API timeout for response or a value from the ENV
      *
-     * @return string
+     * Return float
      */
-    public function getSearchTerm()
+    protected function getResponseTimeout()
     {
-        /** @var Mage_CatalogSearch_Helper_Data $helper */
-        $helper = $this->helper('catalogsearch');
-        return $helper->getQueryText();
+        return (float)Nosto_Nosto::getEnvVariable('NOSTO_RECOMMENDATION_API_TIMEOUT', self::DEFAULT_API_TIMEOUT);
     }
 }

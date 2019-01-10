@@ -1,9 +1,9 @@
 <?php
 /**
  * Magento
- *  
+ *
  * NOTICE OF LICENSE
- *  
+ *
  * This source file is subject to the Open Software License (OSL 3.0)
  * that is bundled with this package in the file LICENSE.txt.
  * It is also available through the world-wide-web at this URL:
@@ -11,13 +11,13 @@
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
- *  
+ *
  * DISCLAIMER
- *  
+ *
  * Do not edit or add to this file if you wish to upgrade Magento to newer
  * versions in the future. If you wish to customize Magento for your
  * needs please refer to http://www.magentocommerce.com for more information.
- *  
+ *
  * @category  Nosto
  * @package   Nosto_Tagging
  * @author    Nosto Solutions Ltd <magento@nosto.com>
@@ -26,43 +26,44 @@
  */
 
 /**
- * Search term tagging block.
- * Adds search term tag to the HTML document.
+ * Yes/no source model with dependencies
  *
  * @category Nosto
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
+ * @suppress PhanUnreferencedClass
  */
-class Nosto_Tagging_Block_Searchterm extends Mage_Core_Block_Template
+abstract class Nosto_Tagging_Model_System_Config_Source_Yesno_Base
 {
     /**
-     * Render shopping search term content
+     * Options getter
      *
-     * @return string
+     * @return array
      */
-    protected function _toHtml()
+    public function toOptionArray()
     {
-        /** @var Nosto_Tagging_Helper_Account $helper */
-        $helper = Mage::helper('nosto_tagging/account');
-        if (!$helper->existsAndIsConnected()
-            || $this->getSearchTerm() === null
-            || !Mage::helper('nosto_tagging/module')->isModuleEnabled()
-        ) {
-            return '';
+        if ($this->featureAvailable()) {
+            return array(
+                array('value' => 1, 'label'=>Mage::helper('adminhtml')->__('Yes')),
+                array('value' => 0, 'label'=>Mage::helper('adminhtml')->__('No')),
+            );
         }
-        $searchTerm = new Nosto_Object_SearchTerm($this->escapeHtml($this->getSearchTerm()));
-        return $searchTerm->toHtml();
+        return array(
+            array('value' => 0, 'label'=>Mage::helper('adminhtml')->__($this->getDisabledMessage())),
+        );
     }
 
     /**
-     * Returns the search term
+     * Returns if the current feature is available
+     *
+     * @return bool
+     */
+    abstract protected function featureAvailable();
+
+    /**
+     * Returns message for disabled option
      *
      * @return string
      */
-    public function getSearchTerm()
-    {
-        /** @var Mage_CatalogSearch_Helper_Data $helper */
-        $helper = $this->helper('catalogsearch');
-        return $helper->getQueryText();
-    }
+    abstract protected function getDisabledMessage();
 }
