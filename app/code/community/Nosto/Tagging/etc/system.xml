@@ -164,10 +164,10 @@
                     </fields>
                     <fields>
                         <personalized_category_sorting translate="label">
-                            <label>Use personalized category sorting</label>
-                            <comment>Enable this in order to use personalized category sorting</comment>
+                            <label>Category sorting (experimental)</label>
+                            <comment>Experimental feature. Might be removed in future releases. Contact Nosto for further details.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <source_model>nosto_tagging/system_config_source_yesno_graphql</source_model>
                             <sort_order>70</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -179,7 +179,7 @@
                             <label>Real-time cart updates to Nosto</label>
                             <comment>Set this to no if you don't want to send real-time cart updates to Nosto via API</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>nosto_tagging/system_config_source_yesno_graphql</source_model>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>80</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
