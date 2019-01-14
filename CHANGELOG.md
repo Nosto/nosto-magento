@@ -1,5 +1,8 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.8.1
+* Bump magazine maximum PHP version to 7.3.0
+
 ### 3.8.0
 * Add expiry check for Nosto indexed products
 * Add possibility to define quantity for Nosto’s add to cart

@@ -24,7 +24,7 @@
     "required": {
       "php": {
         "min": "5.4.0",
-        "max": "7.1.0"
+        "max": "7.3.0"
       },
       "package": {
         "name": "Mage_Core_Modules",
