@@ -4,32 +4,32 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f1242be40dd16caad56b24ddf360cf38",
+    "content-hash": "607bfa46d89a485fc471c36ece6cac66",
     "packages": [
         {
             "name": "nosto/php-sdk",
-            "version": "3.8.2",
+            "version": "3.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Nosto/nosto-php-sdk.git",
-                "reference": "2e8be55ce76b57d3d34c2742685fa1a189dd6a57"
+                "reference": "9645624e55c57bdb4a52b364a4edd76f6105937b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Nosto/nosto-php-sdk/zipball/2e8be55ce76b57d3d34c2742685fa1a189dd6a57",
-                "reference": "2e8be55ce76b57d3d34c2742685fa1a189dd6a57",
+                "url": "https://api.github.com/repos/Nosto/nosto-php-sdk/zipball/9645624e55c57bdb4a52b364a4edd76f6105937b",
+                "reference": "9645624e55c57bdb4a52b364a4edd76f6105937b",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.4.0",
                 "phpseclib/phpseclib": "2.0.*",
-                "vlucas/phpdotenv": "2.4.0"
+                "vlucas/phpdotenv": ">=2.4.0 <=2.6"
             },
             "require-dev": {
                 "codeception/base": "2.2.9",
                 "codeception/c3": "^2.0",
                 "codeception/specify": "^0.4.6",
-                "etsy/phan": "0.8.0",
+                "phan/phan": "^1.2",
                 "phing/phing": "2.*",
                 "phpmd/phpmd": "^2.6",
                 "sebastian/phpcpd": "^3.0",
@@ -51,7 +51,7 @@
                 "BSD-3-Clause"
             ],
             "description": "PHP SDK for developing Nosto modules for e-commerce platforms",
-            "time": "2018-12-19T14:12:27+00:00"
+            "time": "2019-01-14T11:25:41+00:00"
         },
         {
             "name": "phpseclib/phpseclib",
