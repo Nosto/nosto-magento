@@ -1,5 +1,8 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.8.2
+* Bump Nosto SDK version to support HTTP 2
+
 ### 3.8.1
 * Bump magazine maximum PHP version to 7.3.0
 
