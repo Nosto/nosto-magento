@@ -100,7 +100,7 @@ class ReconnectCommand extends Mage_Shell_Abstract
             if (!$this->getArg($argument)) {
                 echo sprintf("Missing %s \n", $argument); //@codingStandardsIgnoreLine
                 echo $this->usageHelp(); //@codingStandardsIgnoreLine
-                exit(1);
+                exit(1); //@codingStandardsIgnoreLine
             }
         }
         return true;
