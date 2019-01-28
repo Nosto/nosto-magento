@@ -119,7 +119,15 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
         if ($customerAddress instanceof Mage_Customer_Model_Address) {
             try {
                 $nostoCustomer->setCity($customerAddress->getCity());
-                $nostoCustomer->setStreet($customerAddress->getStreet()[0].' '.$customerAddress->getStreet()[1]);
+                $streetAddress = $customerAddress->getStreet();
+                $concatenatedStreetAddress = '';
+                if (!empty($streetAddress[0])) {
+                    $concatenatedStreetAddress .= $streetAddress[0];
+                }
+                if (!empty($streetAddress[1])) {
+                    $concatenatedStreetAddress .= ' ' . $streetAddress[1];
+                }
+                $nostoCustomer->setStreet($concatenatedStreetAddress);
                 $customerRegion = $customerAddress->getRegion();
                 if ($customerRegion) {
                     $nostoCustomer->setRegion($customerRegion);
