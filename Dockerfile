@@ -50,7 +50,7 @@ RUN         apt-get -y -qq update
 # Install all core dependencies required for setting up Apache and PHP at least
 RUN         apt-get -y -qq install unzip wget libfreetype6-dev libjpeg-dev \
             libmcrypt-dev libreadline-dev libpng-dev libicu-dev default-mysql-client \
-            libmcrypt-dev libxml2-dev libxslt1-dev vim nano git tree curl \
+            libmcrypt-dev libxml2-dev libxml2-utils libxslt1-dev vim nano git tree curl \
             supervisor ca-certificates && \
             apt-get -y -qq clean
 
@@ -72,6 +72,7 @@ RUN         echo "extension=ast.so" >> /etc/php/7.1/cli/php.ini
 
 RUN         a2enmod rewrite && phpenmod soap && \
             a2dissite 000-default.conf
+
 
 RUN        php -r "readfile('https://getcomposer.org/installer');" > composer-setup.php && \
            php composer-setup.php --install-dir=/usr/local/bin --filename=composer && \
