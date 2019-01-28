@@ -26,6 +26,7 @@
         "nosto/php-sdk": "3.9.1"
     },
     "require-dev": {
+        "php": ">=7.1.0",
         "mridang/magazine": "0.1",
         "phing/phing": "2.*",
         "phan/phan": "0.8.9",
