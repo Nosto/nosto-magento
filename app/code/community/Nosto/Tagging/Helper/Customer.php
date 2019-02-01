@@ -82,14 +82,18 @@ class Nosto_Tagging_Helper_Customer extends Mage_Core_Helper_Abstract
             /** @noinspection PhpUndefinedMethodInspection */
             if ($customer->hasData()) {
                 $customer->setUpdatedAt($dateHelper->gmtDate());
-                $customer->save();
             } else {
                 $restoreCartHash = $this->generateRestoreCartHash();
                 $customer->setQuoteId($quoteId);
                 $customer->setNostoId($nostoId);
                 $customer->setRestoreCartHash($restoreCartHash);
                 $customer->setCreatedAt($dateHelper->gmtDate());
+            }
+            try {
                 $customer->save();
+            } catch (Zend_Db_Statement_Exception $e) {
+                // We don't need to care about the duplicate key exception
+                // that might happend occasionally due to concurrency
             }
         }
     }
