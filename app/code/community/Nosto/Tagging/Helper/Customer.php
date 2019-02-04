@@ -89,14 +89,16 @@ class Nosto_Tagging_Helper_Customer extends Mage_Core_Helper_Abstract
                 $customer->setRestoreCartHash($restoreCartHash);
                 $customer->setCreatedAt($dateHelper->gmtDate());
             }
-            // @codingStandardsIgnoreStart
             try {
                 $customer->save();
             } catch (Zend_Db_Statement_Exception $e) {
-                // We don't need to care about the duplicate key exception
-                // that might happend occasionally due to concurrency
+                // Omit the duplicate key exception (code 23000)
+                // It happens occasionally especially with replicated
+                // database setup
+                if ($e->getCode() !== 23000) {
+                    throw $e;
+                }
             }
-            // @codingStandardsIgnoreEnd
         }
     }
 
