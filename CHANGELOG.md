@@ -1,5 +1,8 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.8.5
+* Handle overriding custom group pricing 
+
 ### 3.8.4
 * Handle duplicate key exception gracefully when saving Nosto customer
 
