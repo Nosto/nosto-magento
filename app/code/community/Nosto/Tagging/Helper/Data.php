@@ -621,13 +621,15 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Returns is the sending add to cart event to nosto enabled
+     * This feature has been removed so it will return false
      *
      * @param Mage_Core_Model_Store $store
      * @return bool
+     * @deprecated
      */
     public function getSendAddToCartEvent($store)
     {
-        return (bool)Mage::getStoreConfig(self::XML_PATH_SEND_ADD_TO_CART_EVENT, $store);
+        return false;
     }
 
     /**
