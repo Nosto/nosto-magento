@@ -62,7 +62,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
     protected $_deleteQueue = array();
 
     /**
-     * Array containing already procecced product ids
+     * Array containing already processed product ids
      *
      * @var array
      */
@@ -82,8 +82,6 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
      * @var int
      */
     public static $maxBatchCount = 10000;
-
-
 
     /**
      * Matched Entities instruction array
@@ -301,8 +299,8 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
             foreach ($products as $product) {
                 /* @var Nosto_Tagging_Model_Meta_Product $nostoProduct */
                 $nostoProduct = Mage::getModel('nosto_tagging/meta_product');
-                if ($nostoProduct->reloadData($product, $store)
-                    && $nostoProduct instanceof Nosto_Tagging_Model_Meta_Product
+                if ($nostoProduct instanceof Nosto_Tagging_Model_Meta_Product
+                    && $nostoProduct->reloadData($product, $store)
                 ) {
                     $this->reindexProductInStore($nostoProduct, $store);
                 }
@@ -355,7 +353,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
      */
     protected function _processEvent(Mage_Index_Model_Event $event)
     {
-        if ($event->getType() == 'delete') {
+        if ($event->getType() === 'delete') {
             $this->flushDeleteQueue();
         } else {
             $this->flushReindexingQueue();
@@ -394,7 +392,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
                 break;
             }
             $batchCount = count($products);
-            if ($batchCount == 0) {
+            if ($batchCount === 0) {
                 break;
             }
             Nosto_Tagging_Helper_Log::info(
@@ -496,9 +494,9 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
         if ($indexedProduct instanceof Nosto_Tagging_Model_Index) {
             $indexedMetaProduct = $indexedProduct->getNostoMetaProduct();
 
-            if ($indexedMetaProduct instanceof Nosto_Tagging_Model_Meta_Product === false
+            if (!$indexedMetaProduct instanceof Nosto_Tagging_Model_Meta_Product
+                || $indexedMetaProduct !== $nostoProduct
                 || $this->isExpired($indexedProduct)
-                || $indexedMetaProduct != $nostoProduct
             ) {
                 $indexedProduct->setNostoMetaProduct($nostoProduct);
                 $indexedProduct->setUpdatedAt($dateHelper->gmtDate());
