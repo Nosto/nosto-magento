@@ -625,6 +625,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      *
      * @param Mage_Core_Model_Store $store
      * @return bool
+     * @deprecated
      */
     public function getSendAddToCartEvent($store)
     {
