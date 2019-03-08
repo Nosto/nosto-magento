@@ -445,7 +445,8 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
      * Wrapper that invalidates indexer status
      * @return void
      */
-    protected function invalidateIndexerStatus() {
+    protected function invalidateIndexerStatus()
+    {
         /** @var Mage_Index_Model_Indexer $indexerModel */
         $indexerModel = Mage::getSingleton('index/indexer');
         $indexerModel
