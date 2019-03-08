@@ -279,6 +279,7 @@
                 <update_catalog_price_rules>0</update_catalog_price_rules>
                 <send_customer_data>1</send_customer_data>
                 <restore_cart_location>checkout/cart</restore_cart_location>
+                <indexer_memory>50</indexer_memory>
             </general>
             <image_options>
                 <image_version>image</image_version>
