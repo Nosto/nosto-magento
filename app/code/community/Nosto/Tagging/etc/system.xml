@@ -175,18 +175,6 @@
                         </personalized_category_sorting>
                     </fields>
                     <fields>
-                        <send_add_to_cart_event translate="label">
-                            <label>Real-time cart updates to Nosto</label>
-                            <comment>Set this to no if you don't want to send real-time cart updates to Nosto via API</comment>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>80</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </send_add_to_cart_event>
-                    </fields>
-                    <fields>
                         <restore_cart_location translate="label">
                             <label>Redirect location after cart restore</label>
                             <comment>Choose where the visitor will be redirected after the cart has been restored</comment>
