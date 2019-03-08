@@ -391,7 +391,6 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
                         $maxMemPercentage
                     )
                 );
-                $this->invalidateIndexerStatus();
                 return;
             }
 
@@ -439,19 +438,6 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
                 $changed
             )
         );
-    }
-
-    /**
-     * Wrapper that invalidates indexer status
-     * @return void
-     */
-    protected function invalidateIndexerStatus()
-    {
-        /** @var Mage_Index_Model_Indexer $indexerModel */
-        $indexerModel = Mage::getSingleton('index/indexer');
-        $indexerModel
-            ->getProcessByCode('nosto_indexer')
-            ->changeStatus(Mage_Index_Model_Process::STATUS_REQUIRE_REINDEX);
     }
 
     /**
