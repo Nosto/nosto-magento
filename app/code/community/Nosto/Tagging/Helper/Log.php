@@ -89,6 +89,25 @@ class Nosto_Tagging_Helper_Log extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Logs a message along with the memory consumption
+     *
+     * @param $message
+     * @return bool
+     */
+    public function logWithMemoryConsumption($message)
+    {
+        return self::info(
+            sprintf(
+                '%s [mem usage: %sM / %s] [realmem: %sM]',
+                $message,
+                Nosto_Util_Memory::getConsumption(),
+                Nosto_Util_Memory::getTotalMemoryLimit(),
+                Nosto_Util_Memory::getRealConsumption()
+            )
+        );
+    }
+
+    /**
      * Writes warning into the log
      *
      * @param string $message

@@ -371,10 +371,11 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
     {
         $start = microtime(true);
 
+        /* @var Nosto_Tagging_Helper_Data $dataHelper */
+        $dataHelper = Mage::helper('nosto_tagging');
         /* @var Mage_Core_Model_App_Emulation $emulation */
         $emulation = Mage::getSingleton('core/app_emulation');
         $env = $emulation->startEnvironmentEmulation($store->getId());
-
         $iterations = 1;
         $products = $this->getProductBatch($store, $iterations);
         $totalProductCount = $products->getSize();
@@ -382,6 +383,17 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
         $changed = 0;
 
         while (true) {
+            $maxMemPercentage = $dataHelper->getIndexerMemoryPercentage($store);
+            if (Nosto_Util_Memory::getPercentageUsedMem() >= $maxMemPercentage) {
+                Nosto_Tagging_Helper_Log::info(
+                    sprintf(
+                        'Memory used by indexer is over %d%% allowed',
+                        $maxMemPercentage
+                    )
+                );
+                return;
+            }
+
             if ($iterations >= self::$maxBatchCount) {
                 Nosto_Tagging_Helper_Log::info(
                     sprintf(
@@ -395,7 +407,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
             if ($batchCount === 0) {
                 break;
             }
-            Nosto_Tagging_Helper_Log::info(
+            Nosto_Tagging_Helper_Log::logWithMemoryConsumption(
                 sprintf(
                     'Processing %d products in store %s [%d/%d]',
                     count($products),
@@ -515,7 +527,6 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
                 $indexedProduct->save();
             }
         }
-
         return $indexedProduct;
     }
 

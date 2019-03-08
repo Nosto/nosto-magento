@@ -32,7 +32,7 @@
 class Nosto_Tagging_Model_Service_Product
 {
     /**
-     * Maximum batch size. If exceeded the batches will be splitted into smaller
+     * Maximum batch size. If exceeded, the batches will be splitted into smaller
      * ones.
      *
      * @var int
@@ -182,8 +182,7 @@ class Nosto_Tagging_Model_Service_Product
             $account = $helper->find($store);
             /* @var $nostoHelper Nosto_Tagging_Helper_Data */
             $nostoHelper = Mage::helper('nosto_tagging');
-            if (
-                $account === null
+            if ($account === null
                 || !$account->isConnectedToNosto()
                 || !$nostoHelper->getUseProductApi($store)
             ) {
@@ -207,10 +206,10 @@ class Nosto_Tagging_Model_Service_Product
                 $operation = new Nosto_Operation_UpsertProduct($account);
                 $operation->setResponseTimeout($this->getApiWaitTimeout());
                 $batchCount = count($indexedProducts);
-                if ($batchCount == 0) {
+                if ($batchCount === 0) {
                     break;
                 }
-                Nosto_Tagging_Helper_Log::info(
+                Nosto_Tagging_Helper_Log::logWithMemoryConsumption(
                     sprintf(
                         'Synchronizing %d products in store %s to Nosto [%d/%d]',
                         $batchCount,
@@ -243,7 +242,7 @@ class Nosto_Tagging_Model_Service_Product
                 $indexedProducts = $this->getOutOfSyncBatch($store);
             }
 
-            Nosto_Tagging_Helper_Log::info(
+            Nosto_Tagging_Helper_Log::logWithMemoryConsumption(
                 sprintf(
                     'Synchronizing for store %s done in %d secs',
                     $store->getCode(),
@@ -257,9 +256,7 @@ class Nosto_Tagging_Model_Service_Product
      * @param Mage_Core_Model_Store $store
      * @return mixed
      */
-    protected function getOutOfSyncBatch(
-        Mage_Core_Model_Store $store
-    ) 
+    protected function getOutOfSyncBatch(Mage_Core_Model_Store $store)
     {
         return Mage::getModel('nosto_tagging/index')
             ->getCollection()
