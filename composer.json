@@ -19,11 +19,15 @@
                     "reference": "origin/magento-1.9"
                 }
             }
+        },
+        "pearify": {
+            "type": "vcs",
+            "url": "https://github.com/supercid/pearify"
         }
     },
     "require": {
         "php": ">=5.4.0",
-        "nosto/php-sdk": "3.9.1"
+        "nosto/php-sdk": "dev-develop"
     },
     "require-dev": {
         "php": ">=7.1.0",
@@ -37,7 +41,7 @@
         "magento/marketplace-eqp": "1.*",
         "openmage/magento-mirror": "1.9",
         "wimg/php-compatibility": "^8.0",
-        "mridang/pearify": "0.2"
+        "mridang/pearify": "dev-hotfix/support-traits"
     },
     "scripts": {
         "post-install-cmd": "if ! type \"composer\" > /dev/null; then echo \"composer not available in path - you must update the lib files manually\"; else composer dump-autoload --optimize; ./vendor/bin/pearify process .;fi",
