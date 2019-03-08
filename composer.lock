@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "521cb11c6375aad59e6551c55fca12d5",
+    "content-hash": "eb76e66beb4d918ee3653e0af51bbeef",
     "packages": [
         {
             "name": "nosto/php-sdk",
@@ -352,16 +352,16 @@
         },
         {
             "name": "mridang/pearify",
-            "version": "0.2",
+            "version": "dev-hotfix/support-traits",
             "source": {
                 "type": "git",
-                "url": "https://github.com/mridang/pearify.git",
-                "reference": "958ba3fad442c82e681eeff9b906aa4f0d87452f"
+                "url": "https://github.com/supercid/pearify.git",
+                "reference": "c459d15e45289b6611de39d68e203b29eb23df05"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mridang/pearify/zipball/958ba3fad442c82e681eeff9b906aa4f0d87452f",
-                "reference": "958ba3fad442c82e681eeff9b906aa4f0d87452f",
+                "url": "https://api.github.com/repos/supercid/pearify/zipball/c459d15e45289b6611de39d68e203b29eb23df05",
+                "reference": "c459d15e45289b6611de39d68e203b29eb23df05",
                 "shasum": ""
             },
             "require": {
@@ -376,7 +376,6 @@
                     "Pearify\\": "src/Pearify"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -389,12 +388,16 @@
             "description": "Pearify converts PSR-4 Composer packages to PEAR compliant code.",
             "homepage": "https://github.com/mridang/pearify",
             "keywords": [
-                "PEAR",
-                "PSR-4",
                 "magento",
-                "package"
+                "package",
+                "pear",
+                "psr-4"
             ],
-            "time": "2017-05-02T06:36:20+00:00"
+            "support": {
+                "issues": "https://github.com/mridang/pearify/issues",
+                "source": "https://github.com/supercid/pearify/tree/hotfix/support-traits"
+            },
+            "time": "2019-03-08T08:56:40+00:00"
         },
         {
             "name": "netresearch/jsonmapper",
@@ -1792,7 +1795,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "BackEndTea@gmail.com"
+                    "email": "backendtea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
@@ -2072,7 +2075,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "nosto/php-sdk": 20
+        "nosto/php-sdk": 20,
+        "mridang/pearify": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
