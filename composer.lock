@@ -4,11 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "eb76e66beb4d918ee3653e0af51bbeef",
+    "content-hash": "17ad355ba8b0c892a17d5420a1317253",
     "packages": [
         {
             "name": "nosto/php-sdk",
-            "version": "dev-develop",
+            "version": "3.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Nosto/nosto-php-sdk.git",
@@ -411,16 +411,16 @@
         },
         {
             "name": "mridang/pearify",
-            "version": "dev-hotfix/support-traits",
+            "version": "0.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/supercid/pearify.git",
-                "reference": "c459d15e45289b6611de39d68e203b29eb23df05"
+                "url": "https://github.com/mridang/pearify.git",
+                "reference": "7bc0710beb4165164e07f88b456de47cad8b3002"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/supercid/pearify/zipball/c459d15e45289b6611de39d68e203b29eb23df05",
-                "reference": "c459d15e45289b6611de39d68e203b29eb23df05",
+                "url": "https://api.github.com/repos/mridang/pearify/zipball/7bc0710beb4165164e07f88b456de47cad8b3002",
+                "reference": "7bc0710beb4165164e07f88b456de47cad8b3002",
                 "shasum": ""
             },
             "require": {
@@ -435,6 +435,7 @@
                     "Pearify\\": "src/Pearify"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -447,16 +448,12 @@
             "description": "Pearify converts PSR-4 Composer packages to PEAR compliant code.",
             "homepage": "https://github.com/mridang/pearify",
             "keywords": [
+                "PEAR",
+                "PSR-4",
                 "magento",
-                "package",
-                "pear",
-                "psr-4"
+                "package"
             ],
-            "support": {
-                "issues": "https://github.com/mridang/pearify/issues",
-                "source": "https://github.com/supercid/pearify/tree/hotfix/support-traits"
-            },
-            "time": "2019-03-08T08:56:40+00:00"
+            "time": "2019-03-11T09:48:50+00:00"
         },
         {
             "name": "netresearch/jsonmapper",
@@ -2078,10 +2075,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "nosto/php-sdk": 20,
-        "mridang/pearify": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
