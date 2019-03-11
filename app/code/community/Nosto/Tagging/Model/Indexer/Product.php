@@ -371,8 +371,6 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
     {
         $start = microtime(true);
 
-        /* @var Nosto_Tagging_Helper_Data $dataHelper */
-        $dataHelper = Mage::helper('nosto_tagging');
         /* @var Mage_Core_Model_App_Emulation $emulation */
         $emulation = Mage::getSingleton('core/app_emulation');
         $env = $emulation->startEnvironmentEmulation($store->getId());
@@ -383,17 +381,6 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
         $changed = 0;
 
         while (true) {
-            $maxMemPercentage = $dataHelper->getIndexerMemoryPercentage($store);
-            if (Nosto_Util_Memory::getPercentageUsedMem() >= $maxMemPercentage) {
-                Nosto_Tagging_Helper_Log::info(
-                    sprintf(
-                        'Memory used by indexer is over %d%% allowed, finishing...',
-                        $maxMemPercentage
-                    )
-                );
-                return;
-            }
-
             if ($iterations >= self::$maxBatchCount) {
                 Nosto_Tagging_Helper_Log::info(
                     sprintf(
@@ -420,6 +407,8 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
             foreach ($products as $product) {
                 try {
                     $changed += $this->reindexMagentoProductInStore($product, $store);
+                } catch (Nosto_Exception_MemoryOutOfBoundsException $e) {
+                    throw $e;
                 } catch (\Exception $e) {
                     Nosto_Tagging_Helper_Log::exception($e);
                 }
@@ -493,6 +482,17 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
         $setSynced = false
     )
     {
+        /* @var Nosto_Tagging_Helper_Data $dataHelper */
+        $dataHelper = Mage::helper('nosto_tagging');
+        $maxMemPercentage = $dataHelper->getIndexerMemoryPercentage($store);
+        if (Nosto_Util_Memory::getPercentageUsedMem() >= $maxMemPercentage) {
+            throw new Nosto_Exception_MemoryOutOfBoundsException(
+                sprintf(
+                    'Memory Out Of Bounds Error: Memory used by indexer is over %d%% allowed',
+                    $maxMemPercentage
+                )
+            );
+        }
         /** @var Mage_Core_Model_Date $dateHelper */
         $dateHelper = Mage::getSingleton('core/date');
         /* @var Nosto_Tagging_Model_Meta_Product $nostoProduct */
@@ -565,6 +565,9 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
             if ($dataHelper->getUseProductIndexer($store)) {
                 try {
                     $this->reindexAllInStore($store);
+                } catch (Nosto_Exception_MemoryOutOfBoundsException $e) {
+                    Nosto_Tagging_Helper_Log::info($e->getMessage());
+                    throw new Mage_Core_Exception($e);
                 } catch (\Exception $e) {
                     NostoLog::exception($e);
                 }
