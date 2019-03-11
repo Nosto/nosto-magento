@@ -62,7 +62,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
     protected $_deleteQueue = array();
 
     /**
-     * Array containing already procecced product ids
+     * Array containing already processed product ids
      *
      * @var array
      */
@@ -82,8 +82,6 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
      * @var int
      */
     public static $maxBatchCount = 10000;
-
-
 
     /**
      * Matched Entities instruction array
@@ -301,8 +299,8 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
             foreach ($products as $product) {
                 /* @var Nosto_Tagging_Model_Meta_Product $nostoProduct */
                 $nostoProduct = Mage::getModel('nosto_tagging/meta_product');
-                if ($nostoProduct->reloadData($product, $store)
-                    && $nostoProduct instanceof Nosto_Tagging_Model_Meta_Product
+                if ($nostoProduct instanceof Nosto_Tagging_Model_Meta_Product
+                    && $nostoProduct->reloadData($product, $store)
                 ) {
                     $this->reindexProductInStore($nostoProduct, $store);
                 }
@@ -355,7 +353,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
      */
     protected function _processEvent(Mage_Index_Model_Event $event)
     {
-        if ($event->getType() == 'delete') {
+        if ($event->getType() === 'delete') {
             $this->flushDeleteQueue();
         } else {
             $this->flushReindexingQueue();
@@ -376,7 +374,6 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
         /* @var Mage_Core_Model_App_Emulation $emulation */
         $emulation = Mage::getSingleton('core/app_emulation');
         $env = $emulation->startEnvironmentEmulation($store->getId());
-
         $iterations = 1;
         $products = $this->getProductBatch($store, $iterations);
         $totalProductCount = $products->getSize();
@@ -394,10 +391,10 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
                 break;
             }
             $batchCount = count($products);
-            if ($batchCount == 0) {
+            if ($batchCount === 0) {
                 break;
             }
-            Nosto_Tagging_Helper_Log::info(
+            Nosto_Tagging_Helper_Log::logWithMemoryConsumption(
                 sprintf(
                     'Processing %d products in store %s [%d/%d]',
                     count($products),
@@ -410,6 +407,8 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
             foreach ($products as $product) {
                 try {
                     $changed += $this->reindexMagentoProductInStore($product, $store);
+                } catch (Nosto_Exception_MemoryOutOfBoundsException $e) {
+                    throw $e;
                 } catch (\Exception $e) {
                     Nosto_Tagging_Helper_Log::exception($e);
                 }
@@ -483,6 +482,17 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
         $setSynced = false
     )
     {
+        /* @var Nosto_Tagging_Helper_Data $dataHelper */
+        $dataHelper = Mage::helper('nosto_tagging');
+        $maxMemPercentage = $dataHelper->getIndexerMemoryPercentage($store);
+        if (Nosto_Util_Memory::getPercentageUsedMem() >= $maxMemPercentage) {
+            throw new Nosto_Exception_MemoryOutOfBoundsException(
+                sprintf(
+                    'Memory Out Of Bounds Error: Memory used by indexer is over %d%% allowed',
+                    $maxMemPercentage
+                )
+            );
+        }
         /** @var Mage_Core_Model_Date $dateHelper */
         $dateHelper = Mage::getSingleton('core/date');
         /* @var Nosto_Tagging_Model_Meta_Product $nostoProduct */
@@ -496,9 +506,9 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
         if ($indexedProduct instanceof Nosto_Tagging_Model_Index) {
             $indexedMetaProduct = $indexedProduct->getNostoMetaProduct();
 
-            if ($indexedMetaProduct instanceof Nosto_Tagging_Model_Meta_Product === false
+            if (!$indexedMetaProduct instanceof Nosto_Tagging_Model_Meta_Product
+                || $indexedMetaProduct !== $nostoProduct
                 || $this->isExpired($indexedProduct)
-                || $indexedMetaProduct != $nostoProduct
             ) {
                 $indexedProduct->setNostoMetaProduct($nostoProduct);
                 $indexedProduct->setUpdatedAt($dateHelper->gmtDate());
@@ -517,7 +527,6 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
                 $indexedProduct->save();
             }
         }
-
         return $indexedProduct;
     }
 
@@ -544,6 +553,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
 
     /**
      * Reindex all products in all stores where Nosto is installed
+     * @throws Nosto_Exception_MemoryOutOfBoundsException
      */
     public function reindexAll()
     {
@@ -556,6 +566,9 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
             if ($dataHelper->getUseProductIndexer($store)) {
                 try {
                     $this->reindexAllInStore($store);
+                } catch (Nosto_Exception_MemoryOutOfBoundsException $e) {
+                    Nosto_Tagging_Helper_Log::info($e->getMessage());
+                    throw $e;
                 } catch (\Exception $e) {
                     NostoLog::exception($e);
                 }

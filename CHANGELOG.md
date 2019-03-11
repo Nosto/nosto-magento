@@ -1,5 +1,8 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.9.0 (Unreleased)
+* Adds a feature flag to set the a percentage of total PHP available memory that can be used by Nosto indexer;
+
 ### 3.8.5
 * Handle overriding custom group pricing 
 

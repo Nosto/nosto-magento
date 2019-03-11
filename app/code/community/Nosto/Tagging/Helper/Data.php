@@ -123,6 +123,11 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_RESTORE_CART_LOCATION = 'nosto_tagging/general/restore_cart_location';
 
     /**
+     * Path to store config for indexer allowed memory percentage
+     */
+    const XML_PATH_INDEXER_MEMORY = 'nosto_tagging/general/indexer_memory';
+
+    /**
      * Path to store config for custom fields
      */
     const XML_PATH_USE_CUSTOM_FIELDS = 'nosto_tagging/general/use_custom_fields';
@@ -697,6 +702,18 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     public function getRestoreCartRedirectLocation($store = null)
     {
         return Mage::getStoreConfig(self::XML_PATH_RESTORE_CART_LOCATION, $store);
+    }
+
+    /**
+     * Return the percentage of allowed memory for the indexer
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     *
+     * @return string
+     */
+    public function getIndexerMemoryPercentage($store = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_INDEXER_MEMORY, $store);
     }
 
     /**
