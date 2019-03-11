@@ -553,6 +553,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
 
     /**
      * Reindex all products in all stores where Nosto is installed
+     * @throws Nosto_Exception_MemoryOutOfBoundsException
      */
     public function reindexAll()
     {
@@ -567,7 +568,7 @@ class Nosto_Tagging_Model_Indexer_Product extends Mage_Index_Model_Indexer_Abstr
                     $this->reindexAllInStore($store);
                 } catch (Nosto_Exception_MemoryOutOfBoundsException $e) {
                     Nosto_Tagging_Helper_Log::info($e->getMessage());
-                    throw new Mage_Core_Exception($e);
+                    throw $e;
                 } catch (\Exception $e) {
                     NostoLog::exception($e);
                 }
