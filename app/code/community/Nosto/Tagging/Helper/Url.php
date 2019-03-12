@@ -476,6 +476,23 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Returns the store domain
+     *
+     * @param $store
+     * @return string
+     */
+    public function getActiveDomain($store)
+    {
+        $storeFrontUrl = $this->getFrontPageUrl($store);
+        try {
+            return  Nosto_Helper_UrlHelper::parseDomain($storeFrontUrl);
+        } catch (\Exception $e) {
+            Nosto_Tagging_Helper_Log::exception($e);
+            return '';
+        }
+    }
+
+    /**
      * Adds nostodebug attribute to the given URL
      *
      * @param $url
