@@ -485,7 +485,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
     {
         $storeFrontUrl = $this->getFrontPageUrl($store);
         try {
-            return  Nosto_Helper_UrlHelper::parseDomain($storeFrontUrl);
+            return Nosto_Helper_UrlHelper::parseDomain($storeFrontUrl);
         } catch (\Exception $e) {
             Nosto_Tagging_Helper_Log::exception($e);
             return '';
