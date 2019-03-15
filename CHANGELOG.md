@@ -1,7 +1,7 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
 ### 3.9.0
-* Adds a feature flag to set the a percentage of total PHP available memory that can be used by Nosto indexer
+* Feature flag to set the a percentage of total PHP available memory that can be used by Nosto indexer
 * Exit indexer gracefully if the memory consumption goes over the predefined amount
 * Include active domain and Nosto account in API calls
 * Encode HTML characters automatically
