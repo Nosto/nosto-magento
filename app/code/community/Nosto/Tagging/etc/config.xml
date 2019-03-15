@@ -28,7 +28,7 @@
 <config>
     <modules>
         <Nosto_Tagging>
-            <version>3.8.5</version>
+            <version>3.9.0</version>
         </Nosto_Tagging>
     </modules>
     <global>
@@ -275,10 +275,10 @@
                 <send_inventory_level_after_purchase>0</send_inventory_level_after_purchase>
                 <use_low_stock>0</use_low_stock>
                 <personalized_category_sorting>1</personalized_category_sorting>
-                <send_add_to_cart_event>0</send_add_to_cart_event>
                 <update_catalog_price_rules>0</update_catalog_price_rules>
                 <send_customer_data>1</send_customer_data>
                 <restore_cart_location>checkout/cart</restore_cart_location>
+                <indexer_memory>50</indexer_memory>
             </general>
             <image_options>
                 <image_version>image</image_version>
