@@ -141,6 +141,9 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         if ($dataHelper->getUseCustomFields($store)) {
             $this->setCustomFields($this->buildCustomFields($product, $store));
         }
+        if ($product->hasData('created_at')) {
+            $this->setDatePublished($product->getData('created_at'));
+        }
 
         Mage::dispatchEvent(
             Nosto_Tagging_Helper_Event::EVENT_NOSTO_PRODUCT_LOAD_AFTER,
