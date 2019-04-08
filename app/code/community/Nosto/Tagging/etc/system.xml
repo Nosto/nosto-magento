@@ -176,7 +176,7 @@
                     </fields>
                     <fields>
                         <tag_date_published translate="label">
-                            <label>Add date published date to product tagging</label>
+                            <label>Add product published date to tagging</label>
                             <comment>Set this yes if you want to tag the date a product has been added to Magento's catalog</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
