@@ -102,6 +102,7 @@
             <catalog>
                 <rewrite>
                     <config>Nosto_Tagging_Model_Category_Config</config>
+                    <category_attribute_source_sortby>Nosto_Tagging_Model_Category_Sortby</category_attribute_source_sortby>
                 </rewrite>
             </catalog>
         </models>
