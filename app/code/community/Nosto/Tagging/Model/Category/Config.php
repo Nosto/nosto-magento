@@ -40,14 +40,16 @@ class Nosto_Tagging_Model_Category_Config extends Mage_Catalog_Model_Config
     /**
      * Add relevance attribute as a sorting option
      *
+     * @param null $storeId
      * @return array
+     * @throws Mage_Core_Model_Store_Exception
      */
-    public function getAttributeUsedForSortByArray()
+    public function getAttributeUsedForSortByArray($storeId = null)
     {
         $options = parent::getAttributeUsedForSortByArray();
         /* @var Nosto_Tagging_Helper_Data $dataHelper */
         $dataHelper = Mage::helper('nosto_tagging');
-        $store = Mage::app()->getStore();
+        $store = Mage::app()->getStore($storeId);
         /* @var Nosto_Tagging_Helper_Account $accountHelper */
         $accountHelper = Mage::helper('nosto_tagging/account');
         $nostoAccount = $accountHelper->find($store);
@@ -56,7 +58,6 @@ class Nosto_Tagging_Model_Category_Config extends Mage_Catalog_Model_Config
             $featureAccessService = new Nosto_Service_FeatureAccess($nostoAccount);
             if ($dataHelper->getUsePersonalizedCategorySorting($store)
                 && $featureAccessService->canUseGraphql()
-
             ) {
                 $options[self::NOSTO_PERSONALIZED_KEY] = Mage::helper('catalog')->__('Personalized for you');
                 $options[self::NOSTO_TOPLIST_KEY] = Mage::helper('catalog')->__('Top products');

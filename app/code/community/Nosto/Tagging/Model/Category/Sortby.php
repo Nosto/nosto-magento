@@ -35,28 +35,29 @@
 class Nosto_Tagging_Model_Category_Sortby extends Mage_Catalog_Model_Category_Attribute_Source_Sortby
 {
     /**
-     * Retrieve All options
+     * Retrieve all options for category display settings product listing
      *
      * @return array
+     * @throws Mage_Core_Model_Store_Exception
      */
     public function getAllOptions()
     {
-        if (is_null($this->_options)) {
-            $this->_options = array(array(
-                'label' => Mage::helper('catalog')->__('Best Value'),
-                'value' => 'position'
-            ));
-            foreach ($this->_getCatalogConfig()->getAttributesUsedForSortBy() as $attribute) {
-                $this->_options[] = array(
-                    'label' => Mage::helper('catalog')->__($attribute['frontend_label']),
-                    'value' => $attribute['attribute_code']
-                );
-            }
+        /* @var Nosto_Tagging_Model_Category_Config $configModel*/
+        $configModel = Mage::getModel('nosto_tagging/category_config');
+        $storeId = (int)Mage::app()->getRequest()->getParam('store');
+        // If we're in 'All store views' scope, should show options if there's Nosto account
+        if ($storeId === Mage_Core_Model_App::ADMIN_STORE_ID) {
+            /* @var Nosto_Tagging_Helper_Account $accountHelper */
+            $accountHelper = Mage::helper('nosto_tagging/account');
+            $storeId = $accountHelper->getFirstNostoStoreId() ?: $storeId;
         }
-        $this->_options[] = array(
-            'label' => 'Nosto',
-            'value' => 'NostoValue'
-        );
+        $options = $configModel->getAttributeUsedForSortByArray($storeId);
+        foreach ($options as $key => $option) {
+            $this->_options[] = array(
+                'label' => $option,
+                'value' => $key
+            );
+        }
         return $this->_options;
     }
 }
