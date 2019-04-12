@@ -100,44 +100,4 @@ class Nosto_Tagging_Block_Product_List_Toolbar
             $type
         );
     }
-
-    /**
-     * Override parent method to set Nosto as default sorting option
-     *
-     * @return string
-     * @throws Exception
-     */
-    public function getCurrentOrder()
-    {
-        $order = $this->_getData('_current_grid_order');
-        if ($order) {
-            return $order;
-        }
-
-        $orders = $this->getAvailableOrders();
-        $nostoKey = Nosto_Tagging_Model_Category_Config::NOSTO_PERSONALIZED_KEY;
-        $defaultOrder = array_key_exists($nostoKey, $orders) ? $nostoKey : $this->_orderField ;
-
-        if (!isset($orders[$defaultOrder])) {
-            $keys = array_keys($orders);
-            $defaultOrder = $keys[0];
-        }
-
-        $order = $this->getRequest()->getParam($this->getOrderVarName());
-        if ($order && isset($orders[$order])) {
-            if ($order === $defaultOrder) {
-                Mage::getSingleton('catalog/session')->unsSortOrder();
-            } else {
-                $this->_memorizeParam('sort_order', $order);
-            }
-        } else {
-            $order = Mage::getSingleton('catalog/session')->getSortOrder();
-        }
-        // validate session value
-        if (!$order || !isset($orders[$order])) {
-            $order = $defaultOrder;
-        }
-        $this->setData('_current_grid_order', $order);
-        return $order;
-    }
 }
