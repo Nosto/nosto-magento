@@ -342,7 +342,7 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Returns the id of the fist store that has nosto installed
+     * Returns the id of the first store that has nosto installed
      *
      * @return int|null
      */
