@@ -1,5 +1,8 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.10.0
+* Add Nosto category personalization in the default Magento category sorting options
+
 ### 3.9.0
 * Feature flag to set the a percentage of total PHP available memory that can be used by Nosto indexer
 * Exit indexer gracefully if the memory consumption goes over the predefined amount
