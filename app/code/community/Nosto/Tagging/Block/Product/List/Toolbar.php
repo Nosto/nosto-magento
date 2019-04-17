@@ -21,7 +21,7 @@
  * @category  Nosto
  * @package   Nosto_Tagging
  * @author    Nosto Solutions Ltd <magento@nosto.com>
- * @copyright Copyright (c) 2013-2017 Nosto Solutions Ltd (http://www.nosto.com)
+ * @copyright Copyright (c) 2013-2019 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -40,6 +40,7 @@ class Nosto_Tagging_Block_Product_List_Toolbar
      *
      * @param Varien_Data_Collection $collection
      * @return Mage_Catalog_Block_Product_List_Toolbar
+     * @throws Mage_Core_Model_Store_Exception
      */
     public function setCollection($collection)
     {
@@ -54,24 +55,23 @@ class Nosto_Tagging_Block_Product_List_Toolbar
             || !$accountHelper->find($store)
         ) {
             return parent::setCollection($collection);
-        } else {
-            $this->_collection = $collection;
-            $limit = (int)$this->getLimit();
-            if ($limit) {
-                $this->_collection->setPageSize($limit);
-            }
-            $this->_collection->setCurPage($this->getCurrentPage());
-            $sortIds = array_reverse($this->getSortIds($this->getCurrentOrder()));
-            if (!empty($sortIds)) {
-                $orderByIds = sprintf(
-                    'FIELD(product_id, %s) DESC',
-                    implode(',', $sortIds)
-                );
-                $this->_collection->getSelect()->order($orderByIds);
-            }
-
-            return $this;
         }
+        $this->_collection = $collection;
+        $limit = (int)$this->getLimit();
+        if ($limit) {
+            $this->_collection->setPageSize($limit);
+        }
+        $this->_collection->setCurPage($this->getCurrentPage());
+        $sortIds = array_reverse($this->getSortIds($this->getCurrentOrder()));
+        if (!empty($sortIds)) {
+            $orderByIds = sprintf(
+                'FIELD(product_id, %s) DESC',
+                implode(',', $sortIds)
+            );
+            $this->_collection->getSelect()->order($orderByIds);
+        }
+
+        return $this;
     }
 
     /**

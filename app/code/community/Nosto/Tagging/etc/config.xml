@@ -21,14 +21,14 @@
   ~ @category  Nosto
   ~ @package   Nosto_Tagging
   ~ @author    Nosto Solutions Ltd <magento@nosto.com>
-  ~ @copyright Copyright (c) 2013-2017 Nosto Solutions Ltd (http://www.nosto.com)
+  ~ @copyright Copyright (c) 2013-2019 Nosto Solutions Ltd (http://www.nosto.com)
   ~ @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
   -->
 <!--suppress XmlUnboundNsPrefix -->
 <config>
     <modules>
         <Nosto_Tagging>
-            <version>3.9.0</version>
+            <version>3.10.0</version>
         </Nosto_Tagging>
     </modules>
     <global>
@@ -102,6 +102,7 @@
             <catalog>
                 <rewrite>
                     <config>Nosto_Tagging_Model_Category_Config</config>
+                    <category_attribute_source_sortby>Nosto_Tagging_Model_Category_Sortby</category_attribute_source_sortby>
                 </rewrite>
             </catalog>
         </models>
@@ -274,7 +275,8 @@
                 <use_inventory_level>0</use_inventory_level>
                 <send_inventory_level_after_purchase>0</send_inventory_level_after_purchase>
                 <use_low_stock>0</use_low_stock>
-                <personalized_category_sorting>1</personalized_category_sorting>
+                <personalized_category_sorting>0</personalized_category_sorting>
+                <tag_date_published>0</tag_date_published>
                 <update_catalog_price_rules>0</update_catalog_price_rules>
                 <send_customer_data>1</send_customer_data>
                 <restore_cart_location>checkout/cart</restore_cart_location>

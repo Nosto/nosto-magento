@@ -21,7 +21,7 @@
  * @category  Nosto
  * @package   Nosto_Tagging
  * @author    Nosto Solutions Ltd <magento@nosto.com>
- * @copyright Copyright (c) 2013-2017 Nosto Solutions Ltd (http://www.nosto.com)
+ * @copyright Copyright (c) 2013-2019 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -323,7 +323,7 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Returns all store views that have Nosto intsalled
+     * Returns all store views that have Nosto installed
      *
      * @return Mage_Core_Model_Store[]
      */
@@ -339,5 +339,19 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
         }
 
         return $storesWithNosto;
+    }
+
+    /**
+     * Returns the id of the first store that has nosto installed
+     *
+     * @return int|null
+     */
+    public function getFirstNostoStoreId()
+    {
+        $storesWithNosto = $this->getAllStoreViewsWithNostoAccount();
+        if (!empty($storesWithNosto) && $storesWithNosto[0] instanceof Mage_Core_Model_Store) {
+            return $storesWithNosto[0]->getId();
+        }
+        return null;
     }
 }

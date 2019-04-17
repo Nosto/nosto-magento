@@ -21,7 +21,7 @@
  * @category  Nosto
  * @package   Nosto_Tagging
  * @author    Nosto Solutions Ltd <magento@nosto.com>
- * @copyright Copyright (c) 2013-2017 Nosto Solutions Ltd (http://www.nosto.com)
+ * @copyright Copyright (c) 2013-2019 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -111,6 +111,11 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      * Path to store config for sending customer data to Nosto or not
      */
     const XML_PATH_SEND_CUSTOMER_DATA = 'nosto_tagging/general/send_customer_data';
+
+    /**
+     * Path to store config for tagging the date a product has beed added to Magento's catalog
+     */
+    const XML_PATH_TAG_DATE_PUBLISHED = 'nosto_tagging/general/tag_date_published';
 
     /**
      * Path to store config for using SKUs
@@ -567,6 +572,17 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     public function getUseSkus($store = null)
     {
         return (bool)Mage::getStoreConfig(self::XML_PATH_USE_SKUS, $store);
+    }
+
+    /**
+     * Returns on/off setting for tagging product's date published
+     *
+     * @param Mage_Core_Model_Store|null $store the store model or null.
+     * @return boolean
+     */
+    public function getTagDatePublished($store = null)
+    {
+        return (bool)Mage::getStoreConfig(self::XML_PATH_TAG_DATE_PUBLISHED, $store);
     }
 
     /**

@@ -21,7 +21,7 @@
  * @category  Nosto
  * @package   Nosto_Tagging
  * @author    Nosto Solutions Ltd <magento@nosto.com>
- * @copyright Copyright (c) 2013-2017 Nosto Solutions Ltd (http://www.nosto.com)
+ * @copyright Copyright (c) 2013-2019 Nosto Solutions Ltd (http://www.nosto.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -140,6 +140,13 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         }
         if ($dataHelper->getUseCustomFields($store)) {
             $this->setCustomFields($this->buildCustomFields($product, $store));
+        }
+        if ($dataHelper->getTagDatePublished($store) && $product->hasData('created_at')) {
+            try {
+                $this->setDatePublished($product->getData('created_at'));
+            } catch (Nosto_NostoException $e) {
+                Nosto_Tagging_Helper_Log::exception($e);
+            }
         }
 
         Mage::dispatchEvent(

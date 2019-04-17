@@ -32,38 +32,32 @@
  * @package  Nosto_Tagging
  * @author   Nosto Solutions Ltd <magento@nosto.com>
  */
-class Nosto_Tagging_Model_Category_Config extends Mage_Catalog_Model_Config
+class Nosto_Tagging_Model_Category_Sortby extends Mage_Catalog_Model_Category_Attribute_Source_Sortby
 {
-    const NOSTO_PERSONALIZED_KEY = 'nosto-personalized';
-    const NOSTO_TOPLIST_KEY = 'nosto-toplist';
-
     /**
-     * Add relevance attribute as a sorting option
+     * Retrieve all options for category display settings product listing
      *
-     * @param null $storeId
      * @return array
      * @throws Mage_Core_Model_Store_Exception
      */
-    public function getAttributeUsedForSortByArray($storeId = null)
+    public function getAllOptions()
     {
-        $options = parent::getAttributeUsedForSortByArray();
-        /* @var Nosto_Tagging_Helper_Data $dataHelper */
-        $dataHelper = Mage::helper('nosto_tagging');
-        $store = Mage::app()->getStore($storeId);
-        /* @var Nosto_Tagging_Helper_Account $accountHelper */
-        $accountHelper = Mage::helper('nosto_tagging/account');
-        $nostoAccount = $accountHelper->find($store);
-
-        if ($nostoAccount instanceof Nosto_Types_Signup_AccountInterface) {
-            $featureAccessService = new Nosto_Service_FeatureAccess($nostoAccount);
-            if ($dataHelper->getUsePersonalizedCategorySorting($store)
-                && $featureAccessService->canUseGraphql()
-            ) {
-                $options[self::NOSTO_PERSONALIZED_KEY] = Mage::helper('catalog')->__('Personalized for you');
-                $options[self::NOSTO_TOPLIST_KEY] = Mage::helper('catalog')->__('Top products');
-            }
+        /* @var Nosto_Tagging_Model_Category_Config $configModel*/
+        $configModel = Mage::getModel('nosto_tagging/category_config');
+        $storeId = (int)Mage::app()->getRequest()->getParam('store');
+        // If we're in 'All store views' scope, should show options if there's Nosto account
+        if ($storeId === Mage_Core_Model_App::ADMIN_STORE_ID) {
+            /* @var Nosto_Tagging_Helper_Account $accountHelper */
+            $accountHelper = Mage::helper('nosto_tagging/account');
+            $storeId = $accountHelper->getFirstNostoStoreId() ?: $storeId;
         }
-
-        return $options;
+        $options = $configModel->getAttributeUsedForSortByArray($storeId);
+        foreach ($options as $key => $option) {
+            $this->_options[] = array(
+                'label' => $option,
+                'value' => $key
+            );
+        }
+        return $this->_options;
     }
 }
