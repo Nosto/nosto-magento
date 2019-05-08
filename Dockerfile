@@ -47,10 +47,10 @@ RUN         wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php
 RUN         sh -c 'echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
 RUN         apt-get -y -qq update
 
-# Install all core dependencies required for setting up Apache and PHP at least
+# Install all core dependencies required for setting up Apache and PHP and Python PIP at least
 RUN         apt-get -y -qq install unzip wget libfreetype6-dev libjpeg-dev \
             libmcrypt-dev libreadline-dev libpng-dev libicu-dev default-mysql-client \
-            libmcrypt-dev libxml2-dev libxml2-utils libxslt1-dev vim nano git tree curl \
+            libmcrypt-dev libxml2-dev libxml2-utils libxslt1-dev vim nano git tree curl python3-pip \
             supervisor ca-certificates && \
             apt-get -y -qq clean
 
@@ -74,15 +74,21 @@ RUN         a2enmod rewrite && phpenmod soap && \
             a2dissite 000-default.conf
 
 
+# Install Composer
 RUN        php -r "readfile('https://getcomposer.org/installer');" > composer-setup.php && \
            php composer-setup.php --install-dir=/usr/local/bin --filename=composer && \
            php -r "unlink('composer-setup.php');"
+
+# Install Robot and Selenium
+RUN        python3 -m pip install --upgrade pip && \
+           python3 -m pip install robotframework && \
+           python3 -m pip install robotframework-selenium2library && \
+           python3 -m pip install selenium
 
 # Set Permissions
 RUN        groupadd -r plugins -g 113 && \
            useradd -ms /bin/bash -u 113 -r -g plugins plugins && \
            usermod -a -G www-data plugins
-
 
 USER       plugins
 #ENTRYPOINT ["bash"]
