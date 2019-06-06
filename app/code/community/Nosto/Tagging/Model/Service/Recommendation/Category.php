@@ -35,6 +35,8 @@
 class Nosto_Tagging_Model_Service_Recommendation_Category
     extends Nosto_Tagging_Model_Service_Recommendation_Base
 {
+    const NOSTO_PREVIEW_COOKIE = 'nostopreview';
+
     /**
      * Returns an array of product ids sorted by relevance
      *
@@ -69,6 +71,13 @@ class Nosto_Tagging_Model_Service_Recommendation_Category
             );
         }
         $recoOperation->setCategory($category);
+
+        $previewModeCookie = Mage::getModel('core/cookie')
+            ->get(self::NOSTO_PREVIEW_COOKIE);
+        if ($previewModeCookie !== null && $previewModeCookie === "true") {
+            $recoOperation->setPreviewMode(true);
+        }
+
         try {
             $result = $recoOperation->execute();
             foreach ($result as $item) {
