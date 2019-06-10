@@ -184,7 +184,7 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
     /**
      * Adds the stock level / inventory level for SKU
      *
-     * @param Mage_Catalog_Model_Product $product the product model.
+     * @param Mage_Catalog_Model_Product $sku the product sku model.
      *
      */
     protected function amendInventoryLevel(Mage_Catalog_Model_Product $sku)
