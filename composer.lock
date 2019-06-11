@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2f45c1f0f6f037aec0a99775bcaf879d",
+    "content-hash": "37c26d6229f2553088c6a4b6defe356b",
     "packages": [
         {
             "name": "nosto/php-sdk",
@@ -190,7 +190,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "backendtea@gmail.com"
+                    "email": "BackEndTea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",

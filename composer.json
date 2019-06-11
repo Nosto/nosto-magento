@@ -23,7 +23,6 @@
     },
     "require": {
         "php": ">=5.4.0",
-        "vlucas/phpdotenv": ">=2.4.0 <3.0",
         "nosto/php-sdk": "3.15.0"
     },
     "require-dev": {
@@ -38,7 +37,8 @@
         "magento/marketplace-eqp": "1.*",
         "openmage/magento-mirror": "1.9",
         "wimg/php-compatibility": "^8.0",
-        "mridang/pearify": "0.3"
+        "mridang/pearify": "0.3",
+        "vlucas/phpdotenv": ">=2.4.0 <3.0"
     },
     "scripts": {
         "post-install-cmd": "if ! type \"composer\" > /dev/null; then echo \"composer not available in path - you must update the lib files manually\"; else composer dump-autoload --optimize; ./vendor/bin/pearify process .;fi",
