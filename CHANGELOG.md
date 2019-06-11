@@ -3,6 +3,7 @@ All notable changes to this project will be documented in this file. This projec
 ### 3.11.0
 * Use mock products in category personalisation when preview mode is enabled
 * Ignore non-numeric product ids in Graphql responses
+* Add inventory level to SKU
 
 ### 3.10.0
 * Add Nosto category personalization in the default Magento category sorting options
