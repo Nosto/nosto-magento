@@ -35,6 +35,8 @@
 class Nosto_Tagging_Model_Service_Recommendation_Category
     extends Nosto_Tagging_Model_Service_Recommendation_Base
 {
+    const NOSTO_PREVIEW_COOKIE = 'nostopreview';
+
     /**
      * Returns an array of product ids sorted by relevance
      *
@@ -57,32 +59,35 @@ class Nosto_Tagging_Model_Service_Recommendation_Category
         if (!$featureAccess->canUseGraphql()) {
             return $productIds;
         }
-        switch ($type){
-            case Nosto_Tagging_Model_Category_Config::NOSTO_PERSONALIZED_KEY:
-                $recoOperation = new Nosto_Operation_Recommendation_CategoryBrowsingHistory(
-                    $nostoAccount,
-                    $nostoCustomerId
-                );
-                break;
-            default:
-                $recoOperation = new Nosto_Operation_Recommendation_CategoryTopList(
-                    $nostoAccount,
-                    $nostoCustomerId
-                );
-                break;
+        if ($type === Nosto_Tagging_Model_Category_Config::NOSTO_PERSONALIZED_KEY) {
+            $recoOperation = new Nosto_Operation_Recommendation_CategoryBrowsingHistory(
+                $nostoAccount,
+                $nostoCustomerId
+            );
+        } else {
+            $recoOperation = new Nosto_Operation_Recommendation_CategoryTopList(
+                $nostoAccount,
+                $nostoCustomerId
+            );
         }
         $recoOperation->setCategory($category);
+
+        $previewModeCookie = Mage::getModel('core/cookie')
+            ->get(self::NOSTO_PREVIEW_COOKIE);
+        if ($previewModeCookie !== null && $previewModeCookie === "true") {
+            $recoOperation->setPreviewMode(true);
+        }
+
         try {
             $result = $recoOperation->execute();
             foreach ($result as $item) {
-                if ($item->getProductId()) {
+                if ($item->getProductId() && is_numeric($item->getProductId())) {
                     $productIds[] = $item->getProductId();
                 }
             }
         } catch (\Exception $e) {
             Nosto_Tagging_Helper_Log::exception($e);
         }
-
         return $productIds;
     }
 }
