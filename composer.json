@@ -23,7 +23,8 @@
     },
     "require": {
         "php": ">=5.4.0",
-        "nosto/php-sdk": "3.13.0"
+        "vlucas/phpdotenv": ">=2.4.0 <3.0",
+        "nosto/php-sdk": "3.15.0"
     },
     "require-dev": {
         "php": ">=7.1.0",
