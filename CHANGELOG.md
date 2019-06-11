@@ -1,5 +1,8 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.11.0
+* Add inventory level to SKU
+
 ### 3.10.0
 * Add Nosto category personalization in the default Magento category sorting options
 

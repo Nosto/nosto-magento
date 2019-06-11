@@ -55,6 +55,9 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
         Mage_Core_Model_Store $store = null
     )
     {
+        /** @var Nosto_Tagging_Helper_Data $dataHelper */
+        $dataHelper = Mage::helper('nosto_tagging');
+
         if ($store === null) {
             /** @var Nosto_Tagging_Helper_Data $helper */
             $helper = Mage::helper('nosto_tagging');
@@ -82,6 +85,10 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
         $this->amendCustomizableAttributes($sku, $store);
         $this->loadCustomFieldsFromConfigurableAttributes($sku, $parent, $store);
         $this->loadCustomFieldsFromAttributeSet($sku, $store);
+
+        if ($dataHelper->getUseInventoryLevel($store)) {
+            $this->amendInventoryLevel($sku);
+        }
 
         return true;
     }
@@ -172,5 +179,28 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
         }
 
         return $availability;
+    }
+
+    /**
+     * Adds the stock level / inventory level for SKU
+     *
+     * @param Mage_Catalog_Model_Product $sku the product sku model.
+     *
+     */
+    protected function amendInventoryLevel(Mage_Catalog_Model_Product $sku)
+    {
+        /* @var Nosto_Tagging_Helper_Stock $stockHelper */
+        $stockHelper = Mage::helper('nosto_tagging/stock');
+        try {
+            $this->setInventoryLevel($stockHelper->getQty($sku));
+        } catch (\Exception $e) {
+            Nosto_Tagging_Helper_Log::error(
+                'Failed to resolve inventory level for SKU %d to tags. Error message was: %s',
+                array(
+                    $sku->getId(),
+                    $e->getMessage()
+                )
+            );
+        }
     }
 }
