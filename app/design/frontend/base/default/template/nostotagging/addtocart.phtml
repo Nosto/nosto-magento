@@ -63,16 +63,9 @@ $formKey = $session->getFormKey();
 
     // Products must be and array of objects [{productId: "123", skuId: "321"}]
     Nosto.addMultipleProductsToCart = function (products, element) {
-        var skus = [];
         products.forEach(function(product) {
-            Nosto.trackAddToCartClick(product.productId, element);
-            skus.push(product.skuId);
+            Nosto.addSkuToCart(product, element, 1);
         });
-        var fields = {};
-        fields["product"] = skus.pop();
-        fields["related_product"] = skus;
-        fields["form_key"]= "<?php echo $formKey; ?>";
-        Nosto.postAddToCartForm(fields, "<?php echo $formAction; ?>");
     };
 
     // Product object must have fields productId and skuId {productId: 123, skuId: 321}
