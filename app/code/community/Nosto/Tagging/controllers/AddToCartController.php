@@ -143,8 +143,6 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
         $products = explode(',', $this->getRequest()->getParam('product'));
         $skus = explode(',', $this->getRequest()->getParam('skus'));
 
-//
-$debugger = true;
         foreach ($products as $key => $product) {
             try {
                 /* @var Mage_Catalog_Model_Product $product */
@@ -156,18 +154,17 @@ $debugger = true;
                 $parentType = $product->getTypeInstance();
                 // We need to get the SKU parent, then load the SKU again to get the super attributes
                 $attributeOptions = array();
-//                $skuProduct = Mage::getModel('catalog/product')->load($skuId);
                 if ($parentType instanceof Mage_Catalog_Model_Product_Type_Configurable) {
-                    $configurableParent = $product->getTypeInstance()->getParentIdsByChild($product->getId());
+                    $skuProduct = Mage::getModel('catalog/product')->load($skus[$key]);
                     $configurableAttributes = $parentType->getConfigurableAttributesAsArray($product);
                     foreach ($configurableAttributes as $configurableAttribute) {
                         $attributeCode = $configurableAttribute['attribute_code'];
                         /** @var \Mage_Catalog_Model_Resource_Product $productResource */
-                        $productResource = $product->getResource();
+                        $productResource = $skuProduct->getResource();
                         $attribute = $productResource->getAttribute($attributeCode);
                         if ($attribute instanceof Mage_Catalog_Model_Resource_Eav_Attribute) {
                             $attributeId = $attribute->getId();
-                            $attributeValueId = $product->getData($attributeCode);
+                            $attributeValueId = $skuProduct->getData($attributeCode);
                             if ($attributeId && $attributeValueId) {
                                 $attributeOptions[$attributeId] = $attributeValueId;
                             }
@@ -204,21 +201,16 @@ $debugger = true;
             } catch (\Exception $e) {
                 $this->_getSession()->addException($e, $this->__('Cannot add the item to shopping cart.'));
                 Mage::logException($e);
-//                return $this->_goBack(); //@todo maybe add notices but keep adding as much products as possible
             }
         }
         $cart->save();
         /** @noinspection PhpUndefinedMethodInspection */
         $this->_getSession()->setCartWasUpdated(true);
-//        if (!$product) {
-//            $product = $this->_initProduct();
-//        }
         Mage::dispatchEvent(
             'checkout_cart_add_product_complete',
             array('product' => $product, 'request' => $this->getRequest(), 'response' => $this->getResponse())
         );
         return $this->_goBack();
-//        return $this;
     }
 
     /**
@@ -238,33 +230,6 @@ $debugger = true;
             return $product;
         }
         return false;
-    }
-
-    /**
-     * Returns an array with a list of super_attributes for a parent product and his SKU
-     *
-     * @param Product $product
-     * @param Product $skuProduct
-     * @param ConfigurableType $configurableType
-     * @return array
-     */
-    private function getAttributeOptions(Product $product, Product $skuProduct, ConfigurableType $configurableType)
-    {
-        $configurableAttributes = $configurableType->getConfigurableAttributesAsArray($product);
-        $attributeOptions = [];
-        $skuResource = $this->productResourceModel->load($skuProduct, $skuProduct->getId());
-        foreach ($configurableAttributes as $configurableAttribute) {
-            $attributeCode = $configurableAttribute['attribute_code'];
-            $attribute = $skuResource->getAttribute($attributeCode);
-            if ($attribute instanceof MageAttribute) {
-                $attributeId = $attribute->getId();
-                $attributeValueId = $skuProduct->getData($attributeCode);
-                if ($attributeId && $attributeValueId) {
-                    $attributeOptions[$attributeId] = $attributeValueId;
-                }
-            }
-        }
-        return $attributeOptions;
     }
 
 }
