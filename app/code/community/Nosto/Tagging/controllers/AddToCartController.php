@@ -125,4 +125,14 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
         }
         return $this;
     }
+
+    /**
+     * @return Mage_Checkout_CartController|Nosto_Tagging_AddToCartController
+     * @throws Mage_Exception
+     */
+    public function addMultipleProductsToCartAction()
+    {
+        return $this->_goBack();
+    }
+
 }
