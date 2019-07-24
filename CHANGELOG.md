@@ -1,5 +1,8 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.11.2
+* Implement new add multiple products to cart method to fix cart products having no image
+
 ### 3.11.1
 * Fix add multiple products to cart javascript function where some products added could have no image or link
 

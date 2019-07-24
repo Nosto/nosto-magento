@@ -84,4 +84,20 @@ class Nosto_Tagging_Block_Addtocart extends Mage_Core_Block_Template
 
         return $urlHelper->getNostoAddToCartUrl($store);
     }
+
+    /**
+     * Returns the url for add to cart controller
+     *
+     * @return string
+     */
+    public function getAddMultipleProductsToCartUrl()
+    {
+        /** @var Nosto_Tagging_Helper_Url $urlHelper */
+        $urlHelper = Mage::helper('nosto_tagging/url');
+        /** @var Nosto_Tagging_Helper_Data $helper */
+        $helper = Mage::helper('nosto_tagging');
+        $store = $helper->getStore();
+
+        return $urlHelper->getNostoAddMultipleProductsToCartUrl($store);
+    }
 }
