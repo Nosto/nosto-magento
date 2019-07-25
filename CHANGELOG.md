@@ -1,5 +1,8 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 3.11.3
+* Remove function parameter type check for compatibility with PHP > 5.6
+
 ### 3.11.2
 * Implement new add multiple products to cart method to fix cart products having no image
 
