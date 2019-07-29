@@ -571,10 +571,10 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
     /**
      * Wrapper that returns URL with action in add to cart controller
      * @param Mage_Core_Model_Store $store
-     * @param String $action
+     * @param $action
      * @return string
      */
-    protected function getAddToCartUrlByAction(Mage_Core_Model_Store $store, String $action)
+    protected function getAddToCartUrlByAction(Mage_Core_Model_Store $store, $action)
     {
         $defaultParams = $this->getUrlOptionsWithNoSid($store);
         $defaultParams[self::MAGENTO_URL_OPTION_SECURE] = 1;
