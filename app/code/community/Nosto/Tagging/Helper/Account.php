@@ -341,17 +341,4 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
         return $storesWithNosto;
     }
 
-    /**
-     * Returns the id of the first store that has nosto installed
-     *
-     * @return int|null
-     */
-    public function getFirstNostoStoreId()
-    {
-        $storesWithNosto = $this->getAllStoreViewsWithNostoAccount();
-        if (!empty($storesWithNosto) && $storesWithNosto[0] instanceof Mage_Core_Model_Store) {
-            return $storesWithNosto[0]->getId();
-        }
-        return null;
-    }
 }
