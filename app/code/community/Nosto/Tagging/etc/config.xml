@@ -39,15 +39,6 @@
                     <class>Mage_Eav_Model_Entity_Setup</class>
                 </setup>
             </tagging_setup>
-            <nosto_index_setup>
-                <setup>
-                    <module>Nosto_Tagging</module>
-                    <class>Mage_Eav_Model_Entity_Setup</class>
-                </setup>
-                <connection>
-                    <use>core_setup</use>
-                </connection>
-            </nosto_index_setup>
             <nosto_customer_reference_setup>
                 <setup>
                     <module>Nosto_Tagging</module>
