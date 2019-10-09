@@ -749,20 +749,6 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Returns an array with Nosto settings
-     *
-     * @param null $store
-     * @return Mage_Core_Model_Store[]
-     */
-    public function getNostoStoreConfig($store = null)
-    {
-        if ($store === null) {
-            $store = $this->getStore();
-        }
-        return Mage::getStoreConfig('nosto_tagging', $store);
-    }
-
-    /**
      * Wrapper to return the current store
      *
      * @param null|string|bool|int|Mage_Core_Model_Store $id
