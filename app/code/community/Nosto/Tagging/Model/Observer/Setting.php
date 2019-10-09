@@ -81,18 +81,18 @@ class Nosto_Tagging_Model_Observer_Setting
                     );
                 }
                 if ($helper->isMultiCurrencyMethodExchangeRate($store) && !$accountHelper->updateCurrencyExchangeRates(
-                        $account,
-                        $store
-                    )) {
-                        NostoLog::error(
-                            'Failed sync currency rates #%s for store #%s in class %s',
-                            array(
-                                $account->getName(),
-                                $store->getName(),
-                                __CLASS__
-                            )
-                        );
-                    }
+                    $account,
+                    $store
+                )) {
+                    NostoLog::error(
+                        'Failed sync currency rates #%s for store #%s in class %s',
+                        array(
+                            $account->getName(),
+                            $store->getName(),
+                            __CLASS__
+                        )
+                    );
+                }
                 $emulation->stopEnvironmentEmulation($env);
             }
         }
