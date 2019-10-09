@@ -465,35 +465,4 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         return $taggingCurrencyCode;
     }
 
-    /**
-     * Gets productIds with active catalog price rules
-     *
-     * @return array
-     */
-    public function getProductIdsWithActivePriceRules()
-    {
-        /* @var Mage_CatalogRule_Model_Resource_Rule_Collection $rules */
-        $rules = Mage::getModel('catalogrule/rule')->getCollection();
-        /** @var Mage_Core_Model_Date $dateModel */
-        $dateModel = Mage::getSingleton('core/date');
-        $date = $dateModel->gmtDate();
-        $rules
-            ->addIsActiveFilter()
-            ->addFieldToFilter(
-                'from_date', array(
-                    array('lt' => $date),
-                    array('null' => true)
-                )
-            );
-        $ids = array();
-        /* @var Mage_CatalogRule_Model_Rule $rule*/
-        foreach ($rules as $rule) {
-            if ($rule->getIsActive()) {
-                $matchingProductIds = $rule->getResource()->getRuleProductIds($rule->getId());
-                $ids = array_merge($matchingProductIds, $ids);
-            }
-        }
-
-        return array_unique($ids);
-    }
 }
