@@ -56,30 +56,6 @@
                         </use_product_api>
                     </fields>
                     <fields>
-                        <use_product_indexer translate="label">
-                            <label>Product data indexing</label>
-                            <comment>Set this to no if Nosto product data should not be indexed</comment>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>11</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </use_product_indexer>
-                    </fields>
-                    <fields>
-                        <update_catalog_price_rules translate="label">
-                            <label>Automatic catalog rule update</label>
-                            <comment>If you set this to yes product data is automatically updated to Nosto product index when catalog price rules are applied. Caution! This might significally slow down applying catalog price rules if you have a large amount of products affected by the catalog price rules</comment>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>12</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </update_catalog_price_rules>
-                    </fields>
-                    <fields>
                         <send_customer_data translate="label">
                             <label>Enable customer data sending</label>
                             <comment>Set this to no if customer's data should not be sent to Nosto</comment>
@@ -185,18 +161,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </restore_cart_location>
-                    </fields>
-                    <fields>
-                        <indexer_memory translate="label">
-                            <label>Indexer Memory</label>
-                            <comment>Percentage of total PHP available memory that Nosto indexer is allowed to use</comment>
-                            <frontend_type>select</frontend_type>
-                            <source_model>nosto_tagging/system_config_source_memory_percentage</source_model>
-                            <sort_order>100</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </indexer_memory>
                     </fields>
                 </general>
                 <currency_formats translate="label">

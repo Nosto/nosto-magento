@@ -37,51 +37,29 @@
 class Nosto_Tagging_Model_Meta_Product_Builder
 {
     /**
-     * Builds Nosto product from cache. If the product is not available in cache
-     * we use "raw data" for building.
+     * Builds Nosto product. We use "raw data" for building.
      *
      * @param Mage_Catalog_Model_Product $product
      * @param Mage_Core_Model_Store|null $store
-     * @param bool $useIndex
-     * @throws Nosto_NostoException
      * @throws Mage_Core_Exception
-     *
+     * @throws Nosto_NostoException
      * @return Nosto_Tagging_Model_Meta_Product|null
      */
     public static function build(
         Mage_Catalog_Model_Product $product,
-        Mage_Core_Model_Store $store = null,
-        $useIndex = false
-    ) 
+        Mage_Core_Model_Store $store = null
+    )
     {
         if ($store === null) {
             /** @var Nosto_Tagging_Helper_Data $helper */
             $helper = Mage::helper('nosto_tagging');
             $store = $helper->getStore();
         }
-        if ($useIndex === true) {
-            /* @var Nosto_Tagging_Model_Meta_Product $nostoProduct */
-            $indexedProduct = Mage::getModel('nosto_tagging/index')
-                ->getCollection()
-                ->addFieldToFilter('product_id', $product->getId())
-                ->addFieldToFilter('store_id', $store->getId())
-                ->setPageSize(1)
-                ->setCurPage(1)
-                ->getFirstItem(); // @codingStandardsIgnoreLine
-            if ($indexedProduct instanceof Nosto_Tagging_Model_Index) {
-                $nostoProduct = $indexedProduct->getNostoMetaProduct();
-                if ($nostoProduct instanceof Nosto_Tagging_Model_Meta_Product) {
-                    return $nostoProduct;
-                }
-            }
-        }
-
+        /* @var Nosto_Tagging_Model_Meta_Product $nostoProduct */
         $nostoProduct = Mage::getModel('nosto_tagging/meta_product');
         if ($nostoProduct->loadData($product, $store) === false) {
             return null;
         }
-
         return $nostoProduct;
-
     }
 }
