@@ -245,12 +245,10 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
             $categories = $category->getParentCategories();
             $path = $category->getPathInStore();
             $ids = array_reverse(explode(',', $path));
+            $data = array();
             foreach ($ids as $id) {
                 if (isset($categories[$id]) && $categories[$id]->getName()) {
                     $data[] = $categories[$id]->getName();
-                } else {
-                    $data = array();
-                    break;
                 }
             }
         }

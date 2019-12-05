@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file. This projec
 ### 4.0.0 (Unreleased)
 * Remove Nosto category personalization feature from this extension
 
+### 3.11.4
+* Fix category tagging not being rendered on product detail page
+* Fix an issue when rendering category tagging for categories in which parents are hidden
+
 ### 3.11.3
 * Remove function parameter type check for compatibility with PHP < 5.6
 

@@ -85,6 +85,7 @@
     <catalog_product_view>
         <reference name="after_body_start">
             <block type="nosto_tagging/product" name="nosto.product"/>
+            <block type="nosto_tagging/category" name="nosto.category"/>
         </reference>
     </catalog_product_view>
 
