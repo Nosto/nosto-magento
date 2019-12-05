@@ -70,7 +70,10 @@ class Nosto_Tagging_Block_Category extends Mage_Core_Block_Template
     {
         try {
             $category = Mage::registry('current_category');
-            return Nosto_Tagging_Model_Meta_Category_Builder::build($category);
+            if ($category) {
+                return Nosto_Tagging_Model_Meta_Category_Builder::build($category);
+            }
+            return null;
         } catch (\Exception $e) {
             Nosto_Tagging_Helper_Log::exception($e);
             return null;
