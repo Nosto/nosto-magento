@@ -1,7 +1,8 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
-### 4.0.0 (Unreleased)
+### 4.0.0
 * Remove Nosto category personalization feature from this extension
+* Fix an issue where the product's category was encoded twice
 
 ### 3.11.4
 * Fix category tagging not being rendered on product detail page
