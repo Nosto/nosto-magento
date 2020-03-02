@@ -98,16 +98,6 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_USE_PRODUCT_API = 'nosto_tagging/general/use_product_api';
 
     /**
-     * Path to store config for using the product Indexer or not
-     */
-    const XML_PATH_USE_PRODUCT_INDEXER = 'nosto_tagging/general/use_product_indexer';
-
-    /**
-     * Path to store config for automatically update catalog price rule changes
-     */
-    const XML_PATH_UPDATE_CATALOG_PRICE_RULES = 'nosto_tagging/general/update_catalog_price_rules';
-
-    /**
      * Path to store config for sending customer data to Nosto or not
      */
     const XML_PATH_SEND_CUSTOMER_DATA = 'nosto_tagging/general/send_customer_data';
@@ -126,11 +116,6 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      * Path to store config for restore cart redirection
      */
     const XML_PATH_RESTORE_CART_LOCATION = 'nosto_tagging/general/restore_cart_location';
-
-    /**
-     * Path to store config for indexer allowed memory percentage
-     */
-    const XML_PATH_INDEXER_MEMORY = 'nosto_tagging/general/indexer_memory';
 
     /**
      * Path to store config for custom fields
@@ -156,11 +141,6 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      * Path to store config for tagging low stock
      */
     const XML_PATH_USE_LOW_STOCK = 'nosto_tagging/general/use_low_stock';
-
-    /**
-     * Path to setting if personalized category sorting is enabled
-     */
-    const XML_PATH_USE_PERSONALIZED_CATEGORY_SORTING = 'nosto_tagging/general/personalized_category_sorting';
 
     /**
      * @var boolean the path for setting for product urls
@@ -529,28 +509,6 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Returns on/off setting for product indexer
-     *
-     * @param Mage_Core_Model_Store|null $store the store model or null.
-     * @return bool
-     */
-    public function getUseProductIndexer($store = null)
-    {
-        return (bool)Mage::getStoreConfig(self::XML_PATH_USE_PRODUCT_INDEXER, $store);
-    }
-
-    /**
-     * Returns on/off setting for automatic catalog price rule updates
-     *
-     * @param Mage_Core_Model_Store|null $store the store model or null.
-     * @return bool
-     */
-    public function getUseAutomaticCatalogPriceRuleUpdates($store = null)
-    {
-        return (bool)Mage::getStoreConfig(self::XML_PATH_UPDATE_CATALOG_PRICE_RULES, $store);
-    }
-
-    /**
      * Returns on/off setting for sending customer data to Nosto
      *
      * @param Mage_Core_Model_Store|null $store the store model or null.
@@ -652,17 +610,6 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Returns on/off setting for using personalized category sorting
-     *
-     * @param Mage_Core_Model_Store|null $store the store model or null.
-     * @return boolean
-     */
-    public function getUsePersonalizedCategorySorting($store = null)
-    {
-        return (bool)Mage::getStoreConfig(self::XML_PATH_USE_PERSONALIZED_CATEGORY_SORTING, $store);
-    }
-
-    /**
      * Returns exchange rate cron frequency
      *
      * For possible return values
@@ -716,18 +663,6 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     public function getRestoreCartRedirectLocation($store = null)
     {
         return Mage::getStoreConfig(self::XML_PATH_RESTORE_CART_LOCATION, $store);
-    }
-
-    /**
-     * Return the percentage of allowed memory for the indexer
-     *
-     * @param Mage_Core_Model_Store|null $store the store model or null.
-     *
-     * @return string
-     */
-    public function getIndexerMemoryPercentage($store = null)
-    {
-        return Mage::getStoreConfig(self::XML_PATH_INDEXER_MEMORY, $store);
     }
 
     /**
@@ -809,36 +744,6 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         }
 
         return $version;
-    }
-
-    /**
-     * Returns boolean if all stores use product indexer
-     *
-     * @return bool
-     */
-    public function getAllStoresUseProductIndexer()
-    {
-        foreach ($this->getAllStoreViews() as $store) {
-            if (!$this->getUseProductIndexer($store)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * Returns an array with Nosto settings
-     *
-     * @param null $store
-     * @return Mage_Core_Model_Store[]
-     */
-    public function getNostoStoreConfig($store = null)
-    {
-        if ($store === null) {
-            $store = $this->getStore();
-        }
-        return Mage::getStoreConfig('nosto_tagging', $store);
     }
 
     /**

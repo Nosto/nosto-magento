@@ -40,13 +40,6 @@ class Nosto_Tagging_Model_Service_Product
     public static $maxBatchSize = 500;
 
     /**
-     * Maximum amount of batches to be updated to Nosto.
-     *
-     * @var int
-     */
-    public static $maxBatchCount = 10000;
-
-    /**
      * Sends a product update to Nosto for all stores and installed Nosto
      * accounts
      *
@@ -65,7 +58,6 @@ class Nosto_Tagging_Model_Service_Product
             }
             ++$counter;
             if ($product instanceof Mage_Catalog_Model_Product === false) {
-                /** @noinspection PhpUnhandledExceptionInspection */
                 Mage::throwException(
                     sprintf(
                         'Invalid data type, expecting Mage_Catalog_Model_Product' .
@@ -170,144 +162,6 @@ class Nosto_Tagging_Model_Service_Product
     }
 
     /**
-     * Send out of sync products from Nosto index to Nosto via API
-     */
-    public function updateOutOfSyncToNosto()
-    {
-        /** @var Nosto_Tagging_Helper_Account $accountHelper */
-        $accountHelper = Mage::helper('nosto_tagging/account');
-        $storesWithNosto = $accountHelper->getAllStoreViewsWithNostoAccount();
-        foreach ($storesWithNosto as $store) {
-            $start = microtime(true);
-            /** @var Nosto_Tagging_Helper_Account $helper */
-            $helper = Mage::helper('nosto_tagging/account');
-            $account = $helper->find($store);
-            /* @var $nostoHelper Nosto_Tagging_Helper_Data */
-            $nostoHelper = Mage::helper('nosto_tagging');
-            if ($account === null
-                || !$account->isConnectedToNosto()
-                || !$nostoHelper->getUseProductApi($store)
-            ) {
-                continue;
-            }
-            $iterations = 0;
-            $urlHelper = Mage::helper('nosto_tagging/url');
-            $activeDomain = $urlHelper->getActiveDomain($store);
-            $indexedProducts = $this->getOutOfSyncBatch($store);
-            $totalOutOfSyncCount = $indexedProducts->getSize();
-            $totalBatchCount = ceil($totalOutOfSyncCount/self::$maxBatchSize);
-            while (true) {
-                ++$iterations;
-                if ($iterations >= self::$maxBatchCount) {
-                    Nosto_Tagging_Helper_Log::info(
-                        sprintf(
-                            'Max batch count (%d) reached - exiting indexing',
-                            self::$maxBatchCount
-                        )
-                    );
-                    break;
-                }
-                $operation = new Nosto_Operation_UpsertProduct($account, $activeDomain);
-                $operation->setResponseTimeout($this->getApiWaitTimeout());
-                $batchCount = count($indexedProducts);
-                if ($batchCount === 0) {
-                    break;
-                }
-                Nosto_Tagging_Helper_Log::logWithMemoryConsumption(
-                    sprintf(
-                        'Synchronizing %d products in store %s to Nosto [%d/%d]',
-                        $batchCount,
-                        $store->getCode(),
-                        $iterations,
-                        $totalBatchCount
-                    )
-                );
-                /* @var Nosto_Tagging_Model_Index $indexedProduct */
-                foreach ($indexedProducts as $indexedProduct) {
-                    $nostoProduct = $indexedProduct->getNostoMetaProduct();
-                    if ($nostoProduct instanceof Nosto_Tagging_Model_Meta_Product) {
-                        $operation->addProduct($nostoProduct);
-                    }
-                    $indexedProduct->setInSync(1);
-                    try {
-                        $indexedProduct->save();
-                    } catch (\Exception $e) {
-                        Nosto_Tagging_Helper_Log::exception($e);
-                    }
-                }
-                try {
-                    $operation->upsert();
-                } catch (\Exception $e) {
-                    Nosto_Tagging_Helper_Log::exception($e);
-                }
-                if ($batchCount < self::$maxBatchSize) {
-                    break;
-                }
-                $indexedProducts = $this->getOutOfSyncBatch($store);
-            }
-
-            Nosto_Tagging_Helper_Log::logWithMemoryConsumption(
-                sprintf(
-                    'Synchronizing for store %s done in %d secs',
-                    $store->getCode(),
-                    microtime(true) - $start
-                )
-            );
-        }
-    }
-
-    /**
-     * @param Mage_Core_Model_Store $store
-     * @return mixed
-     */
-    protected function getOutOfSyncBatch(Mage_Core_Model_Store $store)
-    {
-        return Mage::getModel('nosto_tagging/index')
-            ->getCollection()
-            ->addFieldToFilter('in_sync', 0)
-            ->addFieldToFilter('store_id', $store->getId())
-            ->setPageSize(self::$maxBatchSize); // @codingStandardsIgnoreLine
-    }
-
-    /**
-     * Send single product from Nosto index to Nosto via API
-     *
-     * @param Nosto_Tagging_Model_Index $nostoIndexedProduct
-     * @param Mage_Core_Model_Store $store
-     * @throws Exception
-     */
-    public function syncIndexedProduct(
-        Nosto_Tagging_Model_Index $nostoIndexedProduct,
-        Mage_Core_Model_Store $store
-    )
-    {
-        /** @var Nosto_Tagging_Helper_Account $helper */
-        $helper = Mage::helper('nosto_tagging/account');
-        $account = $helper->find($store);
-        /* @var $nostoHelper Nosto_Tagging_Helper_Data */
-        $nostoHelper = Mage::helper('nosto_tagging');
-        $nostoProduct = $nostoIndexedProduct->getNostoMetaProduct();
-        if (
-            $account instanceof Nosto_Object_Signup_Account
-            && $account->isConnectedToNosto()
-            && $nostoProduct instanceof Nosto_Tagging_Model_Meta_Product
-            && $nostoHelper->getUseProductApi($store)
-        ) {
-            $urlHelper = Mage::helper('nosto_tagging/url');
-            $operation = new Nosto_Operation_UpsertProduct($account, $urlHelper->getActiveDomain($store));
-            $operation->setResponseTimeout($this->getApiWaitTimeout());
-            $operation->addProduct($nostoProduct);
-            $nostoIndexedProduct->setInSync(1);
-            $nostoIndexedProduct->save();
-            try {
-                $operation->upsert();
-            } catch (\Exception $e) {
-                Nosto_Tagging_Helper_Log::exception($e);
-            }
-        }
-    }
-
-    /**
      * Deletes / discontinues products
      *
      * @param Mage_Core_Model_Store $store
@@ -321,18 +175,6 @@ class Nosto_Tagging_Model_Service_Product
         $account = $helper->find($store);
         if ($account === null || !$account->isConnectedToNosto()) {
             return;
-        }
-        /** @var Nosto_Tagging_Helper_Data $dataHelper */
-        $dataHelper = Mage::helper('nosto_tagging');
-        if ($dataHelper->getUseProductIndexer($store)) {
-            $indexedProducts = Mage::getModel('nosto_tagging/index')
-                ->getCollection()
-                ->addFieldToFilter('product_id', array('in' => $productIds))
-                ->addFieldToFilter('store_id', $store->getId()); // @codingStandardsIgnoreLine
-            /* @var Nosto_Tagging_Model_Index $indexedProduct*/
-            foreach ($indexedProducts as $indexedProduct) {
-                $indexedProduct->delete();
-            }
         }
         $operation = new Nosto_Operation_DeleteProduct($account);
         $operation->setProductIds($productIds);
