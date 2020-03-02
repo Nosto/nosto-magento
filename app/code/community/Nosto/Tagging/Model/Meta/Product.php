@@ -48,15 +48,6 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
     protected $_tags = array();
 
     /**
-     * Backwards compatibility for categories
-     *
-     * @deprecated Use setters instead of direct assignment. This attribute will
-     * be removed in future release.
-     * @var array
-     */
-    protected $_categories = array();
-
-    /**
      * Array of deprecated direct attribute assignments
      *
      * @var array
@@ -599,22 +590,6 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         }
 
         return $tags;
-    }
-
-    /**
-     * @inheritdoc
-     * @suppress PhanDeprecatedProperty
-     */
-    public function getCategories()
-    {
-        $categories = parent::getCategories();
-        /** @noinspection PhpDeprecationInspection */
-        if (!empty($this->_categories)) {
-            /** @noinspection PhpDeprecationInspection */
-            $categories = array_merge($categories, $this->_categories);
-        }
-
-        return $categories;
     }
 
     /**
