@@ -2,6 +2,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ### 4.0.0
 * Remove Nosto category personalization feature from this extension
+* Remove product indexer
 * Fix an issue where the product's category was encoded twice
 
 ### 3.11.4
