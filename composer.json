@@ -32,10 +32,10 @@
         "sebastian/phpcpd": "4.1.0",
         "phing/phing": "2.*",
         "mridang/magazine": "0.2",
-        "magento-ecg/coding-standard": "2.*",
+        "magento-ecg/coding-standard": "3.*",
         "magento/marketplace-eqp": "4.*",
         "openmage/magento-mirror": "1.9",
-        "wimg/php-compatibility": "^8.0",
+        "wimg/php-compatibility": "^9.0",
         "mridang/pearify": "0.3",
         "vlucas/phpdotenv": ">=2.4.0 <3.0",
         "mridang/pmd-annotations": "^0.0.2"
