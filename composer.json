@@ -38,7 +38,8 @@
         "wimg/php-compatibility": "^9.0",
         "mridang/pearify": "0.3",
         "vlucas/phpdotenv": ">=2.4.0 <3.0",
-        "mridang/pmd-annotations": "^0.0.2"
+        "mridang/pmd-annotations": "^0.0.2",
+        "staabm/annotate-pull-request-from-checkstyle": "^1.1"
     },
     "scripts": {
         "post-install-cmd": "if ! type \"composer\" > /dev/null; then echo \"composer not available in path - you must update the lib files manually\"; else composer dump-autoload --optimize; ./vendor/bin/pearify process .;fi",
