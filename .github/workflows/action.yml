@@ -36,6 +36,7 @@ jobs:
       run: |
         composer install --prefer-dist --no-progress --no-suggest
         composer dump-autoload --optimize
+        ./vendor/bin/pearify process .
     ############################################################################
 
     - name: Run the sniffer
@@ -86,6 +87,7 @@ jobs:
       run: |
         composer install --prefer-dist --no-progress --no-suggest
         composer dump-autoload --optimize
+        ./vendor/bin/pearify process .
     ############################################################################
 
     - name: Run the mess detector
@@ -133,6 +135,7 @@ jobs:
       run: |
         composer install --prefer-dist --no-progress --no-suggest
         composer dump-autoload --optimize
+        ./vendor/bin/pearify process .
     ############################################################################
 
       #https://github.com/sebastianbergmann/phpcpd/issues/148
@@ -181,6 +184,7 @@ jobs:
       run: |
         composer install --prefer-dist --no-progress --no-suggest
         composer dump-autoload --optimize
+        ./vendor/bin/pearify process .
     ############################################################################
 
     - name: Build archive using composer
