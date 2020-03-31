@@ -23,21 +23,22 @@
     },
     "require": {
         "php": ">=5.4.0",
-        "nosto/php-sdk": "3.15.*",
-        "phan/phan": "2.6"
+        "nosto/php-sdk": "3.15.*"
     },
     "require-dev": {
-        "mridang/magazine": "0.1",
+        "phan/phan": "^2.6",
+        "squizlabs/php_codesniffer": "^3.5",
+        "phpmd/phpmd": "^2.6",
+        "sebastian/phpcpd": "4.1.0",
         "phing/phing": "2.*",
-        "phpmd/phpmd": "^2.5",
-        "squizlabs/php_codesniffer": "2.6.*",
-        "sebastian/phpcpd": "*",
+        "mridang/magazine": "0.2",
         "magento-ecg/coding-standard": "2.*",
-        "magento/marketplace-eqp": "1.*",
+        "magento/marketplace-eqp": "4.*",
         "openmage/magento-mirror": "1.9",
         "wimg/php-compatibility": "^8.0",
         "mridang/pearify": "0.3",
-        "vlucas/phpdotenv": ">=2.4.0 <3.0"
+        "vlucas/phpdotenv": ">=2.4.0 <3.0",
+        "mridang/pmd-annotations": "^0.0.2"
     },
     "scripts": {
         "post-install-cmd": "if ! type \"composer\" > /dev/null; then echo \"composer not available in path - you must update the lib files manually\"; else composer dump-autoload --optimize; ./vendor/bin/pearify process .;fi",
