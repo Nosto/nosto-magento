@@ -35,7 +35,7 @@
         "magento-ecg/coding-standard": "3.*",
         "magento/marketplace-eqp": "4.*",
         "openmage/magento-mirror": "1.9",
-        "wimg/php-compatibility": "^9.0",
+        "phpcompatibility/php-compatibility": "^9.0",
         "mridang/pearify": "0.3",
         "vlucas/phpdotenv": ">=2.4.0 <3.0",
         "mridang/pmd-annotations": "^0.0.2",
