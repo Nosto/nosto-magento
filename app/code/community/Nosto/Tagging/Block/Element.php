@@ -52,12 +52,12 @@ class Nosto_Tagging_Block_Element extends Mage_Core_Block_Template
     {
         /** @var Nosto_Tagging_Helper_Account $helper */
         $helper = Mage::helper('nosto_tagging/account');
-        if (
-            !Mage::helper('nosto_tagging/module')->isModuleEnabled()
+        if (!Mage::helper('nosto_tagging/module')->isModuleEnabled()
             || !$helper->existsAndIsConnected()
         ) {
             return '';
         }
+
         return parent::_toHtml();
     }
 
@@ -73,6 +73,7 @@ class Nosto_Tagging_Block_Element extends Mage_Core_Block_Template
         if ($id === null) {
             $id = self::DEFAULT_ID;
         }
+
         return $id;
     }
 }

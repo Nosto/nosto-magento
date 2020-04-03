@@ -67,6 +67,7 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
                 Mage::app()->setCurrentStore($store->getCode());
             }
         }
+
         return $helper->getStore();
     }
 
@@ -134,7 +135,6 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
 
             return true;
         } else {
-
             return false;
         }
     }

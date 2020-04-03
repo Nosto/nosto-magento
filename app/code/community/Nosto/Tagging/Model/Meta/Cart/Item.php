@@ -93,6 +93,7 @@ abstract class Nosto_Tagging_Model_Meta_Cart_Item extends Nosto_Object_Cart_Line
         if ($parentItem === null) {
             $parentItem = $item->getParentItem();
         }
+
         if ($parentItem !== null) {
             return (string) $parentItem->getProductId();
         } elseif ($item->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_SIMPLE) {
@@ -107,6 +108,7 @@ abstract class Nosto_Tagging_Model_Meta_Cart_Item extends Nosto_Object_Cart_Line
                 return $parentIds[0];
             }
         }
+
         return (string) $item->getProductId();
     }
 

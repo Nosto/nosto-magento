@@ -73,8 +73,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         Mage_Catalog_Model_Product $product,
         Mage_Core_Model_Store $store,
         $finalPrice = false
-    )
-    {
+    ) {
         /** @var Mage_Tax_Helper_Data $taxHelper */
         $taxHelper = Mage::helper('tax');
         /** @noinspection PhpMethodParametersCountMismatchInspection */
@@ -197,17 +196,16 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         Mage_Catalog_Model_Product $product,
         $finalPrice = false,
         $inclTax = true
-    )
-    {
+    ) {
         // If a bundled uses fixed pricing the list price can be fethched from
         // product itself. For final price we always get the min price. If dynamic
         // pricing is used the list price for the bundled product is the sum of
         // list prices of the simple products included in the bundle.
         $fixedPrice = $this->_getDefaultFromProduct($product, $finalPrice, $inclTax);
         if ($fixedPrice && $fixedPrice > 0) {
-
             return $fixedPrice;
         }
+
         /** @var Mage_Bundle_Model_Product_Price $model */
         $model = $product->getPriceModel();
         $minBundlePrice = $model->getTotalPrices($product, 'min', $inclTax, $finalPrice);
@@ -242,6 +240,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
             if (!$option->getRequired()) {
                 continue;
             }
+
             $allOptional = false;
             $minSimpleProductPricePrice = null;
             $simpleProductListPrice = null;
@@ -284,6 +283,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
                     }
                 }
             }
+
             if ($cheapestItemListPrice !== null) {
                 $sumListPrice = $cheapestItemListPrice;
             }
@@ -304,8 +304,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         Mage_Catalog_Model_Product $product,
         $finalPrice = false,
         $inclTax = true
-    ) 
-    {
+    ) { 
         /** @var Mage_Tax_Helper_Data $helper */
         $helper = Mage::helper('tax');
         if ($finalPrice) {
@@ -331,6 +330,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         } else {
             $price = $product->getPrice();
         }
+
         if ($inclTax) {
             $price = $helper->getPrice($product, $price, true);
         }
@@ -352,6 +352,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
             );
             $price = 0;
         }
+
         /** @var Mage_Directory_Helper_Data $helper */
         $helper = Mage::helper('directory');
         return $helper->currencyConvert(
@@ -387,6 +388,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         } else {
             $priceInOrderCurrency = $basePrice;
         }
+
         if ($quantity > 1) {
             $priceInOrderCurrency = round($priceInOrderCurrency / $quantity, 2);
         }
@@ -434,8 +436,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         Mage_Catalog_Model_Product $product,
         Mage_Core_Model_Store $store,
         $isFinalPrice
-    )
-    {
+    ) {
         $basePrice = $this->getDisplayPriceInStore($product, $store, $isFinalPrice);
 
         return $this->getTaggingPrice(

@@ -58,6 +58,7 @@ class Nosto_Tagging_Block_Pagetype extends Mage_Core_Block_Template
         ) {
             return '';
         }
+
         return (new Nosto_Object_PageType($this->getPageTypeName()))->toHtml();
     }
 
@@ -73,6 +74,7 @@ class Nosto_Tagging_Block_Pagetype extends Mage_Core_Block_Template
         if ($type === null) {
             $type = self::DEFAULT_TYPE;
         }
+
         return $type;
     }
 }

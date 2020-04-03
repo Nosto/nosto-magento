@@ -81,6 +81,7 @@ class Nosto_Tagging_Model_System_Config_Backend_Currency_Exchange_Rate_Cron exte
             /** @noinspection PhpUnhandledExceptionInspection */
             Mage::throwException(Mage::helper('cron')->__('Unable to save the cron expression.'));
         }
+
         return $this;
     }
 }

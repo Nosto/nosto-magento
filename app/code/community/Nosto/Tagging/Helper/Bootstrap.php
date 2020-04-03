@@ -59,6 +59,7 @@ class Nosto_Tagging_Helper_Bootstrap extends Mage_Core_Helper_Abstract
                     );
                     $dotenv->load();
                 }
+
                 $loaded = true;
             } catch (Zend_Validate_Exception $e) {
                 NostoLog::exception($e);

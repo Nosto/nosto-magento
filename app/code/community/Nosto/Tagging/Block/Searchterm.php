@@ -50,6 +50,7 @@ class Nosto_Tagging_Block_Searchterm extends Mage_Core_Block_Template
         ) {
             return '';
         }
+
         $searchTerm = new Nosto_Object_SearchTerm($this->getSearchTerm());
         return $searchTerm->toHtml();
     }

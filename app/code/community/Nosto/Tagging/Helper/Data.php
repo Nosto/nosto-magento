@@ -224,6 +224,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         if ($addSlashes === true) {
             $data = addslashes($data); //@codingStandardsIgnoreLine
         }
+
         return htmlspecialchars($data, ENT_QUOTES, 'UTF-8', false);
     }
 
@@ -252,6 +253,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
                 }
             }
         }
+
         if (!empty($data)) {
             return DS . implode(DS, $data);
         } else {
@@ -407,6 +409,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         if ($coo) {
             return hash(self::VISITOR_HASH_ALGO, $coo);
         }
+
         return null;
     }
 
@@ -441,6 +444,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         if ($store instanceof Mage_Core_Model_Store === false) {
             $store = $this->getStore();
         }
+
         return Mage::getStoreConfig(self::XML_PATH_MULTI_CURRENCY_METHOD, $store);
     }
 
@@ -636,6 +640,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         if (!in_array($tagId, self::$validTags)) {
             throw new Nosto_NostoException(sprintf('Invalid tag identifier %s', $tagId));
         }
+
         $tagPath = self::XML_PATH_CUSTOM_TAGS . $tagId;
         $tags = Mage::getStoreConfig($tagPath, $store);
         return explode(',', $tags);
@@ -676,6 +681,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         if ($store === null) {
             $store = $this->getStore();
         }
+
         /** @var Mage_Core_Model_Config $config */
         $config = Mage::getModel('core/config');
         $config->saveConfig(
@@ -759,6 +765,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         } catch (Mage_Core_Model_Store_Exception $e) {
             NostoLog::exception($e);
         }
+
         return null;
     }
 

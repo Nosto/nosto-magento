@@ -133,6 +133,7 @@ class Nosto_Tagging_Helper_Module extends Mage_Core_Helper_Abstract
                         break;
                     }
                 }
+
                 $validForIntegration[$moduleName] = $integrated;
             }
         }

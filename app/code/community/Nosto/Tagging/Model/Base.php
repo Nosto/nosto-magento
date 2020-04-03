@@ -55,6 +55,7 @@ class Nosto_Tagging_Model_Base extends Mage_Core_Model_Abstract
         if (method_exists($this, $getter)) {
             return $this->{$getter}();
         }
+
         throw new Nosto_NostoException(sprintf('Property `%s.%s` is not defined.', get_class($this), $name));
     }
 }

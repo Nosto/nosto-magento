@@ -60,8 +60,7 @@ class Nosto_Tagging_Model_Meta_Rating_Yotpo_Yotpo extends Nosto_Tagging_Model_Me
             $yotpoHelper = Mage::helper('yotpo/RichSnippets');
             if ($yotpoHelper instanceof Yotpo_Yotpo_Helper_RichSnippets) {
                 $values = $yotpoHelper->getRichSnippet();
-                if (
-                    is_array($values)
+                if (is_array($values)
                     && !empty($values['average_score'])
                     && !empty($values['reviews_count'])
                 ) {
@@ -75,6 +74,7 @@ class Nosto_Tagging_Model_Meta_Rating_Yotpo_Yotpo extends Nosto_Tagging_Model_Me
                 array($e->getMessage())
             );
         }
+
         $this->resetRegistryProduct();
     }/** @noinspection PhpDocMissingThrowsInspection */
 

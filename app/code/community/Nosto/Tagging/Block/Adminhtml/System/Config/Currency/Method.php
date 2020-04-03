@@ -55,9 +55,11 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Currency_Method extends Mage_A
         } catch (\Exception $e) {
             NostoLog::exception($e);
         }
+
         if ($code) {
             $store = Mage::getModel('core/store')->load($code);
         }
+
         if ($store instanceof Mage_Core_Model_Store) {
             /* @var Nosto_Tagging_Helper_Account $accountHelper */
             $accountHelper = Mage::helper('nosto_tagging/account');
@@ -91,6 +93,7 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Currency_Method extends Mage_A
                 'comment', $comment
             );
         }
+
         return parent::_getElementHtml($element);
     }
 }

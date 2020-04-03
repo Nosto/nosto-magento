@@ -58,6 +58,7 @@ class Nosto_Tagging_Model_Meta_Order extends Nosto_Object_Order_Order
                 $createdAt
             );
         }
+
         $payment = $order->getPayment();
         $this->setPaymentProvider('unknown');
         if (is_object($payment)) {
@@ -135,6 +136,7 @@ class Nosto_Tagging_Model_Meta_Order extends Nosto_Object_Order_Order
                 if (empty($itemAppliedRules)) {
                     continue;
                 }
+
                 $ruleIds = explode(',', $item->getAppliedRuleIds());
                 foreach ($ruleIds as $ruleId) {
                     /** @var Mage_SalesRule_Model_Rule $rule */
@@ -142,9 +144,11 @@ class Nosto_Tagging_Model_Meta_Order extends Nosto_Object_Order_Order
                     $appliedRules[$ruleId] = $rule->getName();
                 }
             }
+
             if (empty($appliedRules)) {
                 $appliedRules[] = 'unknown rule';
             }
+
             $discountTxt = sprintf(
                 'Discount (%s)', implode(', ', $appliedRules)
             );

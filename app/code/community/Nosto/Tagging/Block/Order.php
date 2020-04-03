@@ -53,6 +53,7 @@ class Nosto_Tagging_Block_Order extends Mage_Checkout_Block_Success
         ) {
             return '';
         }
+
         return $this->getLastOrder()->toHtml();
     }
 
@@ -85,6 +86,7 @@ class Nosto_Tagging_Block_Order extends Mage_Checkout_Block_Success
                     NostoLog::exception($vaimoException);
                 }
             }
+
             if (!$nostoOrder) {
                 /** @noinspection PhpUndefinedMethodInspection */
                 $orderId = Mage::getSingleton('checkout/session')->getLastOrderId();

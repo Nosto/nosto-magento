@@ -88,6 +88,7 @@ class Nosto_Tagging_Util_Product
                 }
             }
         }
+
         if (empty($parents)) {
             $parents[] = $product;
         }

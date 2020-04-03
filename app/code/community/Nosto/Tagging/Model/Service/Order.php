@@ -92,8 +92,10 @@ class Nosto_Tagging_Model_Service_Order
             if (empty($productId) || $productId < 0) {
                 continue;
             }
+
             $productIds[] = $productId;
         }
+
         if (!empty($productIds)) {
             /* @var Nosto_Tagging_Model_Resource_Product_Collection $productIds*/
             $products = Mage::getModel('nosto_tagging/product')

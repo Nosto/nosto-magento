@@ -50,6 +50,7 @@ class Nosto_Tagging_Block_Variation extends Mage_Core_Block_Template
         ) {
             return '';
         }
+
         return (new Nosto_Object_MarkupableString(
             $this->getVariationId(),
             'nosto_variation'

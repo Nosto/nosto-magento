@@ -97,6 +97,7 @@ class Nosto_Tagging_CartController extends Mage_Core_Controller_Front_Action
                 );
             }
         }
+
         $this->_redirectUrl($redirectUrl);
     }
 
@@ -139,6 +140,7 @@ class Nosto_Tagging_CartController extends Mage_Core_Controller_Front_Action
                 )
             );
         }
+
         // Note - we reactivate the cart if it's not active.
         // This would happen for example when the cart was bought.
         if (!$quote->getIsActive()) {

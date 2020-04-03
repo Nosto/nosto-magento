@@ -59,6 +59,7 @@ class Nosto_Tagging_Helper_Setup extends Mage_Core_Helper_Abstract
             );
             $attributeExists = false;
         }
+
         if (!$attributeExists) {
             $attributeDefinition = array(
                 "type" => "varchar",
@@ -95,6 +96,7 @@ class Nosto_Tagging_Helper_Setup extends Mage_Core_Helper_Abstract
                 NostoLog::exception($e);
             }
         }
+
         $installer->endSetup();
     }
 

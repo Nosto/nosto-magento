@@ -60,10 +60,12 @@ class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
         ) {
             return '';
         }
+
         $nostoProduct = $this->getMetaProduct();
         if ($nostoProduct instanceof Nosto_AbstractObject) {
             return $nostoProduct->toHtml();
         }
+
         return '';
     }
 
@@ -102,6 +104,7 @@ class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
                 Nosto_Tagging_Helper_Log::exception($e);
             }
         }
+
         return $this->_product;
     }
 

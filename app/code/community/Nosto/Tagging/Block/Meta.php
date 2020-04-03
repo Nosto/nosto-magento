@@ -49,6 +49,7 @@ class Nosto_Tagging_Block_Meta extends Mage_Core_Block_Template
         ) {
             return '';
         }
+
         return parent::_toHtml();
     }
 
