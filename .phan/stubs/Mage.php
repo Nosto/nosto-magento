@@ -29,6 +29,7 @@
  * Main Mage hub class
  *
  * @author      Magento Core Team <core@magentocommerce.com>
+ * @suppress PhanRedefinedClassReference
  */
 final class Mage
 {
