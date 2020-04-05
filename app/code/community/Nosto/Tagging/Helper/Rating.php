@@ -91,7 +91,9 @@ class Nosto_Tagging_Helper_Rating extends Mage_Core_Helper_Abstract
     {
         $installed = array();
         foreach ($this->getSupportedRatingProviders() as $provider => $config) {
-            if (Mage::helper('core')->isModuleEnabled($config[self::FIELD_MODULE])
+            /** @var Mage_Core_Helper_Data $coreHelper */
+            $coreHelper = Mage::helper('core');
+            if ($coreHelper->isModuleEnabled($config[self::FIELD_MODULE])
             ) {
                 $installed[$provider] = $config;
             }

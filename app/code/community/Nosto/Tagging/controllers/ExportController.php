@@ -92,7 +92,9 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
      */
     public function orderAction()
     {
-        if (Mage::helper('nosto_tagging/module')->isModuleEnabled()) {
+        /** @var Nosto_Tagging_Helper_Module $moduleHelper */
+        $moduleHelper = Mage::helper('nosto_tagging/module');
+        if ($moduleHelper->isModuleEnabled()) {
             $pageSize = (int)$this->getRequest()->getParam(self::LIMIT, 100);
             $currentOffset = (int)$this->getRequest()->getParam(self::OFFSET, 0);
             $currentPage = ($currentOffset / $pageSize) + 1;
@@ -136,7 +138,9 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
      */
     public function productAction()
     {
-        if (Mage::helper('nosto_tagging/module')->isModuleEnabled()) {
+        /** @var Nosto_Tagging_Helper_Module $moduleHelper */
+        $moduleHelper = Mage::helper('nosto_tagging/module');
+        if ($moduleHelper->isModuleEnabled()) {
             /** @var Nosto_Tagging_Helper_Data $helper */
             $helper = Mage::helper('nosto_tagging');
             $store = $helper->getStore();

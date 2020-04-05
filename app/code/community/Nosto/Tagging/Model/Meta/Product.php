@@ -234,8 +234,9 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
     protected function buildTags(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
         $tags = array();
-
-        if (Mage::helper('core')->isModuleEnabled('Mage_Tag')) {
+        /** @var Mage_Core_Helper_Abstract $coreHelper */
+        $coreHelper = Mage::helper('core');
+        if ($coreHelper->isModuleEnabled('Mage_Tag')) {
             $tagCollection = Mage::getModel('tag/tag')
                 ->getCollection()
                 ->addPopularity()

@@ -100,9 +100,11 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
             if (!$this->_getSession()->getNoCartRedirect(true)) {
                 /** @noinspection PhpUndefinedMethodInspection */
                 if (!$cart->getQuote()->getHasError()) {
+                    /** @var Mage_Core_Helper_Abstract $coreHelper */
+                    $coreHelper = Mage::helper('core');
                     $message = $this->__(
                         '%s was added to your shopping cart.',
-                        Mage::helper('core')->escapeHtml($product->getName())
+                        $coreHelper->escapeHtml($product->getName())
                     );
                     $this->_getSession()->addSuccess($message);
                 }
@@ -147,10 +149,12 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
                 if ($parentType instanceof Mage_Catalog_Model_Product_Type_Configurable) {
                     $attributeOptions = $this->getOptionAttributes($skus[$key], $parentType, $product);
                     if (empty($attributeOptions)) {
+                        /** @var Mage_Core_Helper_Abstract $coreHelper */
+                        $coreHelper = Mage::helper('core');
                         $this->_getSession()->addError(
                             $this->__(
                                 'Cannot add %s to shopping cart.',
-                                Mage::helper('core')->escapeHtml($product->getName())
+                                $coreHelper->escapeHtml($product->getName())
                             )
                         );
                         return $this->_goBack();
@@ -162,9 +166,11 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
                 $cart->addProduct($product, $params);
                 /** @noinspection PhpUndefinedMethodInspection */
                 if (!$this->_getSession()->getNoCartRedirect(true) && !$cart->getQuote()->getHasError()) {
+                    /** @var Mage_Core_Helper_Abstract $coreHelper */
+                    $coreHelper = Mage::helper('core');
                     $message = $this->__(
                         '%s was added to your shopping cart.',
-                        Mage::helper('core')->escapeHtml($product->getName())
+                        $coreHelper->escapeHtml($product->getName())
                     );
                     $this->_getSession()->addSuccess($message);
                 }

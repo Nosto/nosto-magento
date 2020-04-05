@@ -51,10 +51,12 @@ class Nosto_Tagging_Block_Category extends Mage_Core_Block_Template
     {
         /** @var Nosto_Tagging_Helper_Account $helper */
         $helper = Mage::helper('nosto_tagging/account');
+        /** @var Nosto_Tagging_Helper_Module $moduleHelper */
+        $moduleHelper = Mage::helper('nosto_tagging/module');
         $category = $this->getCategory();
         if (!$helper->existsAndIsConnected()
             || $category === null
-            || !Mage::helper('nosto_tagging/module')->isModuleEnabled()
+            || !$moduleHelper->isModuleEnabled()
         ) {
             return '';
         }
