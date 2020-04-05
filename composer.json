@@ -23,7 +23,8 @@
     },
     "require": {
         "php": ">=5.4.0",
-        "nosto/php-sdk": "3.15.*"
+        "nosto/php-sdk": "3.15.*",
+        "ext-json": "*"
     },
     "require-dev": {
         "phan/phan": "^2.6",
