@@ -140,7 +140,7 @@ jobs:
 
       #https://github.com/sebastianbergmann/phpcpd/issues/148
     - name: Run the copy-paste detector
-      run: ./vendor/bin/phpcpd --exclude=.phan --exclude=vendor --exclude=build --log-pmd=phdpcpd.xml .
+      run: ./vendor/bin/phpcpd --exclude=.phan --exclude=vendor --exclude=build --exclude=lib --log-pmd=phdpcpd.xml .
       continue-on-error: true
 
     - name: Archive copy-paste detection results
