@@ -101,7 +101,7 @@ jobs:
 
     - name: Report annotations
       id: report-annotations
-      run: ./vendor/bin/pmd2pr pmdphpmd.xml
+      run: ./vendor/bin/pmd2pr --graceful-warnings pmdphpmd.xml
 
   phpcpd:
     name: Copy-Paste Detect
