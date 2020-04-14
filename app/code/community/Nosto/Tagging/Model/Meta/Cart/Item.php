@@ -117,7 +117,7 @@ abstract class Nosto_Tagging_Model_Meta_Cart_Item extends Nosto_Object_Cart_Line
      *
      * @param Mage_Sales_Model_Quote_Item $item
      *
-     * @return string|null
+     * @return int|string|null
      */
     protected function buildSkuId(Mage_Sales_Model_Quote_Item $item)
     {

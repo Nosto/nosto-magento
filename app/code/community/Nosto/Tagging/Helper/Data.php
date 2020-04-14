@@ -741,6 +741,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      * Returns the version of Nosto extension
      *
      * @return string
+     * @suppress PhanTypeMismatchArgumentInternalProbablyReal
      */
     public function getExtensionVersion()
     {
@@ -748,7 +749,6 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         if (self::NOSTO_RC_VERSION) {
             $version .= sprintf('-RC%d', self::NOSTO_RC_VERSION);
         }
-
         return $version;
     }
 

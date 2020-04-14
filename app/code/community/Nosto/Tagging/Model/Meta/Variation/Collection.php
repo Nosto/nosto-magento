@@ -60,6 +60,7 @@ class Nosto_Tagging_Model_Meta_Variation_Collection extends Nosto_Object_Product
             /** @var Nosto_Tagging_Model_Meta_Variation $variation */
             $variation = Mage::getModel('nosto_tagging/meta_variation');
             $variation->loadData($product, $group, $productAvailability, $currencyCode, $store);
+            /** @phan-suppress-next-line PhanTypeMismatchArgument */
             $this->append($variation);
         }
 

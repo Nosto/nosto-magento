@@ -182,6 +182,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
             $this->getPriceCurrencyCode(),
             $store
         );
+        /** @phan-suppress-next-line PhanTypeMismatchArgument */
         $this->setVariations($variationCollection);
     }
 
@@ -208,6 +209,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
                     /* @var Nosto_Tagging_Model_Meta_Sku $skuModel */
                     $skuModel = Mage::getModel('nosto_tagging/meta_sku');
                     $skuModel->loadData($mageSku, $product, $store);
+                    /** @phan-suppress-next-line PhanTypeMismatchArgument */
                     $this->addSku($skuModel);
                 } catch (Nosto_NostoException $e) {
                     Nosto_Tagging_Helper_Log::exception($e);
@@ -685,6 +687,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      * @param Mage_Core_Model_Store $store
      * @return array
      * @throws Nosto_NostoException
+     * @suppress PhanTypeMismatchReturnNullable
      */
     protected function buildCustomFields(
         Mage_Catalog_Model_Product $product,
@@ -713,6 +716,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      * @param Mage_Core_Model_Store $store
      * @return array
      * @throws Nosto_NostoException
+     * @suppress PhanTypeMismatchReturnNullable
      */
     protected function getAttributesFromAllTags(Mage_Core_Model_Store $store)
     {

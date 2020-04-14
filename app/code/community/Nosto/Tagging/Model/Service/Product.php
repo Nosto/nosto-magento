@@ -125,6 +125,7 @@ class Nosto_Tagging_Model_Service_Product
                         if ($nostoProduct->reloadData($mageProduct, $store)
                             && $nostoProduct->isValid()
                         ) {
+                            /** @phan-suppress-next-line PhanTypeMismatchArgument */
                             $operation->addProduct($nostoProduct);
                         }
                     }

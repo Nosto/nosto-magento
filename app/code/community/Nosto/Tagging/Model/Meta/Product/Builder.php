@@ -44,6 +44,7 @@ class Nosto_Tagging_Model_Meta_Product_Builder
      * @throws Mage_Core_Exception
      * @throws Nosto_NostoException
      * @return Nosto_Tagging_Model_Meta_Product|null
+     * @suppress PhanTypeMismatchReturn
      */
     public static function build(
         Mage_Catalog_Model_Product $product,

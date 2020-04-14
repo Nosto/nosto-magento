@@ -63,6 +63,7 @@ class Nosto_Tagging_Block_Order extends Mage_Checkout_Block_Success
      * Return the last placed order meta data for the customer.
      *
      * @return Nosto_Tagging_Model_Meta_Order|null the order meta data model.
+     * @suppress PhanTypeMismatchReturn
      */
     public function getLastOrder()
     {

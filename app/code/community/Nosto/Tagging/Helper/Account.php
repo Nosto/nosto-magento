@@ -110,6 +110,7 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
                 $currentUser = Mage::getModel('nosto_tagging/meta_user');
                 $currentUser->loadData();
                 $operation = new Nosto_Operation_UninstallAccount($account);
+                /** @phan-suppress-next-line PhanTypeMismatchArgument **/
                 $operation->delete($currentUser);
             } catch (Nosto_NostoException $e) {
                 // Failures are logged but not shown to the user.
@@ -196,11 +197,13 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
     ) {
         /** @var Nosto_Tagging_Model_Meta_Account_Iframe $iframeParams */
         $iframeParams = Mage::getModel('nosto_tagging/meta_account_iframe');
+        /** @phan-suppress-next-line PhanTypeMismatchArgument */
         $iframeParams->loadData($store);
 
         /** @var Nosto_Tagging_Model_Meta_User $currentUser */
         $currentUser = Mage::getModel('nosto_tagging/meta_user');
         $currentUser->loadData();
+        /** @phan-suppress-next-line PhanTypeMismatchArgument */
         return Nosto_Helper_IframeHelper::getUrl($iframeParams, $account, $currentUser, $params);
     }
 
@@ -235,6 +238,7 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
             $collection = Mage::getModel('nosto_tagging/collection_rates');
             $collection->loadData($store);
             $service = new Nosto_Operation_SyncRates($account);
+            /** @phan-suppress-next-line PhanTypeMismatchArgument */
             return $service->update($collection);
         } catch (Nosto_NostoException $e) {
             NostoLog::exception($e);
@@ -264,6 +268,7 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
             $settings = Mage::getModel('nosto_tagging/meta_settings');
             $settings->loadData($store);
             $operation = new Nosto_Operation_UpdateSettings($account);
+            /** @phan-suppress-next-line PhanTypeMismatchArgument */
             return $operation->update($settings);
         } catch (Nosto_NostoException$e) {
             NostoLog::exception($e);

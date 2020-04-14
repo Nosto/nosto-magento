@@ -78,6 +78,7 @@ class Nosto_Tagging_Model_Meta_Order extends Nosto_Object_Order_Order
                 /** @var Nosto_Tagging_Model_Meta_Order_Status $orderStatus */
                 $orderStatus = Mage::getModel('nosto_tagging/meta_order_status');
                 $orderStatus->loadData($status);
+                /** @phan-suppress-next-line PhanTypeMismatchArgument */
                 $this->addOrderStatus($orderStatus);
             }
         }
@@ -85,6 +86,7 @@ class Nosto_Tagging_Model_Meta_Order extends Nosto_Object_Order_Order
         /** @var Nosto_Tagging_Model_Meta_Order_Buyer $orderBuyer */
         $orderBuyer = Mage::getModel('nosto_tagging/meta_order_buyer');
         $orderBuyer->loadData($order);
+        /** @phan-suppress-next-line PhanTypeMismatchArgument */
         $this->setCustomer($orderBuyer);
 
         /** @var Mage_Sales_Model_Order_Item $item */
@@ -140,6 +142,7 @@ class Nosto_Tagging_Model_Meta_Order extends Nosto_Object_Order_Order
                 $ruleIds = explode(',', $item->getAppliedRuleIds());
                 foreach ($ruleIds as $ruleId) {
                     /** @var Mage_SalesRule_Model_Rule $rule */
+                    /** @phan-suppress-next-line PhanTypeMismatchArgument */
                     $rule = Mage::getModel('salesrule/rule')->load($ruleId);
                     $appliedRules[$ruleId] = $rule->getName();
                 }

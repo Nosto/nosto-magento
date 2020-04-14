@@ -45,6 +45,7 @@ class Nosto_Tagging_Helper_Oauth extends Mage_Core_Helper_Abstract
      * @param Mage_Core_Model_Store $store the store to get the oauth meta data for..
      *
      * @return Nosto_Tagging_Model_Meta_Oauth the meta data instance.
+     * @suppress PhanTypeMismatchReturn
      */
     public function getMetaData(Mage_Core_Model_Store $store)
     {

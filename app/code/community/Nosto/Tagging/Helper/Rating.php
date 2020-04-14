@@ -106,7 +106,7 @@ class Nosto_Tagging_Helper_Rating extends Mage_Core_Helper_Abstract
      * Returns the module name for the given provider
      *
      * @param $provider
-     * @return null
+     * @return string|null
      */
     public function getModuleNameByProvider($provider)
     {
@@ -125,7 +125,7 @@ class Nosto_Tagging_Helper_Rating extends Mage_Core_Helper_Abstract
      * given provider
      *
      * @param $provider
-     * @return null
+     * @return string|null
      */
     public function loadClass($provider)
     {
