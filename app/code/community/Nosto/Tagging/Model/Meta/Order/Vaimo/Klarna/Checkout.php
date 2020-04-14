@@ -174,6 +174,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
             if (is_array($ruleIds)) {
                 foreach ($ruleIds as $ruleId) {
                     /* @var Mage_SalesRule_Model_Rule $discountRule */
+                    /** @phan-suppress-next-line PhanTypeMismatchArgument */
                     $discountRule = Mage::getModel('salesrule/rule')->load($ruleId); // @codingStandardsIgnoreLine
                     $name = sprintf(
                         'Discount (%s)',

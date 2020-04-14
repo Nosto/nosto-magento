@@ -96,7 +96,7 @@ class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
     /**
      * Returns the currently selected store view.
      *
-     * @return Mage_Core_Model_Store the store view model.
+     * @return Mage_Core_Model_Store|null the store view model.
      *
      * @throws Exception if store view cannot be found.
      */

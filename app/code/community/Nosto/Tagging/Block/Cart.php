@@ -85,6 +85,7 @@ class Nosto_Tagging_Block_Cart extends Mage_Checkout_Block_Cart_Abstract
      * Return the current cart for the customer
      *
      * @return Nosto_Tagging_Model_Meta_Cart the cart meta data model.
+     * @suppress PhanTypeMismatchReturn
      */
     public function getCart()
     {

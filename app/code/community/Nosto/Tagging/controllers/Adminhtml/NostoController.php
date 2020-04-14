@@ -137,6 +137,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
             $meta->loadData($store);
             $responseBody = array(
                 'success' => true,
+                /** @phan-suppress-next-line PhanTypeMismatchArgument */
                 'redirect_url' => Nosto_Helper_OAuthHelper::getAuthorizationUrl($meta),
             );
         }
@@ -177,6 +178,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
             $meta->loadData($store);
             $responseBody = array(
                 'success' => true,
+                /** @phan-suppress-next-line PhanTypeMismatchArgument */
                 'redirect_url' => Nosto_Helper_OAuthHelper::getAuthorizationUrl($meta),
             );
         }
@@ -235,7 +237,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                 /** @var Nosto_Tagging_Model_Meta_Account $signup */
                 $signup = Mage::getModel('nosto_tagging/meta_account');
                 $signup->loadData($store, $signupDetails, $accountOwner);
-
+                /** @phan-suppress-next-line PhanTypeMismatchArgument */
                 $operation = new Nosto_Operation_AccountSignup($signup);
                 /** @var Nosto_Object_Signup_Account $account */
                 $account = $operation->create();

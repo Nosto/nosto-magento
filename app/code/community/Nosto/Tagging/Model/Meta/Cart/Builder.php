@@ -40,6 +40,7 @@ class Nosto_Tagging_Model_Meta_Cart_Builder
      * @param Mage_Sales_Model_Quote_Item $item
      * @param string $currencyCode
      * @return Nosto_Object_Cart_LineItem|null
+     * @suppress PhanTypeMismatchReturn
      */
     public static function buildItem(Mage_Sales_Model_Quote_Item $item, $currencyCode)
     {

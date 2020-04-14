@@ -86,6 +86,7 @@ class Nosto_Tagging_Model_Meta_Account extends Nosto_Object_Signup_Signup
         /** @var Nosto_Tagging_Model_Meta_Account_Billing $billing */
         $billing = Mage::getModel('nosto_tagging/meta_account_billing');
         $billing->loadData($store);
+        /** @phan-suppress-next-line PhanTypeMismatchArgument */
         $this->setBillingDetails($billing);
         $this->setUseCurrencyExchangeRates(!$helper->multiCurrencyDisabled($store));
         if (!$helper->multiCurrencyDisabled($store)) {

@@ -73,25 +73,24 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Currency_Method extends Mage_A
                     }
                 }
             }
-        }
+            if ($disabled === true) {
+                /** @noinspection PhpUndefinedMethodInspection */
+                $element->setDisabled('disabled');
+                $metaOauth = new Nosto_Tagging_Model_Meta_Oauth();
+                /** @noinspection PhpUndefinedVariableInspection */
+                $metaOauth->loadData($store);
 
-        if ($disabled === true) {
-            /** @noinspection PhpUndefinedMethodInspection */
-            $element->setDisabled('disabled');
-            $metaOauth = new Nosto_Tagging_Model_Meta_Oauth();
-            /** @noinspection PhpUndefinedVariableInspection */
-            $metaOauth->loadData($store);
-
-            $comment = sprintf(
-                'Your Nosto account is missing required tokens' .
-                ' for updating settings to Nosto. Please click <!--suppress HtmlUnknownTarget -->
+                $comment = sprintf(
+                    'Your Nosto account is missing required tokens' .
+                    ' for updating settings to Nosto. Please click <!--suppress HtmlUnknownTarget -->
 <a href="%s">' .
-                ' here to re-connect</a> your account.',
-                Nosto_Helper_OAuthHelper::getAuthorizationUrl($metaOauth)
-            );
-            $element->setData(
-                'comment', $comment
-            );
+                    ' here to re-connect</a> your account.',
+                    Nosto_Helper_OAuthHelper::getAuthorizationUrl($metaOauth)
+                );
+                $element->setData(
+                    'comment', $comment
+                );
+            }
         }
 
         return parent::_getElementHtml($element);

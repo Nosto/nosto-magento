@@ -195,7 +195,7 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
     }
 
     /**
-     * @param $skuId
+     * @param int|string $skuId
      * @param Mage_Catalog_Model_Product_Type_Configurable $parentType
      * @param Mage_Catalog_Model_Product $product
      * @return array
