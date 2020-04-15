@@ -54,6 +54,7 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
             /** @noinspection PhpUnhandledExceptionInspection */
             Mage::throwException('Invalid form key');
         }
+
         $cart = $this->_getCart();
         $skuId = $this->getRequest()->getParam('sku');
         try {
@@ -65,6 +66,7 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
             ) {
                 return $this->_goBack();
             }
+
             /** @var Mage_Catalog_Model_Product_Type_Configurable $parentType */
             $parentType = $product->getTypeInstance();
             $attributeOptions = array();
@@ -76,11 +78,13 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
                 $this->_getSession()->addError($this->__('Cannot add the item to shopping cart.'));
                 return $this->_goBack();
             }
+
             $params = array('super_attribute' => $attributeOptions);
             $qty = $this->getRequest()->getParam('qty');
             if ($qty !== null) {
                 $params['qty'] = $qty;
             }
+
             /* Below is cannibalized from parent */
             $cart->addProduct($product, $params);
             $cart->save();
@@ -96,12 +100,15 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
             if (!$this->_getSession()->getNoCartRedirect(true)) {
                 /** @noinspection PhpUndefinedMethodInspection */
                 if (!$cart->getQuote()->getHasError()) {
+                    /** @var Mage_Core_Helper_Abstract $coreHelper */
+                    $coreHelper = Mage::helper('core');
                     $message = $this->__(
                         '%s was added to your shopping cart.',
-                        Mage::helper('core')->escapeHtml($product->getName())
+                        $coreHelper->escapeHtml($product->getName())
                     );
                     $this->_getSession()->addSuccess($message);
                 }
+
                 return $this->_goBack();
             }
         } catch (\Exception $e) {
@@ -109,6 +116,7 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
             Mage::logException($e);
             return $this->_goBack();
         }
+
         return $this;
     }
 
@@ -123,6 +131,7 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
             /** @noinspection PhpUnhandledExceptionInspection */
             Mage::throwException('Invalid form key');
         }
+
         $cart = $this->_getCart();
         $products = explode(',', $this->getRequest()->getParam('product'));
         $skus = explode(',', $this->getRequest()->getParam('skus'));
@@ -134,30 +143,38 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
                 if (!$product) {
                     return $this->_goBack();
                 }
+
                 $parentType = $product->getTypeInstance();
                 $params = null;
                 if ($parentType instanceof Mage_Catalog_Model_Product_Type_Configurable) {
                     $attributeOptions = $this->getOptionAttributes($skus[$key], $parentType, $product);
                     if (empty($attributeOptions)) {
+                        /** @var Mage_Core_Helper_Abstract $coreHelper */
+                        $coreHelper = Mage::helper('core');
                         $this->_getSession()->addError(
                             $this->__(
                                 'Cannot add %s to shopping cart.',
-                                Mage::helper('core')->escapeHtml($product->getName())
+                                $coreHelper->escapeHtml($product->getName())
                             )
                         );
                         return $this->_goBack();
                     }
+
                     $params = array('super_attribute' => $attributeOptions);
                 }
+
                 $cart->addProduct($product, $params);
                 /** @noinspection PhpUndefinedMethodInspection */
                 if (!$this->_getSession()->getNoCartRedirect(true) && !$cart->getQuote()->getHasError()) {
+                    /** @var Mage_Core_Helper_Abstract $coreHelper */
+                    $coreHelper = Mage::helper('core');
                     $message = $this->__(
                         '%s was added to your shopping cart.',
-                        Mage::helper('core')->escapeHtml($product->getName())
+                        $coreHelper->escapeHtml($product->getName())
                     );
                     $this->_getSession()->addSuccess($message);
                 }
+
                 Mage::dispatchEvent(
                     'checkout_cart_add_product_complete',
                     array('product' => $product, 'request' => $this->getRequest(), 'response' => $this->getResponse())
@@ -170,6 +187,7 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
                 return $this->_goBack();
             }
         }
+
         $cart->save();
         /** @noinspection PhpUndefinedMethodInspection */
         $this->_getSession()->setCartWasUpdated(true);
@@ -177,7 +195,7 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
     }
 
     /**
-     * @param $skuId
+     * @param int|string $skuId
      * @param Mage_Catalog_Model_Product_Type_Configurable $parentType
      * @param Mage_Catalog_Model_Product $product
      * @return array
@@ -186,8 +204,7 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
         $skuId,
         Mage_Catalog_Model_Product_Type_Configurable $parentType,
         Mage_Catalog_Model_Product $product
-    )
-    {
+    ) {
         $attributeOptions = array();
         $skuProduct = Mage::getModel('catalog/product')->load($skuId);
         $configurableAttributes = $parentType->getConfigurableAttributesAsArray($product);
@@ -204,6 +221,7 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
                 }
             }
         }
+
         return $attributeOptions;
     }
 

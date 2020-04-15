@@ -91,8 +91,9 @@ class Nosto_Tagging_Helper_Rating extends Mage_Core_Helper_Abstract
     {
         $installed = array();
         foreach ($this->getSupportedRatingProviders() as $provider => $config) {
-            if (
-            Mage::helper('core')->isModuleEnabled($config[self::FIELD_MODULE])
+            /** @var Mage_Core_Helper_Data $coreHelper */
+            $coreHelper = Mage::helper('core');
+            if ($coreHelper->isModuleEnabled($config[self::FIELD_MODULE])
             ) {
                 $installed[$provider] = $config;
             }
@@ -105,17 +106,17 @@ class Nosto_Tagging_Helper_Rating extends Mage_Core_Helper_Abstract
      * Returns the module name for the given provider
      *
      * @param $provider
-     * @return null
+     * @return string|null
      */
     public function getModuleNameByProvider($provider)
     {
         $module = null;
-        if (
-            !empty(self::$_ratingProviders[$provider])
+        if (!empty(self::$_ratingProviders[$provider])
             && !empty(self::$_ratingProviders[$provider][self::FIELD_MODULE])
         ) {
             $module = self::$_ratingProviders[$provider][self::FIELD_MODULE];
         }
+
         return $module;
     }
 
@@ -124,17 +125,17 @@ class Nosto_Tagging_Helper_Rating extends Mage_Core_Helper_Abstract
      * given provider
      *
      * @param $provider
-     * @return null
+     * @return string|null
      */
     public function loadClass($provider)
     {
         $module = null;
-        if (
-            !empty(self::$_ratingProviders[$provider])
+        if (!empty(self::$_ratingProviders[$provider])
             && !empty(self::$_ratingProviders[$provider][self::FIELD_MODULE])
         ) {
             $module = self::$_ratingProviders[$provider][self::FIELD_MODULE];
         }
+
         return $module;
     }
 

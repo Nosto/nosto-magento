@@ -103,6 +103,7 @@ class ReconnectCommand extends Mage_Shell_Abstract
                 exit(1); //@codingStandardsIgnoreLine
             }
         }
+
         return true;
     }
 
@@ -121,6 +122,7 @@ class ReconnectCommand extends Mage_Shell_Abstract
             echo ('Store not found. Check your input.'); //@codingStandardsIgnoreLine
             exit(1); //@codingStandardsIgnoreLine
         }
+
         $storeAccountId = $store->getConfig(Nosto_Tagging_Helper_Account::XML_PATH_ACCOUNT);
         $account = $this->_accountHelper->find($store);
         if ($account && $storeAccountId === $accountId) {
@@ -129,10 +131,12 @@ class ReconnectCommand extends Mage_Shell_Abstract
                 echo $this->usageHelp(); //@codingStandardsIgnoreLine
                 exit(1); //@codingStandardsIgnoreLine
             }
+
             echo "Local account found. Overriding Tokens... \n"; //@codingStandardsIgnoreLine
             $account->setTokens($tokens);
             return $this->_accountHelper->save($account, $store);
         }
+
         echo "Local account not found. Saving local account...\n"; //@codingStandardsIgnoreLine
         $account = new NostoSignupAccount($accountId);
         $account->setTokens($tokens);
@@ -165,10 +169,12 @@ class ReconnectCommand extends Mage_Shell_Abstract
         if ($emailToken) {
             $tokens[] = new Token(Token::API_EMAIL, $emailToken);
         }
+
         $appsToken = $this->getArg(Token::API_GRAPHQL . self::TOKEN_SUFFIX);
         if ($appsToken) {
             $tokens[] = new Token(Token::API_GRAPHQL, $appsToken);
         }
+
         return $tokens;
     }
 
@@ -189,6 +195,7 @@ class ReconnectCommand extends Mage_Shell_Abstract
                 return $store;
             }
         }
+
         return null;
     }
 

@@ -89,6 +89,7 @@ class Nosto_Tagging_Helper_Customer extends Mage_Core_Helper_Abstract
                 $customer->setRestoreCartHash($restoreCartHash);
                 $customer->setCreatedAt($dateHelper->gmtDate());
             }
+
             try {
                 $customer->save();
             } catch (Zend_Db_Statement_Exception $e) {

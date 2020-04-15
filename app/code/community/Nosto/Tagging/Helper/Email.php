@@ -58,7 +58,6 @@ class Nosto_Tagging_Helper_Email extends Mage_Core_Helper_Abstract
         try {
             $subscription = $this->getNewsletterOptInForEmail($email);
             if ($subscription->getStatus() == Mage_Newsletter_Model_Subscriber::STATUS_SUBSCRIBED) {
-
                 return true;
             }
         } catch (\Exception $e) {

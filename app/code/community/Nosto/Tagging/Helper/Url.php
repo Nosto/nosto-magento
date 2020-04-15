@@ -294,8 +294,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
     public function getUrlCart(
         Mage_Core_Model_Store $store,
         array $additionalParams = array()
-    )
-    {
+    ) {
         $defaultParams = $this->getUrlOptionsWithNoSid($store);
         $url = Mage::getUrl(
             self::MAGENTO_PATH_CART,
@@ -309,7 +308,6 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
                     $url
                 );
             }
-
         }
 
         return $url;
@@ -633,8 +631,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
     public function getRestoreCartRedirectUrl(
         Mage_Core_Model_Store $store,
         array $additionalParams = array()
-    )
-    {
+    ) {
         /* @var Nosto_Tagging_Helper_Data $nostoHelper */
         $nostoHelper = Mage::helper('nosto_tagging');
         $path = $nostoHelper->getRestoreCartRedirectLocation($store);
@@ -651,7 +648,6 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
                     $url
                 );
             }
-
         }
 
         return $url;

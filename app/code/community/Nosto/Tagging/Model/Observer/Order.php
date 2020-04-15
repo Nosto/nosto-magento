@@ -53,7 +53,9 @@ class Nosto_Tagging_Model_Observer_Order
      */
     public function sendOrderConfirmation(Varien_Event_Observer $observer)
     {
-        if (Mage::helper('nosto_tagging/module')->isModuleEnabled()) {
+        /** @var Nosto_Tagging_Helper_Module $moduleHelper */
+        $moduleHelper = Mage::helper('nosto_tagging/module');
+        if ($moduleHelper->isModuleEnabled()) {
             /** @var Mage_Sales_Model_Order $mageOrder */
             /** @noinspection PhpUndefinedMethodInspection */
             $mageOrder = $observer->getEvent()->getOrder();

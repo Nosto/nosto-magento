@@ -51,6 +51,7 @@ class Nosto_Tagging_Model_System_Config_Backend_Currency_Exchange_Rate_Time
             array_unshift($values, '00');
             return $this->setValue($values);
         }
+
         return $this;
     }
 }

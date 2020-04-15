@@ -73,14 +73,18 @@ class Nosto_Tagging_Model_System_Config_Backend_Currency_Exchange_Rate_Cron exte
         try {
             /** @var Mage_Core_Model_Config_Data $model */
             $model = Mage::getModel('core/config_data');
+            /** @phan-suppress-next-line PhanTypeMismatchArgument */
             $model = $model->load(self::CRON_STRING_PATH, 'path');
             $model = $model->setValue($cronExpr);
             $model = $model->setPath(self::CRON_STRING_PATH);
             return $model->save();
         } catch (\Exception $e) {
+            /** @var Mage_Cron_Helper_Data $cronHelper */
+            $cronHelper = Mage::helper('cron');
             /** @noinspection PhpUnhandledExceptionInspection */
-            Mage::throwException(Mage::helper('cron')->__('Unable to save the cron expression.'));
+            Mage::throwException($cronHelper->__('Unable to save the cron expression.'));
         }
+
         return $this;
     }
 }

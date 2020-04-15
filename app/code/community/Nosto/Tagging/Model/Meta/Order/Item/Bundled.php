@@ -53,6 +53,7 @@ class Nosto_Tagging_Model_Meta_Order_Item_Bundled extends Nosto_Tagging_Model_Me
                         if (isset($val['qty']) && is_int($val['qty'])) {
                             $qty .= $val['qty'] . ' x ';
                         }
+
                         if (isset($val['title']) && is_string($val['title'])) {
                             $optNames[] = $qty . $val['title'];
                         }

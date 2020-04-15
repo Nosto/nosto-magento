@@ -50,6 +50,7 @@ class Nosto_Tagging_Model_Service_Customer
             Nosto_Tagging_Helper_Log::warning('Could not update marketing permission');
             return false;
         }
+
         /** @var Nosto_Tagging_Helper_Email $emailHelper */
         $emailHelper = Mage::helper('nosto_tagging/email');
         $newsletter = $emailHelper->isOptedIn($email);

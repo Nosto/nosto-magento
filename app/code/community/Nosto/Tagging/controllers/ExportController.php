@@ -66,8 +66,7 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
         if ($id = $this->getRequest()->getParam(self::ID)) {
             /** @var string $collectionModel */
             $collectionModel = $collection->getModelName();
-            if (
-                !empty(self::$_searchableFields[$collectionModel])
+            if (!empty(self::$_searchableFields[$collectionModel])
                 && !empty(self::$_searchableFields[$collectionModel][self::ID])
             ) {
                 $filterByField = self::$_searchableFields[$collectionModel][self::ID];
@@ -77,6 +76,7 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
                         $id = $ids;
                     }
                 }
+
                 if (is_array($id) && !empty($id)) {
                     $collection->addFieldToFilter($filterByField, array('in' => $id));
                 } else {
@@ -92,7 +92,9 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
      */
     public function orderAction()
     {
-        if (Mage::helper('nosto_tagging/module')->isModuleEnabled()) {
+        /** @var Nosto_Tagging_Helper_Module $moduleHelper */
+        $moduleHelper = Mage::helper('nosto_tagging/module');
+        if ($moduleHelper->isModuleEnabled()) {
             $pageSize = (int)$this->getRequest()->getParam(self::LIMIT, 100);
             $currentOffset = (int)$this->getRequest()->getParam(self::OFFSET, 0);
             $currentPage = ($currentOffset / $pageSize) + 1;
@@ -108,6 +110,7 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
             if ($currentPage > $orders->getLastPageNumber()) {
                 $orders = array();
             }
+
             $collection = new Nosto_Object_Order_OrderCollection();
             /* @var Mage_Sales_Model_Order $order */
             foreach ($orders as $order) {
@@ -120,8 +123,10 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
                 } catch (Nosto_NostoException $e) {
                     NostoLog::exception($e);
                 }
+
                 $collection->append($meta);
             }
+
             $this->export($collection);
         }
     }
@@ -133,7 +138,9 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
      */
     public function productAction()
     {
-        if (Mage::helper('nosto_tagging/module')->isModuleEnabled()) {
+        /** @var Nosto_Tagging_Helper_Module $moduleHelper */
+        $moduleHelper = Mage::helper('nosto_tagging/module');
+        if ($moduleHelper->isModuleEnabled()) {
             /** @var Nosto_Tagging_Helper_Data $helper */
             $helper = Mage::helper('nosto_tagging');
             $store = $helper->getStore();
@@ -163,6 +170,7 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
             if ($currentPage > $products->getLastPageNumber()) {
                 $products = array();
             }
+
             $collection = new Nosto_Object_Product_ProductCollection();
             /** @var Mage_Catalog_Model_Product $product */
             foreach ($products as $product) {
@@ -178,6 +186,7 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
                     Nosto_Tagging_Helper_Log::exception($e);
                 }
             }
+
             $this->export($collection);
         }
     }

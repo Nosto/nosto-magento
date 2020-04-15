@@ -54,16 +54,20 @@ class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
     {
         /** @var Nosto_Tagging_Helper_Account $helper */
         $helper = Mage::helper('nosto_tagging/account');
+        /** @var Nosto_Tagging_Helper_Module $moduleHelper */
+        $moduleHelper = Mage::helper('nosto_tagging/module');
         if (!$helper->existsAndIsConnected()
             || $this->getMetaProduct() === null
-            || !Mage::helper('nosto_tagging/module')->isModuleEnabled()
+            || !$moduleHelper->isModuleEnabled()
         ) {
             return '';
         }
+
         $nostoProduct = $this->getMetaProduct();
         if ($nostoProduct instanceof Nosto_AbstractObject) {
             return $nostoProduct->toHtml();
         }
+
         return '';
     }
 
@@ -102,6 +106,7 @@ class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
                 Nosto_Tagging_Helper_Log::exception($e);
             }
         }
+
         return $this->_product;
     }
 

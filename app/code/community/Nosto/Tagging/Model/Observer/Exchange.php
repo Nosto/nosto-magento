@@ -56,20 +56,22 @@ class Nosto_Tagging_Model_Observer_Exchange
             $error = false;
             /** @var Mage_Core_Model_Store $store */
             foreach (Mage::app()->getStores() as $store) {
-                if (
-                    !$helper->isScheduledCurrencyExchangeRateUpdateEnabled($store)
+                if (!$helper->isScheduledCurrencyExchangeRateUpdateEnabled($store)
                     || !$helper->isMultiCurrencyMethodExchangeRate($store)
                 ) {
                     continue;
                 }
+
                 $account = $accountHelper->find($store);
                 if ($account === null) {
                     continue;
                 }
+
                 if (!$accountHelper->updateCurrencyExchangeRates($account, $store)) {
                     $error = true;
                 }
             }
+
             if ($error) {
                 /** @noinspection PhpUnhandledExceptionInspection */
                 throw Mage::exception(

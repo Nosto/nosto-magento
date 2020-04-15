@@ -46,8 +46,7 @@ class Nosto_Tagging_Model_Meta_Rating_Mage_Rating extends Nosto_Tagging_Model_Me
         $ratingSummary = Mage::getModel('review/review_summary')
             ->setStoreId($store->getId())
             ->load($product->getId());
-        if (
-            $ratingSummary instanceof Mage_Review_Model_Review_Summary
+        if ($ratingSummary instanceof Mage_Review_Model_Review_Summary
             && $ratingSummary->getRatingSummary()
         ) {
             $this->setRating(round($ratingSummary->getRatingSummary() / 20, 1));

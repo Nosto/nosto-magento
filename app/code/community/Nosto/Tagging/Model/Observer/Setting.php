@@ -54,8 +54,7 @@ class Nosto_Tagging_Model_Observer_Setting
      */
     public function syncNostoAccount(/** @noinspection PhpUnusedParameterInspection */ // @codingStandardsIgnoreLine
         Varien_Event_Observer $observer
-    )
-    {
+    ) {
         /** @var Nosto_Tagging_Helper_Data $helper */
         $helper = Mage::helper('nosto_tagging');
         if ($helper->isModuleEnabled()) {
@@ -67,6 +66,7 @@ class Nosto_Tagging_Model_Observer_Setting
                 if ($account instanceof Nosto_Object_Signup_Account === false) {
                     continue;
                 }
+
                 /* @var Mage_Core_Model_App_Emulation $emulation */
                 $emulation = Mage::getSingleton('core/app_emulation');
                 $env = $emulation->startEnvironmentEmulation($store->getId());
@@ -80,6 +80,7 @@ class Nosto_Tagging_Model_Observer_Setting
                         )
                     );
                 }
+
                 if ($helper->isMultiCurrencyMethodExchangeRate($store) && !$accountHelper->updateCurrencyExchangeRates(
                     $account,
                     $store
@@ -93,9 +94,11 @@ class Nosto_Tagging_Model_Observer_Setting
                         )
                     );
                 }
+
                 $emulation->stopEnvironmentEmulation($env);
             }
         }
+
         return $this;
     }
 }

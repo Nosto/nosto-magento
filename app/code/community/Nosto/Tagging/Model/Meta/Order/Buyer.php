@@ -52,6 +52,7 @@ class Nosto_Tagging_Model_Meta_Order_Buyer extends Nosto_Object_Order_Buyer
         if (!$taggingHelper->getSendCustomerData($store)) {
             return false;
         }
+
         $this->setFirstName($order->getCustomerFirstname());
         $this->setLastName($order->getCustomerLastname());
         $this->setEmail($order->getCustomerEmail());

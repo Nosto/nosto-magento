@@ -64,6 +64,7 @@ class Nosto_Tagging_Helper_Class extends Mage_Core_Helper_Abstract
         if (is_object($payment)) {
             $paymentProvider = $payment->getMethod();
         }
+
         $classId = self::createClassId('meta_order_%s', $paymentProvider);
         if (!in_array($classId, self::$paymentProviderClasses)) {
             $class = Mage::getModel(self::DEFAULT_ORDER_CLASS);
@@ -147,6 +148,7 @@ class Nosto_Tagging_Helper_Class extends Mage_Core_Helper_Abstract
                     $class = Mage::getModel($classId);
                 }
             }
+
             if ($class instanceof $expected == false && $fallback != null) {
                 $class = Mage::getModel($fallback);
             }

@@ -88,6 +88,7 @@ class Nosto_Tagging_Model_Meta_Settings extends Nosto_Object_Settings
                 }
             }
         }
+
         return true;
     }
 }

@@ -44,12 +44,15 @@ class Nosto_Tagging_Block_Searchterm extends Mage_Core_Block_Template
     {
         /** @var Nosto_Tagging_Helper_Account $helper */
         $helper = Mage::helper('nosto_tagging/account');
+        /** @var Nosto_Tagging_Helper_Module $moduleHelper */
+        $moduleHelper = Mage::helper('nosto_tagging/module');
         if (!$helper->existsAndIsConnected()
             || $this->getSearchTerm() === null
-            || !Mage::helper('nosto_tagging/module')->isModuleEnabled()
+            || !$moduleHelper->isModuleEnabled()
         ) {
             return '';
         }
+
         $searchTerm = new Nosto_Object_SearchTerm($this->getSearchTerm());
         return $searchTerm->toHtml();
     }

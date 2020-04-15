@@ -62,8 +62,7 @@ class Nosto_Tagging_Model_Meta_Account extends Nosto_Object_Signup_Signup
         Mage_Core_Model_Store $store,
         $signupDetails,
         Nosto_Types_Signup_OwnerInterface $owner
-    )
-    {
+    ) {
         /* @var Nosto_Tagging_Helper_Data $helper */
         $helper = Mage::helper('nosto_tagging');
         /* @var Nosto_Tagging_Helper_Url $helperUrl */
@@ -87,6 +86,7 @@ class Nosto_Tagging_Model_Meta_Account extends Nosto_Object_Signup_Signup
         /** @var Nosto_Tagging_Model_Meta_Account_Billing $billing */
         $billing = Mage::getModel('nosto_tagging/meta_account_billing');
         $billing->loadData($store);
+        /** @phan-suppress-next-line PhanTypeMismatchArgument */
         $this->setBillingDetails($billing);
         $this->setUseCurrencyExchangeRates(!$helper->multiCurrencyDisabled($store));
         if (!$helper->multiCurrencyDisabled($store)) {
@@ -98,6 +98,7 @@ class Nosto_Tagging_Model_Meta_Account extends Nosto_Object_Signup_Signup
         } else {
             $this->setDefaultVariantId("");
         }
+
         $storeLocale = $store->getConfig('general/locale/code');
         $currencyCodes = $store->getAvailableCurrencyCodes(true);
         if (is_array($currencyCodes) && !empty($currencyCodes)) {

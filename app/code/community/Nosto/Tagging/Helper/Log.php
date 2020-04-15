@@ -63,8 +63,10 @@ class Nosto_Tagging_Helper_Log extends Mage_Core_Helper_Abstract
                     $strippedAttributes[] = implode(',', $attribute);
                 }
             }
+
             $message = vsprintf($message, $strippedAttributes);
         }
+
         Mage::log(
             $message,
             $level,

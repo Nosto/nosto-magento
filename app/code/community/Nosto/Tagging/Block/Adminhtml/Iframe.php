@@ -57,6 +57,7 @@ class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
         if ($this->_iframeUrl !== null) {
             return $this->_iframeUrl;
         }
+
         $params = array();
         // Pass any error/success messages we might have to the iframe.
         // These can be available when getting redirect back from the OAuth
@@ -72,9 +73,11 @@ class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
                         $params['message_text'] = $nostoMessage['text'];
                     }
                 }
+
                 $session->setData('nosto_message', null);
             }
         }
+
         $params['v'] = self::IFRAME_VERSION;
         try {
             $store = $this->getSelectedStore();
@@ -93,7 +96,7 @@ class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
     /**
      * Returns the currently selected store view.
      *
-     * @return Mage_Core_Model_Store the store view model.
+     * @return Mage_Core_Model_Store|null the store view model.
      *
      * @throws Exception if store view cannot be found.
      */
@@ -136,6 +139,7 @@ class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
         } catch (\Exception $e) {
             NostoLog::exception($e);
         }
+
         return $iframeParams;
     }
 

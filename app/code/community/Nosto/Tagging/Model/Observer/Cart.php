@@ -113,6 +113,7 @@ class Nosto_Tagging_Model_Observer_Cart
                     /** @var Nosto_Tagging_Model_Meta_Cart $nostoCart */
                     $nostoCart = Mage::getModel('nosto_tagging/meta_cart');
                     $nostoCart->loadData($quote);
+                    /** @phan-suppress-next-line PhanTypeMismatchArgument */
                     $cartUpdate->setCart($nostoCart);
                 } else {
                     NostoLog::info('Cannot find quote from the event.');

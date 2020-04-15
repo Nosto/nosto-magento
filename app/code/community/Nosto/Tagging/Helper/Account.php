@@ -62,16 +62,17 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
     public function save(
         Nosto_Types_Signup_AccountInterface $account,
         Mage_Core_Model_Store $store = null
-    )
-    {
+    ) {
         if ($store === null) {
             /** @var Nosto_Tagging_Helper_Data $helper */
             $helper = Mage::helper('nosto_tagging');
             $store = $helper->getStore();
         }
+
         if ((int)$store->getId() < 1) {
             return false;
         }
+
         /** @var Mage_Core_Model_Config $config */
         $config = Mage::getModel('core/config');
         $config->saveConfig(self::XML_PATH_ACCOUNT, $account->getName(), 'stores', $store->getId());
@@ -79,6 +80,7 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
         foreach ($account->getTokens() as $token) {
             $tokens[$token->getName()] = $token->getValue();
         }
+
         $config->saveConfig(self::XML_PATH_TOKENS, json_encode($tokens), 'stores', $store->getId());
         /* @var $helperData Nosto_Tagging_Helper_Data */
         $helperData = Mage::helper('nosto_tagging');
@@ -108,6 +110,7 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
                 $currentUser = Mage::getModel('nosto_tagging/meta_user');
                 $currentUser->loadData();
                 $operation = new Nosto_Operation_UninstallAccount($account);
+                /** @phan-suppress-next-line PhanTypeMismatchArgument **/
                 $operation->delete($currentUser);
             } catch (Nosto_NostoException $e) {
                 // Failures are logged but not shown to the user.
@@ -134,6 +137,7 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
             $helper = Mage::helper('nosto_tagging');
             $store = $helper->getStore();
         }
+
         $accountName = $store->getConfig(self::XML_PATH_ACCOUNT);
         if (!empty($accountName)) {
             $account = new Nosto_Object_Signup_Account($accountName);
@@ -145,6 +149,7 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
                     if (!in_array($name, Nosto_Request_Api_Token::$tokenNames)) {
                         continue;
                     }
+
                     try {
                         $token = new Nosto_Request_Api_Token($name, $value);
                         $account->addApiToken($token);
@@ -153,8 +158,10 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
                     }
                 }
             }
+
             return $account;
         }
+
         return null;
     }
 
@@ -183,18 +190,20 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
      *
      * @return string the iframe url.
      */
-    public function getIframeUrl(Mage_Core_Model_Store $store,
+    public function getIframeUrl(
+        Mage_Core_Model_Store $store,
         Nosto_Object_Signup_Account $account = null,
         array $params = array()
-    )
-    {
+    ) {
         /** @var Nosto_Tagging_Model_Meta_Account_Iframe $iframeParams */
         $iframeParams = Mage::getModel('nosto_tagging/meta_account_iframe');
+        /** @phan-suppress-next-line PhanTypeMismatchArgument */
         $iframeParams->loadData($store);
 
         /** @var Nosto_Tagging_Model_Meta_User $currentUser */
         $currentUser = Mage::getModel('nosto_tagging/meta_user');
         $currentUser->loadData();
+        /** @phan-suppress-next-line PhanTypeMismatchArgument */
         return Nosto_Helper_IframeHelper::getUrl($iframeParams, $account, $currentUser, $params);
     }
 
@@ -212,8 +221,7 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
     public function updateCurrencyExchangeRates(
         Nosto_Types_Signup_AccountInterface $account,
         Mage_Core_Model_Store $store
-    )
-    {
+    ) {
         /** @var Nosto_Tagging_Helper_Data $helper */
         $helper = Mage::helper('nosto_tagging');
         if (!$helper->isMultiCurrencyMethodExchangeRate($store)) {
@@ -224,11 +232,13 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
 
             return false;
         }
+
         try {
             /** @var Nosto_Tagging_Model_Collection_Rates $collection */
             $collection = Mage::getModel('nosto_tagging/collection_rates');
             $collection->loadData($store);
             $service = new Nosto_Operation_SyncRates($account);
+            /** @phan-suppress-next-line PhanTypeMismatchArgument */
             return $service->update($collection);
         } catch (Nosto_NostoException $e) {
             NostoLog::exception($e);
@@ -258,6 +268,7 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
             $settings = Mage::getModel('nosto_tagging/meta_settings');
             $settings->loadData($store);
             $operation = new Nosto_Operation_UpdateSettings($account);
+            /** @phan-suppress-next-line PhanTypeMismatchArgument */
             return $operation->update($settings);
         } catch (Nosto_NostoException$e) {
             NostoLog::exception($e);
@@ -280,9 +291,11 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
             $helper = Mage::helper('nosto_tagging');
             $store = $helper->getStore();
         }
+
         if ((int)$store->getId() < 1) {
             return false;
         }
+
         /** @var Mage_Core_Model_Config $config */
         $config = Mage::getModel('core/config');
         $config->saveConfig(

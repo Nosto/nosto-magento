@@ -55,6 +55,8 @@ class Nosto_Tagging_CartController extends Mage_Core_Controller_Front_Action
     {
         /** @var Nosto_Tagging_Helper_Data $helper */
         $helper = Mage::helper('nosto_tagging');
+        /** @var Nosto_Tagging_Helper_Module $moduleHelper */
+        $moduleHelper = Mage::helper('nosto_tagging/module');
         $store = $helper->getStore();
         /* @var Nosto_Tagging_Helper_Url $nostoUrlHelper */
         $nostoUrlHelper = Mage::helper('nosto_tagging/url');
@@ -62,7 +64,7 @@ class Nosto_Tagging_CartController extends Mage_Core_Controller_Front_Action
         $urlParameters = Zend_Uri_Http::fromString($currentUrl)->getQueryAsArray();
         $frontPageUrl = $nostoUrlHelper->getFrontPageUrl($store);
         $redirectUrl = $frontPageUrl;
-        if (Mage::helper('nosto_tagging/module')->isModuleEnabled()) {
+        if ($moduleHelper->isModuleEnabled()) {
             /* @var Mage_Checkout_Model_Session $checkoutSession */
             $checkoutSession = Mage::getSingleton('checkout/session');
             /* @var Mage_Core_Model_Session $coreSession */
@@ -97,6 +99,7 @@ class Nosto_Tagging_CartController extends Mage_Core_Controller_Front_Action
                 );
             }
         }
+
         $this->_redirectUrl($redirectUrl);
     }
 
@@ -139,6 +142,7 @@ class Nosto_Tagging_CartController extends Mage_Core_Controller_Front_Action
                 )
             );
         }
+
         // Note - we reactivate the cart if it's not active.
         // This would happen for example when the cart was bought.
         if (!$quote->getIsActive()) {

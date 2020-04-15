@@ -39,9 +39,9 @@
         $currentValue = $this->getCurrentValue();
         if ($option['value'] == $currentValue) {
                 $selected = 'selected';
-            } else {
+        } else {
                 $selected = '';
-            }
+        }
         ?>
          <option value="<?php echo $option['value']; ?>" <?php echo $selected; ?>><?php echo $option['label']; ?></option>
     <?php endforeach; ?>
