@@ -245,6 +245,7 @@
             </brand_attribute>
             <attribute_map>
                 <gtin>0</gtin>
+                <google_category>0</google_category>
                 <supplier_cost>cost</supplier_cost>
             </attribute_map>
             <ratings_and_reviews>
