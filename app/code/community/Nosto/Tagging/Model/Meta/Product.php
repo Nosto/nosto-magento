@@ -633,7 +633,11 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
      */
     protected function getCustomisableAttributes()
     {
-        return array('gtin' => 'gtin', 'supplier_cost' => 'supplierCost');
+        return array(
+            'gtin' => 'gtin',
+            'supplier_cost' => 'supplierCost',
+            'google_category' => 'googleCategory'
+        );
     }
 
     /**
