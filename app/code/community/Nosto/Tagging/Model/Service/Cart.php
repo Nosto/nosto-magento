@@ -43,8 +43,7 @@ class Nosto_Tagging_Model_Service_Cart
     public function update(
         Nosto_Object_Event_Cart_Update $cartUpdate,
         Nosto_Object_Signup_Account $account
-    )
-    {
+    ) {
         if (!$account || !$account->isConnectedToNosto()) {
             return false;
         }
@@ -57,6 +56,7 @@ class Nosto_Tagging_Model_Service_Cart
 
             return false;
         }
+
         $service = new Nosto_Operation_CartOperation($account);
 
         try {
@@ -64,6 +64,7 @@ class Nosto_Tagging_Model_Service_Cart
         } catch (Nosto_Request_Http_Exception_AbstractHttpException $e) {
             NostoLog::exception($e);
         }
+
         return false;
     }
 }

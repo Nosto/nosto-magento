@@ -40,6 +40,7 @@ class Nosto_Tagging_Model_Meta_Order_Builder
      * @param Mage_Sales_Model_Order_Item $item
      * @param Mage_Sales_Model_Order $order
      * @return Nosto_Types_LineItemInterface|null
+     * @suppress PhanTypeMismatchReturn
      */
     public static function buildItem(Mage_Sales_Model_Order_Item $item, Mage_Sales_Model_Order $order)
     {

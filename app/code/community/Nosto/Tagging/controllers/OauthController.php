@@ -51,7 +51,7 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
      */
     public function indexAction()
     {
-        self::connect();
+        $this->connect();
     }
 
     /**
@@ -67,6 +67,7 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
                 Mage::app()->setCurrentStore($store->getCode());
             }
         }
+
         return $helper->getStore();
     }
 
@@ -106,12 +107,13 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
      * OAuth operations
      *
      * @return Nosto_Tagging_Model_Meta_Oauth the OAuth parameters for the operations
+     * @suppress PhanTypeMismatchReturn
      */
     public function getMeta()
     {
         /** @var Nosto_Tagging_Model_Meta_Oauth $meta */
         $meta = Mage::getModel('nosto_tagging/meta_oauth');
-        $meta->loadData(self::getStore());
+        $meta->loadData($this->getStore());
         return $meta;
     }
 
@@ -126,17 +128,15 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
     {
         /** @var Nosto_Tagging_Helper_Account $accountHelper */
         $accountHelper = Mage::helper('nosto_tagging/account');
-        if ($accountHelper->save($account, self::getStore())) {
+        if ($accountHelper->save($account, $this->getStore())) {
             //Enable review and rating by default
             /* @var Nosto_Tagging_Helper_Rating $ratingHelper */
             $ratingHelper = Mage::helper('nosto_tagging/rating');
-            $ratingHelper->enableReviewAndRating(self::getStore());
+            $ratingHelper->enableReviewAndRating($this->getStore());
 
             return true;
-        } else {
-
-            return false;
         }
+        return false;
     }
 
     /**
@@ -147,7 +147,7 @@ class Nosto_tagging_OauthController extends Mage_Core_Controller_Front_Action
      */
     public function redirect(array $params)
     {
-        $params['store'] = (int)self::getStore()->getId();
+        $params['store'] = (int)$this->getStore()->getId();
         $params['_store'] = Mage_Core_Model_App::ADMIN_STORE_ID;
         $this->_redirect('adminhtml/nosto/redirectProxy', $params);
     }

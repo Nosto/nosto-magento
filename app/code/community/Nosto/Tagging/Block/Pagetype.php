@@ -52,12 +52,15 @@ class Nosto_Tagging_Block_Pagetype extends Mage_Core_Block_Template
     {
         /** @var Nosto_Tagging_Helper_Account $helper */
         $helper = Mage::helper('nosto_tagging/account');
+        /** @var Nosto_Tagging_Helper_Module $moduleHelper */
+        $moduleHelper = Mage::helper('nosto_tagging/module');
         if (!$helper->existsAndIsConnected()
             || $this->getPageTypeName() === null
-            || !Mage::helper('nosto_tagging/module')->isModuleEnabled()
+            || !$moduleHelper->isModuleEnabled()
         ) {
             return '';
         }
+
         return (new Nosto_Object_PageType($this->getPageTypeName()))->toHtml();
     }
 
@@ -73,6 +76,7 @@ class Nosto_Tagging_Block_Pagetype extends Mage_Core_Block_Template
         if ($type === null) {
             $type = self::DEFAULT_TYPE;
         }
+
         return $type;
     }
 }

@@ -69,6 +69,7 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Currency_Formats extends Mage_
         } catch (\Exception $e) {
             NostoLog::exception($e);
         }
+
         /** @var Nosto_Tagging_Helper_Data $helper */
         $helper = Mage::helper('nosto_tagging');
         /** @var Mage_Core_Model_Store[] $stores */
@@ -77,6 +78,7 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Currency_Formats extends Mage_
         } else {
             $stores = Mage::app()->getStores();
         }
+
         foreach ($stores as $store) {
             $formats[$store->getName()] = array();
             $currencyCodes = $store->getAvailableCurrencyCodes(true);
@@ -91,6 +93,7 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Currency_Formats extends Mage_
                 }
             }
         }
+
         return $formats;
     }
 }

@@ -52,14 +52,18 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
     {
         /** @var Nosto_Tagging_Helper_Account $helper */
         $helper = Mage::helper('nosto_tagging/account');
+        /** @var Nosto_Tagging_Helper_Module $moduleHelper */
+        $moduleHelper = Mage::helper('nosto_tagging/module');
+
         /** @noinspection PhpUndefinedMethodInspection */
         if (!$helper->existsAndIsConnected()
             || $this->getNostoCustomer() === null
-            ||!Mage::helper('nosto_tagging/module')->isModuleEnabled()
+            ||!$moduleHelper->isModuleEnabled()
             || !$this->helper('customer')->isLoggedIn()
         ) {
             return '';
         }
+
         return $this->getNostoCustomer()->toHtml();
     }
 
@@ -95,6 +99,7 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
         ) {
             return null;
         }
+
         /** @var Nosto_Tagging_Helper_Email $emailHelper */
         $emailHelper = Mage::helper('nosto_tagging/email');
         /** @noinspection PhpUndefinedMethodInspection */
@@ -114,6 +119,7 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
         if ($dateOfBirth !== null) {
             $nostoCustomer->setDateOfBirth(DateTime::createFromFormat("Y-m-d H:i:s", $dateOfBirth));
         }
+
         $nostoCustomer->setMarketingPermission($emailHelper->isOptedIn($email));
         $customerAddress = $customer->getPrimaryShippingAddress();
         if ($customerAddress instanceof Mage_Customer_Model_Address) {
@@ -124,9 +130,11 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
                 if (!empty($streetAddress[0])) {
                     $concatenatedStreetAddress .= $streetAddress[0];
                 }
+
                 if (!empty($streetAddress[1])) {
                     $concatenatedStreetAddress .= ' ' . $streetAddress[1];
                 }
+
                 $nostoCustomer->setStreet($concatenatedStreetAddress);
                 $customerRegion = $customerAddress->getRegion();
                 if ($customerRegion) {
@@ -136,6 +144,7 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
                 Mage::logException($e);
             }
         }
+
         $dataHelper = Mage::helper('nosto_tagging/data');
         /* @var Nosto_Tagging_Helper_Data $dataHelper */
         $nostoCustomer->setHcid($dataHelper->getVisitorChecksum());

@@ -56,6 +56,7 @@ class Nosto_Tagging_Model_Service_Product
             if ($counter > 0 && $counter % self::$maxBatchSize === 0) {
                 ++$batch;
             }
+
             ++$counter;
             if ($product instanceof Mage_Catalog_Model_Product === false) {
                 Mage::throwException(
@@ -73,13 +74,16 @@ class Nosto_Tagging_Model_Service_Product
                     if (!isset($productsInStore[$storeId])) {
                         $productsInStore[$storeId] = array();
                     }
+
                     if (!isset($productsInStore[$storeId][$batch])) {
                         $productsInStore[$storeId][$batch] = array();
                     }
+
                     $productsInStore[$storeId][$batch][] = $productToUpdate;
                 }
             }
         }
+
         // Batch ready - process batches for each store
         foreach ($productsInStore as $storeId => $productBatches) {
             /** @var Nosto_Tagging_Helper_Data $helper */
@@ -90,13 +94,13 @@ class Nosto_Tagging_Model_Service_Product
             $account = $helper->find($store);
             /* @var $nostoHelper Nosto_Tagging_Helper_Data */
             $nostoHelper = Mage::helper('nosto_tagging');
-            if (
-                $account === null
+            if ($account === null
                 || !$account->isConnectedToNosto()
                 || !$nostoHelper->getUseProductApi($store)
             ) {
                 continue;
             }
+
             /* @var Mage_Core_Model_App_Emulation $emulation */
             $emulation = Mage::getSingleton('core/app_emulation');
             $env = $emulation->startEnvironmentEmulation($store->getId());
@@ -111,6 +115,7 @@ class Nosto_Tagging_Model_Service_Product
                         if ($mageProduct instanceof Mage_Catalog_Model_Product === false) {
                             continue;
                         }
+
                         /** @var Nosto_Tagging_Model_Meta_Product $nostoProduct */
                         $nostoProduct = Mage::getModel('nosto_tagging/meta_product');
                         // If the current store scope is the main store scope, also referred to as
@@ -120,14 +125,17 @@ class Nosto_Tagging_Model_Service_Product
                         if ($nostoProduct->reloadData($mageProduct, $store)
                             && $nostoProduct->isValid()
                         ) {
+                            /** @phan-suppress-next-line PhanTypeMismatchArgument */
                             $operation->addProduct($nostoProduct);
                         }
                     }
+
                     $operation->upsert();
                 } catch (\Exception $e) {
                     Nosto_Tagging_Helper_Log::exception($e);
                 }
             }
+
             $emulation->stopEnvironmentEmulation($env);
         }
 
@@ -176,6 +184,7 @@ class Nosto_Tagging_Model_Service_Product
         if ($account === null || !$account->isConnectedToNosto()) {
             return;
         }
+
         $operation = new Nosto_Operation_DeleteProduct($account);
         $operation->setProductIds($productIds);
         try {

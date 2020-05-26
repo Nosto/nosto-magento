@@ -126,6 +126,7 @@ class Nosto_Tagging_Helper_Currency extends Mage_Core_Helper_Abstract
         if (($pos = strpos($format, ';')) !== false) {
             $format = substr($format, 0, $pos);
         }
+
         return $format;
     }
 
@@ -153,16 +154,19 @@ class Nosto_Tagging_Helper_Currency extends Mage_Core_Helper_Abstract
         if (in_array($currencyCode, $this->_zeroDecimalCurrencies, false)) {
             return 0;
         }
+
         $precision = 0;
         if (($decimalPos = strpos($format, '.')) !== false) { // @codingStandardsIgnoreLine
             $precision = (strlen($format) - (strrpos($format, '.') + 1));
         } else {
             $decimalPos = strlen($format);
         }
+
         $decimalFormat = substr($format, $decimalPos);
         if (($pos = strpos($decimalFormat, '#')) !== false) {
             $precision = strlen($decimalFormat) - $pos - $precision;
         }
+
         return $precision;
     }
 }

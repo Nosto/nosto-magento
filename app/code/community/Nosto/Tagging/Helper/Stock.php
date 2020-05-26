@@ -60,6 +60,7 @@ class Nosto_Tagging_Helper_Stock extends Mage_Core_Helper_Abstract
                         }
                     }
                 }
+
                 $qty = $this->getMinQty($products);
                 break;
             case Mage_Catalog_Model_Product_Type::TYPE_GROUPED:
@@ -99,6 +100,7 @@ class Nosto_Tagging_Helper_Stock extends Mage_Core_Helper_Abstract
         foreach ($productCollection as $product) {
             $quantities[] = $this->getQty($product);
         }
+
         if (!empty($quantities)) {
             rsort($quantities, SORT_NUMERIC);
             $minQty = array_pop($quantities);

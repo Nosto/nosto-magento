@@ -47,12 +47,15 @@ class Nosto_Tagging_Block_Order extends Mage_Checkout_Block_Success
     {
         /** @var Nosto_Tagging_Helper_Account $helper */
         $helper = Mage::helper('nosto_tagging/account');
+        /** @var Nosto_Tagging_Helper_Module $moduleHelper */
+        $moduleHelper = Mage::helper('nosto_tagging/module');
         if (!$helper->existsAndIsConnected()
             ||$this->getLastOrder() === null
-            || !Mage::helper('nosto_tagging/module')->isModuleEnabled()
+            || !$moduleHelper->isModuleEnabled()
         ) {
             return '';
         }
+
         return $this->getLastOrder()->toHtml();
     }
 
@@ -60,6 +63,7 @@ class Nosto_Tagging_Block_Order extends Mage_Checkout_Block_Success
      * Return the last placed order meta data for the customer.
      *
      * @return Nosto_Tagging_Model_Meta_Order|null the order meta data model.
+     * @suppress PhanTypeMismatchReturn
      */
     public function getLastOrder()
     {
@@ -85,6 +89,7 @@ class Nosto_Tagging_Block_Order extends Mage_Checkout_Block_Success
                     NostoLog::exception($vaimoException);
                 }
             }
+
             if (!$nostoOrder) {
                 /** @noinspection PhpUndefinedMethodInspection */
                 $orderId = Mage::getSingleton('checkout/session')->getLastOrderId();

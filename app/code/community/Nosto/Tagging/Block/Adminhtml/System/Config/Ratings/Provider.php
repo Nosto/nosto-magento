@@ -66,6 +66,7 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Ratings_Provider
                 $html .= $this->renderOption($data);
             }
         }
+
         $html .= '</tbody></table>';
         return $html;
     }
@@ -85,6 +86,7 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Ratings_Provider
         if ($this->element->getDisabled()) {
             $disabled = 'disabled="disabled"';
         }
+
         $selected = ((string)$item['value'] === (string)$currentValue) ? 'checked' : '';
         $optionId = sprintf('nosto_tagging_ratings_and_reviews_provider_%s', $item['value']);
         $optionName = 'groups[ratings_and_reviews][fields][provider][value]';
@@ -97,6 +99,7 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Ratings_Provider
         } else {
             $imageHtml = '';
         }
+
         $html .= sprintf('<tr id="row_nosto_tagging_%s">', $optionId);
         /** @noinspection HtmlUnknownAttribute */
         $html .= sprintf(

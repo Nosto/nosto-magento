@@ -53,7 +53,9 @@ class Nosto_Tagging_Model_Observer_Product
      */
     public function sendProductUpdate(Varien_Event_Observer $observer)
     {
-        if (Mage::helper('nosto_tagging/module')->isModuleEnabled()) {
+        /** @var Nosto_Tagging_Helper_Module $moduleHelper */
+        $moduleHelper = Mage::helper('nosto_tagging/module');
+        if ($moduleHelper->isModuleEnabled()) {
             /** @var Mage_Catalog_Model_Product $product */
             /** @noinspection PhpUndefinedMethodInspection */
             $product = $observer->getEvent()->getProduct();
@@ -76,7 +78,9 @@ class Nosto_Tagging_Model_Observer_Product
      */
     public function sendProductDelete(Varien_Event_Observer $observer)
     {
-        if (Mage::helper('nosto_tagging/module')->isModuleEnabled()) {
+        /** @var Nosto_Tagging_Helper_Module $moduleHelper */
+        $moduleHelper = Mage::helper('nosto_tagging/module');
+        if ($moduleHelper->isModuleEnabled()) {
             /** @var Mage_Catalog_Model_Product $product */
             /** @noinspection PhpUndefinedMethodInspection */
             $product = $observer->getEvent()->getProduct();
@@ -105,7 +109,9 @@ class Nosto_Tagging_Model_Observer_Product
      */
     public function onReviewUpdated(Varien_Event_Observer $observer)
     {
-        if (Mage::helper('nosto_tagging/module')->isModuleEnabled()) {
+        /** @var Nosto_Tagging_Helper_Module $moduleHelper */
+        $moduleHelper = Mage::helper('nosto_tagging/module');
+        if ($moduleHelper->isModuleEnabled()) {
             /** @noinspection PhpUndefinedMethodInspection */
             $object = $observer->getEvent()->getObject();
             /** @var Mage_Review_Model_Review_Summary $object */

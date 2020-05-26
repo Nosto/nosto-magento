@@ -86,25 +86,27 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
         } else {
             $this->setCreatedAt(new \DateTime('now'));
         }
+
         $orderStatus = new Nosto_Object_Order_OrderStatus();
         $orderStatus->setCode(self::DEFAULT_ORDER_STATUS);
         $orderStatus->setLabel(self::DEFAULT_ORDER_STATUS);
         $this->setOrderStatus($orderStatus);
 
         $payment = $quote->getPayment();
-        if (
-            $payment instanceof Mage_Sales_Model_Quote_Payment
+        if ($payment instanceof Mage_Sales_Model_Quote_Payment
             && $payment->getMethod()
         ) {
             $this->setPaymentProvider($payment->getMethod());
         } else {
             $this->setPaymentProvider('unknown[from_vaimo_klarna_plugin]');
         }
+
         /* @var Vaimo_Klarna_Model_Klarnacheckout $klarna */
         $klarna = Mage::getModel('klarna/klarnacheckout');
         if ($klarna instanceof Vaimo_Klarna_Model_Klarnacheckout === false) {
             Mage::throwException('No Vaimo_Klarna_Model_Klarnacheckout found');
         }
+
         $klarna->setQuote($quote, Vaimo_Klarna_Helper_Data::KLARNA_METHOD_CHECKOUT);
         /** @noinspection PhpUndefinedMethodInspection */
         $vaimoKlarnaOrder = $klarna->getKlarnaOrderRaw($quote->getKlarnaCheckoutId());
@@ -114,17 +116,21 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
             NostoLog::exception($e);
             return false;
         }
+
         $vaimoKlarnaBilling = $vaimoKlarnaOrder['billing_address'];
         $orderBuyer = new Nosto_Object_Order_Buyer();
         if (!empty($vaimoKlarnaBilling['given_name'])) {
             $orderBuyer->setFirstName($vaimoKlarnaBilling['given_name']);
         }
+
         if (!empty($vaimoKlarnaBilling['family_name'])) {
             $orderBuyer->setLastName($vaimoKlarnaBilling['family_name']);
         }
+
         if (!empty($vaimoKlarnaBilling['email'])) {
             $orderBuyer->setEmail($vaimoKlarnaBilling['email']);
         }
+
         $this->setCustomer($orderBuyer);
         try {
             $this->buildItemsFromQuote($quote);
@@ -157,15 +163,18 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
             } else {
                 $itemPrice = $quoteItem->getPriceInclTax();
             }
+
             $nostoItem->setPrice($itemPrice);
             $this->addPurchasedItems($nostoItem);
         }
+
         $appliedRuleIds = $quote->getAppliedRuleIds();
         if ($appliedRuleIds) {
             $ruleIds = explode(',', $quote->getAppliedRuleIds());
             if (is_array($ruleIds)) {
                 foreach ($ruleIds as $ruleId) {
                     /* @var Mage_SalesRule_Model_Rule $discountRule */
+                    /** @phan-suppress-next-line PhanTypeMismatchArgument */
                     $discountRule = Mage::getModel('salesrule/rule')->load($ruleId); // @codingStandardsIgnoreLine
                     $name = sprintf(
                         'Discount (%s)',
@@ -217,8 +226,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
                     'quote_id',
                     $quote->getId()
                 );
-                if (
-                    $order instanceof Mage_Sales_Model_Order
+                if ($order instanceof Mage_Sales_Model_Order
                     && $order->getId()
                 ) {
                     $this->loadData($order);
@@ -305,6 +313,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
                     $empty = true;
                 }
             }
+
             if ($empty === true) {
                 Mage::throwException(sprintf('Cannot create item - empty %s', $field));
             }

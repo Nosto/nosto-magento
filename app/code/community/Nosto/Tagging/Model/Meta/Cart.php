@@ -56,6 +56,7 @@ class Nosto_Tagging_Model_Meta_Cart extends Nosto_Object_Cart_Cart
                 $this->addItem($nostoItem);
             }
         }
+
         $this->amendRestoreCartUrl($quote, $store);
         $dataHelper = Mage::helper('nosto_tagging/data');
         /* @var Nosto_Tagging_Helper_Data $dataHelper */

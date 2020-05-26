@@ -87,6 +87,7 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
             $file = ltrim($file, '/');
             $url = $baseUrl . '/catalog/product/' . $file;
         }
+
         return $url;
     }
 
@@ -163,6 +164,7 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
                 )
             );
         }
+
         foreach ($attributes as $mageAttr => $nostoAttr) {
             $mapped = $nostoHelper->getMappedAttribute($mageAttr, $store);
             if ($mapped) {
@@ -188,13 +190,13 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
         Mage_Catalog_Model_Product $product,
         $attributeName,
         $storeId = null
-    )
-    {
+    ) {
         $attribute = $product->getResource()->getAttribute($attributeName);
         if ($attribute instanceof Mage_Catalog_Model_Resource_Eav_Attribute) {
             if ($storeId && method_exists($product, 'setStoreId')) {
                 $product->setStoreId($storeId);
             }
+
             $attributeData = $product->getData($attributeName);
             /** @noinspection PhpParamsInspection */
             $attributeValue = $product->getAttributeText($attributeName);

@@ -46,10 +46,12 @@ class Nosto_Tagging_Model_System_Config_Source_Cron_Frequency
     {
         $options = parent::toOptionArray();
         if (empty($options[self::CRON_HOURLY])) {
+            /** @var Mage_Cron_Helper_Data $cronHelper */
+            $cronHelper = Mage::helper('cron');
             array_unshift(
                 $options,
                 array(
-                    'label' => Mage::helper('cron')->__('Hourly'),
+                    'label' => $cronHelper->__('Hourly'),
                     'value' => self::CRON_HOURLY,
                 )
             );

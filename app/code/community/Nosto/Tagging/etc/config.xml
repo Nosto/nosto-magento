@@ -28,7 +28,7 @@
 <config>
     <modules>
         <Nosto_Tagging>
-            <version>4.0.0</version>
+            <version>4.1.0</version>
         </Nosto_Tagging>
     </modules>
     <global>
@@ -245,6 +245,7 @@
             </brand_attribute>
             <attribute_map>
                 <gtin>0</gtin>
+                <google_category>0</google_category>
                 <supplier_cost>cost</supplier_cost>
             </attribute_map>
             <ratings_and_reviews>

@@ -1,5 +1,8 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 4.1.0
+* Add google category as customisable attribute
+
 ### 4.0.0
 * Remove Nosto category personalization feature from this extension
 * Remove product indexer

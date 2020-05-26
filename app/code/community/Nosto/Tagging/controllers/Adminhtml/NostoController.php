@@ -73,10 +73,12 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                 );
             }
         }
+
         $params = array();
         if (($storeId = (int)$this->getRequest()->getParam('store')) !== 0) {
             $params['store'] = $storeId;
         }
+
         $this->_redirect('*/*/index', $params);
     }
 
@@ -100,6 +102,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
             $this->_redirectError(Mage::getUrl('adminhtml'));
             return false;
         }
+
         $this->_title($this->__('Nosto'));
         if (!$this->getSelectedStore()) {
             // If we are not under a store view, then redirect to the first
@@ -113,6 +116,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                 }
             }
         }
+
         $this->loadLayout();
         $this->renderLayout();
         return null;
@@ -133,6 +137,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
             $meta->loadData($store);
             $responseBody = array(
                 'success' => true,
+                /** @phan-suppress-next-line PhanTypeMismatchArgument */
                 'redirect_url' => Nosto_Helper_OAuthHelper::getAuthorizationUrl($meta),
             );
         }
@@ -173,9 +178,11 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
             $meta->loadData($store);
             $responseBody = array(
                 'success' => true,
+                /** @phan-suppress-next-line PhanTypeMismatchArgument */
                 'redirect_url' => Nosto_Helper_OAuthHelper::getAuthorizationUrl($meta),
             );
         }
+
         if (!isset($responseBody)) {
             $responseBody = array(
                 'success' => false,
@@ -189,6 +196,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                 )
             );
         }
+
         $this->getResponse()->setBody(json_encode($responseBody));
     }
 
@@ -229,7 +237,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                 /** @var Nosto_Tagging_Model_Meta_Account $signup */
                 $signup = Mage::getModel('nosto_tagging/meta_account');
                 $signup->loadData($store, $signupDetails, $accountOwner);
-
+                /** @phan-suppress-next-line PhanTypeMismatchArgument */
                 $operation = new Nosto_Operation_AccountSignup($signup);
                 /** @var Nosto_Object_Signup_Account $account */
                 $account = $operation->create();
@@ -266,6 +274,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
             if ($messageText) {
                 $params['message_text'] = $messageText;
             }
+
             $responseBody = array(
                 'success' => false,
                 'redirect_url' => $accountHelper->getIframeUrl(
@@ -308,6 +317,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
 
             return;
         }
+
         $nostoAccount = $accountHelper->find($store);
         if ($nostoAccount instanceof Nosto_Object_Signup_Account == false) {
             $adminSession->addError(
@@ -397,6 +407,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         } else {
             $stores = Mage::app()->getStores();
         }
+
         $countStores = count($stores);
         $countStoresWithoutMultiCurrency = 0;
         foreach ($stores as $store) {
@@ -404,10 +415,12 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                 $countStoresWithoutMultiCurrency++;
                 continue;
             }
+
             $account = $accountHelper->find($store);
             if ($account === null) {
                 continue;
             }
+
             if ($accountHelper->updateCurrencyExchangeRates($account, $store)) {
                 $responseBody['data'][] = array(
                     'type' => 'success',
@@ -420,6 +433,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                 );
             }
         }
+
         if ($countStores === $countStoresWithoutMultiCurrency) {
             $responseBody['data'][] = array(
                 'type' => 'error',
@@ -431,6 +445,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                 'message' => $helper->__("Nosto has not been installed in any of the stores in the current scope. Please make sure you have installed Nosto to at least one of your stores in the scope.") // @codingStandardsIgnoreLine
             );
         }
+
         $this->getResponse()->setBody(json_encode($responseBody));
     }
 
@@ -453,6 +468,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
         } else {
             $stores = Mage::app()->getStores();
         }
+
         /** @var Nosto_Tagging_Helper_Data $helper */
         $helper = Mage::helper('nosto_tagging');
         /** @var Nosto_Tagging_Helper_Account $accountHelper */
@@ -475,12 +491,14 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                 );
             }
         }
+
         if (empty($responseBody['data'])) {
             $responseBody['data'][] = array(
                 'type' => 'error',
                 'message' => $helper->__("Nosto has not been installed in any of the stores in the current scope. Please make sure you have installed Nosto to at least one of your stores in the scope.")// @codingStandardsIgnoreLine
             );
         }
+
         $this->getResponse()->setBody(json_encode($responseBody));
     }
 

@@ -64,6 +64,7 @@ abstract class Nosto_Tagging_Model_System_Config_Source_Attribute
                 );
             }
         }
+
         $attributeTypeId = Mage::getResourceModel('catalog/config')->getEntityTypeId();
         $attributes = $resourceModel
             ->addFieldToFilter(
@@ -109,6 +110,7 @@ abstract class Nosto_Tagging_Model_System_Config_Source_Attribute
             if (in_array($code, self::$notValidCustomAttributes)) {
                 continue;
             }
+
             $label = $attribute->getData('frontend_label');
             $attributeArray[] = array(
                 self::OPTION_KEY_VALUE => $code,

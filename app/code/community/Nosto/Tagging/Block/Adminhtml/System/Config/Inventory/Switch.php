@@ -54,6 +54,7 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Inventory_Switch extends Mage_
                 'comment', $comment
             );
         }
+
         return parent::_getElementHtml($element);
     }
 }

@@ -53,6 +53,7 @@ class Nosto_Tagging_Model_Collection_Rates extends Nosto_Object_ExchangeRateColl
             if ($baseCurrencyCode === $code) {
                 continue; // Skip base currency.
             }
+
             parent::addRate($code, new Nosto_Object_ExchangeRate($code, $rate));
         }
 

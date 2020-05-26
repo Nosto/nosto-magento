@@ -47,7 +47,9 @@ class Nosto_Tagging_Model_Observer_Customer
      */
     public function customerUpdated(Varien_Event_Observer $observer)
     {
-        if (Mage::helper('nosto_tagging/module')->isModuleEnabled()) {
+        /** @var Nosto_Tagging_Helper_Module $moduleHelper */
+        $moduleHelper = Mage::helper('nosto_tagging/module');
+        if ($moduleHelper->isModuleEnabled()) {
             try {
                 /** @noinspection PhpUndefinedMethodInspection */
                 $mageCustomer = $observer->getEvent()->getCustomer();
