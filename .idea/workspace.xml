@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="SCOPE_TYPE" value="3" />
+    <option name="CUSTOM_SCOPE_NAME" value="Module 'Magento'" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="f884007a-10f0-4c3e-84f1-431ccb224950" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
+  </component>
+  <component name="ComposerSettings" doNotAsk="true">
+    <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
+    <execution>
+      <executable path="composer" />
+    </execution>
+  </component>
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>loadBy</find>
+      <find>loadB</find>
+      <find>load</find>
+      <find>isEnabledFlat</find>
+      <find>U</find>
+      <find>Update</find>
+      <find>a</find>
+      <find>ad</find>
+      <find>addJ</find>
+      <find>addJs</find>
+      <find>fuaddJs</find>
+      <find>funcaddJs</find>
+      <find>functiaddJs</find>
+      <find>functioaddJs</find>
+      <find>functionaddJs</find>
+      <find>function addJs</find>
+      <find>pa</find>
+      <find>parse_</find>
+      <find>parse_s</find>
+      <find>parse</find>
+      <find>parseU</find>
+      <find>parseUrl</find>
+      <find>parseUrlA</find>
+      <find>parseUrlAs</find>
+      <find>Zend_Uri_Http</find>
+      <find>getQueryAsArray</find>
+      <find>g</find>
+      <find>getS</find>
+      <find>getStore</find>
+      <find>ctc</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>NostoTaggingHelperAccount::</replace>
+      <replace>Nosto_NostoException</replace>
+      <replace>ollection</replace>
+      <replace>var</replace>
+    </replaceStrings>
+    <dirStrings>
+      <dir>/Applications/MAMP/htdocs/magento/1910</dir>
+      <dir>$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/System</dir>
+      <dir>$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta</dir>
+      <dir>$PROJECT_DIR$/vendor/mridang/pearify/src</dir>
+      <dir>$PROJECT_DIR$/vendor/mridang/magazine</dir>
+      <dir>$PROJECT_DIR$/app/code</dir>
+      <dir>$PROJECT_DIR$/lib/Nosto</dir>
+      <dir>$PROJECT_DIR$/vendor/openmage/magento-mirror/app/code/core/Mage/Checkout</dir>
+      <dir>$PROJECT_DIR$</dir>
+      <dir>$PROJECT_DIR$/vendor/openmage/magento-mirror/app/code/core/Mage/Sales</dir>
+      <dir>$PROJECT_DIR$/vendor/openmage/magento-mirror/app</dir>
+      <dir>$PROJECT_DIR$/app/code/community</dir>
+      <dir>$PROJECT_DIR$/vendor/openmage</dir>
+      <dir>$PROJECT_DIR$/vendor/openmage/magento-mirror/app/code/core</dir>
+      <dir>$PROJECT_DIR$/vendor/openmage/magento-mirror/app/code</dir>
+      <dir>$PROJECT_DIR$/app/code/community/Nosto</dir>
+      <dir>$PROJECT_DIR$/vendor/openmage/magento-mirror</dir>
+      <dir>$PROJECT_DIR$/vendor</dir>
+      <dir>$PROJECT_DIR$/app</dir>
+    </dirStrings>
+  </component>
+  <component name="FindManager">
+    <FindUsagesManager>
+      <setting name="OPEN_NEW_TAB" value="true" />
+    </FindUsagesManager>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="improvement/test-github-workflow" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Order/Vaimo/Klarna/Checkout.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Rating/Yotpo/Yotpo.php" root0="FORCE_HIGHLIGHTING" root1="SKIP_INSPECTION" />
+  </component>
+  <component name="NamedScopeManager">
+    <scope name="Magento" pattern="(!file[Magento]:.idea/*||file[Magento]:*/)&amp;&amp;!file[Magento]:.idea//*" />
+    <scope name="Inspection" pattern="!file[Magento]:.github//*&amp;&amp;!file[Magento]:.idea//*||file[Magento]:app//*||file[Magento]:js//*" />
+  </component>
+  <component name="PHPCodeSnifferProjectConfiguration">
+    <option name="selectedConfigurationId" value="DEFAULT_INTERPRETER" />
+  </component>
+  <component name="PhpServers">
+    <servers />
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP 7.0.10">
+    <include_path>
+      <path value="/Applications/MAMP/htdocs/magento/1910" />
+      <path value="$PROJECT_DIR$/lib" />
+      <path value="$PROJECT_DIR$/vendor/openmage/magento-mirror" />
+      <path value="$PROJECT_DIR$/vendor/vlucas/phpdotenv" />
+      <path value="$PROJECT_DIR$/vendor/theseer/fdomdocument" />
+      <path value="$PROJECT_DIR$/vendor/symfony/yaml" />
+      <path value="$PROJECT_DIR$/vendor/symfony/finder" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-mbstring" />
+      <path value="$PROJECT_DIR$/vendor/symfony/debug" />
+      <path value="$PROJECT_DIR$/vendor/symfony/filesystem" />
+      <path value="$PROJECT_DIR$/vendor/symfony/config" />
+      <path value="$PROJECT_DIR$/vendor/symfony/console" />
+      <path value="$PROJECT_DIR$/vendor/squizlabs/php_codesniffer" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/phpcpd" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/version" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/finder-facade" />
+      <path value="$PROJECT_DIR$/vendor/psr/log" />
+      <path value="$PROJECT_DIR$/vendor/phpunit/php-timer" />
+      <path value="$PROJECT_DIR$/vendor/phpseclib/phpseclib" />
+      <path value="$PROJECT_DIR$/vendor/phpmd/phpmd" />
+      <path value="$PROJECT_DIR$/vendor/phing/phing" />
+      <path value="$PROJECT_DIR$/vendor/pdepend/pdepend" />
+      <path value="$PROJECT_DIR$/vendor/nosto/php-sdk" />
+      <path value="$PROJECT_DIR$/vendor/mridang/magazine" />
+      <path value="$PROJECT_DIR$/vendor/mridang/pearify" />
+      <path value="$PROJECT_DIR$/vendor/magento/marketplace-eqp" />
+      <path value="$PROJECT_DIR$/vendor/symfony/dependency-injection" />
+      <path value="$PROJECT_DIR$/vendor/magento-ecg/coding-standard" />
+      <path value="$PROJECT_DIR$/vendor/composer" />
+      <path value="$PROJECT_DIR$/vendor/psr/container" />
+      <path value="$PROJECT_DIR$/vendor/nikic/php-parser" />
+      <path value="$PROJECT_DIR$/vendor/phan/phan" />
+      <path value="$PROJECT_DIR$/vendor/etsy/phan" />
+      <path value="$PROJECT_DIR$/vendor/netresearch/jsonmapper" />
+      <path value="$PROJECT_DIR$/vendor/webmozart/assert" />
+      <path value="$PROJECT_DIR$/vendor/phpdocumentor/type-resolver" />
+      <path value="$PROJECT_DIR$/vendor/felixfbecker/advanced-json-rpc" />
+      <path value="$PROJECT_DIR$/vendor/phpdocumentor/reflection-common" />
+      <path value="$PROJECT_DIR$/vendor/phpdocumentor/reflection-docblock" />
+      <path value="$PROJECT_DIR$/vendor/phpcompatibility/php-compatibility" />
+      <path value="$PROJECT_DIR$/vendor/sabre/event" />
+      <path value="$PROJECT_DIR$/vendor/mridang/pmd-annotations" />
+      <path value="$PROJECT_DIR$/vendor/staabm/annotate-pull-request-from-checkstyle" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-ctype" />
+      <path value="$PROJECT_DIR$/vendor/symfony/service-contracts" />
+      <path value="$PROJECT_DIR$/vendor/microsoft/tolerant-php-parser" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php72" />
+    </include_path>
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="width" value="1440" />
+    <option name="height" value="900" />
+  </component>
+  <component name="ProjectId" id="1ccdXRb6mE1wEOMvel0FtMPg710" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectReloadState">
+    <option name="STATE" value="0" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="autoscrollToSource" value="true" />
+    <option name="showMembers" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="FullScreen" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="true" />
+    <property name="add_unversioned_files" value="$PROJECT_DIR$/vendor/mridang/pearify/src/Pearify/Pearify.php" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="js-jscs-nodeInterpreter" value="/usr/local/bin/node" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="php.override.implement.member.chooser.php.doc" value="INHERIT" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="settings.editor.selected.configurable" value="project.scopes" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block" />
+      <recent name="$PROJECT_DIR$/lib/Nosto/Mixins" />
+      <recent name="$PROJECT_DIR$/app/code/community/Nosto/Tagging" />
+      <recent name="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Helper" />
+      <recent name="$PROJECT_DIR$/app/code/community/Nosto/Tagging/controllers/Adminhtml" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/code/community/Nosto/Tagging" />
+      <recent name="$PROJECT_DIR$/app/design/frontend/base/default/template/email" />
+      <recent name="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta" />
+      <recent name="/Applications/MAMP/htdocs/magento/1910/.modman/nosto-magento-extension/lib/nosto/php-sdk/src/interfaces" />
+      <recent name="$PROJECT_DIR$/app/design/frontend/base/default/template/nostotagging" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="CodeceptionConfigurationType" factoryName="Codeception">
+      <PhpTestRunnerSettings />
+      <method />
+    </configuration>
+    <configuration default="true" type="PhpBehatConfigurationType" factoryName="Behat">
+      <BehatRunner />
+      <method />
+    </configuration>
+    <configuration default="true" type="PhpSpecConfigurationType" factoryName="PHPSpec">
+      <PhpTestRunnerSettings />
+      <method />
+    </configuration>
+    <configuration default="true" type="PhpUnitRemoteRunConfigurationType" factoryName="PHPUnit on Server">
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.gulp">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <pass-parent-envs>true</pass-parent-envs>
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f884007a-10f0-4c3e-84f1-431ccb224950" name="Default" comment="" />
+      <created>1421055017448</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1421055017448</updated>
+      <workItem from="1458277410850" duration="451000" />
+      <workItem from="1458650594838" duration="10625000" />
+      <workItem from="1459794772121" duration="2937000" />
+      <workItem from="1463991939293" duration="87000" />
+      <workItem from="1463992043847" duration="3298000" />
+      <workItem from="1463996538137" duration="4860000" />
+      <workItem from="1464087827115" duration="1917000" />
+      <workItem from="1464095426896" duration="92000" />
+      <workItem from="1464095610324" duration="4002000" />
+      <workItem from="1464632052339" duration="37000" />
+      <workItem from="1464632084777" duration="2463000" />
+      <workItem from="1465222061841" duration="580000" />
+      <workItem from="1465398600986" duration="346000" />
+      <workItem from="1465997951610" duration="15935000" />
+      <workItem from="1466244316063" duration="9677000" />
+      <workItem from="1466449045413" duration="10038000" />
+      <workItem from="1467266880095" duration="832000" />
+      <workItem from="1468999010255" duration="19448000" />
+      <workItem from="1469422501274" duration="122000" />
+      <workItem from="1469443894911" duration="26713000" />
+      <workItem from="1469636200834" duration="11301000" />
+      <workItem from="1470034248944" duration="2684000" />
+      <workItem from="1470898081181" duration="1973000" />
+      <workItem from="1471415143190" duration="145000" />
+      <workItem from="1474628013401" duration="990000" />
+      <workItem from="1474803379841" duration="12000" />
+      <workItem from="1475824914801" duration="1016000" />
+      <workItem from="1475833542466" duration="3043000" />
+      <workItem from="1477037121850" duration="6716000" />
+      <workItem from="1477412090942" duration="4366000" />
+      <workItem from="1477474008750" duration="10349000" />
+      <workItem from="1477567594562" duration="1988000" />
+      <workItem from="1477844683178" duration="1276000" />
+      <workItem from="1478597493982" duration="2251000" />
+      <workItem from="1479713196125" duration="8724000" />
+      <workItem from="1482827970699" duration="437000" />
+      <workItem from="1483098708549" duration="2881000" />
+      <workItem from="1483530931916" duration="185000" />
+      <workItem from="1485336600600" duration="1549000" />
+      <workItem from="1485343802305" duration="3053000" />
+      <workItem from="1485417872478" duration="24559000" />
+      <workItem from="1485695351672" duration="756000" />
+      <workItem from="1485697335963" duration="7000" />
+      <workItem from="1485699529005" duration="78170000" />
+      <workItem from="1486541043199" duration="39799000" />
+      <workItem from="1487008202309" duration="15569000" />
+      <workItem from="1487431941592" duration="9388000" />
+      <workItem from="1487674036928" duration="804000" />
+      <workItem from="1487708526268" duration="3115000" />
+      <workItem from="1487863413823" duration="6324000" />
+      <workItem from="1489094069307" duration="14892000" />
+      <workItem from="1489422486590" duration="23673000" />
+      <workItem from="1489675687126" duration="19465000" />
+      <workItem from="1490182550504" duration="5424000" />
+      <workItem from="1490523761880" duration="304000" />
+      <workItem from="1490524129818" duration="144000" />
+      <workItem from="1490618142425" duration="6047000" />
+      <workItem from="1491511567435" duration="249000" />
+      <workItem from="1491511885594" duration="14149000" />
+      <workItem from="1491610476584" duration="10210000" />
+      <workItem from="1491870599792" duration="6895000" />
+      <workItem from="1492118877804" duration="2087000" />
+      <workItem from="1492181985280" duration="3826000" />
+      <workItem from="1492992356307" duration="182000" />
+      <workItem from="1493360725175" duration="598000" />
+      <workItem from="1493361516840" duration="7836000" />
+      <workItem from="1493376572346" duration="3496000" />
+      <workItem from="1493706853563" duration="451000" />
+      <workItem from="1493752402826" duration="289000" />
+      <workItem from="1493752853721" duration="8823000" />
+      <workItem from="1494172187381" duration="467000" />
+      <workItem from="1494272981068" duration="6723000" />
+      <workItem from="1496307421650" duration="1121000" />
+      <workItem from="1496388773256" duration="10820000" />
+      <workItem from="1497530891788" duration="5899000" />
+      <workItem from="1498047949393" duration="1648000" />
+      <workItem from="1498113486514" duration="366000" />
+      <workItem from="1498564601891" duration="3464000" />
+      <workItem from="1499012423699" duration="3653000" />
+      <workItem from="1500200020248" duration="482000" />
+      <workItem from="1500215940279" duration="595000" />
+      <workItem from="1501530630819" duration="10000" />
+      <workItem from="1501789126936" duration="576000" />
+      <workItem from="1501831581979" duration="672000" />
+      <workItem from="1502433858231" duration="884000" />
+      <workItem from="1502777567755" duration="1821000" />
+      <workItem from="1507663502606" duration="11770000" />
+      <workItem from="1508759907391" duration="2409000" />
+      <workItem from="1508778492183" duration="311000" />
+      <workItem from="1508861134720" duration="2799000" />
+      <workItem from="1509442001717" duration="931000" />
+      <workItem from="1509735831007" duration="127000" />
+      <workItem from="1511942839919" duration="2415000" />
+      <workItem from="1512666127967" duration="479000" />
+      <workItem from="1514623294643" duration="620000" />
+      <workItem from="1517046954370" duration="140000" />
+      <workItem from="1521539688643" duration="31000" />
+      <workItem from="1521642753557" duration="19000" />
+      <workItem from="1590831881163" duration="1365000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
+  </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+    <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+      <collection />
+    </option>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="553" y="369" key="ComposerInitDialogKey" timestamp="1590833044448">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="553" y="369" key="ComposerInitDialogKey/0.0.1440.900@0.0.1440.900" timestamp="1590833044448" />
+    <state x="229" y="89" key="SettingsEditor" timestamp="1590832055029">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="229" y="89" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1590832055029" />
+  </component>
+</project>
