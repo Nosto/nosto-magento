@@ -36,8 +36,8 @@ $installer = $this;
 $installer->startSetup();
 
 if (!$installer->getConnection()->isTableExists($installer->getTable('nosto_tagging/customer'))) {
-	/** @noinspection DuplicatedCode */
-	$table = $installer
+    /** @noinspection DuplicatedCode */
+    $table = $installer
         ->getConnection()
         ->newTable($installer->getTable('nosto_tagging/customer'))
         ->addColumn(
@@ -86,7 +86,7 @@ if (!$installer->getConnection()->isTableExists($installer->getTable('nosto_tagg
                 'type' => Varien_Db_Adapter_Interface::INDEX_TYPE_UNIQUE
             )
         );
-	$installer->getConnection()->createTable($table);
+    $installer->getConnection()->createTable($table);
 }
 
 $installer->endSetup();

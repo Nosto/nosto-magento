@@ -48,86 +48,86 @@ $formKey = $session->getFormKey();
 <!-- Nosto `add-to-cart` Script -->
 <!--suppress JSUnresolvedFunction, JSUnusedLocalSymbols, JSUnresolvedVariable -->
 <script type="text/javascript">
-    if (typeof Nosto === "undefined") {
-        const Nosto = {};
-    }
-    Nosto.addProductToCart = function (productId, element) {
-        Nosto.trackAddToCartClick(productId, element);
-			const fields = {
-				"product": productId,
-				"form_key": "<?php echo $formKey; ?>"
-			};
-			Nosto.postAddToCartForm(fields, "<?php echo $formAction; ?>");
+  if (typeof Nosto === "undefined") {
+    const Nosto = {};
+  }
+  Nosto.addProductToCart = function (productId, element) {
+    Nosto.trackAddToCartClick(productId, element);
+    const fields = {
+      "product": productId,
+      "form_key": "<?php echo $formKey; ?>"
     };
+    Nosto.postAddToCartForm(fields, "<?php echo $formAction; ?>");
+  };
 
-    // Products must be and array of objects [{productId: "123", skuId: "321"}]
-    Nosto.addMultipleProductsToCart = function (products, element) {
-			const productsArray = [];
-			const skus = [];
-			products.forEach(function(product) {
-            Nosto.trackAddToCartClick(product.productId, element);
-            productsArray.push(product.productId);
-            skus.push(product.skuId);
-        });
-			const fields = {};
-			fields["product"] = productsArray;
-        fields["skus"] = skus;
-        fields["form_key"]= "<?php echo $formKey; ?>";
-        Nosto.postAddToCartForm(fields, "<?php echo $this->getAddMultipleProductsToCartUrl() ?>");
-    };
+  // Products must be and array of objects [{productId: "123", skuId: "321"}]
+  Nosto.addMultipleProductsToCart = function (products, element) {
+    const productsArray = [];
+    const skus = [];
+    products.forEach(function (product) {
+      Nosto.trackAddToCartClick(product.productId, element);
+      productsArray.push(product.productId);
+      skus.push(product.skuId);
+    });
+    const fields = {};
+    fields["product"] = productsArray;
+    fields["skus"] = skus;
+    fields["form_key"] = "<?php echo $formKey; ?>";
+    Nosto.postAddToCartForm(fields, "<?php echo $this->getAddMultipleProductsToCartUrl() ?>");
+  };
 
-    // Product object must have fields productId and skuId {productId: 123, skuId: 321}
-    Nosto.addSkuToCart = function (product, element, quantity) {
-        quantity = quantity || 1;
-        Nosto.trackAddToCartClick(product.productId, element);
-			const fields = {
-				"product": product.productId,
-				"sku": product.skuId,
-				"qty": quantity,
-				"form_key": "<?php echo $formKey; ?>"
-			};
-			Nosto.postAddToCartForm(fields, "<?php echo $this->getAddSkuToCartUrl(); ?>");
+  // Product object must have fields productId and skuId {productId: 123, skuId: 321}
+  Nosto.addSkuToCart = function (product, element, quantity) {
+    quantity = quantity || 1;
+    Nosto.trackAddToCartClick(product.productId, element);
+    const fields = {
+      "product": product.productId,
+      "sku": product.skuId,
+      "qty": quantity,
+      "form_key": "<?php echo $formKey; ?>"
     };
-    Nosto.resolveContextSlotId = function (element) {
-			const m = 20;
-			let n = 0;
-			let e = element;
-			while (typeof e.parentElement !== "undefined" && e.parentElement) {
-            ++n;
-            e = e.parentElement;
-            if (e.getAttribute('class') === 'nosto_element' && e.getAttribute('id')) {
-                return e.getAttribute('id');
-            }
-            if (n >= m) {
-                return false;
-            }
-        }
+    Nosto.postAddToCartForm(fields, "<?php echo $this->getAddSkuToCartUrl(); ?>");
+  };
+  Nosto.resolveContextSlotId = function (element) {
+    const m = 20;
+    let n = 0;
+    let e = element;
+    while (typeof e.parentElement !== "undefined" && e.parentElement) {
+      ++n;
+      e = e.parentElement;
+      if (e.getAttribute('class') === 'nosto_element' && e.getAttribute('id')) {
+        return e.getAttribute('id');
+      }
+      if (n >= m) {
         return false;
-    };
-    Nosto.trackAddToCartClick = function (productId, element) {
-        if (typeof nostojs !== 'undefined' && typeof element === 'object') {
-					const slotId = Nosto.resolveContextSlotId(element);
-					if (slotId) {
-                nostojs(function (api) {
-                    api.recommendedProductAddedToCart(productId, slotId);
-                });
-            }
-        }
-    };
-    Nosto.postAddToCartForm = function (data, url) {
-			const form = document.createElement("form");
-			form.setAttribute("method", "post");
-        form.setAttribute("action", url);
-        for (let key in data) {
-            if (data.hasOwnProperty(key)) {
-							const hiddenField = document.createElement("input");
-							hiddenField.setAttribute("type", "hidden");
-                hiddenField.setAttribute("name", key);
-                hiddenField.setAttribute("value", data[key]);
-                form.appendChild(hiddenField);
-            }
-        }
-        document.body.appendChild(form);
-        form.submit();
-    };
+      }
+    }
+    return false;
+  };
+  Nosto.trackAddToCartClick = function (productId, element) {
+    if (typeof nostojs !== 'undefined' && typeof element === 'object') {
+      const slotId = Nosto.resolveContextSlotId(element);
+      if (slotId) {
+        nostojs(function (api) {
+          api.recommendedProductAddedToCart(productId, slotId);
+        });
+      }
+    }
+  };
+  Nosto.postAddToCartForm = function (data, url) {
+    const form = document.createElement("form");
+    form.setAttribute("method", "post");
+    form.setAttribute("action", url);
+    for (let key in data) {
+      if (data.hasOwnProperty(key)) {
+        const hiddenField = document.createElement("input");
+        hiddenField.setAttribute("type", "hidden");
+        hiddenField.setAttribute("name", key);
+        hiddenField.setAttribute("value", data[key]);
+        form.appendChild(hiddenField);
+      }
+    }
+    document.body.appendChild(form);
+    form.submit();
+  };
 </script>

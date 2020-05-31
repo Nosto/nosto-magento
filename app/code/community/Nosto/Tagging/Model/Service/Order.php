@@ -37,16 +37,16 @@
 class Nosto_Tagging_Model_Service_Order
 {
 
-	/**
-	 * Sends an order confirmation to Nosto and also batch updates all products
-	 * that were included in the order.
-	 *
-	 * @param Mage_Sales_Model_Order $mageOrder
-	 * @return bool
-	 * @throws Mage_Core_Exception
-	 * @throws NostoException
-	 * @throws Nosto_Request_Http_Exception_AbstractHttpException
-	 */
+    /**
+     * Sends an order confirmation to Nosto and also batch updates all products
+     * that were included in the order.
+     *
+     * @param Mage_Sales_Model_Order $mageOrder
+     * @return bool
+     * @throws Mage_Core_Exception
+     * @throws NostoException
+     * @throws Nosto_Request_Http_Exception_AbstractHttpException
+     */
     public function confirm(Mage_Sales_Model_Order $mageOrder)
     {
         /** @var Nosto_Tagging_Helper_Data $dataHelper */
@@ -77,13 +77,13 @@ class Nosto_Tagging_Model_Service_Order
         return true;
     }
 
-	/**
-	 * Sends product updates to Nosto to keep up with the inventory level
-	 *
-	 * @param Nosto_Tagging_Model_Meta_Order $order
-	 * @throws Mage_Core_Exception
-	 * @throws NostoException
-	 */
+    /**
+     * Sends product updates to Nosto to keep up with the inventory level
+     *
+     * @param Nosto_Tagging_Model_Meta_Order $order
+     * @throws Mage_Core_Exception
+     * @throws NostoException
+     */
     public function syncInventoryLevel(Nosto_Tagging_Model_Meta_Order $order)
     {
         $purchasedItems = $order->getPurchasedItems();
@@ -99,7 +99,7 @@ class Nosto_Tagging_Model_Service_Order
         }
 
         if (!empty($productIds)) {
-            /* @var Nosto_Tagging_Model_Resource_Product_Collection $productIds*/
+            /* @var Nosto_Tagging_Model_Resource_Product_Collection $productIds */
             $products = Mage::getModel('nosto_tagging/product')
                 ->getCollection()
                 ->addAttributeToSelect('*')

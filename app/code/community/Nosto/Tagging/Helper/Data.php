@@ -394,7 +394,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getCookieId()
     {
-		return Mage::getModel('core/cookie')->get(self::COOKIE_NAME);
+        return Mage::getModel('core/cookie')->get(self::COOKIE_NAME);
     }
 
     /**
@@ -420,7 +420,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function cleanUpAccountTitle($name)
     {
-		return str_replace(self::$removeFromTitle, '', $name);
+        return str_replace(self::$removeFromTitle, '', $name);
     }
 
     /**
@@ -598,13 +598,13 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         return (bool)Mage::getStoreConfig(self::XML_PATH_USE_LOW_STOCK, $store);
     }
 
-	/**
-	 * Returns is the sending add to cart event to nosto enabled
-	 * This feature has been removed so it will return false
-	 *
-	 * @return bool
-	 * @deprecated
-	 */
+    /**
+     * Returns is the sending add to cart event to nosto enabled
+     * This feature has been removed so it will return false
+     *
+     * @return bool
+     * @deprecated
+     */
     public function getSendAddToCartEvent()
     {
         return false;
@@ -614,9 +614,9 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      * Returns exchange rate cron frequency
      *
      * For possible return values
+     * @return string
      * @see Nosto_Tagging_Model_System_Config_Source_Cron_Frequency
      *
-     * @return string
      */
     public function getExchangeRateCronFrequency()
     {
@@ -629,8 +629,8 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      * @param string $tagId the name / identifier of the tag (e.g. tag1, tag2).
      * @param mixed $store the store model or null.
      *
-     * @throws Nosto_NostoException
      * @return array
+     * @throws Nosto_NostoException
      */
     public function getAttributesToTag($tagId, $store = null)
     {
@@ -701,7 +701,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         foreach (Mage::app()->getWebsites() as $website) {
             /** @var Mage_Core_Model_Store_Group $group */
             foreach ($website->getGroups() as $group) {
-				$stores = $group->getStores();
+                $stores = $group->getStores();
                 foreach ($stores as $store) {
                     $response[] = $store;
                 }
@@ -721,7 +721,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     {
         $stores = $this->getAllStoreViews();
         $values = array();
-		foreach ($stores as $store) {
+        foreach ($stores as $store) {
             /** @noinspection PhpUndefinedMethodInspection */
             $storeId = $store->getStoreId();
             if ($storeId) {

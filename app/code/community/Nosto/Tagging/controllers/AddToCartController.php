@@ -51,7 +51,7 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
     public function addAction()
     {
         if (!$this->_validateFormKey()) {
-			Mage::throwException('Invalid form key');
+            Mage::throwException('Invalid form key');
         }
 
         $cart = $this->_getCart();
@@ -127,7 +127,7 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
     public function addMultipleProductsToCartAction()
     {
         if (!$this->_validateFormKey()) {
-			Mage::throwException('Invalid form key');
+            Mage::throwException('Invalid form key');
         }
 
         $cart = $this->_getCart();
@@ -202,7 +202,8 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
         $skuId,
         Mage_Catalog_Model_Product_Type_Configurable $parentType,
         Mage_Catalog_Model_Product $product
-    ) {
+    )
+    {
         $attributeOptions = array();
         $skuProduct = Mage::getModel('catalog/product')->load($skuId);
         $configurableAttributes = $parentType->getConfigurableAttributesAsArray($product);

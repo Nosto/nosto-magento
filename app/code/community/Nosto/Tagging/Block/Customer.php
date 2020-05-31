@@ -58,7 +58,7 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
         /** @noinspection PhpUndefinedMethodInspection */
         if (!$helper->existsAndIsConnected()
             || $this->getNostoCustomer() === null
-            ||!$moduleHelper->isModuleEnabled()
+            || !$moduleHelper->isModuleEnabled()
             || !$this->helper('customer')->isLoggedIn()
         ) {
             return '';
@@ -107,8 +107,8 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
         /** @var Mage_Customer_Model_Group $customerGroup */
         $customerGroup = Mage::getModel('customer/group')->load($customer->getGroupId());
         $groupName = $customerGroup->getCustomerGroupCode();
-		/** @noinspection PhpUndefinedMethodInspection */
-		$dateOfBirth = $customer->getDob();
+        /** @noinspection PhpUndefinedMethodInspection */
+        $dateOfBirth = $customer->getDob();
         $nostoCustomer = new Nosto_Object_Customer();
         /** @noinspection PhpUndefinedMethodInspection */
         $nostoCustomer->setFirstName($customer->getFirstname());
@@ -126,8 +126,8 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
         $customerAddress = $customer->getPrimaryShippingAddress();
         if ($customerAddress instanceof Mage_Customer_Model_Address) {
             try {
-				/** @noinspection PhpUndefinedMethodInspection */
-				$nostoCustomer->setCity($customerAddress->getCity());
+                /** @noinspection PhpUndefinedMethodInspection */
+                $nostoCustomer->setCity($customerAddress->getCity());
                 $streetAddress = $customerAddress->getStreet();
                 $concatenatedStreetAddress = '';
                 if (!empty($streetAddress[0])) {
@@ -161,8 +161,8 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
      */
     protected function getGenderName(Mage_Customer_Model_Customer $customer)
     {
-		/** @noinspection PhpUndefinedMethodInspection */
-		$gender = $customer->getGender();
+        /** @noinspection PhpUndefinedMethodInspection */
+        $gender = $customer->getGender();
 
         switch ($gender) {
             case self::GENDER_MALE_ID:

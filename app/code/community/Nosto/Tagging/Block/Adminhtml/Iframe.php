@@ -38,6 +38,7 @@ use Nosto_Tagging_Helper_Log as NostoLog;
 class Nosto_Tagging_Block_Adminhtml_Iframe extends Mage_Adminhtml_Block_Template
 {
     use Nosto_Mixins_IframeTrait;
+
     const IFRAME_VERSION = 1;
 
     /**

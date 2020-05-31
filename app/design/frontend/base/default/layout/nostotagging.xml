@@ -70,10 +70,10 @@
 
     <!-- Tag category -->
     <catalog_category_default>
-        <update handle="nosto_tagging_category" />
+        <update handle="nosto_tagging_category"/>
     </catalog_category_default>
     <catalog_category_layered>
-        <update handle="nosto_tagging_category" />
+        <update handle="nosto_tagging_category"/>
     </catalog_category_layered>
     <nosto_tagging_category>
         <reference name="after_body_start">
@@ -264,10 +264,10 @@
 
     <!-- Category page -->
     <catalog_category_default>
-        <update handle="nosto_tagging_catalog_category" />
+        <update handle="nosto_tagging_catalog_category"/>
     </catalog_category_default>
     <catalog_category_layered>
-        <update handle="nosto_tagging_catalog_category" />
+        <update handle="nosto_tagging_catalog_category"/>
     </catalog_category_layered>
     <nosto_tagging_catalog_category>
         <!-- Adds 2 content placeholders; 1 before and 1 after the products -->

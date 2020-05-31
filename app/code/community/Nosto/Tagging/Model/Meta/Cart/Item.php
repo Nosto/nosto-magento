@@ -1,9 +1,9 @@
 <?php
 /**
  * Magento
- *  
+ *
  * NOTICE OF LICENSE
- *  
+ *
  * This source file is subject to the Open Software License (OSL 3.0)
  * that is bundled with this package in the file LICENSE.txt.
  * It is also available through the world-wide-web at this URL:
@@ -11,13 +11,13 @@
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
- *  
+ *
  * DISCLAIMER
- *  
+ *
  * Do not edit or add to this file if you wish to upgrade Magento to newer
  * versions in the future. If you wish to customize Magento for your
  * needs please refer to http://www.magentocommerce.com for more information.
- *  
+ *
  * @category  Nosto
  * @package   Nosto_Tagging
  * @author    Nosto Solutions Ltd <magento@nosto.com>
@@ -95,7 +95,7 @@ abstract class Nosto_Tagging_Model_Meta_Cart_Item extends Nosto_Object_Cart_Line
         }
 
         if ($parentItem !== null) {
-            return (string) $parentItem->getProductId();
+            return (string)$parentItem->getProductId();
         } elseif ($item->getProductType() === Mage_Catalog_Model_Product_Type::TYPE_SIMPLE) {
             /** @var Mage_Catalog_Model_Product_Type_Configurable $model */
             $model = Mage::getModel('catalog/product_type_configurable');
@@ -109,7 +109,7 @@ abstract class Nosto_Tagging_Model_Meta_Cart_Item extends Nosto_Object_Cart_Line
             }
         }
 
-        return (string) $item->getProductId();
+        return (string)$item->getProductId();
     }
 
     /**
@@ -124,7 +124,7 @@ abstract class Nosto_Tagging_Model_Meta_Cart_Item extends Nosto_Object_Cart_Line
         $skus = $item->getChildren();
         /* @var Mage_Sales_Model_Quote_Item $sku */
         if (isset($skus[0]) && $skus[0] instanceof Mage_Sales_Model_Quote_Item) {
-            /** @var Mage_Sales_Model_Quote_Item[] $skus*/
+            /** @var Mage_Sales_Model_Quote_Item[] $skus */
             return $skus[0]->getProductId();
         }
 

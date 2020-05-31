@@ -104,7 +104,9 @@
                     <fields>
                         <use_inventory_level translate="label">
                             <label>Send inventory level to Nosto (API only)</label>
-                            <comment>Set this to no if you don't need inventory level for product recommendation filtering. Please note that "Real-time product updates to Nosto" must be set to yes if you want to use inventory level.</comment>
+                            <comment>Set this to no if you don't need inventory level for product recommendation filtering. Please note that "Real-time product
+                                updates to Nosto" must be set to yes if you want to use inventory level.
+                            </comment>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>50</sort_order>
@@ -115,7 +117,7 @@
                     </fields>
                     <fields>
                         <send_inventory_level_after_purchase translate="label">
-                            <label>Send inventory level to Nosto after purchase (API only) </label>
+                            <label>Send inventory level to Nosto after purchase (API only)</label>
                             <comment>This option enables the sending of product inventory level to Nosto after an order is completed.</comment>
                             <frontend_type>select</frontend_type>
                             <frontend_model>nosto_tagging/adminhtml_system_config_inventory_switch</frontend_model>
@@ -213,7 +215,9 @@
                     <fields>
                         <in_use translate="label">
                             <label>Remove store parameter from URLs</label>
-                            <comment>Set this to yes if you have configured different URLs or domains for each store or if you are only using single store view.</comment>
+                            <comment>Set this to yes if you have configured different URLs or domains for each store or if you are only using single store
+                                view.
+                            </comment>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>10</sort_order>
@@ -303,7 +307,9 @@
                         </gtin>
                         <supplier_cost translate="label">
                             <label>Supplier cost</label>
-                            <comment>Choose attribute that will be used as a supplier cost for Nosto product. Please note that this field will not be tagged into the html source. It will be only sent via API to Nosto.</comment>
+                            <comment>Choose attribute that will be used as a supplier cost for Nosto product. Please note that this field will not be tagged
+                                into the html source. It will be only sent via API to Nosto.
+                            </comment>
                             <frontend_type>select</frontend_type>
                             <source_model>nosto_tagging/system_config_source_price_attribute</source_model>
                             <sort_order>90</sort_order>
@@ -334,7 +340,9 @@
                     <fields>
                         <method translate="label">
                             <label>Multi Currency Method</label>
-                            <comment>Use exchange rates for multi currency product recommendations. If multi-currency is enabled, the price variation feature will be inactivated.</comment>
+                            <comment>Use exchange rates for multi currency product recommendations. If multi-currency is enabled, the price variation feature
+                                will be inactivated.
+                            </comment>
                             <frontend_type>select</frontend_type>
                             <frontend_model>nosto_tagging/adminhtml_system_config_currency_method</frontend_model>
                             <source_model>nosto_tagging/system_config_source_multi_currency_method</source_model>
@@ -356,7 +364,8 @@
                     <fields>
                         <switch translate="label">
                             <label>Enabled</label>
-                            <comment>Enable price variation to support group price and catalog price rules. It cannot be enabled if multi-currency is enabled.</comment>
+                            <comment>Enable price variation to support group price and catalog price rules. It cannot be enabled if multi-currency is enabled.
+                            </comment>
                             <frontend_type>select</frontend_type>
                             <frontend_model>nosto_tagging/adminhtml_system_config_variation_switch</frontend_model>
                             <source_model>adminhtml/system_config_source_yesno</source_model>

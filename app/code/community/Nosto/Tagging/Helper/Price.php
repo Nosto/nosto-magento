@@ -73,10 +73,11 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         Mage_Catalog_Model_Product $product,
         Mage_Core_Model_Store $store,
         $finalPrice = false
-    ) {
+    )
+    {
         /** @var Mage_Tax_Helper_Data $taxHelper */
         $taxHelper = Mage::helper('tax');
-		$inclTax = $taxHelper->displayPriceIncludingTax($store);
+        $inclTax = $taxHelper->displayPriceIncludingTax($store);
         return $this->_getProductPrice($product, $finalPrice, $inclTax);
     }
 
@@ -157,7 +158,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
                             if (!$lowestPrice || $variationPrice < $lowestPrice) {
                                 $lowestPrice = $variationPrice;
                             }
-                        // If no SKU is available, we use the lowest price of them all
+                            // If no SKU is available, we use the lowest price of them all
                         } elseif ($productModel instanceof Mage_Catalog_Model_Product && $lowestPrice === false) {
                             $variationPrice = $this->_getProductPrice($productModel, $finalPrice, $inclTax);
                             if (!$lowestUnavailablePrice || $variationPrice < $lowestUnavailablePrice) {
@@ -195,7 +196,8 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         Mage_Catalog_Model_Product $product,
         $finalPrice = false,
         $inclTax = true
-    ) {
+    )
+    {
         // If a bundled uses fixed pricing the list price can be fethched from
         // product itself. For final price we always get the min price. If dynamic
         // pricing is used the list price for the bundled product is the sum of
@@ -217,7 +219,7 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         $typeInstance = $product->getTypeInstance();
         $typeInstance->setStoreFilter($product->getStoreId(), $product);
 
-		$optionCollection = $typeInstance->getOptionsCollection($product);
+        $optionCollection = $typeInstance->getOptionsCollection($product);
 
         $selectionCollection = $typeInstance->getSelectionsCollection(
             $typeInstance->getOptionsIds($product),
@@ -302,7 +304,8 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         Mage_Catalog_Model_Product $product,
         $finalPrice = false,
         $inclTax = true
-    ) {
+    )
+    {
         /** @var Mage_Tax_Helper_Data $helper */
         $helper = Mage::helper('tax');
         if ($finalPrice) {
@@ -434,7 +437,8 @@ class Nosto_Tagging_Helper_Price extends Mage_Core_Helper_Abstract
         Mage_Catalog_Model_Product $product,
         Mage_Core_Model_Store $store,
         $isFinalPrice
-    ) {
+    )
+    {
         $basePrice = $this->getDisplayPriceInStore($product, $store, $isFinalPrice);
 
         return $this->getTaggingPrice(

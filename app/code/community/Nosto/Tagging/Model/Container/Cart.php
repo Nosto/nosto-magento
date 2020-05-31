@@ -40,23 +40,23 @@ class Nosto_Tagging_Model_Container_Cart extends Enterprise_PageCache_Model_Cont
      *
      * @return string
      * @noinspection PhpUnused*@deprecated since 1.12.0.0
-	 */
+     */
     protected function _getIdentifier()
     {
-		return $this->_getCookieValue(Enterprise_PageCache_Model_Cookie::COOKIE_CART, '')
-        . '_'
-        . $this->_getCookieValue(Enterprise_PageCache_Model_Cookie::COOKIE_CUSTOMER, '');
+        return $this->_getCookieValue(Enterprise_PageCache_Model_Cookie::COOKIE_CART, '')
+            . '_'
+            . $this->_getCookieValue(Enterprise_PageCache_Model_Cookie::COOKIE_CUSTOMER, '');
     }
 
-	protected function _renderBlock()
+    protected function _renderBlock()
     {
-		$block = $this->_getPlaceHolderBlock();
-		Mage::dispatchEvent(
+        $block = $this->_getPlaceHolderBlock();
+        Mage::dispatchEvent(
             'render_block', array(
                 'block' => $block,
                 'placeholder' => $this->_placeholder
             )
         );
-		return $block->toHtml();
+        return $block->toHtml();
     }
 }

@@ -38,41 +38,42 @@
         <?php
         $currentValue = $this->getCurrentValue();
         if ($option['value'] == $currentValue) {
-                $selected = 'selected';
+            $selected = 'selected';
         } else {
-                $selected = '';
+            $selected = '';
         }
         ?>
-         <option value="<?php echo $option['value']; ?>" <?php echo $selected; ?>><?php echo $option['label']; ?></option>
+      <option value="<?php echo $option['value']; ?>" <?php echo $selected; ?>><?php echo $option['label']; ?></option>
     <?php endforeach; ?>
 </select>
 <!-- Form handler for exchange rates -->
 <script type="text/javascript">
-    function nostoHandleCronSettings() {
-			const hourField = document.getElementsByName("<?php echo $this->getHourSelectName(); ?>")[0];
-			const frequencyField = document.getElementById("<?php echo $this->getSelectId(); ?>");
-			if (frequencyField && hourField) {
-					const frequencyValue = frequencyField.value;
-					if (frequencyValue === 'H') {
-							const option = document.createElement("option");
-							option.value = '*';
-                option.text = '*';
-                option.selected = true;
-                hourField.appendChild(option);
-                hourField.setAttribute("disabled", "disabled");
-            } else {
-                for (let i = 0; i < hourField.length; i++) {
-                    if (hourField.options[i].value === '*') {
-                        hourField.remove(i);
-                    }
-                }
-                hourField.removeAttribute("disabled");
-            }
+  function nostoHandleCronSettings() {
+    const hourField = document.getElementsByName("<?php echo $this->getHourSelectName(); ?>")[0];
+    const frequencyField = document.getElementById("<?php echo $this->getSelectId(); ?>");
+    if (frequencyField && hourField) {
+      const frequencyValue = frequencyField.value;
+      if (frequencyValue === 'H') {
+        const option = document.createElement("option");
+        option.value = '*';
+        option.text = '*';
+        option.selected = true;
+        hourField.appendChild(option);
+        hourField.setAttribute("disabled", "disabled");
+      } else {
+        for (let i = 0; i < hourField.length; i++) {
+          if (hourField.options[i].value === '*') {
+            hourField.remove(i);
+          }
         }
-
-        return false;
+        hourField.removeAttribute("disabled");
+      }
     }
-    (function(){
-        nostoHandleCronSettings();
-    })();
+
+    return false;
+  }
+
+  (function () {
+    nostoHandleCronSettings();
+  })();
 </script>

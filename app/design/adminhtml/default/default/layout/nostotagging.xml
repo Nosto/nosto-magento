@@ -30,10 +30,14 @@
     <adminhtml_nosto_index>
         <!-- Add JavaScript file -->
         <reference name="head">
-            <action method="addJs"><script>nosto/iframeResizer.min.js</script></action>
-            <action method="addJs"><script>nosto/iframeHandler.min.js</script></action>
+            <action method="addJs">
+                <script>nosto/iframeResizer.min.js</script>
+            </action>
+            <action method="addJs">
+                <script>nosto/iframeHandler.min.js</script>
+            </action>
         </reference>
-         <!--Set active menu item-->
+        <!--Set active menu item-->
         <reference name="menu">
             <action method="setActive">
                 <menupath>nosto/index</menupath>
@@ -44,7 +48,9 @@
             <block type="adminhtml/template" name="nosto.wizard" template="nostotagging/wizard.phtml">
                 <!-- Store switcher -->
                 <block type="adminhtml/store_switcher" name="store_switcher" as="store_switcher">
-                    <action method="setUseConfirm"><params>0</params></action>
+                    <action method="setUseConfirm">
+                        <params>0</params>
+                    </action>
                 </block>
                 <!-- Iframe -->
                 <block type="nosto_tagging/adminhtml_iframe" name="nosto.iframe" template="nostotagging/iframe.phtml"/>

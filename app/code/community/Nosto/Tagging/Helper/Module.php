@@ -83,7 +83,7 @@ class Nosto_Tagging_Helper_Module extends Mage_Core_Helper_Abstract
     public function getAllModules()
     {
         $configElement = Mage::getConfig()->getNode('modules');
-		return get_object_vars($configElement);
+        return get_object_vars($configElement);
     }
 
     /**

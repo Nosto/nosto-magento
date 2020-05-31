@@ -40,19 +40,19 @@ class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
      */
     protected $_product;
 
-	/**
-	 * Render product info as hidden meta data if the module is enabled for the
-	 * current store.
-	 * If it is a "bundle" product with fixed price type, then do not render.
-	 * These are not supported due to their child products not having prices
-	 * available.
-	 *
-	 * @return string
-	 * @throws Mage_Core_Exception
-	 * @throws NostoException
-	 * @throws NostoException
-	 * @throws NostoException
-	 */
+    /**
+     * Render product info as hidden meta data if the module is enabled for the
+     * current store.
+     * If it is a "bundle" product with fixed price type, then do not render.
+     * These are not supported due to their child products not having prices
+     * available.
+     *
+     * @return string
+     * @throws Mage_Core_Exception
+     * @throws NostoException
+     * @throws NostoException
+     * @throws NostoException
+     */
     protected function _toHtml()
     {
         /** @var Nosto_Tagging_Helper_Account $helper */
@@ -74,26 +74,26 @@ class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
         return '';
     }
 
-	/**
-	 * Helper method that checks if the product object has been overidden
-	 *
-	 * @return bool a boolean value indicating the state
-	 * @throws Mage_Core_Exception
-	 * @throws NostoException
-	 * @throws NostoException
-	 */
+    /**
+     * Helper method that checks if the product object has been overidden
+     *
+     * @return bool a boolean value indicating the state
+     * @throws Mage_Core_Exception
+     * @throws NostoException
+     * @throws NostoException
+     */
     public function isOveridden()
     {
         return !(get_class($this->getMetaProduct()) === 'Nosto_Tagging_Model_Meta_Product');
     }
 
-	/**
-	 * Returns the product meta data to tag.
-	 *
-	 * @return Nosto_Tagging_Model_Meta_Product the meta data.
-	 * @throws Mage_Core_Exception
-	 * @throws NostoException
-	 */
+    /**
+     * Returns the product meta data to tag.
+     *
+     * @return Nosto_Tagging_Model_Meta_Product the meta data.
+     * @throws Mage_Core_Exception
+     * @throws NostoException
+     */
     public function getMetaProduct()
     {
         if ($this->_product === null) {

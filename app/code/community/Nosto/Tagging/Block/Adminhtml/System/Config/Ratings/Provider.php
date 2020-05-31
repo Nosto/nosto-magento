@@ -46,9 +46,9 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Ratings_Provider
         /** @noinspection PhpUndefinedMethodInspection */
         $this->setElement($element);
         $data = $element->getData();
-		/** @noinspection PhpUndefinedFieldInspection */
+        /** @noinspection PhpUndefinedFieldInspection */
         if ($this->element->getInherit()) {
-			/** @noinspection PhpUndefinedFieldInspection */
+            /** @noinspection PhpUndefinedFieldInspection */
             $this->element->setDisabled(true);
         }
 

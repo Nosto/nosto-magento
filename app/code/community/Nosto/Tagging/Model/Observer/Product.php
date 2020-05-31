@@ -42,16 +42,16 @@ use Nosto_Tagging_Helper_Log as NostoLog;
  */
 class Nosto_Tagging_Model_Observer_Product
 {
-	/**
-	 * Event handler for the "catalog_product_save_after" event.
-	 * Sends a product update API call to Nosto.
-	 *
-	 * @param Varien_Event_Observer $observer the event observer.
-	 *
-	 * @return Nosto_Tagging_Model_Observer_Product
-	 * @throws Mage_Core_Exception
-	 * @throws NostoException
-	 */
+    /**
+     * Event handler for the "catalog_product_save_after" event.
+     * Sends a product update API call to Nosto.
+     *
+     * @param Varien_Event_Observer $observer the event observer.
+     *
+     * @return Nosto_Tagging_Model_Observer_Product
+     * @throws Mage_Core_Exception
+     * @throws NostoException
+     */
     public function sendProductUpdate(Varien_Event_Observer $observer)
     {
         /** @var Nosto_Tagging_Helper_Module $moduleHelper */

@@ -119,14 +119,14 @@ class Nosto_Tagging_Helper_Setup extends Mage_Core_Helper_Abstract
         );
     }
 
-	/**
-	 * Adds restore cart hash to the customer table
-	 *
-	 * @param $installer Mage_Eav_Model_Entity_Setup
-	 * @return void
-	 * @throws Zend_Db_Exception
-	 * @suppress PhanTypeMismatchArgument
-	 */
+    /**
+     * Adds restore cart hash to the customer table
+     *
+     * @param $installer Mage_Eav_Model_Entity_Setup
+     * @return void
+     * @throws Zend_Db_Exception
+     * @suppress PhanTypeMismatchArgument
+     */
     public function addRestoreCartHash(Mage_Eav_Model_Entity_Setup $installer)
     {
         $installer->startSetup();

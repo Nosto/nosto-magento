@@ -81,8 +81,8 @@ class Nosto_Tagging_Util_Product
                         $configurable = Mage::getModel('catalog/product')->load($productId);
                         $parents[] = $configurable;
                     } catch (Exception $e) {
-						/** @noinspection PhpUndefinedClassInspection */
-						if ($e instanceof Enterprise_AdminGws_Controller_Exception) {
+                        /** @noinspection PhpUndefinedClassInspection */
+                        if ($e instanceof Enterprise_AdminGws_Controller_Exception) {
                             Nosto_Tagging_Helper_Log::exception($e);
                         }
                     }

@@ -186,7 +186,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
                 try {
                     if ($product instanceof Mage_Catalog_Model_Product) {
                         $url = $this->generateProductUrl($product, $store);
-						return $this->addNostoPreviewParameter($url);
+                        return $this->addNostoPreviewParameter($url);
                     }
                 } catch (Exception $e) {
                     Nosto_Tagging_Helper_Log::exception($e);
@@ -292,7 +292,8 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
     public function getUrlCart(
         Mage_Core_Model_Store $store,
         array $additionalParams = array()
-    ) {
+    )
+    {
         $defaultParams = $this->getUrlOptionsWithNoSid($store);
         $url = Mage::getUrl(
             self::MAGENTO_PATH_CART,
@@ -443,10 +444,10 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
      */
     public function getOauthRedirectUrl(Mage_Core_Model_Store $store)
     {
-		return Mage::getUrl(
-			self::NOSTO_PATH_OAUTH,
-			$this->getUrlOptionsWithSid($store)
-		);
+        return Mage::getUrl(
+            self::NOSTO_PATH_OAUTH,
+            $this->getUrlOptionsWithSid($store)
+        );
     }/** @noinspection PhpDocMissingThrowsInspection */
 
     /**
@@ -518,10 +519,10 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
     {
         $params = $this->getUrlOptionsWithNoSid($store);
         $params['h'] = $hash;
-		return Mage::getUrl(
-			self::NOSTO_PATH_RESTORE_CART,
-			$params
-		);
+        return Mage::getUrl(
+            self::NOSTO_PATH_RESTORE_CART,
+            $params
+        );
     }
 
     /**
@@ -609,7 +610,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
         // There's a bug in Magento's Mage_Core_Helper_Url::getCurrentUrl that
         // calls htmlspecialchars for URL which ends up breaking the URL
         // parameter separator
-		return str_replace('&amp;', '&', $mageUrl);
+        return str_replace('&amp;', '&', $mageUrl);
     }
 
     /**
@@ -623,7 +624,8 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
     public function getRestoreCartRedirectUrl(
         Mage_Core_Model_Store $store,
         array $additionalParams = array()
-    ) {
+    )
+    {
         /* @var Nosto_Tagging_Helper_Data $nostoHelper */
         $nostoHelper = Mage::helper('nosto_tagging');
         $path = $nostoHelper->getRestoreCartRedirectLocation($store);

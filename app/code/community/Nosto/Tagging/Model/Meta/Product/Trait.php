@@ -54,7 +54,7 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
     {
         /** @var Nosto_Tagging_Helper_Url $urlHelper */
         $urlHelper = Mage::helper('nosto_tagging/url');
-		return $urlHelper->generateProductUrl($product, $store);
+        return $urlHelper->generateProductUrl($product, $store);
     }
 
     /**
@@ -79,7 +79,7 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
         if ($this->isValidImage($img)) {
             // We build the image url manually in order get the correct base
             // url, even if this product is populated in the backend.
-			$baseUrl = rtrim($store->getBaseUrl('media'), '/');
+            $baseUrl = rtrim($store->getBaseUrl('media'), '/');
             $file = str_replace(DS, '/', $img);
             $file = ltrim($file, '/');
             $url = $baseUrl . '/catalog/product/' . $file;
@@ -119,8 +119,8 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
             // We need to set the default customer group here, otherwise Magento will
             // return the price for the current user logged in group.
             $productClone = clone $product;
-			/** @noinspection PhpUndefinedMethodInspection */
-			$productClone->setGroupPrice(Nosto_Tagging_Helper_Variation::DEFAULT_CUSTOMER_GROUP_ID);
+            /** @noinspection PhpUndefinedMethodInspection */
+            $productClone->setGroupPrice(Nosto_Tagging_Helper_Variation::DEFAULT_CUSTOMER_GROUP_ID);
         }
 
         return $priceHelper->getProductTaggingPrice($productClone, $store, true);
@@ -153,8 +153,8 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
         /* @var Nosto_Tagging_Helper_Data $nostoHelper */
         $nostoHelper = Mage::helper("nosto_tagging");
 
-		/** @noinspection Annotator */
-		$attributes = self::getCustomisableAttributes();
+        /** @noinspection Annotator */
+        $attributes = self::getCustomisableAttributes();
         if (!isset($attributes)) {
             throw new Nosto_NostoException(
                 sprintf(
@@ -189,7 +189,8 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
         Mage_Catalog_Model_Product $product,
         $attributeName,
         $storeId = null
-    ) {
+    )
+    {
         $attribute = $product->getResource()->getAttribute($attributeName);
         if ($attribute instanceof Mage_Catalog_Model_Resource_Eav_Attribute) {
             if ($storeId && method_exists($product, 'setStoreId')) {
@@ -200,7 +201,7 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
             /** @noinspection PhpParamsInspection */
             $attributeValue = $product->getAttributeText($attributeName);
             if (empty($attributeValue) && is_scalar($attributeData)) {
-                $attributeValue = (string) $attributeData;
+                $attributeValue = (string)$attributeData;
             }
         } else {
             $attributeValue = '';

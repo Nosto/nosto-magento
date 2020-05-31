@@ -116,21 +116,21 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
                 $helper = Mage::helper('nosto_tagging/class');
                 /** @var Nosto_Tagging_Model_Meta_Order $meta */
                 $meta = $helper->getOrderClass($order);
-				$meta->loadData($order);
+                $meta->loadData($order);
 
-				$collection->append($meta);
+                $collection->append($meta);
             }
 
             $this->export($collection);
         }
     }
 
-	/**
-	 * Exports visible products from the current store.
-	 * Result can be limited by the `limit` and `offset` GET parameters.
-	 * @throws Mage_Core_Exception
-	 * @throws NostoException
-	 */
+    /**
+     * Exports visible products from the current store.
+     * Result can be limited by the `limit` and `offset` GET parameters.
+     * @throws Mage_Core_Exception
+     * @throws NostoException
+     */
     public function productAction()
     {
         /** @var Nosto_Tagging_Helper_Module $moduleHelper */

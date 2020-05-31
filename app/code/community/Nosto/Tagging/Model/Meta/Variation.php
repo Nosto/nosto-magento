@@ -50,7 +50,8 @@ class Nosto_Tagging_Model_Meta_Variation extends Nosto_Object_Product_Variation
         $productAvailability,
         $currencyCode,
         Mage_Core_Model_Store $store = null
-    ) {
+    )
+    {
         if ($store === null) {
             /** @var Nosto_Tagging_Helper_Data $helper */
             $helper = Mage::helper('nosto_tagging');
@@ -62,7 +63,7 @@ class Nosto_Tagging_Model_Meta_Variation extends Nosto_Object_Product_Variation
         $tmpProduct = Mage::getModel('catalog/product')->load($product->getId());
         /** @noinspection PhpUndefinedMethodInspection */
         $tmpProduct->setCustomerGroupId($group->getCustomerGroupId());
-        /* @var Nosto_Tagging_Helper_Variation $variationHelper  */
+        /* @var Nosto_Tagging_Helper_Variation $variationHelper */
         $variationHelper = Mage::helper('nosto_tagging/variation');
         $this->setVariationId($variationHelper->generateVariationId($group));
         $this->setAvailability($productAvailability);

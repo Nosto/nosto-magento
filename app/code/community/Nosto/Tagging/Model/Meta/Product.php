@@ -70,16 +70,16 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         }
     }
 
-	/**
-	 * Loads the product info from a Magento product model.
-	 *
-	 * @param Mage_Catalog_Model_Product $product the product model.
-	 * @param Mage_Core_Model_Store|null $store the store to get the product data for.
-	 * @return bool
-	 * @throws Mage_Core_Exception
-	 * @throws NostoException
-	 * @throws Nosto_NostoException
-	 */
+    /**
+     * Loads the product info from a Magento product model.
+     *
+     * @param Mage_Catalog_Model_Product $product the product model.
+     * @param Mage_Core_Model_Store|null $store the store to get the product data for.
+     * @return bool
+     * @throws Mage_Core_Exception
+     * @throws NostoException
+     * @throws Nosto_NostoException
+     */
     public function loadData(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store = null)
     {
         if ($store === null) {
@@ -204,7 +204,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
             foreach ($associatedProducts as $associatedProduct) {
                 /** @var Mage_Catalog_Model_Product $productModel */
                 $productModel = Mage::getModel('catalog/product');
-				$mageSku = $productModel->load($associatedProduct->getId());
+                $mageSku = $productModel->load($associatedProduct->getId());
                 try {
                     /* @var Nosto_Tagging_Model_Meta_Sku $skuModel */
                     $skuModel = Mage::getModel('nosto_tagging/meta_sku');
@@ -301,7 +301,8 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
     protected function amendAlternativeImages(
         Mage_Catalog_Model_Product $product,
         Mage_Core_Model_Store $store
-    ) {
+    )
+    {
         /* @var Mage_Catalog_Model_Product_Attribute_Media_Api $mediaApi */
         $mediaApi = Mage::getModel('catalog/product_attribute_media_api');
         $mediaItems = $mediaApi->items($product->getId(), $store);
@@ -353,15 +354,15 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         }
     }
 
-	/**
-	 * Amends the product attributes to tags array if attributes are defined
-	 * and are present in product
-	 *
-	 * @param Mage_Catalog_Model_Product $product the product model.
-	 * @param Mage_Core_Model_Store $store the store model.
-	 * @throws NostoException
-	 * @throws Nosto_NostoException
-	 */
+    /**
+     * Amends the product attributes to tags array if attributes are defined
+     * and are present in product
+     *
+     * @param Mage_Catalog_Model_Product $product the product model.
+     * @param Mage_Core_Model_Store $store the store model.
+     * @throws NostoException
+     * @throws Nosto_NostoException
+     */
     protected function amendAttributeTags(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
         $productAttributes = $product->getAttributes();
@@ -529,10 +530,11 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         Mage_Catalog_Model_Product $product,
         $attributeName,
         $storeId = null
-    ) {
+    )
+    {
         $attribute = $product->getResource()->getAttribute($attributeName);
         if ($attribute instanceof Mage_Catalog_Model_Resource_Eav_Attribute) {
-			if ($storeId && method_exists($product, 'setStoreId')) {
+            if ($storeId && method_exists($product, 'setStoreId')) {
                 $product->setStoreId($storeId);
             }
 
@@ -638,16 +640,16 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         );
     }
 
-	/**
-	 * Reloads the product info from a Magento product model.
-	 *
-	 * @param Mage_Catalog_Model_Product $product the product model to reload
-	 * @param Mage_Core_Model_Store $store the store to get the product data for.
-	 *
-	 * @return bool returns false if the product is not available in a given store
-	 * @throws Mage_Core_Exception
-	 * @throws NostoException
-	 */
+    /**
+     * Reloads the product info from a Magento product model.
+     *
+     * @param Mage_Catalog_Model_Product $product the product model to reload
+     * @param Mage_Core_Model_Store $store the store to get the product data for.
+     *
+     * @return bool returns false if the product is not available in a given store
+     * @throws Mage_Core_Exception
+     * @throws NostoException
+     */
     public function reloadData(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
         /** @var Mage_Catalog_Model_Product $productModel */
@@ -683,20 +685,21 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         return $availability;
     }
 
-	/**
-	 * Adds selected attributes to all tags also in the custom fields section
-	 *
-	 * @param Mage_Catalog_Model_Product $product
-	 * @param Mage_Core_Model_Store $store
-	 * @return array
-	 * @throws NostoException
-	 * @throws Nosto_NostoException
-	 * @suppress PhanTypeMismatchReturnNullable
-	 */
+    /**
+     * Adds selected attributes to all tags also in the custom fields section
+     *
+     * @param Mage_Catalog_Model_Product $product
+     * @param Mage_Core_Model_Store $store
+     * @return array
+     * @throws NostoException
+     * @throws Nosto_NostoException
+     * @suppress PhanTypeMismatchReturnNullable
+     */
     protected function buildCustomFields(
         Mage_Catalog_Model_Product $product,
         Mage_Core_Model_Store $store
-    ) {
+    )
+    {
         $customFields = $this->loadCustomFields($product, $store);
         $attributes = $this->getAttributesFromAllTags($store);
         /* @var Mage_Catalog_Model_Resource_Eav_Attribute $productAttribute */
@@ -714,15 +717,15 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         return $customFields;
     }
 
-	/**
-	 * Returns unique selected attributes from all tags
-	 *
-	 * @param Mage_Core_Model_Store $store
-	 * @return array
-	 * @throws NostoException
-	 * @throws Nosto_NostoException
-	 * @suppress PhanTypeMismatchReturnNullable
-	 */
+    /**
+     * Returns unique selected attributes from all tags
+     *
+     * @param Mage_Core_Model_Store $store
+     * @return array
+     * @throws NostoException
+     * @throws Nosto_NostoException
+     * @suppress PhanTypeMismatchReturnNullable
+     */
     protected function getAttributesFromAllTags(Mage_Core_Model_Store $store)
     {
         $attributes = array();

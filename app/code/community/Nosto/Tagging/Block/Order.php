@@ -50,7 +50,7 @@ class Nosto_Tagging_Block_Order extends Mage_Checkout_Block_Success
         /** @var Nosto_Tagging_Helper_Module $moduleHelper */
         $moduleHelper = Mage::helper('nosto_tagging/module');
         if (!$helper->existsAndIsConnected()
-            ||$this->getLastOrder() === null
+            || $this->getLastOrder() === null
             || !$moduleHelper->isModuleEnabled()
         ) {
             return '';

@@ -48,7 +48,8 @@ class Nosto_Tagging_Model_Meta_Variation_Collection extends Nosto_Object_Product
         $productAvailability,
         $currencyCode,
         Mage_Core_Model_Store $store
-    ) {
+    )
+    {
         $groups = Mage::getModel('customer/group')->getCollection();
         /** @var Mage_Customer_Model_Group $group */
         foreach ($groups as $group) {

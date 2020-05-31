@@ -51,8 +51,8 @@ class Nosto_Tagging_Model_System_Config_Backend_Currency_Exchange_Rate_Cron exte
      */
     protected function _afterSave()
     {
-		$time = $this->getData('groups/scheduled_currency_exchange_rate_update/fields/time/value');
-		$frequency = $this->getData('groups/scheduled_currency_exchange_rate_update/fields/frequency/value');
+        $time = $this->getData('groups/scheduled_currency_exchange_rate_update/fields/time/value');
+        $frequency = $this->getData('groups/scheduled_currency_exchange_rate_update/fields/frequency/value');
 
         $weekly = Mage_Adminhtml_Model_System_Config_Source_Cron_Frequency::CRON_WEEKLY;
         $monthly = Mage_Adminhtml_Model_System_Config_Source_Cron_Frequency::CRON_MONTHLY;

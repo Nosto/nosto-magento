@@ -42,32 +42,32 @@ class Nosto_Tagging_Model_Container_Customer extends Enterprise_PageCache_Model_
      */
     protected function _getIdentifier()
     {
-		return $this->_getCookieValue(
-            Enterprise_PageCache_Model_Cookie::COOKIE_CUSTOMER, ''
-        )
-        . '_'
-        . $this->_getCookieValue(
-            Enterprise_PageCache_Model_Cookie::COOKIE_CUSTOMER_LOGGED_IN, ''
-        );
+        return $this->_getCookieValue(
+                Enterprise_PageCache_Model_Cookie::COOKIE_CUSTOMER, ''
+            )
+            . '_'
+            . $this->_getCookieValue(
+                Enterprise_PageCache_Model_Cookie::COOKIE_CUSTOMER_LOGGED_IN, ''
+            );
     }
 
-	protected function _getCacheId()
+    protected function _getCacheId()
     {
-		return 'CONTAINER_NOSTO_TAGGING_CUSTOMER_'
-        . md5( // @codingStandardsIgnoreLine
-            $this->_placeholder->getAttribute('cache_id') . $this->_getIdentifier()
-        );
+        return 'CONTAINER_NOSTO_TAGGING_CUSTOMER_'
+            . md5( // @codingStandardsIgnoreLine
+                $this->_placeholder->getAttribute('cache_id') . $this->_getIdentifier()
+            );
     }
 
-	protected function _renderBlock()
+    protected function _renderBlock()
     {
-		$block = $this->_getPlaceHolderBlock();
-		Mage::dispatchEvent(
+        $block = $this->_getPlaceHolderBlock();
+        Mage::dispatchEvent(
             'render_block', array(
                 'block' => $block,
                 'placeholder' => $this->_placeholder
             )
         );
-		return $block->toHtml();
+        return $block->toHtml();
     }
 }

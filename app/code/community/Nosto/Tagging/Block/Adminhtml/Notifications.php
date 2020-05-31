@@ -188,16 +188,17 @@ class Nosto_Tagging_Block_Adminhtml_Notifications extends Mage_Adminhtml_Block_T
     protected static function storeUrlsMatch(
         $installedUrl,
         $currentUrl
-    ) {
+    )
+    {
         $match = true;
         /* @var Mage_Core_Model_Url $mageUrl */
         $mageUrl = Mage::getSingleton('core/url');
         $installedModel = clone $mageUrl->parseUrl($installedUrl);
-		$currentModel = $mageUrl->parseUrl($currentUrl);
+        $currentModel = $mageUrl->parseUrl($currentUrl);
         /** @noinspection PhpUndefinedMethodInspection */
-        $concatInstalled = $installedModel->getHost(). $installedModel->getPath();
+        $concatInstalled = $installedModel->getHost() . $installedModel->getPath();
         /** @noinspection PhpUndefinedMethodInspection */
-        $concatCurrent= $currentModel->getHost(). $currentModel->getPath();
+        $concatCurrent = $currentModel->getHost() . $currentModel->getPath();
         if ($concatCurrent != $concatInstalled) {
             $match = false;
         }

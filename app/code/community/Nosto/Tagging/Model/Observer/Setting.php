@@ -54,7 +54,8 @@ class Nosto_Tagging_Model_Observer_Setting
      */
     public function syncNostoAccount(/** @noinspection PhpUnusedParameterInspection */ // @codingStandardsIgnoreLine
         Varien_Event_Observer $observer
-    ) {
+    )
+    {
         /** @var Nosto_Tagging_Helper_Data $helper */
         $helper = Mage::helper('nosto_tagging');
         if ($helper->isModuleEnabled()) {
@@ -82,9 +83,9 @@ class Nosto_Tagging_Model_Observer_Setting
                 }
 
                 if ($helper->isMultiCurrencyMethodExchangeRate($store) && !$accountHelper->updateCurrencyExchangeRates(
-                    $account,
-                    $store
-                )) {
+                        $account,
+                        $store
+                    )) {
                     NostoLog::error(
                         'Failed sync currency rates #%s for store #%s in class %s',
                         array(

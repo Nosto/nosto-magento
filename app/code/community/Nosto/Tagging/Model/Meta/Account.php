@@ -37,7 +37,7 @@ use Nosto_Tagging_Helper_Log as NostoLog;
  */
 class Nosto_Tagging_Model_Meta_Account extends Nosto_Object_Signup_Signup
 {
-    CONST /** @noinspection SpellCheckingInspection */
+    const /** @noinspection SpellCheckingInspection */
         SIGNUP_TOKEN = 'YBDKYwSqTCzSsU8Bwbg4im2pkHMcgTy9cCX7vevjJwON1UISJIwXOLMM0a8nZY7h';
     const PLATFORM_NAME = 'magento';
 
@@ -62,7 +62,8 @@ class Nosto_Tagging_Model_Meta_Account extends Nosto_Object_Signup_Signup
         Mage_Core_Model_Store $store,
         $signupDetails,
         Nosto_Types_Signup_OwnerInterface $owner
-    ) {
+    )
+    {
         /* @var Nosto_Tagging_Helper_Data $helper */
         $helper = Mage::helper('nosto_tagging');
         /* @var Nosto_Tagging_Helper_Url $helperUrl */
@@ -76,7 +77,7 @@ class Nosto_Tagging_Model_Meta_Account extends Nosto_Object_Signup_Signup
                 . $store->getName()
             )
         );
-        $this->setName(substr(sha1((string) rand()), 0, 8));
+        $this->setName(substr(sha1((string)rand()), 0, 8));
         $this->setFrontPageUrl($helperUrl->getFrontPageUrl($store));
         $this->setCurrencyCode($store->getBaseCurrencyCode());
         $this->setLanguageCode(substr($store->getConfig('general/locale/code'), 0, 2));
@@ -92,7 +93,7 @@ class Nosto_Tagging_Model_Meta_Account extends Nosto_Object_Signup_Signup
         if (!$helper->multiCurrencyDisabled($store)) {
             $this->setDefaultVariantId($store->getBaseCurrencyCode());
         } elseif ($helper->isVariationEnabled($store)) {
-            /* @var Nosto_Tagging_Helper_Variation $variationHelper  */
+            /* @var Nosto_Tagging_Helper_Variation $variationHelper */
             $variationHelper = Mage::helper('nosto_tagging/variation');
             $this->setDefaultVariantId($variationHelper->getDefaultVariationId());
         } else {

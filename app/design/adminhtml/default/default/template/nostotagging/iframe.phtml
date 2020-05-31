@@ -34,65 +34,65 @@ $params = array('store' => $selectStoreId, 'isAjax' => true);
 <!--suppress HtmlDeprecatedAttribute -->
 <iframe id="nosto_iframe" src='<?php echo $this->getIframeUrl(); ?>' width='100%' frameborder='0' scrolling='no' style="min-height: 600px;"></iframe>
 <script type="text/javascript">
-    document.observe("dom:loaded", function() {
-        // Init the iframe re-sizer.
-        iFrameResize({heightCalculationMethod : "bodyScroll"});
+  document.observe("dom:loaded", function () {
+    // Init the iframe re-sizer.
+    iFrameResize({heightCalculationMethod: "bodyScroll"});
 
-        /**
-         * Window.postMessage() event handler for catching messages from Nosto.
-         *
-         * Supported messages must come from [*.]nosto.com and be formatted
-         * according to the following example:
-         *
-         * '[Nosto]{ "type": "the message action", "params": {} }'
-         *
-         * @param {Object} event
-         */
-        function receiveMessage(event) {
-					const settings = {
-						iframeId: "nosto_iframe",
-						urls: {
-							createAccount: "<?php echo $this->getUrl('*/*/createAccount', $params); ?>",
-							connectAccount: "<?php echo $this->getUrl('*/*/connectAccount', $params); ?>",
-							syncAccount: "<?php echo $this->getUrl('*/*/syncAccount', $params); ?>",
-							deleteAccount: "<?php echo $this->getUrl('*/*/removeAccount', $params); ?>"
-						}
-					};
-
-					// If the message does not start with "[Nosto]", then it is not for us.
-            if ((""+event.data).substr(0, 7) !== "[Nosto]") {
-                return;
-            }
-
-            // Check the origin to prevent cross-site scripting.
-					const originRegexp = new RegExp("<?php echo $this->getIframeOrigin(); ?>");
-					if (!originRegexp.test(event.origin)) {
-                console.warn('Requested URL does not matches iframe origin');
-                return;
-            }
-
-            // Pass the info on to a handler if the data seems sane.
-					const json = ("" + event.data).substr(7);
-					const data = JSON.parse(json);
-					if (typeof data === "object" && data.type) {
-                Nosto.handlePostMessage(data, settings);
-            }
+    /**
+     * Window.postMessage() event handler for catching messages from Nosto.
+     *
+     * Supported messages must come from [*.]nosto.com and be formatted
+     * according to the following example:
+     *
+     * '[Nosto]{ "type": "the message action", "params": {} }'
+     *
+     * @param {Object} event
+     */
+    function receiveMessage(event) {
+      const settings = {
+        iframeId: "nosto_iframe",
+        urls: {
+          createAccount: "<?php echo $this->getUrl('*/*/createAccount', $params); ?>",
+          connectAccount: "<?php echo $this->getUrl('*/*/connectAccount', $params); ?>",
+          syncAccount: "<?php echo $this->getUrl('*/*/syncAccount', $params); ?>",
+          deleteAccount: "<?php echo $this->getUrl('*/*/removeAccount', $params); ?>"
         }
+      };
 
-        // Register event handler for window.postMessage() messages from Nosto.
-        window.addEventListener("message", receiveMessage, false);
+      // If the message does not start with "[Nosto]", then it is not for us.
+      if (("" + event.data).substr(0, 7) !== "[Nosto]") {
+        return;
+      }
 
-        window.Nosto = window.Nosto || {};
-        window.Nosto.openConfigurationPage = function() {
-            window.location.href = '<?php echo $this->getConfigurationUrl(); ?>';
-        };
+      // Check the origin to prevent cross-site scripting.
+      const originRegexp = new RegExp("<?php echo $this->getIframeOrigin(); ?>");
+      if (!originRegexp.test(event.origin)) {
+        console.warn('Requested URL does not matches iframe origin');
+        return;
+      }
 
-        //Inject configuration button
-			const elements = document.querySelectorAll('.switcher');
-			if (elements && '<?php echo $this->getConfigurationUrl(); ?>') {
-            elements[0].innerHTML += '<button title="Plugin configurations" type="button" class="scalable" onclick="Nosto.openConfigurationPage()" style="float: right;"><span><?php echo $this->__("Configuration"); ?></span></button>';
-        }
+      // Pass the info on to a handler if the data seems sane.
+      const json = ("" + event.data).substr(7);
+      const data = JSON.parse(json);
+      if (typeof data === "object" && data.type) {
+        Nosto.handlePostMessage(data, settings);
+      }
+    }
 
-    });
+    // Register event handler for window.postMessage() messages from Nosto.
+    window.addEventListener("message", receiveMessage, false);
+
+    window.Nosto = window.Nosto || {};
+    window.Nosto.openConfigurationPage = function () {
+      window.location.href = '<?php echo $this->getConfigurationUrl(); ?>';
+    };
+
+    //Inject configuration button
+    const elements = document.querySelectorAll('.switcher');
+    if (elements && '<?php echo $this->getConfigurationUrl(); ?>') {
+      elements[0].innerHTML += '<button title="Plugin configurations" type="button" class="scalable" onclick="Nosto.openConfigurationPage()" style="float: right;"><span><?php echo $this->__("Configuration"); ?></span></button>';
+    }
+
+  });
 
 </script>
