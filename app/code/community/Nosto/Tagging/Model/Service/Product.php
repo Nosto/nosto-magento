@@ -131,7 +131,7 @@ class Nosto_Tagging_Model_Service_Product
                     }
 
                     $operation->upsert();
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     Nosto_Tagging_Helper_Log::exception($e);
                 }
             }
@@ -142,28 +142,30 @@ class Nosto_Tagging_Model_Service_Product
         return true;
     }
 
-    /**
-     * Updates a batch of products to Nosto
-     *
-     * @param Nosto_Tagging_Model_Resource_Product_Collection $products
-     * @return bool
-     *
-     * @throws Mage_Core_Exception
-     */
+	/**
+	 * Updates a batch of products to Nosto
+	 *
+	 * @param Nosto_Tagging_Model_Resource_Product_Collection $products
+	 * @return bool
+	 *
+	 * @throws Mage_Core_Exception
+	 * @throws NostoException
+	 */
     public function updateBatch(Nosto_Tagging_Model_Resource_Product_Collection $products)
     {
         $productsArray = iterator_to_array($products);
         return $this->update($productsArray);
     }
 
-    /**
-     * Updates single product to Nosto
-     *
-     * @param Mage_Catalog_Model_Product $product
-     * @return bool
-     *
-     * @throws Mage_Core_Exception
-     */
+	/**
+	 * Updates single product to Nosto
+	 *
+	 * @param Mage_Catalog_Model_Product $product
+	 * @return bool
+	 *
+	 * @throws Mage_Core_Exception
+	 * @throws NostoException
+	 */
     public function updateProduct(Mage_Catalog_Model_Product $product)
     {
         return $this->update(array($product));
@@ -189,7 +191,7 @@ class Nosto_Tagging_Model_Service_Product
         $operation->setProductIds($productIds);
         try {
             $operation->delete();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Nosto_Tagging_Helper_Log::exception($e);
         }
     }

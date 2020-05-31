@@ -1,9 +1,9 @@
 <?php
 /**
  * Magento
- *  
+ *
  * NOTICE OF LICENSE
- *  
+ *
  * This source file is subject to the Open Software License (OSL 3.0)
  * that is bundled with this package in the file LICENSE.txt.
  * It is also available through the world-wide-web at this URL:
@@ -11,13 +11,13 @@
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
- *  
+ *
  * DISCLAIMER
- *  
+ *
  * Do not edit or add to this file if you wish to upgrade Magento to newer
  * versions in the future. If you wish to customize Magento for your
  * needs please refer to http://www.magentocommerce.com for more information.
- *  
+ *
  * @category  Nosto
  * @package   Nosto_Tagging
  * @author    Nosto Solutions Ltd <magento@nosto.com>
@@ -106,7 +106,8 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
         $email = $customer->getEmail();
         $customerGroup = Mage::getModel('customer/group')->load($customer->getGroupId());
         $groupName = $customerGroup->getCustomerGroupCode();
-        $dateOfBirth = $customer->getDob();
+		/** @noinspection PhpUndefinedMethodInspection */
+		$dateOfBirth = $customer->getDob();
         $nostoCustomer = new Nosto_Object_Customer();
         /** @noinspection PhpUndefinedMethodInspection */
         $nostoCustomer->setFirstName($customer->getFirstname());
@@ -124,7 +125,8 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
         $customerAddress = $customer->getPrimaryShippingAddress();
         if ($customerAddress instanceof Mage_Customer_Model_Address) {
             try {
-                $nostoCustomer->setCity($customerAddress->getCity());
+				/** @noinspection PhpUndefinedMethodInspection */
+				$nostoCustomer->setCity($customerAddress->getCity());
                 $streetAddress = $customerAddress->getStreet();
                 $concatenatedStreetAddress = '';
                 if (!empty($streetAddress[0])) {
@@ -158,7 +160,8 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
      */
     protected function getGenderName(Mage_Customer_Model_Customer $customer)
     {
-        $gender = $customer->getGender();
+		/** @noinspection PhpUndefinedMethodInspection */
+		$gender = $customer->getGender();
 
         switch ($gender) {
             case self::GENDER_MALE_ID:
@@ -194,7 +197,7 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
                 $customer->save();
                 return $ref;
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             NostoLog::exception($e);
         }
 

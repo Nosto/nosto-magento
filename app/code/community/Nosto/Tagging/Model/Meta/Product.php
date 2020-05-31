@@ -70,15 +70,16 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         }
     }
 
-    /**
-     * Loads the product info from a Magento product model.
-     *
-     * @param Mage_Catalog_Model_Product $product the product model.
-     * @param Mage_Core_Model_Store|null $store the store to get the product data for.
-     * @return bool
-     * @throws Nosto_NostoException
-     * @throws Mage_Core_Exception
-     */
+	/**
+	 * Loads the product info from a Magento product model.
+	 *
+	 * @param Mage_Catalog_Model_Product $product the product model.
+	 * @param Mage_Core_Model_Store|null $store the store to get the product data for.
+	 * @return bool
+	 * @throws Mage_Core_Exception
+	 * @throws NostoException
+	 * @throws Nosto_NostoException
+	 */
     public function loadData(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store = null)
     {
         if ($store === null) {
@@ -203,8 +204,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
             foreach ($associatedProducts as $associatedProduct) {
                 /** @var Mage_Catalog_Model_Product $productModel */
                 $productModel = Mage::getModel('catalog/product');
-                /* @var Mage_Catalog_Model_Product $mageSku */
-                $mageSku = $productModel->load($associatedProduct->getId());
+				$mageSku = $productModel->load($associatedProduct->getId());
                 try {
                     /* @var Nosto_Tagging_Model_Meta_Sku $skuModel */
                     $skuModel = Mage::getModel('nosto_tagging/meta_sku');
@@ -280,7 +280,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         $stockHelper = Mage::helper('nosto_tagging/stock');
         try {
             $this->setInventoryLevel($stockHelper->getQty($product));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Nosto_Tagging_Helper_Log::error(
                 'Failed to resolve inventory level for product %d to tags. Error message was: %s',
                 array(
@@ -353,14 +353,15 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         }
     }
 
-    /**
-     * Amends the product attributes to tags array if attributes are defined
-     * and are present in product
-     *
-     * @param Mage_Catalog_Model_Product $product the product model.
-     * @param Mage_Core_Model_Store $store the store model.
-     * @throws Nosto_NostoException
-     */
+	/**
+	 * Amends the product attributes to tags array if attributes are defined
+	 * and are present in product
+	 *
+	 * @param Mage_Catalog_Model_Product $product the product model.
+	 * @param Mage_Core_Model_Store $store the store model.
+	 * @throws NostoException
+	 * @throws Nosto_NostoException
+	 */
     protected function amendAttributeTags(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
         $productAttributes = $product->getAttributes();
@@ -395,7 +396,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
                             $this->addTag3(sprintf('%s:%s', $key, $attributeValue));
                             break;
                     }
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     Nosto_Tagging_Helper_Log::exception($e);
                 }
             }
@@ -459,8 +460,6 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         } else {
             trigger_error('Call to undefined method ' . __CLASS__ . '::' . $method . '()', E_USER_ERROR); // @codingStandardsIgnoreLine
         }
-
-        return null;
     }
 
     /**
@@ -482,7 +481,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         if (method_exists($this, $setter)) {
             try {
                 $this->$setter($value);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 Nosto_Tagging_Helper_Log::exception($e);
             }
         }
@@ -508,7 +507,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         if (method_exists($this, $getter)) {
             try {
                 $value = $this->$getter();
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 Nosto_Tagging_Helper_Log::exception($e);
             }
         }
@@ -533,8 +532,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
     ) {
         $attribute = $product->getResource()->getAttribute($attributeName);
         if ($attribute instanceof Mage_Catalog_Model_Resource_Eav_Attribute) {
-            /** @noinspection PhpParamsInspection */
-            if ($storeId && method_exists($product, 'setStoreId')) {
+			if ($storeId && method_exists($product, 'setStoreId')) {
                 $product->setStoreId($storeId);
             }
 
@@ -545,7 +543,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
                     ->setStoreId($storeId)
                     ->getSource()
                     ->getOptionText($product->getData($attributeName));
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 Nosto_Tagging_Helper_Log::exception($e);
             }
 
@@ -640,15 +638,16 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         );
     }
 
-    /**
-     * Reloads the product info from a Magento product model.
-     *
-     * @param Mage_Catalog_Model_Product $product the product model to reload
-     * @param Mage_Core_Model_Store $store the store to get the product data for.
-     *
-     * @return bool returns false if the product is not available in a given store
-     * @throws Mage_Core_Exception
-     */
+	/**
+	 * Reloads the product info from a Magento product model.
+	 *
+	 * @param Mage_Catalog_Model_Product $product the product model to reload
+	 * @param Mage_Core_Model_Store $store the store to get the product data for.
+	 *
+	 * @return bool returns false if the product is not available in a given store
+	 * @throws Mage_Core_Exception
+	 * @throws NostoException
+	 */
     public function reloadData(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
         /** @var Mage_Catalog_Model_Product $productModel */
@@ -684,15 +683,16 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         return $availability;
     }
 
-    /**
-     * Adds selected attributes to all tags also in the custom fields section
-     *
-     * @param Mage_Catalog_Model_Product $product
-     * @param Mage_Core_Model_Store $store
-     * @return array
-     * @throws Nosto_NostoException
-     * @suppress PhanTypeMismatchReturnNullable
-     */
+	/**
+	 * Adds selected attributes to all tags also in the custom fields section
+	 *
+	 * @param Mage_Catalog_Model_Product $product
+	 * @param Mage_Core_Model_Store $store
+	 * @return array
+	 * @throws NostoException
+	 * @throws Nosto_NostoException
+	 * @suppress PhanTypeMismatchReturnNullable
+	 */
     protected function buildCustomFields(
         Mage_Catalog_Model_Product $product,
         Mage_Core_Model_Store $store
@@ -714,14 +714,15 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         return $customFields;
     }
 
-    /**
-     * Returns unique selected attributes from all tags
-     *
-     * @param Mage_Core_Model_Store $store
-     * @return array
-     * @throws Nosto_NostoException
-     * @suppress PhanTypeMismatchReturnNullable
-     */
+	/**
+	 * Returns unique selected attributes from all tags
+	 *
+	 * @param Mage_Core_Model_Store $store
+	 * @return array
+	 * @throws NostoException
+	 * @throws Nosto_NostoException
+	 * @suppress PhanTypeMismatchReturnNullable
+	 */
     protected function getAttributesFromAllTags(Mage_Core_Model_Store $store)
     {
         $attributes = array();

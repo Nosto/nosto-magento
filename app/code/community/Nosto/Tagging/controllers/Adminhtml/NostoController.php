@@ -225,7 +225,7 @@ class Nosto_Tagging_Adminhtml_NostoController extends Mage_Adminhtml_Controller_
                 $accountOwner = Mage::getModel('nosto_tagging/meta_account_owner');
                 $accountOwner->loadData();
                 if ($accountOwner->getEmail() !== $emailAddress) {
-                    if (\Zend_Validate::is($emailAddress, 'EmailAddress')) {
+                    if (Zend_Validate::is($emailAddress, 'EmailAddress')) {
                         $accountOwner->setFirstName(null);
                         $accountOwner->setLastName(null);
                         $accountOwner->setEmail($emailAddress);

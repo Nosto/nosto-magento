@@ -54,9 +54,7 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
     {
         /** @var Nosto_Tagging_Helper_Url $urlHelper */
         $urlHelper = Mage::helper('nosto_tagging/url');
-        $productUrl = $urlHelper->generateProductUrl($product, $store);
-
-        return $productUrl;
+		return $urlHelper->generateProductUrl($product, $store);
     }
 
     /**
@@ -81,8 +79,7 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
         if ($this->isValidImage($img)) {
             // We build the image url manually in order get the correct base
             // url, even if this product is populated in the backend.
-            /** @noinspection PhpUnhandledExceptionInspection */
-            $baseUrl = rtrim($store->getBaseUrl('media'), '/');
+			$baseUrl = rtrim($store->getBaseUrl('media'), '/');
             $file = str_replace(DS, '/', $img);
             $file = ltrim($file, '/');
             $url = $baseUrl . '/catalog/product/' . $file;
@@ -105,7 +102,7 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
 
     /**
      * Build product final price
-     * 
+     *
      * @param Mage_Catalog_Model_Product $product
      * @param Mage_Core_Model_Store $store
      * @return float final price of the product
@@ -238,7 +235,7 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
                         $customFields[$attributeCode] = $attributeValue;
                     }
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 Nosto_Tagging_Helper_Log::exception($e);
             }
         }

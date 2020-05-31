@@ -66,16 +66,15 @@ abstract class Nosto_Tagging_Model_System_Config_Source_Attribute
         }
 
         $attributeTypeId = Mage::getResourceModel('catalog/config')->getEntityTypeId();
-        $attributes = $resourceModel
-            ->addFieldToFilter(
-                'entity_type_id',
-                $attributeTypeId
-            )
-            ->setOrder(
-                'attribute_code',
-                Varien_Data_Collection::SORT_ORDER_ASC
-            );
-        return $attributes;
+		return $resourceModel
+			->addFieldToFilter(
+				'entity_type_id',
+				$attributeTypeId
+			)
+			->setOrder(
+				'attribute_code',
+				Varien_Data_Collection::SORT_ORDER_ASC
+			);
     }
 
     /**

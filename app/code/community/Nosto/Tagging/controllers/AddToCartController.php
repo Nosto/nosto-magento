@@ -51,8 +51,7 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
     public function addAction()
     {
         if (!$this->_validateFormKey()) {
-            /** @noinspection PhpUnhandledExceptionInspection */
-            Mage::throwException('Invalid form key');
+			Mage::throwException('Invalid form key');
         }
 
         $cart = $this->_getCart();
@@ -111,7 +110,7 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
 
                 return $this->_goBack();
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_getSession()->addException($e, $this->__('Cannot add the item to shopping cart.'));
             Mage::logException($e);
             return $this->_goBack();
@@ -128,8 +127,7 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
     public function addMultipleProductsToCartAction()
     {
         if (!$this->_validateFormKey()) {
-            /** @noinspection PhpUnhandledExceptionInspection */
-            Mage::throwException('Invalid form key');
+			Mage::throwException('Invalid form key');
         }
 
         $cart = $this->_getCart();
@@ -179,7 +177,7 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
                     'checkout_cart_add_product_complete',
                     array('product' => $product, 'request' => $this->getRequest(), 'response' => $this->getResponse())
                 );
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->_getSession()->addException($e, $this->__('Cannot add the item to shopping cart.'));
                 Mage::logException($e);
                 /** @noinspection PhpUndefinedMethodInspection */
@@ -210,7 +208,7 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
         $configurableAttributes = $parentType->getConfigurableAttributesAsArray($product);
         foreach ($configurableAttributes as $configurableAttribute) {
             $attributeCode = $configurableAttribute['attribute_code'];
-            /** @var \Mage_Catalog_Model_Resource_Product $productResource */
+            /** @var Mage_Catalog_Model_Resource_Product $productResource */
             $productResource = $skuProduct->getResource();
             $attribute = $productResource->getAttribute($attributeCode);
             if ($attribute instanceof Mage_Catalog_Model_Resource_Eav_Attribute) {

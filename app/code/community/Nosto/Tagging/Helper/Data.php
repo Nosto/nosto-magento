@@ -1,9 +1,9 @@
 <?php
 /**
  * Magento
- *  
+ *
  * NOTICE OF LICENSE
- *  
+ *
  * This source file is subject to the Open Software License (OSL 3.0)
  * that is bundled with this package in the file LICENSE.txt.
  * It is also available through the world-wide-web at this URL:
@@ -11,13 +11,13 @@
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
- *  
+ *
  * DISCLAIMER
- *  
+ *
  * Do not edit or add to this file if you wish to upgrade Magento to newer
  * versions in the future. If you wish to customize Magento for your
  * needs please refer to http://www.magentocommerce.com for more information.
- *  
+ *
  * @category  Nosto
  * @package   Nosto_Tagging
  * @author    Nosto Solutions Ltd <magento@nosto.com>
@@ -394,8 +394,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getCookieId()
     {
-        /** @noinspection PhpUndefinedMethodInspection */
-        return Mage::getModel('core/cookie')->get(self::COOKIE_NAME);
+		return Mage::getModel('core/cookie')->get(self::COOKIE_NAME);
     }
 
     /**
@@ -421,8 +420,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function cleanUpAccountTitle($name)
     {
-        $clean = str_replace(self::$removeFromTitle, '', $name);
-        return $clean;
+		return str_replace(self::$removeFromTitle, '', $name);
     }
 
     /**
@@ -600,15 +598,14 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         return (bool)Mage::getStoreConfig(self::XML_PATH_USE_LOW_STOCK, $store);
     }
 
-    /**
-     * Returns is the sending add to cart event to nosto enabled
-     * This feature has been removed so it will return false
-     *
-     * @param Mage_Core_Model_Store $store
-     * @return bool
-     * @deprecated
-     */
-    public function getSendAddToCartEvent($store)
+	/**
+	 * Returns is the sending add to cart event to nosto enabled
+	 * This feature has been removed so it will return false
+	 *
+	 * @return bool
+	 * @deprecated
+	 */
+    public function getSendAddToCartEvent()
     {
         return false;
     }
@@ -704,8 +701,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
         foreach (Mage::app()->getWebsites() as $website) {
             /** @var Mage_Core_Model_Store_Group $group */
             foreach ($website->getGroups() as $group) {
-                /** @noinspection PhpUndefinedMethodInspection */
-                $stores = $group->getStores();
+				$stores = $group->getStores();
                 foreach ($stores as $store) {
                     $response[] = $store;
                 }
@@ -725,8 +721,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
     {
         $stores = $this->getAllStoreViews();
         $values = array();
-        /* @var Mage_Core_Model_Store $store */
-        foreach ($stores as $store) {
+		foreach ($stores as $store) {
             /** @noinspection PhpUndefinedMethodInspection */
             $storeId = $store->getStoreId();
             if ($storeId) {

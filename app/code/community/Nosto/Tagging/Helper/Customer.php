@@ -1,9 +1,9 @@
 <?php
 /**
  * Magento
- *  
+ *
  * NOTICE OF LICENSE
- *  
+ *
  * This source file is subject to the Open Software License (OSL 3.0)
  * that is bundled with this package in the file LICENSE.txt.
  * It is also available through the world-wide-web at this URL:
@@ -11,13 +11,13 @@
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
- *  
+ *
  * DISCLAIMER
- *  
+ *
  * Do not edit or add to this file if you wish to upgrade Magento to newer
  * versions in the future. If you wish to customize Magento for your
  * needs please refer to http://www.magentocommerce.com for more information.
- *  
+ *
  * @category  Nosto
  * @package   Nosto_Tagging
  * @author    Nosto Solutions Ltd <magento@nosto.com>
@@ -48,8 +48,7 @@ class Nosto_Tagging_Helper_Customer extends Mage_Core_Helper_Abstract
         /** @var Nosto_Tagging_Model_Customer $customer */
         $customer = Mage::getModel('nosto_tagging/customer');
         $customer->load($order->getQuoteId(), 'quote_id');
-        /** @noinspection PhpUndefinedMethodInspection */
-        return $customer->hasData('nosto_id') ? $customer->getNostoId() : false;
+		return $customer->hasData('nosto_id') ? $customer->getNostoId() : false;
     }
 
     /**
@@ -79,8 +78,7 @@ class Nosto_Tagging_Helper_Customer extends Mage_Core_Helper_Abstract
                 ->setPageSize(1)
                 ->setCurPage(1)
                 ->getFirstItem(); // @codingStandardsIgnoreLine
-            /** @noinspection PhpUndefinedMethodInspection */
-            if ($customer->hasData()) {
+			if ($customer->hasData()) {
                 $customer->setUpdatedAt($dateHelper->gmtDate());
             } else {
                 $restoreCartHash = $this->generateRestoreCartHash();
@@ -90,17 +88,8 @@ class Nosto_Tagging_Helper_Customer extends Mage_Core_Helper_Abstract
                 $customer->setCreatedAt($dateHelper->gmtDate());
             }
 
-            try {
-                $customer->save();
-            } catch (Zend_Db_Statement_Exception $e) {
-                // Omit the duplicate key exception (code 23000)
-                // It happens occasionally especially with replicated
-                // database setup
-                if ($e->getCode() !== 23000) {
-                    throw $e;
-                }
-            }
-        }
+			$customer->save();
+		}
     }
 
     /**
@@ -113,12 +102,10 @@ class Nosto_Tagging_Helper_Customer extends Mage_Core_Helper_Abstract
     {
         /** @noinspection PhpUndefinedMethodInspection */
         $hash = md5($customer->getId() . $customer->getEmail()); // @codingStandardsIgnoreLine
-        $uuid = uniqid(
-            substr($hash, 0, 8),
-            true
-        );
-
-        return $uuid;
+		return uniqid(
+			substr($hash, 0, 8),
+			true
+		);
     }
 
     /**
@@ -128,11 +115,9 @@ class Nosto_Tagging_Helper_Customer extends Mage_Core_Helper_Abstract
      */
     public function generateRestoreCartHash()
     {
-        $hash = hash(
-            Nosto_Tagging_Helper_Data::VISITOR_HASH_ALGO,
-            uniqid('nostocartrestore')
-        );
-
-        return $hash;
+		return hash(
+			Nosto_Tagging_Helper_Data::VISITOR_HASH_ALGO,
+			uniqid('nostocartrestore')
+		);
     }
 }

@@ -30,4 +30,5 @@
  */
 /** @var $setupHelper Nosto_Tagging_Helper_Setup */
 $setupHelper = Mage::helper('nosto_tagging/setup');
+/** @noinspection PhpUnhandledExceptionInspection */
 $setupHelper->addRestoreCartHash($this);

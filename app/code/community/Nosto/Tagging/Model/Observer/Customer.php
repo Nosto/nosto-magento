@@ -56,7 +56,7 @@ class Nosto_Tagging_Model_Observer_Customer
                 /** @var Nosto_Tagging_Model_Service_Customer $service */
                 $service = Mage::getModel('nosto_tagging/service_customer');
                 $service->update($mageCustomer);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 NostoLog::exception($e);
             }
         }

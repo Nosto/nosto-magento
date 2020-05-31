@@ -85,7 +85,7 @@ class Nosto_Tagging_CartController extends Mage_Core_Controller_Front_Action
                             $store,
                             $urlParameters
                         );
-                    } catch (\Exception $e) {
+                    } catch (Exception $e) {
                         NostoLog::exception($e);
                         $coreSession->addError(
                             $this->__('Sorry, we could not find your cart')

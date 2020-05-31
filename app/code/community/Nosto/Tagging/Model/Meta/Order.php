@@ -1,9 +1,9 @@
 <?php
 /**
  * Magento
- *  
+ *
  * NOTICE OF LICENSE
- *  
+ *
  * This source file is subject to the Open Software License (OSL 3.0)
  * that is bundled with this package in the file LICENSE.txt.
  * It is also available through the world-wide-web at this URL:
@@ -11,13 +11,13 @@
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
- *  
+ *
  * DISCLAIMER
- *  
+ *
  * Do not edit or add to this file if you wish to upgrade Magento to newer
  * versions in the future. If you wish to customize Magento for your
  * needs please refer to http://www.magentocommerce.com for more information.
- *  
+ *
  * @category  Nosto
  * @package   Nosto_Tagging
  * @author    Nosto Solutions Ltd <magento@nosto.com>
@@ -38,18 +38,17 @@ use Nosto_Tagging_Model_Meta_Order_Builder as OrderBuilder;
  */
 class Nosto_Tagging_Model_Meta_Order extends Nosto_Object_Order_Order
 {
-    /**
-     * Loads the order info from a Magento order model.
-     *
-     * @param Mage_Sales_Model_Order $order the order model.
-     * @return bool
-     * @throws Nosto_NostoException
-     */
+	/**
+	 * Loads the order info from a Magento order model.
+	 *
+	 * @param Mage_Sales_Model_Order $order the order model.
+	 * @return bool
+	 */
     public function loadData(Mage_Sales_Model_Order $order)
     {
         $this->setOrderNumber($order->getId());
         $this->setExternalOrderRef($order->getRealOrderId());
-        $createdAt = \DateTime::createFromFormat(
+        $createdAt = DateTime::createFromFormat(
             'Y-m-d H:i:s',
             $order->getCreatedAt()
         );
@@ -155,7 +154,7 @@ class Nosto_Tagging_Model_Meta_Order extends Nosto_Object_Order_Order
             $discountTxt = sprintf(
                 'Discount (%s)', implode(', ', $appliedRules)
             );
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $discountTxt = 'Discount (error)';
         }
 

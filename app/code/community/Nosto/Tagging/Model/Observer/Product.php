@@ -1,9 +1,9 @@
 <?php
 /**
  * Magento
- *  
+ *
  * NOTICE OF LICENSE
- *  
+ *
  * This source file is subject to the Open Software License (OSL 3.0)
  * that is bundled with this package in the file LICENSE.txt.
  * It is also available through the world-wide-web at this URL:
@@ -11,13 +11,13 @@
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@magentocommerce.com so we can send you a copy immediately.
- *  
+ *
  * DISCLAIMER
- *  
+ *
  * Do not edit or add to this file if you wish to upgrade Magento to newer
  * versions in the future. If you wish to customize Magento for your
  * needs please refer to http://www.magentocommerce.com for more information.
- *  
+ *
  * @category  Nosto
  * @package   Nosto_Tagging
  * @author    Nosto Solutions Ltd <magento@nosto.com>
@@ -42,15 +42,16 @@ use Nosto_Tagging_Helper_Log as NostoLog;
  */
 class Nosto_Tagging_Model_Observer_Product
 {
-    /**
-     * Event handler for the "catalog_product_save_after" event.
-     * Sends a product update API call to Nosto.
-     *
-     * @param Varien_Event_Observer $observer the event observer.
-     *
-     * @return Nosto_Tagging_Model_Observer_Product
-     * @throws Mage_Core_Exception
-     */
+	/**
+	 * Event handler for the "catalog_product_save_after" event.
+	 * Sends a product update API call to Nosto.
+	 *
+	 * @param Varien_Event_Observer $observer the event observer.
+	 *
+	 * @return Nosto_Tagging_Model_Observer_Product
+	 * @throws Mage_Core_Exception
+	 * @throws NostoException
+	 */
     public function sendProductUpdate(Varien_Event_Observer $observer)
     {
         /** @var Nosto_Tagging_Helper_Module $moduleHelper */
@@ -92,7 +93,7 @@ class Nosto_Tagging_Model_Observer_Product
             foreach (Mage::app()->getStores() as $store) {
                 try {
                     $productService->discontinue($store, array($product->getId()));
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     Nosto_Tagging_Helper_Log::exception($e);
                 }
             }
@@ -123,7 +124,7 @@ class Nosto_Tagging_Model_Observer_Product
                     /* @var Nosto_Tagging_Model_Service_Product $service */
                     $service = Mage::getModel('nosto_tagging/service_product');
                     $service->updateProduct($product);
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     NostoLog::exception($e);
                 }
             }

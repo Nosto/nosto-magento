@@ -36,16 +36,17 @@
  */
 class Nosto_Tagging_Model_Meta_Product_Builder
 {
-    /**
-     * Builds Nosto product. We use "raw data" for building.
-     *
-     * @param Mage_Catalog_Model_Product $product
-     * @param Mage_Core_Model_Store|null $store
-     * @throws Mage_Core_Exception
-     * @throws Nosto_NostoException
-     * @return Nosto_Tagging_Model_Meta_Product|null
-     * @suppress PhanTypeMismatchReturn
-     */
+	/**
+	 * Builds Nosto product. We use "raw data" for building.
+	 *
+	 * @param Mage_Catalog_Model_Product $product
+	 * @param Mage_Core_Model_Store|null $store
+	 * @return Nosto_Tagging_Model_Meta_Product|null
+	 * @throws Mage_Core_Exception
+	 * @throws NostoException
+	 * @throws Nosto_NostoException
+	 * @suppress PhanTypeMismatchReturn
+	 */
     public static function build(
         Mage_Catalog_Model_Product $product,
         Mage_Core_Model_Store $store = null

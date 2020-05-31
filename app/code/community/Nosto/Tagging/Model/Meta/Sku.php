@@ -144,7 +144,7 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
                             $this->addCustomField($attributeCode, $attributeValue);
                         }
                     }
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     Nosto_Tagging_Helper_Log::exception($e);
                 }
             }
@@ -193,7 +193,7 @@ class Nosto_Tagging_Model_Meta_Sku extends Nosto_Object_Product_Sku
         $stockHelper = Mage::helper('nosto_tagging/stock');
         try {
             $this->setInventoryLevel($stockHelper->getQty($sku));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Nosto_Tagging_Helper_Log::error(
                 'Failed to resolve inventory level for SKU %d to tags. Error message was: %s',
                 array(

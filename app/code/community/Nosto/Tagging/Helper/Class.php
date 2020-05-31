@@ -152,7 +152,7 @@ class Nosto_Tagging_Helper_Class extends Mage_Core_Helper_Abstract
             if ($class instanceof $expected == false && $fallback != null) {
                 $class = Mage::getModel($fallback);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             if ($fallback !== false) {
                 $class = Mage::getModel($fallback);
             }

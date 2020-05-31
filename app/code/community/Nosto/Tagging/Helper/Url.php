@@ -186,11 +186,9 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
                 try {
                     if ($product instanceof Mage_Catalog_Model_Product) {
                         $url = $this->generateProductUrl($product, $store);
-                        $productUrl = $this->addNostoPreviewParameter($url);
-
-                        return $productUrl;
+						return $this->addNostoPreviewParameter($url);
                     }
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     Nosto_Tagging_Helper_Log::exception($e);
                 }
             }
@@ -240,7 +238,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
                     self::MAGENTO_URL_PARAMETER_SID
                 );
                 $categoryUrl = $this->addNostoPreviewParameter($url);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 NostoLog::exception($e);
             }
         }
@@ -394,7 +392,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
                     $productUrl,
                     self::MAGENTO_URL_PARAMETER_STORE
                 );
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 NostoLog::exception($e);
                 return $productUrl;
             }
@@ -445,12 +443,10 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
      */
     public function getOauthRedirectUrl(Mage_Core_Model_Store $store)
     {
-        $url = Mage::getUrl(
-            self::NOSTO_PATH_OAUTH,
-            $this->getUrlOptionsWithSid($store)
-        );
-
-        return $url;
+		return Mage::getUrl(
+			self::NOSTO_PATH_OAUTH,
+			$this->getUrlOptionsWithSid($store)
+		);
     }/** @noinspection PhpDocMissingThrowsInspection */
 
     /**
@@ -489,7 +485,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
         $storeFrontUrl = $this->getFrontPageUrl($store);
         try {
             return Nosto_Helper_UrlHelper::parseDomain($storeFrontUrl);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Nosto_Tagging_Helper_Log::exception($e);
             return '';
         }
@@ -522,12 +518,10 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
     {
         $params = $this->getUrlOptionsWithNoSid($store);
         $params['h'] = $hash;
-        $url = Mage::getUrl(
-            self::NOSTO_PATH_RESTORE_CART,
-            $params
-        );
-
-        return $url;
+		return Mage::getUrl(
+			self::NOSTO_PATH_RESTORE_CART,
+			$params
+		);
     }
 
     /**
@@ -615,9 +609,7 @@ class Nosto_Tagging_Helper_Url extends Mage_Core_Helper_Abstract
         // There's a bug in Magento's Mage_Core_Helper_Url::getCurrentUrl that
         // calls htmlspecialchars for URL which ends up breaking the URL
         // parameter separator
-        $currentUrl = str_replace('&amp;', '&', $mageUrl);
-
-        return $currentUrl;
+		return str_replace('&amp;', '&', $mageUrl);
     }
 
     /**

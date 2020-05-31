@@ -78,13 +78,13 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
         /** @noinspection PhpUndefinedMethodInspection */
         $checkoutId = $quote->getKlarnaCheckoutId();
         $this->setOrderNumber($checkoutId);
-        $createdAt = \DateTime::createFromFormat(
+        $createdAt = DateTime::createFromFormat(
             'Y-m-d H:i:s', $quote->getCreatedAt()
         );
-        if ($createdAt instanceof \DateTime) {
+        if ($createdAt instanceof DateTime) {
             $this->setCreatedAt($createdAt);
         } else {
-            $this->setCreatedAt(new \DateTime('now'));
+            $this->setCreatedAt(new DateTime('now'));
         }
 
         $orderStatus = new Nosto_Object_Order_OrderStatus();
@@ -112,7 +112,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
         $vaimoKlarnaOrder = $klarna->getKlarnaOrderRaw($quote->getKlarnaCheckoutId());
         try {
             self::validateKlarnaOrder($vaimoKlarnaOrder);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             NostoLog::exception($e);
             return false;
         }
@@ -134,7 +134,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
         $this->setCustomer($orderBuyer);
         try {
             $this->buildItemsFromQuote($quote);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             NostoLog::error(
                 'Could not find klarnaCheckoutId from quote #%d. Error: %s',
                 array($quote->getId(), $e->getMessage())
@@ -221,8 +221,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
             if ($quote instanceof Mage_Sales_Model_Quote) {
                 /* @var $order Mage_Sales_Model_Order */
                 $salesOrderModel = Mage::getModel('sales/order');
-                /** @noinspection PhpUndefinedMethodInspection */
-                $order = $salesOrderModel->loadByAttribute(
+				$order = $salesOrderModel->loadByAttribute(
                     'quote_id',
                     $quote->getId()
                 );
@@ -237,13 +236,12 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
         }
     }
 
-    /**
-     * Loads data from order
-     *
-     * @param Mage_Sales_Model_Order $order
-     * @return bool
-     * @throws Nosto_NostoException
-     */
+	/**
+	 * Loads data from order
+	 *
+	 * @param Mage_Sales_Model_Order $order
+	 * @return bool
+	 */
     public function loadData(Mage_Sales_Model_Order $order)
     {
         /** @var Mage_Core_Model_Store $storeModel */

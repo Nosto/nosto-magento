@@ -82,7 +82,7 @@ class Nosto_Tagging_Model_Meta_Settings extends Nosto_Object_Settings
                     $this->addCurrency(
                         $currencyCode, $currencyHelper->getCurrencyObject($storeLocale, $currencyCode)
                     );
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     NostoLog::exception($e);
                     return false;
                 }

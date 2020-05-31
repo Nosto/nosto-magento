@@ -45,8 +45,7 @@ class Nosto_Tagging_Model_Meta_Cart_Builder
     public static function buildItem(Mage_Sales_Model_Quote_Item $item, $currencyCode)
     {
         $nostoItem = null;
-        /** @var Mage_Sales_Model_Quote_Item $item */
-        switch ($item->getProductType()) {
+		switch ($item->getProductType()) {
             case Mage_Catalog_Model_Product_Type::TYPE_SIMPLE:
             case Mage_Catalog_Model_Product_Type::TYPE_VIRTUAL:
             case Mage_Downloadable_Model_Product_Type::TYPE_DOWNLOADABLE:
