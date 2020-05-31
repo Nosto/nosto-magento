@@ -219,7 +219,7 @@ class Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout extends Nosto_Tagging
             /* @var $quote Mage_Sales_Model_Quote */
             $quote = $klarnaHelper->findQuote($klarnaCheckoutId);
             if ($quote instanceof Mage_Sales_Model_Quote) {
-                /* @var $order Mage_Sales_Model_Order */
+            	/** @var Mage_Sales_Model_Order $salesOrderModel */
                 $salesOrderModel = Mage::getModel('sales/order');
 				$order = $salesOrderModel->loadByAttribute(
                     'quote_id',

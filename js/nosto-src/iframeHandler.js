@@ -133,7 +133,8 @@
       const oReq = new XMLHttpRequest();
       if (typeof options.success === "function") {
             oReq.addEventListener("load", function (e) {
-                options.success(JSON.parse(e.target.response));
+                // noinspection JSUnresolvedVariable
+							options.success(JSON.parse(e.target.response));
             }, false);
         }
         oReq.open(options.method, decodeURIComponent(url), options.async);

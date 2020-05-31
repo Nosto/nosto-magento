@@ -38,9 +38,9 @@ class Nosto_Tagging_Model_Container_Cart extends Enterprise_PageCache_Model_Cont
     /**
      * Get identifier from cookies.
      *
-     * @deprecated since 1.12.0.0
      * @return string
-     */
+     * @noinspection PhpUnused*@deprecated since 1.12.0.0
+	 */
     protected function _getIdentifier()
     {
 		return $this->_getCookieValue(Enterprise_PageCache_Model_Cookie::COOKIE_CART, '')

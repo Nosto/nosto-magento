@@ -76,8 +76,8 @@ class Nosto_Tagging_Helper_Stock extends Mage_Core_Helper_Abstract
                 $qty = $this->getQtySum($products);
                 break;
             default:
-                /** @var Mage_CatalogInventory_Model_Stock_Item $stockItem */
                 $stockItem = Mage::getModel('cataloginventory/stock_item');
+				/** @var Mage_CatalogInventory_Model_Stock_Item $stockItem */
 				$qty += $stockItem->loadByProduct($product)->getQty();
                 break;
         }

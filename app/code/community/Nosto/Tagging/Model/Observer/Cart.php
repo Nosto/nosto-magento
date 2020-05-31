@@ -107,7 +107,8 @@ class Nosto_Tagging_Model_Observer_Cart
                 NostoLog::info('Headers sent already. Cannot set the cookie.');
             }
 
-            if ($dataHelper->getSendAddToCartEvent()) {
+			/** @noinspection PhpDeprecationInspection */
+			if ($dataHelper->getSendAddToCartEvent()) {
                 $quote = $quoteItem->getQuote();
                 if ($quote instanceof Mage_Sales_Model_Quote) {
                     /** @var Nosto_Tagging_Model_Meta_Cart $nostoCart */

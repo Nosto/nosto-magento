@@ -145,6 +145,7 @@
     </phpInfoCache>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="5.5.0" />
+  <component name="PhpRuntimeConfiguration" default_stubs_path="$PROJECT_DIR$/.phan/stubs" />
   <component name="PhpUnit">
     <phpunit_settings>
       <PhpUnitSettings custom_loader_path="$PROJECT_DIR$/vendor/autoload.php" />

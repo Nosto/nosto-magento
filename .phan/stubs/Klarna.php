@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection ALL */
 
 /**
  * Copyright (c) 2009-2014 Vaimo AB

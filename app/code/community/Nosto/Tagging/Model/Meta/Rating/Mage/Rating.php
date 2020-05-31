@@ -41,8 +41,11 @@ class Nosto_Tagging_Model_Meta_Rating_Mage_Rating extends Nosto_Tagging_Model_Me
      */
     public function init(Mage_Catalog_Model_Product $product, Mage_Core_Model_Store $store)
     {
+    	/** @var Mage_Review_Model_Review_Summary $reviewSummaryModel */
+    	$reviewSummaryModel = Mage::getModel('review/review_summary');
         /* @var Mage_Rating_Model_Rating $review_summary */
-		$ratingSummary = Mage::getModel('review/review_summary')
+		/** @noinspection PhpUndefinedMethodInspection */
+		$ratingSummary = $reviewSummaryModel
             ->setStoreId($store->getId())
             ->load($product->getId());
         if ($ratingSummary instanceof Mage_Review_Model_Review_Summary

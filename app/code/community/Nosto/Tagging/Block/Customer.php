@@ -104,6 +104,7 @@ class Nosto_Tagging_Block_Customer extends Mage_Customer_Block_Account_Dashboard
         $emailHelper = Mage::helper('nosto_tagging/email');
         /** @noinspection PhpUndefinedMethodInspection */
         $email = $customer->getEmail();
+        /** @var Mage_Customer_Model_Group $customerGroup */
         $customerGroup = Mage::getModel('customer/group')->load($customer->getGroupId());
         $groupName = $customerGroup->getCustomerGroupCode();
 		/** @noinspection PhpUndefinedMethodInspection */

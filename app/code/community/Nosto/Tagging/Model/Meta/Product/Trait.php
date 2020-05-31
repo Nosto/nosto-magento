@@ -119,7 +119,8 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
             // We need to set the default customer group here, otherwise Magento will
             // return the price for the current user logged in group.
             $productClone = clone $product;
-            $productClone->setGroupPrice(Nosto_Tagging_Helper_Variation::DEFAULT_CUSTOMER_GROUP_ID);
+			/** @noinspection PhpUndefinedMethodInspection */
+			$productClone->setGroupPrice(Nosto_Tagging_Helper_Variation::DEFAULT_CUSTOMER_GROUP_ID);
         }
 
         return $priceHelper->getProductTaggingPrice($productClone, $store, true);
@@ -152,7 +153,8 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
         /* @var Nosto_Tagging_Helper_Data $nostoHelper */
         $nostoHelper = Mage::helper("nosto_tagging");
 
-        $attributes = self::getCustomisableAttributes();
+		/** @noinspection Annotator */
+		$attributes = self::getCustomisableAttributes();
         if (!isset($attributes)) {
             throw new Nosto_NostoException(
                 sprintf(
