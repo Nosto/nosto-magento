@@ -1,0 +1,680 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JavaScriptSettings">
+    <option name="languageLevel" value="ES6" />
+  </component>
+  <component name="PhpEntryPointsManager">
+    <entry_point>
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Adminhtml_NostoController ajaxUpdateAccountAction" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Adminhtml_NostoController" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_AddToCartController addMultipleProductsToCartAction" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_AddToCartController" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_ExportController orderAction" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_ExportController" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_RestoreCartController" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Adminhtml_NostoController ajaxUpdateExchangeRatesAction" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Adminhtml_NostoController connectAccountAction" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Adminhtml_NostoController createAccountAction" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Adminhtml_NostoController indexAction" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_tagging_OauthController indexAction" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_tagging_OauthController" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/controllers/Adminhtml/NostoController.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/controllers/OauthController.php" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Adminhtml_NostoController redirectProxyAction" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Adminhtml_NostoController removeAccountAction" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Adminhtml_NostoController resetAccountSettingsAction" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Adminhtml_NostoController syncAccountAction" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/controllers/ExportController.php" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_ExportController productAction" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Observer_Customer customerUpdated" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Observer_Customer" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/controllers/CartController.php" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_CartController indexAction" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_CartController" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_System_Config_Source_Attribute toOptionArray" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_System_Config_Source_Attribute" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Observer_Product" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Observer_Product onReviewUpdated" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Observer_Product sendProductDelete" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Observer_Product sendProductUpdate" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Meta_Product __call" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Meta_Product" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Meta_Product __construct" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Meta_Account __construct" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Meta_Account" />
+      <entry_point TYPE="phpMethod" FQNAME="\ReconnectCommand __construct" />
+      <entry_point TYPE="phpClass" FQNAME="\ReconnectCommand" />
+      <entry_point TYPE="phpMethod" FQNAME="\RemoveCommand __construct" />
+      <entry_point TYPE="phpClass" FQNAME="\RemoveCommand" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Base __get" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Base" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Meta_Product __get" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Meta_Product __getTags" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Meta_Product __set" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_System_Config_Backend_Currency_Exchange_Rate_Cron _afterSave" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_System_Config_Backend_Currency_Exchange_Rate_Cron" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_System_Config_Backend_Currency_Exchange_Rate_Time _beforeSave" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_System_Config_Backend_Currency_Exchange_Rate_Time" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Adminhtml_System_Config_Currency_CronFrequency _construct" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Block_Adminhtml_System_Config_Currency_CronFrequency" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Adminhtml_System_Config_Currency_Formats _construct" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Block_Adminhtml_System_Config_Currency_Formats" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Customer _construct" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Customer" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Product _construct" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Product" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Resource_Customer _construct" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Resource_Customer" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Resource_Customer_Collection _construct" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Resource_Customer_Collection" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Container_Customer _getCacheId" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Container_Customer" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Adminhtml_System_Config_Currency_CronFrequency _getElementHtml" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Adminhtml_System_Config_Currency_Formats _getElementHtml" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Adminhtml_System_Config_Currency_Method _getElementHtml" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Block_Adminhtml_System_Config_Currency_Method" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Adminhtml_System_Config_Inventory_Switch _getElementHtml" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Block_Adminhtml_System_Config_Inventory_Switch" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Adminhtml_System_Config_Ratings_Provider _getElementHtml" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Block_Adminhtml_System_Config_Ratings_Provider" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Adminhtml_System_Config_Variation_Switch _getElementHtml" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Block_Adminhtml_System_Config_Variation_Switch" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Container_Cart _getIdentifier" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Container_Cart" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Adminhtml_NostoController _isAllowed" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Container_Cart _renderBlock" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Container_Customer _renderBlock" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Addtocart _toHtml" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Block_Addtocart" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Cart _toHtml" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Block_Cart" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Category _toHtml" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Block_Category" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Customer _toHtml" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Block_Customer" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Element _toHtml" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Block_Element" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Embed _toHtml" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Block_Embed" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Meta _toHtml" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Block_Meta" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Order _toHtml" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Block_Order" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Pagetype _toHtml" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Block_Pagetype" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Product _toHtml" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Block_Product" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Searchterm _toHtml" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Block_Searchterm" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Stub _toHtml" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Block_Stub" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Variation _toHtml" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Block_Variation" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Account.php" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_AddToCartController addAction" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Observer_Controller addBlockAfterMainContent" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Observer_Controller" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Helper_Setup addNostoCustomerReferenceEav" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Helper_Setup" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Addtocart.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/controllers/AddToCartController.php" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Adminhtml_Notifications allAccountsOK" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Block_Adminhtml_Notifications" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Helper_Setup alterCustomerReferenceInputType" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/System/Config/Source/Product/Attribute.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/System/Config/Source/Price/Attribute.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/System/Config/Source/Attribute.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Base.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Account/Billing.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Helper/Bootstrap.php" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Meta_Cart_Item_Bundled buildItemName" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Meta_Cart_Item_Bundled" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Meta_Cart_Item_Configurable buildItemName" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Meta_Cart_Item_Configurable" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Meta_Cart_Item_Grouped buildItemName" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Meta_Cart_Item_Grouped" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Meta_Cart_Item_Simple buildItemName" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Meta_Cart_Item_Simple" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Meta_Order_Item_Bundled buildItemName" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Meta_Order_Item_Bundled" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Meta_Order_Item_Configurable buildItemName" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Meta_Order_Item_Configurable" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Meta_Order_Item_Default buildItemName" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Meta_Order_Item_Default" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Meta_Order_Item_Grouped buildItemName" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Meta_Order_Item_Grouped" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Meta_Order_Item_Simple buildItemName" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Meta_Order_Item_Simple" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Util_Product buildParentProducts" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Order/Item/Bundled.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Cart/Item/Bundled.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Order/Buyer.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Helper/Cache.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Container/Cart.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Observer/Cart.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Cart.php" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Observer_Cart cartItemAdded" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Observer_Cart" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Category.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Order/Vaimo/Klarna/Checkout.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Helper/Class.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Resource/Customer/Collection.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Variation/Collection.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Resource/Product/Collection.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Order/Item/Configurable.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Cart/Item/Configurable.php" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Service_Order confirm" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Service_Order" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Observer/Controller.php" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Helper_Price convertToDefaultCurrency" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Helper_Price" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/System/Config/Backend/Currency/Exchange/Rate/Cron.php" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Adminhtml_Notifications cronEnabledIfNeeded" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Adminhtml/System/Config/Currency/CronFrequency.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Helper/Currency.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Helper/Customer.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Container/Customer.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Resource/Customer.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Observer/Customer.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Service/Customer.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Customer.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Customer.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Helper/Data.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Order/Item/Default.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Element.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Embed.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Observer/Exchange.php" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Helper_Cache flushCache" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Helper_Cache" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Helper_Cache flushConfigCache" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Cart formatNostoPrice" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Order formatNostoPrice" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Adminhtml/System/Config/Currency/Formats.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/System/Config/Source/Cron/Frequency.php" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Helper_Customer generateCustomerReference" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Helper_Customer" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Helper_Url generateProductUrl" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Helper_Url" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Adminhtml_Iframe getAccount" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Block_Adminhtml_Iframe" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Helper_Url getActiveDomain" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Helper_Rating getActiveRatingProviders" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Helper_Rating" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Addtocart getAddMultipleProductsToCartUrl" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Addtocart getAddSkuToCartUrl" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Addtocart getAddToCartUrl" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Meta_Product getAttributeValue" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Category getCategory" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Helper_Data getConfigInAllStores" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Helper_Data" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Adminhtml_Iframe getConfigurationUrl" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Adminhtml_Notifications getConfigureUrl" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Helper_Currency getCurrencyObject" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Helper_Currency" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Product getCurrentCategory" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Meta_Product getCustomisableAttributes" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Meta_Sku getCustomisableAttributes" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Meta_Sku" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Helper_Url getFrontPageUrl" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Adminhtml_Iframe getIframe" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Adminhtml_Iframe getIframeOrigin" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Adminhtml_Iframe getIframeUrl" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Adminhtml_Notifications getInvalidAccountDomains" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Helper_Price getItemFinalPriceInclTax" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Order getLastOrder" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_tagging_OauthController getMeta" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Helper_Oauth getMetaData" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Helper_Oauth" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Product getMetaProduct" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Resource_Product_Collection getModelName" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Resource_Product_Collection" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Helper_Rating getModuleNameByProvider" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Helper_Module getModulesForIntegration" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Helper_Module" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Helper_Customer getNostoId" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Helper_Url getOauthRedirectUrl" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Helper_Class getOrderClass" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Helper_Class" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Pagetype getPageTypeName" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_tagging_OauthController getParam" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Helper_Url getPreviewUrlCart" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Helper_Url getPreviewUrlCategory" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Helper_Url getPreviewUrlFront" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Helper_Url getPreviewUrlProduct" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Helper_Url getPreviewUrlSearch" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_System_Config_Source_Custom_Tags getProductAttributes" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_System_Config_Source_Custom_Tags" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_System_Config_Source_Price_Attribute getProductAttributes" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_System_Config_Source_Price_Attribute" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_System_Config_Source_Product_Attribute getProductAttributes" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_System_Config_Source_Product_Attribute" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Helper_Price getProductFinalPriceInclTax" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Helper_Price getProductPriceInclTax" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Helper_Stock getQty" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Helper_Stock" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Meta_Rating getRating" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Meta_Rating" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Helper_Class getRatingClass" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Meta_Rating getReviewCount" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Searchterm getSearchTerm" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Adminhtml_Iframe getSelectedStore" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Helper_Data getStoreFrontPageUrl" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Meta_Product getTag1" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Meta_Product getTag2" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Meta_Product getTag3" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Helper_Price getTaggingCurrencyCode" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Helper_Price getTaggingPrice" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Helper_Data getUsePrettyProductUrls" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Adminhtml_Iframe getUser" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Variation getVariationId" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Cart getVisitorChecksum" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Customer getVisitorChecksum" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Order getVisitorChecksum" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Helper_Data getVisitorChecksum" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Order/Item/Grouped.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Cart/Item/Grouped.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Account/Iframe.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Adminhtml/Iframe.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/System/Config/Source/Image.php" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Helper_Bootstrap init" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Helper_Bootstrap" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Meta_Rating_Mage_Rating init" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Meta_Rating_Mage_Rating" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Meta_Rating_Yotpo_Yotpo init" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Meta_Rating_Yotpo_Yotpo" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Rating/Interface.php" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Resource_Product_Collection isEnabledFlat" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Helper_Module isModuleEnabled" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Block_Product isOveridden" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Helper_Data isScheduledCurrencyExchangeRateUpdateEnabled" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Helper_Rating loadClass" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Meta_Account_Billing loadData" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Meta_Account_Billing" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Meta_Account_Iframe loadData" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Meta_Account_Iframe" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Meta_Account_Owner loadData" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Meta_Account_Owner" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Meta_Oauth loadData" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Meta_Oauth" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout loadData" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Meta_Settings loadData" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Meta_Settings" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Meta_Variation_Collection loadData" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Meta_Variation_Collection" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout loadOrderByKlarnaCheckoutId" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/System/Config/Source/Restore/Cart/Location.php" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_tagging_OauthController logError" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Meta.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/System/Config/Source/Multi/Currency/Method.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Adminhtml/System/Config/Currency/Method.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Helper/Module.php" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Collection_Rates" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Meta_Order_Buyer" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Meta_Order_Status" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Meta_Rating_Interface" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Observer_Exchange" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Observer_Order" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Observer_Setting" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Service_Customer" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_Service_Product" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_System_Config_Source_Cron_Frequency" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_System_Config_Source_Image" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_System_Config_Source_Multi_Currency_Method" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_System_Config_Source_Ratings_Provider" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Model_System_Config_Source_Restore_Cart_Location" />
+      <entry_point TYPE="phpClass" FQNAME="\Nosto_Tagging_Util_Product" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_tagging_OauthController notFound" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Adminhtml/Notifications.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Helper/Oauth.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Oauth.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Observer/Order.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Service/Order.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Order.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Account/Owner.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Pagetype.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Helper/Price.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Service/Product.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Product.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Util/Product.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Product.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Observer/Product.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Product.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/System/Config/Source/Ratings/Provider.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Adminhtml/System/Config/Ratings/Provider.php" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Helper_Data quoteEscape" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Collection/Rates.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Helper/Rating.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Rating/Mage/Rating.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Rating.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/shell/reconnect.php" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_tagging_OauthController redirect" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/shell/remove.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/controllers/RestoreCartController.php" />
+      <entry_point TYPE="phpMethod" FQNAME="\ReconnectCommand run" />
+      <entry_point TYPE="phpMethod" FQNAME="\RemoveCommand run" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_tagging_OauthController save" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Observer_Exchange scheduledCurrencyExchangeRateUpdate" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Searchterm.php" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Observer_Order sendOrderConfirmation" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Meta_Rating setRating" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Meta_Rating_Interface setRating" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Meta_Rating setReviewCount" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Meta_Rating_Interface setReviewCount" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Observer/Setting.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Settings.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Helper/Setup.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Order/Item/Simple.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Cart/Item/Simple.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Sku.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Order/Status.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Helper/Stock.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Stub.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Adminhtml/System/Config/Variation/Switch.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Adminhtml/System/Config/Inventory/Switch.php" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Observer_Setting syncNostoAccount" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/System/Config/Source/Custom/Tags.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/System/Config/Backend/Currency/Exchange/Rate/Time.php" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_System_Config_Source_Cron_Frequency toOptionArray" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_System_Config_Source_Image toOptionArray" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_System_Config_Source_Multi_Currency_Method toOptionArray" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_System_Config_Source_Ratings_Provider toOptionArray" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_System_Config_Source_Restore_Cart_Location toOptionArray" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Service_Customer update" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Service_Product updateBatch" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Helper_Customer updateNostoId" />
+      <entry_point TYPE="phpMethod" FQNAME="\Nosto_Tagging_Model_Service_Product updateProduct" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Helper/Url.php" />
+      <entry_point TYPE="phpMethod" FQNAME="\ReconnectCommand usageHelp" />
+      <entry_point TYPE="phpMethod" FQNAME="\RemoveCommand usageHelp" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Variation.php" />
+      <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Rating/Yotpo/Yotpo.php" />
+    </entry_point>
+    <pattern value="\Nosto_Tagging_Adminhtml_NostoController" member="ajaxUpdateAccountAction" />
+    <pattern value="\Nosto_Tagging_Adminhtml_NostoController" />
+    <pattern value="\Nosto_Tagging_AddToCartController" member="addMultipleProductsToCartAction" />
+    <pattern value="\Nosto_Tagging_AddToCartController" />
+    <pattern value="\Nosto_Tagging_ExportController" member="orderAction" />
+    <pattern value="\Nosto_Tagging_ExportController" />
+    <pattern value="\Nosto_Tagging_RestoreCartController" />
+    <pattern value="\Nosto_Tagging_Adminhtml_NostoController" member="ajaxUpdateExchangeRatesAction" />
+    <pattern value="\Nosto_Tagging_Adminhtml_NostoController" member="connectAccountAction" />
+    <pattern value="\Nosto_Tagging_Adminhtml_NostoController" member="createAccountAction" />
+    <pattern value="\Nosto_Tagging_Adminhtml_NostoController" member="indexAction" />
+    <pattern value="\Nosto_tagging_OauthController" member="indexAction" />
+    <pattern value="\Nosto_tagging_OauthController" />
+    <pattern value="\Nosto_Tagging_Adminhtml_NostoController" member="redirectProxyAction" />
+    <pattern value="\Nosto_Tagging_Adminhtml_NostoController" member="removeAccountAction" />
+    <pattern value="\Nosto_Tagging_Adminhtml_NostoController" member="resetAccountSettingsAction" />
+    <pattern value="\Nosto_Tagging_Adminhtml_NostoController" member="syncAccountAction" />
+    <pattern value="\Nosto_Tagging_ExportController" member="productAction" />
+    <pattern value="\Nosto_Tagging_Model_Observer_Customer" member="customerUpdated" />
+    <pattern value="\Nosto_Tagging_Model_Observer_Customer" />
+    <pattern value="\Nosto_Tagging_CartController" member="indexAction" />
+    <pattern value="\Nosto_Tagging_CartController" />
+    <pattern value="\Nosto_Tagging_Model_System_Config_Source_Attribute" member="toOptionArray" />
+    <pattern value="\Nosto_Tagging_Model_System_Config_Source_Attribute" />
+    <pattern value="\Nosto_Tagging_Model_Observer_Product" />
+    <pattern value="\Nosto_Tagging_Model_Observer_Product" member="onReviewUpdated" />
+    <pattern value="\Nosto_Tagging_Model_Observer_Product" member="sendProductDelete" />
+    <pattern value="\Nosto_Tagging_Model_Observer_Product" member="sendProductUpdate" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Product" member="__call" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Product" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Product" member="__construct" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Account" member="__construct" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Account" />
+    <pattern value="\ReconnectCommand" member="__construct" />
+    <pattern value="\ReconnectCommand" />
+    <pattern value="\RemoveCommand" member="__construct" />
+    <pattern value="\RemoveCommand" />
+    <pattern value="\Nosto_Tagging_Model_Base" member="__get" />
+    <pattern value="\Nosto_Tagging_Model_Base" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Product" member="__get" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Product" member="__getTags" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Product" member="__set" />
+    <pattern value="\Nosto_Tagging_Model_System_Config_Backend_Currency_Exchange_Rate_Cron" member="_afterSave" />
+    <pattern value="\Nosto_Tagging_Model_System_Config_Backend_Currency_Exchange_Rate_Cron" />
+    <pattern value="\Nosto_Tagging_Model_System_Config_Backend_Currency_Exchange_Rate_Time" member="_beforeSave" />
+    <pattern value="\Nosto_Tagging_Model_System_Config_Backend_Currency_Exchange_Rate_Time" />
+    <pattern value="\Nosto_Tagging_Block_Adminhtml_System_Config_Currency_CronFrequency" member="_construct" />
+    <pattern value="\Nosto_Tagging_Block_Adminhtml_System_Config_Currency_CronFrequency" />
+    <pattern value="\Nosto_Tagging_Block_Adminhtml_System_Config_Currency_Formats" member="_construct" />
+    <pattern value="\Nosto_Tagging_Block_Adminhtml_System_Config_Currency_Formats" />
+    <pattern value="\Nosto_Tagging_Model_Customer" member="_construct" />
+    <pattern value="\Nosto_Tagging_Model_Customer" />
+    <pattern value="\Nosto_Tagging_Model_Product" member="_construct" />
+    <pattern value="\Nosto_Tagging_Model_Product" />
+    <pattern value="\Nosto_Tagging_Model_Resource_Customer" member="_construct" />
+    <pattern value="\Nosto_Tagging_Model_Resource_Customer" />
+    <pattern value="\Nosto_Tagging_Model_Resource_Customer_Collection" member="_construct" />
+    <pattern value="\Nosto_Tagging_Model_Resource_Customer_Collection" />
+    <pattern value="\Nosto_Tagging_Model_Container_Customer" member="_getCacheId" />
+    <pattern value="\Nosto_Tagging_Model_Container_Customer" />
+    <pattern value="\Nosto_Tagging_Block_Adminhtml_System_Config_Currency_CronFrequency" member="_getElementHtml" />
+    <pattern value="\Nosto_Tagging_Block_Adminhtml_System_Config_Currency_Formats" member="_getElementHtml" />
+    <pattern value="\Nosto_Tagging_Block_Adminhtml_System_Config_Currency_Method" member="_getElementHtml" />
+    <pattern value="\Nosto_Tagging_Block_Adminhtml_System_Config_Currency_Method" />
+    <pattern value="\Nosto_Tagging_Block_Adminhtml_System_Config_Inventory_Switch" member="_getElementHtml" />
+    <pattern value="\Nosto_Tagging_Block_Adminhtml_System_Config_Inventory_Switch" />
+    <pattern value="\Nosto_Tagging_Block_Adminhtml_System_Config_Ratings_Provider" member="_getElementHtml" />
+    <pattern value="\Nosto_Tagging_Block_Adminhtml_System_Config_Ratings_Provider" />
+    <pattern value="\Nosto_Tagging_Block_Adminhtml_System_Config_Variation_Switch" member="_getElementHtml" />
+    <pattern value="\Nosto_Tagging_Block_Adminhtml_System_Config_Variation_Switch" />
+    <pattern value="\Nosto_Tagging_Model_Container_Cart" member="_getIdentifier" />
+    <pattern value="\Nosto_Tagging_Model_Container_Cart" />
+    <pattern value="\Nosto_Tagging_Adminhtml_NostoController" member="_isAllowed" />
+    <pattern value="\Nosto_Tagging_Model_Container_Cart" member="_renderBlock" />
+    <pattern value="\Nosto_Tagging_Model_Container_Customer" member="_renderBlock" />
+    <pattern value="\Nosto_Tagging_Block_Addtocart" member="_toHtml" />
+    <pattern value="\Nosto_Tagging_Block_Addtocart" />
+    <pattern value="\Nosto_Tagging_Block_Cart" member="_toHtml" />
+    <pattern value="\Nosto_Tagging_Block_Cart" />
+    <pattern value="\Nosto_Tagging_Block_Category" member="_toHtml" />
+    <pattern value="\Nosto_Tagging_Block_Category" />
+    <pattern value="\Nosto_Tagging_Block_Customer" member="_toHtml" />
+    <pattern value="\Nosto_Tagging_Block_Customer" />
+    <pattern value="\Nosto_Tagging_Block_Element" member="_toHtml" />
+    <pattern value="\Nosto_Tagging_Block_Element" />
+    <pattern value="\Nosto_Tagging_Block_Embed" member="_toHtml" />
+    <pattern value="\Nosto_Tagging_Block_Embed" />
+    <pattern value="\Nosto_Tagging_Block_Meta" member="_toHtml" />
+    <pattern value="\Nosto_Tagging_Block_Meta" />
+    <pattern value="\Nosto_Tagging_Block_Order" member="_toHtml" />
+    <pattern value="\Nosto_Tagging_Block_Order" />
+    <pattern value="\Nosto_Tagging_Block_Pagetype" member="_toHtml" />
+    <pattern value="\Nosto_Tagging_Block_Pagetype" />
+    <pattern value="\Nosto_Tagging_Block_Product" member="_toHtml" />
+    <pattern value="\Nosto_Tagging_Block_Product" />
+    <pattern value="\Nosto_Tagging_Block_Searchterm" member="_toHtml" />
+    <pattern value="\Nosto_Tagging_Block_Searchterm" />
+    <pattern value="\Nosto_Tagging_Block_Stub" member="_toHtml" />
+    <pattern value="\Nosto_Tagging_Block_Stub" />
+    <pattern value="\Nosto_Tagging_Block_Variation" member="_toHtml" />
+    <pattern value="\Nosto_Tagging_Block_Variation" />
+    <pattern value="\Nosto_Tagging_AddToCartController" member="addAction" />
+    <pattern value="\Nosto_Tagging_Model_Observer_Controller" member="addBlockAfterMainContent" />
+    <pattern value="\Nosto_Tagging_Model_Observer_Controller" />
+    <pattern value="\Nosto_Tagging_Helper_Setup" member="addNostoCustomerReferenceEav" />
+    <pattern value="\Nosto_Tagging_Helper_Setup" />
+    <pattern value="\Nosto_Tagging_Block_Adminhtml_Notifications" member="allAccountsOK" />
+    <pattern value="\Nosto_Tagging_Block_Adminhtml_Notifications" />
+    <pattern value="\Nosto_Tagging_Helper_Setup" member="alterCustomerReferenceInputType" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Cart_Item_Bundled" member="buildItemName" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Cart_Item_Bundled" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Cart_Item_Configurable" member="buildItemName" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Cart_Item_Configurable" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Cart_Item_Grouped" member="buildItemName" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Cart_Item_Grouped" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Cart_Item_Simple" member="buildItemName" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Cart_Item_Simple" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Order_Item_Bundled" member="buildItemName" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Order_Item_Bundled" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Order_Item_Configurable" member="buildItemName" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Order_Item_Configurable" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Order_Item_Default" member="buildItemName" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Order_Item_Default" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Order_Item_Grouped" member="buildItemName" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Order_Item_Grouped" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Order_Item_Simple" member="buildItemName" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Order_Item_Simple" />
+    <pattern value="\Nosto_Tagging_Util_Product" member="buildParentProducts" />
+    <pattern value="\Nosto_Tagging_Model_Observer_Cart" member="cartItemAdded" />
+    <pattern value="\Nosto_Tagging_Model_Observer_Cart" />
+    <pattern value="\Nosto_Tagging_Model_Service_Order" member="confirm" />
+    <pattern value="\Nosto_Tagging_Model_Service_Order" />
+    <pattern value="\Nosto_Tagging_Helper_Price" member="convertToDefaultCurrency" />
+    <pattern value="\Nosto_Tagging_Helper_Price" />
+    <pattern value="\Nosto_Tagging_Block_Adminhtml_Notifications" member="cronEnabledIfNeeded" />
+    <pattern value="\Nosto_Tagging_Helper_Cache" member="flushCache" />
+    <pattern value="\Nosto_Tagging_Helper_Cache" />
+    <pattern value="\Nosto_Tagging_Helper_Cache" member="flushConfigCache" />
+    <pattern value="\Nosto_Tagging_Block_Cart" member="formatNostoPrice" />
+    <pattern value="\Nosto_Tagging_Block_Order" member="formatNostoPrice" />
+    <pattern value="\Nosto_Tagging_Helper_Customer" member="generateCustomerReference" />
+    <pattern value="\Nosto_Tagging_Helper_Customer" />
+    <pattern value="\Nosto_Tagging_Helper_Url" member="generateProductUrl" />
+    <pattern value="\Nosto_Tagging_Helper_Url" />
+    <pattern value="\Nosto_Tagging_Block_Adminhtml_Iframe" member="getAccount" />
+    <pattern value="\Nosto_Tagging_Block_Adminhtml_Iframe" />
+    <pattern value="\Nosto_Tagging_Helper_Url" member="getActiveDomain" />
+    <pattern value="\Nosto_Tagging_Helper_Rating" member="getActiveRatingProviders" />
+    <pattern value="\Nosto_Tagging_Helper_Rating" />
+    <pattern value="\Nosto_Tagging_Block_Addtocart" member="getAddMultipleProductsToCartUrl" />
+    <pattern value="\Nosto_Tagging_Block_Addtocart" member="getAddSkuToCartUrl" />
+    <pattern value="\Nosto_Tagging_Block_Addtocart" member="getAddToCartUrl" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Product" member="getAttributeValue" />
+    <pattern value="\Nosto_Tagging_Block_Category" member="getCategory" />
+    <pattern value="\Nosto_Tagging_Helper_Data" member="getConfigInAllStores" />
+    <pattern value="\Nosto_Tagging_Helper_Data" />
+    <pattern value="\Nosto_Tagging_Block_Adminhtml_Iframe" member="getConfigurationUrl" />
+    <pattern value="\Nosto_Tagging_Block_Adminhtml_Notifications" member="getConfigureUrl" />
+    <pattern value="\Nosto_Tagging_Helper_Currency" member="getCurrencyObject" />
+    <pattern value="\Nosto_Tagging_Helper_Currency" />
+    <pattern value="\Nosto_Tagging_Block_Product" member="getCurrentCategory" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Product" member="getCustomisableAttributes" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Sku" member="getCustomisableAttributes" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Sku" />
+    <pattern value="\Nosto_Tagging_Helper_Url" member="getFrontPageUrl" />
+    <pattern value="\Nosto_Tagging_Block_Adminhtml_Iframe" member="getIframe" />
+    <pattern value="\Nosto_Tagging_Block_Adminhtml_Iframe" member="getIframeOrigin" />
+    <pattern value="\Nosto_Tagging_Block_Adminhtml_Iframe" member="getIframeUrl" />
+    <pattern value="\Nosto_Tagging_Block_Adminhtml_Notifications" member="getInvalidAccountDomains" />
+    <pattern value="\Nosto_Tagging_Helper_Price" member="getItemFinalPriceInclTax" />
+    <pattern value="\Nosto_Tagging_Block_Order" member="getLastOrder" />
+    <pattern value="\Nosto_tagging_OauthController" member="getMeta" />
+    <pattern value="\Nosto_Tagging_Helper_Oauth" member="getMetaData" />
+    <pattern value="\Nosto_Tagging_Helper_Oauth" />
+    <pattern value="\Nosto_Tagging_Block_Product" member="getMetaProduct" />
+    <pattern value="\Nosto_Tagging_Model_Resource_Product_Collection" member="getModelName" />
+    <pattern value="\Nosto_Tagging_Model_Resource_Product_Collection" />
+    <pattern value="\Nosto_Tagging_Helper_Rating" member="getModuleNameByProvider" />
+    <pattern value="\Nosto_Tagging_Helper_Module" member="getModulesForIntegration" />
+    <pattern value="\Nosto_Tagging_Helper_Module" />
+    <pattern value="\Nosto_Tagging_Helper_Customer" member="getNostoId" />
+    <pattern value="\Nosto_Tagging_Helper_Url" member="getOauthRedirectUrl" />
+    <pattern value="\Nosto_Tagging_Helper_Class" member="getOrderClass" />
+    <pattern value="\Nosto_Tagging_Helper_Class" />
+    <pattern value="\Nosto_Tagging_Block_Pagetype" member="getPageTypeName" />
+    <pattern value="\Nosto_tagging_OauthController" member="getParam" />
+    <pattern value="\Nosto_Tagging_Helper_Url" member="getPreviewUrlCart" />
+    <pattern value="\Nosto_Tagging_Helper_Url" member="getPreviewUrlCategory" />
+    <pattern value="\Nosto_Tagging_Helper_Url" member="getPreviewUrlFront" />
+    <pattern value="\Nosto_Tagging_Helper_Url" member="getPreviewUrlProduct" />
+    <pattern value="\Nosto_Tagging_Helper_Url" member="getPreviewUrlSearch" />
+    <pattern value="\Nosto_Tagging_Model_System_Config_Source_Custom_Tags" member="getProductAttributes" />
+    <pattern value="\Nosto_Tagging_Model_System_Config_Source_Custom_Tags" />
+    <pattern value="\Nosto_Tagging_Model_System_Config_Source_Price_Attribute" member="getProductAttributes" />
+    <pattern value="\Nosto_Tagging_Model_System_Config_Source_Price_Attribute" />
+    <pattern value="\Nosto_Tagging_Model_System_Config_Source_Product_Attribute" member="getProductAttributes" />
+    <pattern value="\Nosto_Tagging_Model_System_Config_Source_Product_Attribute" />
+    <pattern value="\Nosto_Tagging_Helper_Price" member="getProductFinalPriceInclTax" />
+    <pattern value="\Nosto_Tagging_Helper_Price" member="getProductPriceInclTax" />
+    <pattern value="\Nosto_Tagging_Helper_Stock" member="getQty" />
+    <pattern value="\Nosto_Tagging_Helper_Stock" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Rating" member="getRating" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Rating" />
+    <pattern value="\Nosto_Tagging_Helper_Class" member="getRatingClass" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Rating" member="getReviewCount" />
+    <pattern value="\Nosto_Tagging_Block_Searchterm" member="getSearchTerm" />
+    <pattern value="\Nosto_Tagging_Block_Adminhtml_Iframe" member="getSelectedStore" />
+    <pattern value="\Nosto_Tagging_Helper_Data" member="getStoreFrontPageUrl" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Product" member="getTag1" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Product" member="getTag2" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Product" member="getTag3" />
+    <pattern value="\Nosto_Tagging_Helper_Price" member="getTaggingCurrencyCode" />
+    <pattern value="\Nosto_Tagging_Helper_Price" member="getTaggingPrice" />
+    <pattern value="\Nosto_Tagging_Helper_Data" member="getUsePrettyProductUrls" />
+    <pattern value="\Nosto_Tagging_Block_Adminhtml_Iframe" member="getUser" />
+    <pattern value="\Nosto_Tagging_Block_Variation" member="getVariationId" />
+    <pattern value="\Nosto_Tagging_Block_Cart" member="getVisitorChecksum" />
+    <pattern value="\Nosto_Tagging_Block_Customer" member="getVisitorChecksum" />
+    <pattern value="\Nosto_Tagging_Block_Order" member="getVisitorChecksum" />
+    <pattern value="\Nosto_Tagging_Helper_Data" member="getVisitorChecksum" />
+    <pattern value="\Nosto_Tagging_Helper_Bootstrap" member="init" />
+    <pattern value="\Nosto_Tagging_Helper_Bootstrap" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Rating_Mage_Rating" member="init" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Rating_Mage_Rating" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Rating_Yotpo_Yotpo" member="init" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Rating_Yotpo_Yotpo" />
+    <pattern value="\Nosto_Tagging_Model_Resource_Product_Collection" member="isEnabledFlat" />
+    <pattern value="\Nosto_Tagging_Helper_Module" member="isModuleEnabled" />
+    <pattern value="\Nosto_Tagging_Block_Product" member="isOveridden" />
+    <pattern value="\Nosto_Tagging_Helper_Data" member="isScheduledCurrencyExchangeRateUpdateEnabled" />
+    <pattern value="\Nosto_Tagging_Helper_Rating" member="loadClass" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Account_Billing" member="loadData" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Account_Billing" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Account_Iframe" member="loadData" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Account_Iframe" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Account_Owner" member="loadData" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Account_Owner" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Oauth" member="loadData" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Oauth" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout" member="loadData" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Settings" member="loadData" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Settings" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Variation_Collection" member="loadData" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Variation_Collection" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Order_Vaimo_Klarna_Checkout" member="loadOrderByKlarnaCheckoutId" />
+    <pattern value="\Nosto_tagging_OauthController" member="logError" />
+    <pattern value="\Nosto_Tagging_Model_Collection_Rates" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Order_Buyer" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Order_Status" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Rating_Interface" />
+    <pattern value="\Nosto_Tagging_Model_Observer_Exchange" />
+    <pattern value="\Nosto_Tagging_Model_Observer_Order" />
+    <pattern value="\Nosto_Tagging_Model_Observer_Setting" />
+    <pattern value="\Nosto_Tagging_Model_Service_Customer" />
+    <pattern value="\Nosto_Tagging_Model_Service_Product" />
+    <pattern value="\Nosto_Tagging_Model_System_Config_Source_Cron_Frequency" />
+    <pattern value="\Nosto_Tagging_Model_System_Config_Source_Image" />
+    <pattern value="\Nosto_Tagging_Model_System_Config_Source_Multi_Currency_Method" />
+    <pattern value="\Nosto_Tagging_Model_System_Config_Source_Ratings_Provider" />
+    <pattern value="\Nosto_Tagging_Model_System_Config_Source_Restore_Cart_Location" />
+    <pattern value="\Nosto_Tagging_Util_Product" />
+    <pattern value="\Nosto_tagging_OauthController" member="notFound" />
+    <pattern value="\Nosto_Tagging_Helper_Data" member="quoteEscape" />
+    <pattern value="\Nosto_tagging_OauthController" member="redirect" />
+    <pattern value="\ReconnectCommand" member="run" />
+    <pattern value="\RemoveCommand" member="run" />
+    <pattern value="\Nosto_tagging_OauthController" member="save" />
+    <pattern value="\Nosto_Tagging_Model_Observer_Exchange" member="scheduledCurrencyExchangeRateUpdate" />
+    <pattern value="\Nosto_Tagging_Model_Observer_Order" member="sendOrderConfirmation" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Rating" member="setRating" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Rating_Interface" member="setRating" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Rating" member="setReviewCount" />
+    <pattern value="\Nosto_Tagging_Model_Meta_Rating_Interface" member="setReviewCount" />
+    <pattern value="\Nosto_Tagging_Model_Observer_Setting" member="syncNostoAccount" />
+    <pattern value="\Nosto_Tagging_Model_System_Config_Source_Cron_Frequency" member="toOptionArray" />
+    <pattern value="\Nosto_Tagging_Model_System_Config_Source_Image" member="toOptionArray" />
+    <pattern value="\Nosto_Tagging_Model_System_Config_Source_Multi_Currency_Method" member="toOptionArray" />
+    <pattern value="\Nosto_Tagging_Model_System_Config_Source_Ratings_Provider" member="toOptionArray" />
+    <pattern value="\Nosto_Tagging_Model_System_Config_Source_Restore_Cart_Location" member="toOptionArray" />
+    <pattern value="\Nosto_Tagging_Model_Service_Customer" member="update" />
+    <pattern value="\Nosto_Tagging_Model_Service_Product" member="updateBatch" />
+    <pattern value="\Nosto_Tagging_Helper_Customer" member="updateNostoId" />
+    <pattern value="\Nosto_Tagging_Model_Service_Product" member="updateProduct" />
+    <pattern value="\ReconnectCommand" member="usageHelp" />
+    <pattern value="\RemoveCommand" member="usageHelp" />
+  </component>
+</project>

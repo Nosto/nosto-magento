@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Inspection" pattern="file[Magento]:app//*||file[Magento]:js//*" />
+</component>

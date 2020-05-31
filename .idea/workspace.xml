@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="SCOPE_TYPE" value="8" />
+    <option name="CUSTOM_SCOPE_NAME" value="Inspection" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="f884007a-10f0-4c3e-84f1-431ccb224950" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/Magento.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Magento.iml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
+  </component>
+  <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
+    <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
+    <execution>
+      <executable path="composer" />
+    </execution>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Order/Vaimo/Klarna/Checkout.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Rating/Yotpo/Yotpo.php" root0="FORCE_HIGHLIGHTING" root1="SKIP_INSPECTION" />
+  </component>
+  <component name="NamedScopeManager">
+    <order>
+      <scope name="Inspection" />
+    </order>
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration">
+    <include_path>
+      <path value="/Applications/MAMP/htdocs/magento/1910" />
+      <path value="$PROJECT_DIR$/lib" />
+      <path value="$PROJECT_DIR$/vendor/openmage/magento-mirror" />
+      <path value="$PROJECT_DIR$/vendor/vlucas/phpdotenv" />
+      <path value="$PROJECT_DIR$/vendor/theseer/fdomdocument" />
+      <path value="$PROJECT_DIR$/vendor/symfony/yaml" />
+      <path value="$PROJECT_DIR$/vendor/symfony/finder" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-mbstring" />
+      <path value="$PROJECT_DIR$/vendor/symfony/debug" />
+      <path value="$PROJECT_DIR$/vendor/symfony/filesystem" />
+      <path value="$PROJECT_DIR$/vendor/symfony/config" />
+      <path value="$PROJECT_DIR$/vendor/symfony/console" />
+      <path value="$PROJECT_DIR$/vendor/squizlabs/php_codesniffer" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/phpcpd" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/version" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/finder-facade" />
+      <path value="$PROJECT_DIR$/vendor/psr/log" />
+      <path value="$PROJECT_DIR$/vendor/phpunit/php-timer" />
+      <path value="$PROJECT_DIR$/vendor/phpseclib/phpseclib" />
+      <path value="$PROJECT_DIR$/vendor/phpmd/phpmd" />
+      <path value="$PROJECT_DIR$/vendor/phing/phing" />
+      <path value="$PROJECT_DIR$/vendor/pdepend/pdepend" />
+      <path value="$PROJECT_DIR$/vendor/nosto/php-sdk" />
+      <path value="$PROJECT_DIR$/vendor/mridang/magazine" />
+      <path value="$PROJECT_DIR$/vendor/mridang/pearify" />
+      <path value="$PROJECT_DIR$/vendor/magento/marketplace-eqp" />
+      <path value="$PROJECT_DIR$/vendor/symfony/dependency-injection" />
+      <path value="$PROJECT_DIR$/vendor/magento-ecg/coding-standard" />
+      <path value="$PROJECT_DIR$/vendor/composer" />
+      <path value="$PROJECT_DIR$/vendor/psr/container" />
+      <path value="$PROJECT_DIR$/vendor/nikic/php-parser" />
+      <path value="$PROJECT_DIR$/vendor/phan/phan" />
+      <path value="$PROJECT_DIR$/vendor/etsy/phan" />
+      <path value="$PROJECT_DIR$/vendor/netresearch/jsonmapper" />
+      <path value="$PROJECT_DIR$/vendor/webmozart/assert" />
+      <path value="$PROJECT_DIR$/vendor/phpdocumentor/type-resolver" />
+      <path value="$PROJECT_DIR$/vendor/felixfbecker/advanced-json-rpc" />
+      <path value="$PROJECT_DIR$/vendor/phpdocumentor/reflection-common" />
+      <path value="$PROJECT_DIR$/vendor/phpdocumentor/reflection-docblock" />
+      <path value="$PROJECT_DIR$/vendor/phpcompatibility/php-compatibility" />
+      <path value="$PROJECT_DIR$/vendor/sabre/event" />
+      <path value="$PROJECT_DIR$/vendor/mridang/pmd-annotations" />
+      <path value="$PROJECT_DIR$/vendor/staabm/annotate-pull-request-from-checkstyle" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-ctype" />
+      <path value="$PROJECT_DIR$/vendor/symfony/service-contracts" />
+      <path value="$PROJECT_DIR$/vendor/microsoft/tolerant-php-parser" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php72" />
+    </include_path>
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
+  </component>
+  <component name="ProjectId" id="1cdP0B4WZNBLFgTmG9PnLrjDEbt" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="autoscrollToSource" value="true" />
+    <option name="showMembers" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="jdk.selected.JAVA_MODULE" value="11" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="run.code.analysis.last.selected.profile" value="pCI" />
+    <property name="settings.editor.selected.configurable" value="project.scopes" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <created>1590855271885</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1590855271885</updated>
+      <workItem from="1590855275362" duration="2437000" />
+      <workItem from="1590909520570" duration="5934000" />
+      <workItem from="1590916738746" duration="115000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="354" y="147" key="#Inspections" timestamp="1590915517448">
+      <screen x="0" y="23" width="1440" height="877" />
+    </state>
+    <state x="354" y="147" key="#Inspections/0.23.1440.877@0.23.1440.877" timestamp="1590915517448" />
+    <state x="208" y="53" key="#Project_Structure" timestamp="1590914647174">
+      <screen x="0" y="23" width="1440" height="877" />
+    </state>
+    <state x="208" y="31" key="#Project_Structure/0.0.1440.900@0.0.1440.900" timestamp="1590847203106" />
+    <state x="208" y="53" key="#Project_Structure/0.23.1440.877@0.23.1440.877" timestamp="1590914647174" />
+    <state x="470" y="334" key="#com.jetbrains.php.refactoring.move.PhpMoveClassDialog#0" timestamp="1590914751008">
+      <screen x="0" y="23" width="1440" height="877" />
+    </state>
+    <state x="470" y="334" key="#com.jetbrains.php.refactoring.move.PhpMoveClassDialog#0/0.23.1440.877@0.23.1440.877" timestamp="1590914751008" />
+    <state x="468" y="323" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1590915998429">
+      <screen x="0" y="23" width="1440" height="877" />
+    </state>
+    <state x="468" y="323" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.23.1440.877@0.23.1440.877" timestamp="1590915998429" />
+    <state x="553" y="369" key="ComposerInitDialogKey" timestamp="1590838638740">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="553" y="369" key="ComposerInitDialogKey/0.0.1440.900@0.0.1440.900" timestamp="1590838638740" />
+    <state width="1398" height="223" key="GridCell.Tab.0.bottom" timestamp="1590909911743">
+      <screen x="0" y="23" width="1440" height="877" />
+    </state>
+    <state width="1398" height="223" key="GridCell.Tab.0.bottom/0.23.1440.877@0.23.1440.877" timestamp="1590909911743" />
+    <state width="1398" height="223" key="GridCell.Tab.0.center" timestamp="1590909911742">
+      <screen x="0" y="23" width="1440" height="877" />
+    </state>
+    <state width="1398" height="223" key="GridCell.Tab.0.center/0.23.1440.877@0.23.1440.877" timestamp="1590909911742" />
+    <state width="1398" height="223" key="GridCell.Tab.0.left" timestamp="1590909911741">
+      <screen x="0" y="23" width="1440" height="877" />
+    </state>
+    <state width="1398" height="223" key="GridCell.Tab.0.left/0.23.1440.877@0.23.1440.877" timestamp="1590909911741" />
+    <state width="1398" height="223" key="GridCell.Tab.0.right" timestamp="1590909911742">
+      <screen x="0" y="23" width="1440" height="877" />
+    </state>
+    <state width="1398" height="223" key="GridCell.Tab.0.right/0.23.1440.877@0.23.1440.877" timestamp="1590909911742" />
+    <state x="349" y="156" width="743" height="587" key="NewModule_or_Project.wizard" timestamp="1590847072589">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="349" y="156" width="743" height="587" key="NewModule_or_Project.wizard/0.0.1440.900@0.0.1440.900" timestamp="1590847072589" />
+    <state x="229" y="110" key="SettingsEditor" timestamp="1590916852715">
+      <screen x="0" y="23" width="1440" height="877" />
+    </state>
+    <state x="229" y="89" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1590838630936" />
+    <state x="229" y="110" key="SettingsEditor/0.23.1440.877@0.23.1440.877" timestamp="1590916852715" />
+    <state x="420" y="218" width="765" height="538" key="find.popup" timestamp="1590915790820">
+      <screen x="0" y="23" width="1440" height="877" />
+    </state>
+    <state x="420" y="218" width="765" height="538" key="find.popup/0.23.1440.877@0.23.1440.877" timestamp="1590915790820" />
+    <state x="113" y="110" key="new project wizard" timestamp="1590847199142">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="113" y="110" key="new project wizard/0.0.1440.900@0.0.1440.900" timestamp="1590847199142" />
+    <state x="551" y="258" key="refactoring.ChangeSignatureDialog" timestamp="1590911482520">
+      <screen x="0" y="23" width="1440" height="877" />
+    </state>
+    <state x="551" y="258" key="refactoring.ChangeSignatureDialog/0.23.1440.877@0.23.1440.877" timestamp="1590911482520" />
+  </component>
+</project>
