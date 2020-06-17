@@ -190,10 +190,12 @@ jobs:
     ############################################################################
 
     - name: Build archive using composer
-      run: composer archive --format=zip --file=archive
+      run: ./vendor/bin/magazine package magazine.json ${PACKAGE_VERSION} -v
+      env:
+        PACKAGE_VERSION: VERSION
 
     - name: Archive built package
       uses: actions/upload-artifact@v1
       with:
         name: composer-zip-archive
-        path: archive.zip
+        path: Nosto_Tagging-VERSION.tgz
