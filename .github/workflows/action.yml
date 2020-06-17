@@ -198,6 +198,4 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: composer-zip-archive
-        path: Nosto_Tagging-${PACKAGE_VERSION}.tgz
-      env:
-        PACKAGE_VERSION: VERSION
+        path: Nosto_Tagging-VERSION.tgz
