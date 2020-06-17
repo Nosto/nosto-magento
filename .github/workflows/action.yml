@@ -190,7 +190,9 @@ jobs:
     ############################################################################
 
     - name: Build archive using composer
-      run: composer archive --format=zip --file=archive
+      run: ./vendor/bin/magazine package magazine.json ${PACKAGE_VERSION} -v
+      env:
+        PACKAGE_VERSION: ${{ secrets.REPO_USR }}
 
     - name: Archive built package
       uses: actions/upload-artifact@v1
