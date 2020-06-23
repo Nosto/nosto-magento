@@ -54,8 +54,7 @@ class Nosto_Tagging_Model_Observer_Setting
      */
     public function syncNostoAccount(/** @noinspection PhpUnusedParameterInspection */ // @codingStandardsIgnoreLine
         Varien_Event_Observer $observer
-    )
-    {
+    ) {
         /** @var Nosto_Tagging_Helper_Data $helper */
         $helper = Mage::helper('nosto_tagging');
         if ($helper->isModuleEnabled()) {

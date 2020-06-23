@@ -50,8 +50,7 @@ class Nosto_Tagging_Model_Meta_Variation extends Nosto_Object_Product_Variation
         $productAvailability,
         $currencyCode,
         Mage_Core_Model_Store $store = null
-    )
-    {
+    ) {
         if ($store === null) {
             /** @var Nosto_Tagging_Helper_Data $helper */
             $helper = Mage::helper('nosto_tagging');

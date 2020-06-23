@@ -7,112 +7,20 @@
   <component name="ChangeListManager">
     <list default="true" id="f884007a-10f0-4c3e-84f1-431ccb224950" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Addtocart.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Addtocart.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Adminhtml/Iframe.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Adminhtml/Iframe.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Adminhtml/Notifications.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Adminhtml/Notifications.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Adminhtml/System/Config/Currency/CronFrequency.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Adminhtml/System/Config/Currency/CronFrequency.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Adminhtml/System/Config/Currency/Method.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Adminhtml/System/Config/Currency/Method.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Adminhtml/System/Config/Ratings/Provider.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Adminhtml/System/Config/Ratings/Provider.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Adminhtml/System/Config/Variation/Switch.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Adminhtml/System/Config/Variation/Switch.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Cart.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Cart.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Customer.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Customer.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Element.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Element.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Embed.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Embed.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Meta.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Meta.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Order.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Order.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Pagetype.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Pagetype.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Product.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Product.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Searchterm.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Searchterm.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Stub.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Stub.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Variation.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Block/Variation.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Helper/Account.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Helper/Account.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Helper/Bootstrap.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Helper/Bootstrap.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Helper/Cache.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Helper/Cache.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Helper/Customer.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Helper/Customer.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Helper/Data.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Helper/Data.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Helper/Event.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Helper/Event.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Helper/Log.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Helper/Log.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Helper/Module.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Helper/Module.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Helper/Oauth.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Helper/Oauth.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Helper/Price.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Helper/Price.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Helper/Setup.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Helper/Setup.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Helper/Stock.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Helper/Stock.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Helper/Url.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Helper/Url.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Base.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Base.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Collection/Rates.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Collection/Rates.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Container/Cart.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Container/Cart.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Container/Customer.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Container/Customer.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Customer.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Customer.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Account.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Account.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Account/Billing.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Account/Billing.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Account/Iframe.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Account/Iframe.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Account/Owner.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Account/Owner.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Cart.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Cart.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Cart/Builder.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Cart/Builder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Cart/Item.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Cart/Item.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Category/Builder.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Category/Builder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Oauth.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Oauth.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Order.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Order.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Order/Buyer.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Order/Buyer.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Order/Item.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Order/Item.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Order/Status.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Order/Status.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Order/Vaimo/Klarna/Checkout.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Order/Vaimo/Klarna/Checkout.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Product.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Product.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Product/Builder.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Product/Builder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Product/Tags/Lowstock.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Product/Tags/Lowstock.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Product/Trait.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Product/Trait.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Rating.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Rating.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Rating/Interface.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Rating/Interface.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Rating/Mage/Rating.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Rating/Mage/Rating.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Rating/Yotpo/Yotpo.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Rating/Yotpo/Yotpo.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Settings.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Settings.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Sku.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Sku.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/User.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Variation.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Variation.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Variation/Collection.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Meta/Variation/Collection.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Observer/Cart.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Observer/Cart.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Observer/Controller.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Observer/Controller.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Observer/Exchange.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Observer/Exchange.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Observer/Product.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Observer/Product.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Observer/Setting.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Observer/Setting.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Product.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Product.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Resource/Customer.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Resource/Customer.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Resource/Customer/Collection.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Resource/Customer/Collection.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Resource/Product/Collection.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Resource/Product/Collection.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Service/Cart.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Service/Cart.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Service/Order.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Service/Order.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Service/Product.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/Service/Product.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/System/Config/Backend/Currency/Exchange/Rate/Cron.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/System/Config/Backend/Currency/Exchange/Rate/Cron.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/System/Config/Source/Attribute.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/System/Config/Source/Attribute.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/System/Config/Source/Cron/Frequency.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/System/Config/Source/Cron/Frequency.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/System/Config/Source/Custom/Tags.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/System/Config/Source/Custom/Tags.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/System/Config/Source/Image.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/System/Config/Source/Image.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/System/Config/Source/Multi/Currency/Method.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/System/Config/Source/Multi/Currency/Method.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/System/Config/Source/Price/Attribute.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/System/Config/Source/Price/Attribute.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/System/Config/Source/Product/Attribute.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/System/Config/Source/Product/Attribute.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/System/Config/Source/Ratings/Provider.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Model/System/Config/Source/Ratings/Provider.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Util/Product.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/Util/Product.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/controllers/AddToCartController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/controllers/AddToCartController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/controllers/ExportController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/controllers/ExportController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/etc/system.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/etc/system.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/shell/reconnect.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/shell/reconnect.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/shell/remove.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/shell/remove.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/sql/nosto_customer_reference_setup/mysql4-install-2.8.0.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/sql/nosto_customer_reference_setup/mysql4-install-2.8.0.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/sql/nosto_customer_reference_setup/mysql4-upgrade-2.8.0-2.8.2.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/sql/nosto_customer_reference_setup/mysql4-upgrade-2.8.0-2.8.2.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/sql/tagging_setup/mysql4-install-1.2.0.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/code/community/Nosto/Tagging/sql/tagging_setup/mysql4-install-1.2.0.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/design/adminhtml/default/default/layout/nostotagging.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/design/adminhtml/default/default/layout/nostotagging.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/design/adminhtml/default/default/template/nostotagging/iframe.phtml" beforeDir="false" afterPath="$PROJECT_DIR$/app/design/adminhtml/default/default/template/nostotagging/iframe.phtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/design/adminhtml/default/default/template/nostotagging/notifications.phtml" beforeDir="false" afterPath="$PROJECT_DIR$/app/design/adminhtml/default/default/template/nostotagging/notifications.phtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/design/adminhtml/default/default/template/nostotagging/system/config/currency/cronFrequency.phtml" beforeDir="false" afterPath="$PROJECT_DIR$/app/design/adminhtml/default/default/template/nostotagging/system/config/currency/cronFrequency.phtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/design/adminhtml/default/default/template/nostotagging/system/config/currency/formats.phtml" beforeDir="false" afterPath="$PROJECT_DIR$/app/design/adminhtml/default/default/template/nostotagging/system/config/currency/formats.phtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/design/adminhtml/default/default/template/nostotagging/wizard.phtml" beforeDir="false" afterPath="$PROJECT_DIR$/app/design/adminhtml/default/default/template/nostotagging/wizard.phtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/design/frontend/base/default/layout/nostotagging.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/design/frontend/base/default/layout/nostotagging.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/design/frontend/base/default/template/nostotagging/addtocart.phtml" beforeDir="false" afterPath="$PROJECT_DIR$/app/design/frontend/base/default/template/nostotagging/addtocart.phtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/design/frontend/base/default/template/nostotagging/element.phtml" beforeDir="false" afterPath="$PROJECT_DIR$/app/design/frontend/base/default/template/nostotagging/element.phtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/design/frontend/base/default/template/nostotagging/embed.phtml" beforeDir="false" afterPath="$PROJECT_DIR$/app/design/frontend/base/default/template/nostotagging/embed.phtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/design/frontend/base/default/template/nostotagging/jsstub.phtml" beforeDir="false" afterPath="$PROJECT_DIR$/app/design/frontend/base/default/template/nostotagging/jsstub.phtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/design/frontend/base/default/template/nostotagging/meta.phtml" beforeDir="false" afterPath="$PROJECT_DIR$/app/design/frontend/base/default/template/nostotagging/meta.phtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/nosto-src/iframeHandler.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/nosto-src/iframeHandler.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -215,7 +123,7 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="run.code.analysis.last.selected.profile" value="pCI" />
-    <property name="settings.editor.selected.configurable" value="project.scopes" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.PHP" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -228,7 +136,10 @@
       <updated>1590855271885</updated>
       <workItem from="1590855275362" duration="2437000" />
       <workItem from="1590909520570" duration="5934000" />
-      <workItem from="1590916738746" duration="794000" />
+      <workItem from="1590916738746" duration="1543000" />
+      <workItem from="1590937810422" duration="596000" />
+      <workItem from="1590938439220" duration="839000" />
+      <workItem from="1590988116299" duration="537000" />
     </task>
     <servers />
   </component>
@@ -280,11 +191,11 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="349" y="156" width="743" height="587" key="NewModule_or_Project.wizard/0.0.1440.900@0.0.1440.900" timestamp="1590847072589" />
-    <state x="229" y="110" key="SettingsEditor" timestamp="1590916852715">
+    <state x="229" y="110" key="SettingsEditor" timestamp="1590924666527">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
     <state x="229" y="89" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1590838630936" />
-    <state x="229" y="110" key="SettingsEditor/0.23.1440.877@0.23.1440.877" timestamp="1590916852715" />
+    <state x="229" y="110" key="SettingsEditor/0.23.1440.877@0.23.1440.877" timestamp="1590924666527" />
     <state x="420" y="218" width="765" height="538" key="find.popup" timestamp="1590915790820">
       <screen x="0" y="23" width="1440" height="877" />
     </state>

@@ -188,8 +188,7 @@ class Nosto_Tagging_Block_Adminhtml_Notifications extends Mage_Adminhtml_Block_T
     protected static function storeUrlsMatch(
         $installedUrl,
         $currentUrl
-    )
-    {
+    ) {
         $match = true;
         /* @var Mage_Core_Model_Url $mageUrl */
         $mageUrl = Mage::getSingleton('core/url');

@@ -301,8 +301,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
     protected function amendAlternativeImages(
         Mage_Catalog_Model_Product $product,
         Mage_Core_Model_Store $store
-    )
-    {
+    ) {
         /* @var Mage_Catalog_Model_Product_Attribute_Media_Api $mediaApi */
         $mediaApi = Mage::getModel('catalog/product_attribute_media_api');
         $mediaItems = $mediaApi->items($product->getId(), $store);
@@ -530,8 +529,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
         Mage_Catalog_Model_Product $product,
         $attributeName,
         $storeId = null
-    )
-    {
+    ) {
         $attribute = $product->getResource()->getAttribute($attributeName);
         if ($attribute instanceof Mage_Catalog_Model_Resource_Eav_Attribute) {
             if ($storeId && method_exists($product, 'setStoreId')) {
@@ -698,8 +696,7 @@ class Nosto_Tagging_Model_Meta_Product extends Nosto_Object_Product_Product
     protected function buildCustomFields(
         Mage_Catalog_Model_Product $product,
         Mage_Core_Model_Store $store
-    )
-    {
+    ) {
         $customFields = $this->loadCustomFields($product, $store);
         $attributes = $this->getAttributesFromAllTags($store);
         /* @var Mage_Catalog_Model_Resource_Eav_Attribute $productAttribute */

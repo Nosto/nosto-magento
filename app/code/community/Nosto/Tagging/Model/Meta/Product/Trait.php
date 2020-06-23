@@ -189,8 +189,7 @@ trait Nosto_Tagging_Model_Meta_Product_Trait
         Mage_Catalog_Model_Product $product,
         $attributeName,
         $storeId = null
-    )
-    {
+    ) {
         $attribute = $product->getResource()->getAttribute($attributeName);
         if ($attribute instanceof Mage_Catalog_Model_Resource_Eav_Attribute) {
             if ($storeId && method_exists($product, 'setStoreId')) {

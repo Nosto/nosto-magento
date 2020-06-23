@@ -62,8 +62,7 @@ class Nosto_Tagging_Model_Meta_Account extends Nosto_Object_Signup_Signup
         Mage_Core_Model_Store $store,
         $signupDetails,
         Nosto_Types_Signup_OwnerInterface $owner
-    )
-    {
+    ) {
         /* @var Nosto_Tagging_Helper_Data $helper */
         $helper = Mage::helper('nosto_tagging');
         /* @var Nosto_Tagging_Helper_Url $helperUrl */

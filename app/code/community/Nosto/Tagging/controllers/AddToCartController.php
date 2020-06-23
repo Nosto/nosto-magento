@@ -202,8 +202,7 @@ class Nosto_Tagging_AddToCartController extends Mage_Checkout_CartController
         $skuId,
         Mage_Catalog_Model_Product_Type_Configurable $parentType,
         Mage_Catalog_Model_Product $product
-    )
-    {
+    ) {
         $attributeOptions = array();
         $skuProduct = Mage::getModel('catalog/product')->load($skuId);
         $configurableAttributes = $parentType->getConfigurableAttributesAsArray($product);

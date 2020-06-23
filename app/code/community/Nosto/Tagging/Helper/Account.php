@@ -62,8 +62,7 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
     public function save(
         Nosto_Types_Signup_AccountInterface $account,
         Mage_Core_Model_Store $store = null
-    )
-    {
+    ) {
         if ($store === null) {
             /** @var Nosto_Tagging_Helper_Data $helper */
             $helper = Mage::helper('nosto_tagging');
@@ -195,8 +194,7 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
         Mage_Core_Model_Store $store,
         Nosto_Object_Signup_Account $account = null,
         array $params = array()
-    )
-    {
+    ) {
         /** @var Nosto_Tagging_Model_Meta_Account_Iframe $iframeParams */
         $iframeParams = Mage::getModel('nosto_tagging/meta_account_iframe');
         /** @phan-suppress-next-line PhanTypeMismatchArgument */
@@ -223,8 +221,7 @@ class Nosto_Tagging_Helper_Account extends Mage_Core_Helper_Abstract
     public function updateCurrencyExchangeRates(
         Nosto_Types_Signup_AccountInterface $account,
         Mage_Core_Model_Store $store
-    )
-    {
+    ) {
         /** @var Nosto_Tagging_Helper_Data $helper */
         $helper = Mage::helper('nosto_tagging');
         if (!$helper->isMultiCurrencyMethodExchangeRate($store)) {

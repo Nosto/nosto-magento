@@ -43,8 +43,7 @@ class Nosto_Tagging_Model_Service_Cart
     public function update(
         Nosto_Object_Event_Cart_Update $cartUpdate,
         Nosto_Object_Signup_Account $account
-    )
-    {
+    ) {
         if (!$account || !$account->isConnectedToNosto()) {
             return false;
         }

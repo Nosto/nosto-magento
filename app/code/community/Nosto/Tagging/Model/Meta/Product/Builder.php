@@ -50,8 +50,7 @@ class Nosto_Tagging_Model_Meta_Product_Builder
     public static function build(
         Mage_Catalog_Model_Product $product,
         Mage_Core_Model_Store $store = null
-    )
-    {
+    ) {
         if ($store === null) {
             /** @var Nosto_Tagging_Helper_Data $helper */
             $helper = Mage::helper('nosto_tagging');
