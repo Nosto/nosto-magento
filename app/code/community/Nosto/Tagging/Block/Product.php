@@ -49,9 +49,6 @@ class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
      *
      * @return string
      * @throws Mage_Core_Exception
-     * @throws NostoException
-     * @throws NostoException
-     * @throws NostoException
      */
     protected function _toHtml()
     {
@@ -79,12 +76,10 @@ class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
      *
      * @return bool a boolean value indicating the state
      * @throws Mage_Core_Exception
-     * @throws NostoException
-     * @throws NostoException
      */
     public function isOveridden()
     {
-        return !(get_class($this->getMetaProduct()) === 'Nosto_Tagging_Model_Meta_Product');
+        return !($this->getMetaProduct() instanceof \Nosto_Tagging_Model_Meta_Product);
     }
 
     /**
@@ -92,7 +87,6 @@ class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
      *
      * @return Nosto_Tagging_Model_Meta_Product the meta data.
      * @throws Mage_Core_Exception
-     * @throws NostoException
      */
     public function getMetaProduct()
     {

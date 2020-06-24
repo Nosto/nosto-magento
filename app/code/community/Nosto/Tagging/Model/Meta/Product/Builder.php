@@ -25,7 +25,9 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-/**
+use Nosto\NostoException;
+
+    /**
  * Meta data class which holds information about a product.
  * This is used during the order confirmation API request and the product
  * history export.
@@ -43,8 +45,8 @@ class Nosto_Tagging_Model_Meta_Product_Builder
      * @param Mage_Core_Model_Store|null $store
      * @return Nosto_Tagging_Model_Meta_Product|null
      * @throws Mage_Core_Exception
-     * @throws NostoException
      * @throws Nosto_NostoException
+     * @throws NostoException
      * @suppress PhanTypeMismatchReturn
      */
     public static function build(

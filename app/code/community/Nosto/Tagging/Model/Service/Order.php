@@ -44,7 +44,6 @@ class Nosto_Tagging_Model_Service_Order
      * @param Mage_Sales_Model_Order $mageOrder
      * @return bool
      * @throws Mage_Core_Exception
-     * @throws NostoException
      * @throws Nosto_Request_Http_Exception_AbstractHttpException
      */
     public function confirm(Mage_Sales_Model_Order $mageOrder)
@@ -82,7 +81,6 @@ class Nosto_Tagging_Model_Service_Order
      *
      * @param Nosto_Tagging_Model_Meta_Order $order
      * @throws Mage_Core_Exception
-     * @throws NostoException
      */
     public function syncInventoryLevel(Nosto_Tagging_Model_Meta_Order $order)
     {

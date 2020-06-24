@@ -50,7 +50,6 @@ class Nosto_Tagging_Model_Observer_Product
      *
      * @return Nosto_Tagging_Model_Observer_Product
      * @throws Mage_Core_Exception
-     * @throws NostoException
      */
     public function sendProductUpdate(Varien_Event_Observer $observer)
     {
