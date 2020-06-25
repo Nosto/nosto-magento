@@ -33,7 +33,6 @@ if (is_file(__DIR__ . '/../../../../../../shell/abstract.php')) { //@codingStand
     /** @noinspection PhpIncludeInspection */
     require_once __DIR__ . '/../../../../../../shell/abstract.php'; //@codingStandardsIgnoreLine
 } elseif (is_file(__DIR__ . '/../../../../../../../../shell/abstract.php')) { //@codingStandardsIgnoreLine
-    /** @noinspection PhpIncludeInspection */
     require_once __DIR__ . '/../../../../../../../../shell/abstract.php'; //@codingStandardsIgnoreLine
 } else {
     echo 'abstract.php not found'; //@codingStandardsIgnoreLine

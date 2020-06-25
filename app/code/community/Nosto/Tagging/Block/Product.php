@@ -25,6 +25,8 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+use Nosto\NostoException;
+
 /**
  * Product tagging block.
  * Adds meta-data to the HTML document for the currently viewed product.
@@ -79,6 +81,7 @@ class Nosto_Tagging_Block_Product extends Mage_Catalog_Block_Product_Abstract
      */
     public function isOveridden()
     {
+        /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
         return !($this->getMetaProduct() instanceof \Nosto_Tagging_Model_Meta_Product);
     }
 

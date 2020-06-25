@@ -70,6 +70,7 @@ class Nosto_Tagging_Block_Embed extends Mage_Core_Block_Template
         $helper = Mage::helper('nosto_tagging/account');
         $account = $helper->find();
 
+        /** @noinspection Annotator */
         return $account !== null ? $account->name : '';
     }
 

@@ -105,6 +105,8 @@ class Nosto_Tagging_Model_Service_Product
             $emulation = Mage::getSingleton('core/app_emulation');
             $env = $emulation->startEnvironmentEmulation($store->getId());
             $urlHelper = Mage::helper('nosto_tagging/url');
+            /** @noinspection NullPointerExceptionInspection */
+            /** @noinspection PhpPossiblePolymorphicInvocationInspection */
             $activeDomain = $urlHelper->getActiveDomain($store);
             foreach ($productBatches as $productsInStore) {
                 try {

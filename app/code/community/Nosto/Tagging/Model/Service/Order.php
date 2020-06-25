@@ -64,6 +64,8 @@ class Nosto_Tagging_Model_Service_Order
         $customerId = $customerHelper->getNostoId($mageOrder);
         if ($account !== null && $account->isConnectedToNosto()) {
             $urlHelper = Mage::helper('nosto_tagging/url');
+            /** @noinspection PhpPossiblePolymorphicInvocationInspection */
+            /** @noinspection NullPointerExceptionInspection */
             $operation = new Nosto_Operation_OrderConfirm($account, $urlHelper->getActiveDomain($store));
             $operation->send($order, $customerId);
             if ($dataHelper->getUseInventoryLevel($store)

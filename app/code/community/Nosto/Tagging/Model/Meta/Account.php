@@ -37,7 +37,7 @@ use Nosto_Tagging_Helper_Log as NostoLog;
  */
 class Nosto_Tagging_Model_Meta_Account extends Nosto_Object_Signup_Signup
 {
-    const /** @noinspection SpellCheckingInspection */
+    const
         SIGNUP_TOKEN = 'YBDKYwSqTCzSsU8Bwbg4im2pkHMcgTy9cCX7vevjJwON1UISJIwXOLMM0a8nZY7h';
     const PLATFORM_NAME = 'magento';
 

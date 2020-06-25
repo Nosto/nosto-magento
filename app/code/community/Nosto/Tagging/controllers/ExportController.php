@@ -131,7 +131,6 @@ class Nosto_Tagging_ExportController extends Mage_Core_Controller_Front_Action
      * Exports visible products from the current store.
      * Result can be limited by the `limit` and `offset` GET parameters.
      * @throws Mage_Core_Exception
-     * @throws NostoException
      */
     public function productAction()
     {

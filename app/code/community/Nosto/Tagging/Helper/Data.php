@@ -394,6 +394,7 @@ class Nosto_Tagging_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getCookieId()
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         return Mage::getModel('core/cookie')->get(self::COOKIE_NAME);
     }
 
