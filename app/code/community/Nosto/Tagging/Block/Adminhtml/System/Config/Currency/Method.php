@@ -81,7 +81,7 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Currency_Method extends Mage_A
 
                 $comment = sprintf(
                     'Your Nosto account is missing required tokens' .
-                    ' for updating settings to Nosto. Please click <!--suppress HtmlUnknownTarget -->
+                    ' for updating settings to Nosto. Please click <!--suppress HtmlUnknownTarget, HtmlUnknownTag -->
 <a href="%s">' .
                     ' here to re-connect</a> your account.',
                     Nosto_Helper_OAuthHelper::getAuthorizationUrl($metaOauth)

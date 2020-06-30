@@ -100,8 +100,7 @@ class Nosto_Tagging_Block_Adminhtml_System_Config_Ratings_Provider
         }
 
         $html .= sprintf('<tr id="row_nosto_tagging_%s">', $optionId);
-        /** @noinspection HtmlUnknownAttribute */
-        $html .= sprintf(
+		$html .= sprintf(
             '<td style="%s"><input id="%s" type="radio" name="%s" value="%s" %s %s> %s</input></td>',
             $tdCss,
             $optionId,
