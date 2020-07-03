@@ -89,11 +89,10 @@ class Nosto_Tagging_Model_Observer_Cart
             $addedItem = Nosto_Tagging_Model_Meta_Cart_Builder::buildItem($quoteItem, $currencyCode);
             $cartUpdate->setAddedItems(array($addedItem));
 
+            /** @var Mage_Core_Model_Cookie $cookie */
+            $cookie = Mage::getModel('core/cookie');
             //set the cookie to trigger add to cart event
-            if (!headers_sent()) {
-                /** @var Mage_Core_Model_Cookie $cookie */
-                $cookie = Mage::getModel('core/cookie');
-
+            if (!headers_sent() && !empty($cookie->get(Nosto_Tagging_Helper_Data::COOKIE_NAME))) {
                 $cookie->set(
                     self::COOKIE_NAME,
                     Nosto_Helper_SerializationHelper::serialize($cartUpdate),
@@ -104,7 +103,7 @@ class Nosto_Tagging_Model_Observer_Cart
                     false
                 );
             } else {
-                NostoLog::info('Headers sent already. Cannot set the cookie.');
+                NostoLog::info('Headers sent already or no Nosto cookie available. Cannot set the cookie.');
             }
 
             if ($dataHelper->getSendAddToCartEvent($store)) {
