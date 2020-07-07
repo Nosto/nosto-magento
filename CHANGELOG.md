@@ -1,5 +1,8 @@
 All notable changes to this project will be documented in this file. This project adheres to Semantic Versioning.
 
+### 4.1.1
+* Send add to cart cookies only if Nosto's cookie is present
+
 ### 4.1.0
 * Add google category as customisable attribute
 
