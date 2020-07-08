@@ -55,8 +55,11 @@
      */
     switch (data.type) {
       case TYPE_NEW_ACCOUNT:
+        //noinspection JSUnresolvedVariable
         const post_data = {email: data.params.email};
+        //noinspection JSUnresolvedVariable
         if (data.params.details) {
+          //noinspection JSUnresolvedVariable
           post_data.details = JSON.stringify(data.params.details);
         }
         xhr(settings.urls.createAccount, {
@@ -129,6 +132,7 @@
       data: {}
     }, params);
     // Always add the Magento form_key property for request authorization.
+    //noinspection JSUnresolvedVariable
     options.data.form_key = window.FORM_KEY;
     const oReq = new XMLHttpRequest();
     if (typeof options.success === "function") {
