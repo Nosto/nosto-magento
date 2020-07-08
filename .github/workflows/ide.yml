@@ -36,7 +36,7 @@ jobs:
       run: |
         composer install --prefer-dist --no-progress --no-suggest
         composer dump-autoload --optimize
-        rm -rf vendor/bin lib/Nosto/Seclib
+        rm -rf vendor/bin lib
     ############################################################################
 
     - name: Run PHPStorm
