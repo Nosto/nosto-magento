@@ -69,7 +69,7 @@ class Nosto_Tagging_Model_Meta_Rating_Yotpo_Yotpo extends Nosto_Tagging_Model_Me
                     $this->setReviewCount($values['reviews_count']);
                 }
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             NostoLog::error(
                 'Could not find Yotpo helper. Error was: %s',
                 array($e->getMessage())
