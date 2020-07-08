@@ -30,7 +30,7 @@ if (is_file(__DIR__ . '/../../../../../../shell/abstract.php')) {
     /** @noinspection PhpIncludeInspection */
     require_once __DIR__ . '/../../../../../../shell/abstract.php';
 } elseif (is_file(__DIR__ . '/../../../../../../../../shell/abstract.php')) {
-    /** noinspection PhpIncludeInspection */
+    /** @noinspection PhpIncludeInspection */
     require_once __DIR__ . '/../../../../../../../../shell/abstract.php';
 } else {
     echo 'abstract.php not found';
